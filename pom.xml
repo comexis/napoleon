@@ -1,0 +1,75 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>Napoleon</groupId>
+  <artifactId>Napoleon</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  
+  <repositories>
+    <repository>
+      <id>objectify-appengine</id>
+      <url>http://objectify-appengine.googlecode.com/svn/maven</url>
+    </repository>
+  </repositories>
+  
+  
+  <dependencies>
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt</artifactId>
+      <version>2.4.0</version>
+      <type>pom</type>
+    </dependency>
+    <dependency>
+      <groupId>com.gwtplatform</groupId>
+      <artifactId>gwtp-mvp-client</artifactId>
+      <version>0.6</version>
+    </dependency>
+    <dependency>
+    	<groupId>com.google.guava</groupId>
+    	<artifactId>guava</artifactId>
+    	<version>10.0</version>
+    </dependency>
+    <dependency>
+    	<groupId>com.gwtplatform</groupId>
+    	<artifactId>gwtp-dispatch-client</artifactId>
+    	<version>0.6</version>
+    </dependency>
+    <dependency>
+     	<groupId>com.googlecode.gwtquery</groupId>
+     	<artifactId>gwtquery</artifactId>
+     	<version>1.1.0</version>
+   	</dependency>
+    <dependency>
+    	<groupId>com.google.gwt.inject</groupId>
+    	<artifactId>gin</artifactId>
+    	<version>1.5.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.googlecode.objectify</groupId>
+      <artifactId>objectify</artifactId>
+      <version>3.0.1</version>
+    </dependency>
+     <dependency>
+     	<groupId>com.google.appengine</groupId>
+     	<artifactId>appengine-api-labs</artifactId>
+     	<version>1.5.4</version>
+     </dependency>
+     <dependency>
+     	<groupId>com.google.appengine</groupId>
+     	<artifactId>appengine-api-stubs</artifactId>
+     	<version>1.5.4</version>
+     </dependency>
+     <dependency>
+     	<groupId>com.google.appengine</groupId>
+     	<artifactId>appengine-testing</artifactId>
+     	<version>1.5.4</version>
+     </dependency>
+     <dependency>
+     	<groupId>junit</groupId>
+     	<artifactId>junit</artifactId>
+     	<version>4.10</version>
+     </dependency>
+     
+     
+  </dependencies>
+</project>
