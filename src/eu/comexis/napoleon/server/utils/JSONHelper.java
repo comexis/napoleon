@@ -1,4 +1,4 @@
-package eu.comexis.napoleon.server.manager;
+package eu.comexis.napoleon.server.utils;
 
 import org.json.JSONArray;
 

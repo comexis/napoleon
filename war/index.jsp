@@ -1,6 +1,6 @@
 <!doctype html>
 
-<%@page import="eu.comexis.napoleon.server.manager.JSONHelper"%>
+<%@page import="eu.comexis.napoleon.server.utils.JSONHelper"%>
 <%@page import="org.json.JSONObject"%>
 <%@page import="eu.comexis.napoleon.shared.model.Client"%>
 <%@page import="eu.comexis.napoleon.server.manager.UserManager"%>
