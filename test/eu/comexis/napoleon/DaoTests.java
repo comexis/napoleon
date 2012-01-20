@@ -1,7 +1,7 @@
 /**
  * 
  */
-package eu.comexis.napoleon.tests.unitTests;
+package eu.comexis.napoleon;
 
 import static org.junit.Assert.*;
 
