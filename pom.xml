@@ -10,6 +10,8 @@
       <url>http://objectify-appengine.googlecode.com/svn/maven</url>
     </repository>
   </repositories>
+  
+  
   <dependencies>
     <dependency>
       <groupId>com.google.gwt</groupId>
@@ -67,6 +69,7 @@
      	<artifactId>junit</artifactId>
      	<version>4.10</version>
      </dependency>
+     
+     
   </dependencies>
-  
 </project>

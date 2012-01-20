@@ -3,11 +3,11 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5">
 
-	<display-name>napoleon</display-name>
+	<display-name>Napoleon</display-name>
 
 	<!-- Default page to serve -->
 	<welcome-file-list>
-		<welcome-file>napoleon.html</welcome-file>
+		<welcome-file>Napoleon.html</welcome-file>
 	</welcome-file-list>
 
 	<!--
