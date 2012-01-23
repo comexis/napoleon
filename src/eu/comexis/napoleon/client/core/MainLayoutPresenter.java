@@ -27,6 +27,15 @@ public class MainLayoutPresenter extends
 	@ProxyCodeSplit
 	public interface MyProxy extends Proxy<MainLayoutPresenter> {
 	}
+	
+	/**
+	 * Content slot are used in leaf presenters, inside their {@link #revealInParent} method.
+	 */
+	@ContentSlot
+	public static final Type<RevealContentHandler<?>> MAIN_CONTENT = new Type<RevealContentHandler<?>>();
+	@ContentSlot
+	public static final Type<RevealContentHandler<?>>LEFT_CONTENT = new Type<RevealContentHandler<?>>();
+	
 
 	@Inject
 	public MainLayoutPresenter(final EventBus eventBus, final MyView view,
@@ -45,11 +54,7 @@ public class MainLayoutPresenter extends
 		
 	}
 
-	/**
-	 * Use this in leaf presenters, inside their {@link #revealInParent} method.
-	 */
-	@ContentSlot
-	public static final Type<RevealContentHandler<?>> MAIN_CONTENT = new Type<RevealContentHandler<?>>();
+	
 
 	@Override
 	protected void revealInParent() {

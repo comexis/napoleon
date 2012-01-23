@@ -10,6 +10,8 @@ import eu.comexis.napoleon.client.core.MainLayoutView;
 import eu.comexis.napoleon.client.place.ClientPlaceManager;
 import eu.comexis.napoleon.client.place.DefaultPlace;
 import eu.comexis.napoleon.client.place.NameTokens;
+import eu.comexis.napoleon.client.core.OwnerListPresenter;
+import eu.comexis.napoleon.client.core.OwnerListView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -28,5 +30,9 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenter(DashBoardPresenter.class,
 				DashBoardPresenter.MyView.class, DashBoardView.class,
 				DashBoardPresenter.MyProxy.class);
+
+		bindPresenter(OwnerListPresenter.class,
+				OwnerListPresenter.MyView.class, OwnerListView.class,
+				OwnerListPresenter.MyProxy.class);
 	}
 }

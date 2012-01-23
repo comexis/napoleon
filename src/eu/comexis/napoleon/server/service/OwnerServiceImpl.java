@@ -8,7 +8,7 @@ import eu.comexis.napoleon.shared.command.owner.GetAllOwnerResponse;
 import eu.comexis.napoleon.shared.model.Owner;
 
 /**
- * Temporary implementations !!! All method implementations should be query the database.
+ * Temporary implementations !!! All methods implementation should query the database.
  * C'est a toi de jouer Xavier !
  * @author jDramaix
  *

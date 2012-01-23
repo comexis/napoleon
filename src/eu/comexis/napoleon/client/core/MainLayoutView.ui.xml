@@ -54,11 +54,11 @@
 		</g:north>
 
 		<g:west size='8'>
-			<g:HTMLPanel  styleName='{style.left}' ui:field="left"/>
+			<g:SimplePanel styleName='{style.left}' ui:field="leftPanel"/>
 		</g:west>
 
 		<g:center>
-			<g:HTMLPanel styleName='{style.center}' ui:field="centerPanel" />
+			<g:SimplePanel styleName='{style.center}' ui:field="centerPanel" />
 
 		</g:center>
 	</g:DockLayoutPanel>
