@@ -6,6 +6,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import eu.comexis.napoleon.shared.command.owner.GetAllOwnerCommand;
 import eu.comexis.napoleon.shared.command.owner.GetAllOwnerResponse;
 
+
 public interface OwnerServiceAsync {
 
 	public OwnerServiceAsync INSTANCE = GWT.create(OwnerService.class);

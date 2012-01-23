@@ -15,6 +15,7 @@
 	<!-- Other module inherits                                      -->
 	<inherits name='com.gwtplatform.mvp.Mvp'/>
 	<inherits name='com.gwtplatform.dispatch.Dispatch'/>
+	<inherits name='com.google.gwt.query.Query'/>
 
 	<!-- Specify the app entry point class.                         -->
 	<entry-point class='eu.comexis.napoleon.client.Napoleon'/>

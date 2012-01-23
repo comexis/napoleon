@@ -7,7 +7,7 @@
 
 	<!-- Default page to serve -->
 	<welcome-file-list>
-		<welcome-file>Napoleon.html</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
 
 	<!--
@@ -16,7 +16,6 @@
 		ServletModule#configureServlets() by calling
 		serve(String).with(Class<? extends HttpServlet>) and
 		filter(String).through(Class<? extends Filter)
-	-->
 	<listener>
 		<listener-class>eu.comexis.napoleon.server.guice.GuiceServletConfig</listener-class>
 	</listener>
@@ -30,5 +29,18 @@
 		<filter-name>guiceFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	
+	-->
+	
+	<servlet>
+		<servlet-name>ownerServlet</servlet-name>
+		<servlet-class>eu.comexis.napoleon.server.service.OwnerServiceImpl</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>ownerServlet</servlet-name>
+		<url-pattern>/napoleon/owner</url-pattern>
+	</servlet-mapping>
+	
 
 </web-app>
