@@ -1,5 +1,6 @@
 package eu.comexis.napoleon.client;
 
+import static com.google.gwt.query.client.GQuery.$;
 import com.google.gwt.core.client.EntryPoint;
 import eu.comexis.napoleon.client.gin.ClientGinjector;
 import com.google.gwt.core.client.GWT;
@@ -15,5 +16,8 @@ public class Napoleon implements EntryPoint {
 		DelayedBindRegistry.bind(ginjector);
 	
 		ginjector.getPlaceManager().revealCurrentPlace();
+		
+		$("#loading").remove();
 	}
+	
 }

@@ -25,5 +25,7 @@
 
 	<define-configuration-property name='gin.ginjector' is-multi-valued='false' />
 	<set-configuration-property name='gin.ginjector' value='eu.comexis.napoleon.client.gin.ClientGinjector' />
+	
+	<set-property name="user.agent" value="safari"/>
 
 </module>

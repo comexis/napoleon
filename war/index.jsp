@@ -43,14 +43,15 @@ Client client = user.getClient();
 	<script type="text/javascript" language="javascript" src="napoleon/napoleon.nocache.js"></script>
 	
 	<script type="text/javascript">
-	      var __GLOBALS = [<%=JSONHelper.toJSONArray(user)%>];
+	      var __GLOBALS = [<%=JSONHelper.toJSONArray(user)%>,
+	                       "<%= userService.createLogoutURL("/index.jsp") %>"];
 	      
 	</script>
 </head>
 
 <body>
 
-	<div id="loading">loading...</div>
+	<div id="loading">Application is loading...</div>
 	<iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1'
 		style="position: absolute; width: 0; height: 0; border: 0"></iframe>
 

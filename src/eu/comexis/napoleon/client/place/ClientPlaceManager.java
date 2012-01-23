@@ -2,7 +2,6 @@ package eu.comexis.napoleon.client.place;
 
 import com.gwtplatform.mvp.client.proxy.PlaceManagerImpl;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
-import eu.comexis.napoleon.client.place.DefaultPlace;
 import com.google.inject.Inject;
 import com.google.gwt.event.shared.EventBus;
 import com.gwtplatform.mvp.client.proxy.TokenFormatter;

@@ -11,10 +11,17 @@ import com.google.gwt.event.shared.GwtEvent.Type;
 import com.gwtplatform.mvp.client.proxy.RevealRootLayoutContentEvent;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
+import eu.comexis.napoleon.client.utils.ApplicationHelper;
+import eu.comexis.napoleon.shared.model.AppUser;
+
 public class MainLayoutPresenter extends
 		Presenter<MainLayoutPresenter.MyView, MainLayoutPresenter.MyProxy> {
 
 	public interface MyView extends View {
+		public void setUserName(String userName);
+		public void setLogo(String logo);
+		public void setLogoutUrl(String logoutUrl);
+		
 	}
 
 	@ProxyCodeSplit
@@ -25,6 +32,17 @@ public class MainLayoutPresenter extends
 	public MainLayoutPresenter(final EventBus eventBus, final MyView view,
 			final MyProxy proxy) {
 		super(eventBus, view, proxy);
+		initView();
+	}
+
+	private void initView() {
+		MyView view = getView();
+		
+		AppUser loggedInUser = ApplicationHelper.INSTANCE.getLoggedUser();
+		view.setLogo(loggedInUser.getClient().getName());
+		view.setUserName(loggedInUser.getFirstName()+ " "+ loggedInUser.getLastName());
+		view.setLogoutUrl(ApplicationHelper.INSTANCE.getLogoutUrl());
+		
 	}
 
 	/**

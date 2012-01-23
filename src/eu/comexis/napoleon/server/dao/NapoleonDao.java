@@ -1,7 +1,7 @@
 /**
  * 
  */
-package eu.comexis.napoleon.server.service;
+package eu.comexis.napoleon.server.dao;
 
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.util.DAOBase;

@@ -1,10 +1,69 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.logo {
+			position: absolute;
+			top: 5px;
+			left: 5px;
+			font-size: 2em;
+			text-shadow: rgba(65, 65, 65, 0.5) 2px 2px 2px;
+		}
+		
+		.statusDiv {
+			text-align: right;
+			margin: 1em;
+		}
+		
+		.linksDiv {
+			text-align: right;
+		}
+		
+		.top {
+			border-bottom: 1px #BAC3C8 solid;
+			padding-bottom: 5px;
+		}
+		
+		.left {
+			border-right: 1px #BAC3C8 solid;
+			padding:5px;
+		}
+		.center {
+			padding:5px;	
+		}
+	</ui:style>
 
-<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-	xmlns:g='urn:import:com.google.gwt.user.client.ui'
-	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
-	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
-	ui:generateLocales='default'>
+	<g:DockLayoutPanel unit='EM'>
+		<g:north size='4'>
+			<g:HTMLPanel styleName='{style.top}'>
+				<div ui:field="logoElement" class='{style.logo}'></div>
 
-	<g:HTMLPanel/>
+				<div class="{style.statusDiv}">
+					<div>
+						<b>
+							Bienvenue,
+							<span ui:field="userNameElement"></span>
+						</b>
+					</div>
+
+					<div class='{style.linksDiv}'>
+						<a ui:field='signOutLink'>Sign Out</a>
+					</div>
+				</div>
+			</g:HTMLPanel>
+		</g:north>
+
+		<g:west size='8'>
+			<g:HTMLPanel  styleName='{style.left}'>
+				<div>Your data</div>
+			</g:HTMLPanel>
+		</g:west>
+
+		<g:center>
+			<g:SimplePanel styleName='{style.center}' ui:field="centerPanel" />
+
+		</g:center>
+	</g:DockLayoutPanel>
+
+
 </ui:UiBinder>
