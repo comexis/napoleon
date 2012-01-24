@@ -10,8 +10,8 @@ import eu.comexis.napoleon.client.core.MainLayoutView;
 import eu.comexis.napoleon.client.place.ClientPlaceManager;
 import eu.comexis.napoleon.client.place.DefaultPlace;
 import eu.comexis.napoleon.client.place.NameTokens;
-import eu.comexis.napoleon.client.core.OwnerListPresenter;
-import eu.comexis.napoleon.client.core.OwnerListView;
+import eu.comexis.napoleon.client.core.owner.OwnerListPresenter;
+import eu.comexis.napoleon.client.core.owner.OwnerListView;
 
 public class ClientModule extends AbstractPresenterModule {
 
