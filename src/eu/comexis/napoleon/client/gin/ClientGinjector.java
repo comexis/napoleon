@@ -8,7 +8,7 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.google.gwt.inject.client.AsyncProvider;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter;
 import eu.comexis.napoleon.client.core.DashBoardPresenter;
-import eu.comexis.napoleon.client.core.OwnerListPresenter;
+import eu.comexis.napoleon.client.core.owner.OwnerListPresenter;
 
 @GinModules({ DispatchAsyncModule.class, ClientModule.class })
 public interface ClientGinjector extends Ginjector {

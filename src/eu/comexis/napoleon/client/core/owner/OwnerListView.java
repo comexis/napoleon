@@ -1,4 +1,4 @@
-package eu.comexis.napoleon.client.core;
+package eu.comexis.napoleon.client.core.owner;
 
 import java.util.Comparator;
 import java.util.List;
@@ -10,11 +10,9 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
-import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
@@ -28,16 +26,17 @@ import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 public class OwnerListView extends ViewImpl implements
 		OwnerListPresenter.MyView {
 
-	//key provider object implementation for SimpleOwner object
+	public interface Binder extends UiBinder<Widget, OwnerListView> {
+	}
+
+	// key provider object implementation for SimpleOwner object
 	private static final ProvidesKey<SimpleOwner> KEY_PROVIDER = new ProvidesKey<SimpleOwner>() {
 		public Object getKey(SimpleOwner item) {
 			// Always do a null check.
 			return (item == null) ? null : item.getId();
 		}
 	};
-
-	private final Widget widget;
-	//list containing the owners to display
+	// list containing the owners to display
 	private ListDataProvider<SimpleOwner> dataProvider;
 
 	@UiField(provided = true)
@@ -45,26 +44,29 @@ public class OwnerListView extends ViewImpl implements
 
 	@UiField(provided = true)
 	SimplePager pager;
-	
-	
 
-	public interface Binder extends UiBinder<Widget, OwnerListView> {
-	}
+	private OwnerListUiHandlers presenter;
+	private final Widget widget;
 
 	@Inject
 	public OwnerListView(final Binder binder) {
-		
+
 		init();
 		widget = binder.createAndBindUi(this);
 
 	}
 
+	@Override
+	public Widget asWidget() {
+		return widget;
+	}
+
 	private void init() {
-		
+
 		dataProvider = new ListDataProvider<SimpleOwner>();
-		
+
 		ownerTable = new CellTable<SimpleOwner>(40, KEY_PROVIDER);
-		
+
 		ownerTable.setWidth("100%");
 
 		// Create a Pager to control the table.
@@ -72,34 +74,38 @@ public class OwnerListView extends ViewImpl implements
 				.create(SimplePager.Resources.class);
 		pager = new SimplePager(TextLocation.CENTER, pagerResources, true, 50,
 				true);
+		
+		//link the pager to the table
 		pager.setDisplay(ownerTable);
 
+		//allow user to navigate in the table with arrows key, selection on the keyboard is done with space key
 		ownerTable
-				.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.BOUND_TO_SELECTION);
-		
+				.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
+
 		// Add a selection model so we can select cells.
-		final SingleSelectionModel<SimpleOwner> selectionModel = new SingleSelectionModel<SimpleOwner>(KEY_PROVIDER);
+		final SingleSelectionModel<SimpleOwner> selectionModel = new SingleSelectionModel<SimpleOwner>(
+				KEY_PROVIDER);
 		ownerTable.setSelectionModel(selectionModel);
 
+		//call the presenter when user select an owner on the list
 		selectionModel
 				.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 					public void onSelectionChange(SelectionChangeEvent event) {
-						// TODO call the presenter
-						Window.alert("You've selected "
-								+ selectionModel.getSelectedObject().getName());
+						presenter.onSelect(selectionModel.getSelectedObject());
 					}
 				});
 
 		// Attach a column sort handler to the ListDataProvider to sort the
 		// list.
-		ListHandler<SimpleOwner> sortHandler = new ListHandler<SimpleOwner>(dataProvider.getList());
+		ListHandler<SimpleOwner> sortHandler = new ListHandler<SimpleOwner>(
+				dataProvider.getList());
 		ownerTable.addColumnSortHandler(sortHandler);
 
 		// Initialize the columns.
 		initTableColumns(selectionModel, sortHandler);
 
-	    // Connect the table to the data provider.
-	    dataProvider.addDataDisplay(ownerTable);
+		// Connect the table to the data provider.
+		dataProvider.addDataDisplay(ownerTable);
 
 	}
 
@@ -172,6 +178,7 @@ public class OwnerListView extends ViewImpl implements
 		};
 
 		cpColumn.setSortable(true);
+		
 		sortHandler.setComparator(cpColumn, new Comparator<SimpleOwner>() {
 			public int compare(SimpleOwner o1, SimpleOwner o2) {
 				return o1.getPostalCode().compareTo(o2.getPostalCode());
@@ -234,14 +241,15 @@ public class OwnerListView extends ViewImpl implements
 	}
 
 	@Override
-	public Widget asWidget() {
-		return widget;
-	}
-
-	@Override
 	public void setData(List<SimpleOwner> owners) {
 		dataProvider.getList().addAll(owners);
 		dataProvider.refresh();
-		
+
+	}
+
+	@Override
+	public void setOwnerListUiHandler(OwnerListUiHandlers handler) {
+		this.presenter = handler;
+
 	}
 }
