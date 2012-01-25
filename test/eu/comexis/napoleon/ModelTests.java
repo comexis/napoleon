@@ -26,6 +26,7 @@ import com.googlecode.objectify.ObjectifyService;
 
 import eu.comexis.napoleon.shared.model.Condo;
 import eu.comexis.napoleon.shared.model.Lease;
+import eu.comexis.napoleon.shared.model.MaritalStatus;
 import eu.comexis.napoleon.shared.model.Owner;
 import eu.comexis.napoleon.shared.model.RealEstate;
 import eu.comexis.napoleon.shared.model.Tenant;
@@ -99,6 +100,7 @@ public class ModelTests {
 		oProprio.setFax("069 69 69 01");
 		oProprio.setPhoneNumber("069 69 69 02");
 		oProprio.setMobilePhoneNumber("0469 69 69 03");
+		oProprio.setMaritalStatus(MaritalStatus.MARRIED);
 		return oProprio;
 	}
 	private Tenant getTenant(){
@@ -157,6 +159,7 @@ public class ModelTests {
 		assertNotNull(oProprio3);
 		assertEquals(new BigDecimal(650.00),oProprio3.getFee());
 		assertEquals("EUR",oProprio3.getUnit());
+		assertEquals(MaritalStatus.MARRIED,oProprio3.getMaritalStatus());
 	}
 	@Test
 	public void testCreateStoreAndUpdateTenant() {

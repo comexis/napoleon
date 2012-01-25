@@ -4,7 +4,6 @@
 package eu.comexis.napoleon.shared.model;
 
 import javax.persistence.Id;
-import javax.persistence.PrePersist;
 
 /**
  * @author xavier

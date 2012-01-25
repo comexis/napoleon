@@ -2,94 +2,68 @@
  * 
  */
 package eu.comexis.napoleon.server.dao;
+import java.lang.reflect.Type;
+import java.lang.reflect.ParameterizedType;
+import java.util.List;
 
-import java.util.Map;
 
-import com.google.appengine.api.datastore.Key;
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
+import com.googlecode.objectify.Query;
 import com.googlecode.objectify.util.DAOBase;
-
 import eu.comexis.napoleon.shared.model.*;
-
 /**
  * @author xavier
  *
  */
-public class NapoleonDao extends DAOBase{
+
+public class NapoleonDao<T> extends DAOBase{
 	/**
 	 * 
 	 */
-	static
-    {
-            ObjectifyService.register(Owner.class);
-            ObjectifyService.register(Tenant.class);
-            ObjectifyService.register(RealEstate.class);
-            ObjectifyService.register(Condo.class);
-            ObjectifyService.register(Lease.class);
+  static {
+    ObjectifyService.register(Country.class);
+    ObjectifyService.register(City.class);
+    ObjectifyService.register(Owner.class);
+    ObjectifyService.register(Tenant.class);
+    ObjectifyService.register(Condo.class);
+    ObjectifyService.register(RealEstate.class);
+    ObjectifyService.register(Lease.class);
+  }
+  protected Class<T> clazz;
+  public NapoleonDao()
+  {
+    Type genericSuperclass = getClass().getGenericSuperclass();
+    // Allow this class to be safely instantiated with or without a parameterized type
+    if (genericSuperclass instanceof ParameterizedType)
+      clazz = (Class<T>) ((ParameterizedType) genericSuperclass).getActualTypeArguments()[0];
+  }
+  public T update(T entity){
+    try{
+      Key<T> entityKey = ofy().put(entity);
+      return ofy().get(entityKey);
+    }catch (Exception e){
+      // should raise a NapoleonDaoUpdateFailed exception
+      e.printStackTrace();
+      return null;
     }
-	public NapoleonDao() {
-		// TODO Auto-generated constructor stub
-	}
-	public Owner createOwner(){
-		Owner owner = new Owner();
-		return owner;
-	}
-	public Boolean updateOwner(Owner owner){
-		try{
-			ofy().put(owner);
-			return true;
-		}catch (Exception e){
-			e.printStackTrace();
-			return false;
-		}
-	}
-	public Boolean deleteOwner(Owner owner){
-		try{
-			ofy().delete(owner);
-			return true;
-		}catch (Exception e){
-			e.printStackTrace();
-			return false;
-		}
-	}
-	public Owner findOwnerByName(String name){
-		try{
-			Owner owner = ofy().query(Owner.class).filter("lastName", name).get();
-			return owner;
-		}catch (Exception e){
-			e.printStackTrace();
-			return null;
-		}
-	}
-	public Tenant createTenant(){
-		Tenant tenant = new Tenant();
-		return tenant;
-	}
-	public Boolean updateTenant(Tenant tenant){
-		try{
-			ofy().put(tenant);
-			return true;
-		}catch (Exception e){
-			e.printStackTrace();
-			return false;
-		}
-	}
-	public Boolean deleteTenant(Tenant tenant){
-		try{
-			ofy().delete(tenant);
-			return true;
-		}catch (Exception e){
-			e.printStackTrace();
-			return false;
-		}
-	}
-	public Tenant findTenantByName(String name){
-		try{
-			Tenant tenant = ofy().query(Tenant.class).filter("lastName", name).get();
-			return tenant;
-		}catch (Exception e){
-			e.printStackTrace();
-			return null;
-		}
-	}
+  }
+  public Boolean delete(T entity){
+    try{
+      ofy().delete(entity);
+      return true;
+    }catch (Exception e){
+      e.printStackTrace();
+      return false;
+    }
+  }
+  public List<T> listAll()
+  {
+          Query<T> q = ofy().query(this.clazz);
+          return q.list();
+  }
+  public void deleteAll(Iterable<T> entities)
+  {
+          ofy().delete(entities);
+  }
 }

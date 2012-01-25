@@ -3,6 +3,8 @@ package eu.comexis.napoleon.client;
 import static com.google.gwt.query.client.GQuery.$;
 import com.google.gwt.core.client.EntryPoint;
 import eu.comexis.napoleon.client.gin.ClientGinjector;
+import eu.comexis.napoleon.server.dao.NapoleonDao;
+
 import com.google.gwt.core.client.GWT;
 import com.gwtplatform.mvp.client.DelayedBindRegistry;
 

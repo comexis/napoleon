@@ -42,5 +42,33 @@
 		<url-pattern>/napoleon/owner</url-pattern>
 	</servlet-mapping>
 	
+	<!-- Add this to your web.xml to enable remote API on Java. -->
+  <servlet>
+    <servlet-name>remoteapi</servlet-name>
+    <servlet-class>com.google.apphosting.utils.remoteapi.RemoteApiServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>remoteapi</servlet-name>
+    <url-pattern>/remote_api</url-pattern>
+  </servlet-mapping>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>remoteapi</web-resource-name>
+      <url-pattern>/remote_api</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>admin</role-name>
+    </auth-constraint>
+  </security-constraint>
+  
+  
+  <servlet>
+    <servlet-name>initDatastore</servlet-name>
+    <servlet-class>eu.comexis.napoleon.server.service.InitDatastore</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>initDatastore</servlet-name>
+    <url-pattern>/initDatastore</url-pattern>
+  </servlet-mapping>	
 
 </web-app>
