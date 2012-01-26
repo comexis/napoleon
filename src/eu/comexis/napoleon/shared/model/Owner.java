@@ -20,10 +20,6 @@ public class Owner extends Party {
 		super();
 	}
 
-	public Owner(String name) {
-		super(name);
-	}
-
 	public BigDecimal getFee() {
 		return new BigDecimal(fee).divide(CONVERSION_FACTOR);
 	}

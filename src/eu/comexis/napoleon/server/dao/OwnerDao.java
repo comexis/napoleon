@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.annotation.Unindexed;
 
 import eu.comexis.napoleon.shared.model.Owner;
 import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
@@ -27,15 +28,31 @@ public class OwnerDao extends NapoleonDao<Owner>{
       return null;
     }
   }
+  //TO BE REMOVED
   /**
    * returns the owner (full) corresponding to the given last name
    * 
    * @param name: the owner's last name
    * @return
    */
-  public Owner findByName(String name){
+  /*public Owner findByName(String name){
     try{
       Owner owner = ofy().query(Owner.class).filter("lastName", name).get();
+      return owner;
+    }catch (Exception e){
+      e.printStackTrace();
+      return null;
+    }
+  }*/
+  /**
+   * returns the owner (full) corresponding to the given id
+   * 
+   * @param name: the owner's id
+   * @return
+   */
+  public Owner getById(String id){
+    try{
+      Owner owner = ofy().get(Owner.class,id);
       return owner;
     }catch (Exception e){
       e.printStackTrace();
@@ -53,7 +70,7 @@ public class OwnerDao extends NapoleonDao<Owner>{
     while (iterator.hasNext()) {
       Owner owner = iterator.next();
       SimpleOwner o = new SimpleOwner();
-      o.setId(owner.getId().toString());
+      o.setId(owner.getId());
       o.setName(owner.getLastName());
       o.setPostalCode(owner.getPostalCode());
       o.setCity(owner.getCity());

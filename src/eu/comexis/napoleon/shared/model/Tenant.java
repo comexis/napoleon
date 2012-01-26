@@ -17,10 +17,7 @@ public class Tenant extends Party{
 	// référence
 
 	public Tenant() {
-		// empty constructor needed by GWT
-	}
-	public Tenant(String name) {
-		super(name);
+	  super();
 	}
 
 }

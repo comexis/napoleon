@@ -1,10 +1,14 @@
 package eu.comexis.napoleon.shared.model;
 
 import java.util.Date;
+import java.util.UUID;
 
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
 
+import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.annotation.Indexed;
+import com.googlecode.objectify.annotation.Unindexed;
 
 /**
  * Une des parties d'un contract de bail. C'est la classe de base étendue par la
@@ -13,6 +17,7 @@ import com.googlecode.objectify.annotation.Indexed;
  * @author xavier
  * 
  */
+@Unindexed
 public abstract class Party {
 
 	private String bankAccountNumber;
@@ -25,9 +30,9 @@ public abstract class Party {
 	private String firstName;
 	private String iban;
 	@Id
-	private Long id;
+	private String id;
+	//private Long id;
 	private String jobTitle;
-	@Indexed
 	private String lastName;
 	private MaritalStatus maritalStatus;
 	private MatrimonialRegime matrimonialRegime;
@@ -45,15 +50,10 @@ public abstract class Party {
 	 * 
 	 */
 	public Party() {
-
+	  UUID uuid = UUID.randomUUID();
+    System.out.println("Creating Uuid " + uuid.toString());
+    this.id = uuid.toString();
 	}
-	
-	
-	// TODO is it really mandatory ???
-	public Party(String name) {
-		this.lastName = name;
-	}
-
 	public String getBankAccountNumber() {
 		return bankAccountNumber;
 	}
@@ -90,7 +90,7 @@ public abstract class Party {
 		return iban;
 	}
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
