@@ -6,5 +6,9 @@ import com.google.gwt.i18n.client.Constants;
 public interface Literals extends Constants{
 	
 	public Literals INSTANCE = GWT.create(Literals.class);
+	
+	@DefaultStringValue("Chargement des données...")
+	public String dataLoading();
+	
 
 }

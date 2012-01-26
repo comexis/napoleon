@@ -114,7 +114,7 @@ public class OwnerListView extends ViewImpl implements
 			ListHandler<SimpleOwner> sortHandler) {
 
 		// Client id
-		Column<SimpleOwner, String> clientIdColumn = new Column<SimpleOwner, String>(
+		/*Column<SimpleOwner, String> clientIdColumn = new Column<SimpleOwner, String>(
 				new TextCell()) {
 			@Override
 			public String getValue(SimpleOwner object) {
@@ -130,7 +130,7 @@ public class OwnerListView extends ViewImpl implements
 					}
 				});
 
-		ownerTable.addColumn(clientIdColumn, "ID");
+		ownerTable.addColumn(clientIdColumn, "ID");*/
 
 		// Name.
 		Column<SimpleOwner, String> nameColumn = new Column<SimpleOwner, String>(
@@ -209,14 +209,14 @@ public class OwnerListView extends ViewImpl implements
 				new TextCell()) {
 			@Override
 			public String getValue(SimpleOwner object) {
-				return object.getTelephone();
+				return object.getPhoneNumber();
 			}
 		};
 
 		telColumn.setSortable(true);
 		sortHandler.setComparator(telColumn, new Comparator<SimpleOwner>() {
 			public int compare(SimpleOwner o1, SimpleOwner o2) {
-				return o1.getTelephone().compareTo(o2.getTelephone());
+				return o1.getPhoneNumber().compareTo(o2.getPhoneNumber());
 			}
 		});
 		ownerTable.addColumn(telColumn, "Téléphone");
@@ -226,14 +226,14 @@ public class OwnerListView extends ViewImpl implements
 				new TextCell()) {
 			@Override
 			public String getValue(SimpleOwner object) {
-				return object.getMobile();
+				return object.getMobileNumber();
 			}
 		};
 
 		mobileColumn.setSortable(true);
 		sortHandler.setComparator(mobileColumn, new Comparator<SimpleOwner>() {
 			public int compare(SimpleOwner o1, SimpleOwner o2) {
-				return o1.getMobile().compareTo(o2.getMobile());
+				return o1.getMobileNumber().compareTo(o2.getMobileNumber());
 			}
 		});
 		ownerTable.addColumn(mobileColumn, "Mobile");
@@ -242,6 +242,7 @@ public class OwnerListView extends ViewImpl implements
 
 	@Override
 	public void setData(List<SimpleOwner> owners) {
+		dataProvider.getList().clear();
 		dataProvider.getList().addAll(owners);
 		dataProvider.refresh();
 

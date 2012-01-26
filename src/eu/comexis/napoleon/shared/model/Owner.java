@@ -2,6 +2,9 @@ package eu.comexis.napoleon.shared.model;
 
 import java.math.BigDecimal;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+import com.googlecode.objectify.annotation.Unindexed;
+
 /**
  * Represent the Owner (Proprio) of a RealEstate (Bien immo) (It's considered to
  * be a single person)
@@ -9,7 +12,8 @@ import java.math.BigDecimal;
  * @author xavier
  * 
  */
-public class Owner extends Party {
+@Unindexed
+public class Owner extends Party implements IsSerializable{
 
 	public static final BigDecimal CONVERSION_FACTOR = new BigDecimal(100);
 
