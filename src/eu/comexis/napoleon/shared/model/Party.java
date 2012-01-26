@@ -1,13 +1,10 @@
 package eu.comexis.napoleon.shared.model;
 
 import java.util.Date;
-import java.util.UUID;
 
 import javax.persistence.Id;
-import javax.persistence.PrePersist;
 
-import com.googlecode.objectify.Objectify;
-import com.googlecode.objectify.annotation.Indexed;
+import com.google.gwt.user.client.rpc.IsSerializable;
 import com.googlecode.objectify.annotation.Unindexed;
 
 /**
@@ -18,7 +15,7 @@ import com.googlecode.objectify.annotation.Unindexed;
  * 
  */
 @Unindexed
-public abstract class Party {
+public abstract class Party implements IsSerializable {
 
 	private String bankAccountNumber;
 	private String bic;
@@ -50,9 +47,6 @@ public abstract class Party {
 	 * 
 	 */
 	public Party() {
-	  UUID uuid = UUID.randomUUID();
-    System.out.println("Creating Uuid " + uuid.toString());
-    this.id = uuid.toString();
 	}
 	public String getBankAccountNumber() {
 		return bankAccountNumber;
@@ -183,6 +177,10 @@ public abstract class Party {
 
 	public void setIBAN(String value) {
 		iban = value;
+	}
+	
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public void setJobTitle(String value) {
