@@ -10,7 +10,7 @@ public class SimpleOwner implements IsSerializable{
 	private String postalCode;
 	private String address;
 	private String city;
-	private String telephone;
+	private String phoneNumber;
 	private String mobile;
 	
 	public SimpleOwner() {
@@ -64,19 +64,19 @@ public class SimpleOwner implements IsSerializable{
 		this.city = city;
 	}
 
-	public String getTelephone() {
-		return telephone;
+	public String getPhoneNumber() {
+		return phoneNumber;
 	}
 
-	public void setTelephone(String telephone) {
-		this.telephone = telephone;
+	public void setPhoneNumber(String telephone) {
+		this.phoneNumber = telephone;
 	}
 
-	public String getMobile() {
+	public String getMobileNumber() {
 		return mobile;
 	}
 
-	public void setMobile(String mobile) {
+	public void setMobileNumber(String mobile) {
 		this.mobile = mobile;
 	}
 	
