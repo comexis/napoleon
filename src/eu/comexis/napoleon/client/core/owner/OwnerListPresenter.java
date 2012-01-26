@@ -33,9 +33,12 @@ public class OwnerListPresenter extends
 
 	public interface MyView extends View, HasOwnerListUiHandlers {
 		public void setData(List<SimpleOwner> owners);
+
+		public void dataIsLoading();
 	}
 	
 	private PlaceManager placeManager;
+	private boolean dataLoaded;
 
 	@Inject
 	public OwnerListPresenter(final EventBus eventBus, final MyView view,
@@ -43,6 +46,7 @@ public class OwnerListPresenter extends
 		super(eventBus, view, proxy);
 		
 		this.placeManager = placeManager;
+		dataLoaded = false;
 
 	}
 
@@ -56,11 +60,18 @@ public class OwnerListPresenter extends
 	@Override
 	protected void onReset() {
 		super.onReset();
-
+		
+		if (dataLoaded){
+			return;
+		}
+		
+		getView().dataIsLoading();
+		
 		new GetAllOwnerCommand().dispatch(new GotAllOwner() {
 			@Override
 			public void got(List<SimpleOwner> owners) {
 				getView().setData(owners);
+				dataLoaded = true;
 
 			}
 		});

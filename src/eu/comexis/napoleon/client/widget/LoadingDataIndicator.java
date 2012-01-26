@@ -12,7 +12,7 @@ import eu.comexis.napoleon.client.resources.Resources;
 
 public class LoadingDataIndicator extends Composite {
 
-	private interface Templates extends SafeHtmlTemplates {
+	public interface Templates extends SafeHtmlTemplates {
 
 		@Template("<div class=\"{0}\"><div class=\"{1}\">{2}</div></div>")
 		SafeHtml loading(String styleOuter, String styleInner, String text);

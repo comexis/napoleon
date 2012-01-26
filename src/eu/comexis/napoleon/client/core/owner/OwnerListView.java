@@ -21,6 +21,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
+import eu.comexis.napoleon.client.widget.LoadingDataIndicator;
 import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 
 public class OwnerListView extends ViewImpl implements
@@ -68,6 +69,9 @@ public class OwnerListView extends ViewImpl implements
 		ownerTable = new CellTable<SimpleOwner>(40, KEY_PROVIDER);
 
 		ownerTable.setWidth("100%");
+		
+		//set the table in a loading state
+		ownerTable.setLoadingIndicator(new LoadingDataIndicator());
 
 		// Create a Pager to control the table.
 		SimplePager.Resources pagerResources = GWT
@@ -103,9 +107,7 @@ public class OwnerListView extends ViewImpl implements
 
 		// Initialize the columns.
 		initTableColumns(selectionModel, sortHandler);
-
-		// Connect the table to the data provider.
-		dataProvider.addDataDisplay(ownerTable);
+		
 
 	}
 
@@ -242,6 +244,11 @@ public class OwnerListView extends ViewImpl implements
 
 	@Override
 	public void setData(List<SimpleOwner> owners) {
+		//ok find better...
+		if (!dataProvider.getDataDisplays().contains(ownerTable)){
+			dataProvider.addDataDisplay(ownerTable);
+		}
+		//ownerTable.setRowData(owners);
 		dataProvider.getList().clear();
 		dataProvider.getList().addAll(owners);
 		dataProvider.refresh();
@@ -252,5 +259,10 @@ public class OwnerListView extends ViewImpl implements
 	public void setOwnerListUiHandler(OwnerListUiHandlers handler) {
 		this.presenter = handler;
 
+	}
+	
+	@Override
+	public void dataIsLoading(){
+		ownerTable.setVisibleRangeAndClearData(ownerTable.getVisibleRange(), true);
 	}
 }
