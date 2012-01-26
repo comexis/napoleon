@@ -1,0 +1,43 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+	<g:HTMLPanel>
+		<div>
+			<span>Nom :</span>
+			<span ui:field="name" />
+		</div>
+		<div>
+			<span>Prénom :</span>
+			<span ui:field="firstName" />
+		</div>
+		<div>
+			<span>Email :</span>
+			<span ui:field="email" />
+		</div>
+		<div>
+			<span>Téléphone :</span>
+			<span ui:field="phoneNumber" />
+		</div>
+		<div>
+			<span>GSM :</span>
+			<span ui:field="mobileNumber" />
+		</div>
+		<div>
+			<span>Date de naissance :</span>
+			<span ui:field="birthDay" />
+		</div>
+		<div>
+			<span>Adresse :</span>
+			<span ui:field="addresse" />
+		</div>
+		<div>
+			<span>Marital status :</span>
+			<span ui:field="maritalStatus" />
+		</div>
+
+	</g:HTMLPanel>
+</ui:UiBinder>

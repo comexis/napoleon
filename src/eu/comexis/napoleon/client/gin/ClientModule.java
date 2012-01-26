@@ -12,6 +12,8 @@ import eu.comexis.napoleon.client.place.DefaultPlace;
 import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.core.owner.OwnerListPresenter;
 import eu.comexis.napoleon.client.core.owner.OwnerListView;
+import eu.comexis.napoleon.client.core.owner.OwnerDetailsPresenter;
+import eu.comexis.napoleon.client.core.owner.OwnerDetailsView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -34,5 +36,9 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenter(OwnerListPresenter.class,
 				OwnerListPresenter.MyView.class, OwnerListView.class,
 				OwnerListPresenter.MyProxy.class);
+
+		bindPresenter(OwnerDetailsPresenter.class,
+				OwnerDetailsPresenter.MyView.class, OwnerDetailsView.class,
+				OwnerDetailsPresenter.MyProxy.class);
 	}
 }

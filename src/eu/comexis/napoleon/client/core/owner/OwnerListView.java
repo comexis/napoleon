@@ -114,7 +114,7 @@ public class OwnerListView extends ViewImpl implements
 			ListHandler<SimpleOwner> sortHandler) {
 
 		// Client id
-		Column<SimpleOwner, String> clientIdColumn = new Column<SimpleOwner, String>(
+		/*Column<SimpleOwner, String> clientIdColumn = new Column<SimpleOwner, String>(
 				new TextCell()) {
 			@Override
 			public String getValue(SimpleOwner object) {
@@ -130,7 +130,7 @@ public class OwnerListView extends ViewImpl implements
 					}
 				});
 
-		ownerTable.addColumn(clientIdColumn, "ID");
+		ownerTable.addColumn(clientIdColumn, "ID");*/
 
 		// Name.
 		Column<SimpleOwner, String> nameColumn = new Column<SimpleOwner, String>(
