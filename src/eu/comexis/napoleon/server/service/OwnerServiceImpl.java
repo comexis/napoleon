@@ -36,9 +36,9 @@ public class OwnerServiceImpl extends RemoteServiceServlet implements
 
 	@Override
 	public GetOwnerResponse execute(GetOwnerCommand command) {
-		Long id = command.getId();
+		String id = command.getId();
 		
-		if (id == null){
+		if (id == null || id.length() == 0){
 			//TODO add logging
 			
 			//will generate an error 500. Do put to many info
