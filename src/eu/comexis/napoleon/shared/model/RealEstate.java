@@ -2,18 +2,22 @@ package eu.comexis.napoleon.shared.model;
 
 import javax.persistence.Id;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.annotation.Parent;
+
 /**
  * @author xavier Bien immobilier
  */
-public class RealEstate {
+public class RealEstate implements IsSerializable{
 
+  @Id
+  private String id;
+  @Parent
+  private Key<Company> company;
 	private String boite;
 	private String city;
-	private Long condoId;
 	private String dimension;
-
-	@Id
-	private Long id;
 	private Long ownerId;
 	private String postalCode;
 	private String reference;
@@ -34,11 +38,7 @@ public class RealEstate {
 		return city;
 	}
 
-	public Long getCondoId() {
-		return condoId;
-	}
-
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
@@ -57,12 +57,13 @@ public class RealEstate {
 	public String getStreet() {
 		return street;
 	}
+	public void setId(String value) {
+    id = value;
+  }
 	public void setCity(String value) {
 		city = value;
 	}
-	public void setCondoId(Long id) {
-		condoId = id;
-	}
+
 	public void setOwnerId(Long id) {
 		ownerId = id;
 	}

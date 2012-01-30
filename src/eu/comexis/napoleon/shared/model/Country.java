@@ -2,17 +2,23 @@ package eu.comexis.napoleon.shared.model;
 
 import javax.persistence.Id;
 
-public class Country {
+import com.google.gwt.user.client.rpc.IsSerializable;
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.annotation.Parent;
+
+public class Country implements IsSerializable{
   @Id
-  private Long id;
+  private String id;
+  @Parent
+  private Key<Company> company;
 
   private String name;
 
-  public Country() {
+  public Country(){
     // TODO Auto-generated constructor stub
   }
 
-  public Long getId() {
+  public String getId() {
     return id;
   }
 
@@ -20,7 +26,12 @@ public class Country {
     return name;
   }
 
+  public void setId(String id) {
+    this.id = id;
+  }
+
   public void setName(String name) {
     this.name = name;
   }
+
 }

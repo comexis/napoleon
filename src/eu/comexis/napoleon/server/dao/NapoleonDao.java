@@ -5,12 +5,15 @@ package eu.comexis.napoleon.server.dao;
 import java.lang.reflect.Type;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
+import java.util.UUID;
 
 
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
 import com.googlecode.objectify.util.DAOBase;
+
+import eu.comexis.napoleon.server.manager.UserManager;
 import eu.comexis.napoleon.shared.model.*;
 /**
  * @author xavier
@@ -29,10 +32,12 @@ public class NapoleonDao<T> extends DAOBase{
     ObjectifyService.register(Condo.class);
     ObjectifyService.register(RealEstate.class);
     ObjectifyService.register(Lease.class);
+    ObjectifyService.register(ApplicationUser.class);
   }
   protected Class<T> clazz;
-  public NapoleonDao()
-  {
+  protected Key<Company> companyKey;
+  public NapoleonDao(String companyId){
+    companyKey = new Key<Company>(Company.class,companyId);
     Type genericSuperclass = getClass().getGenericSuperclass();
     // Allow this class to be safely instantiated with or without a parameterized type
     if (genericSuperclass instanceof ParameterizedType)
@@ -48,6 +53,7 @@ public class NapoleonDao<T> extends DAOBase{
       return null;
     }
   }
+  
   public Boolean delete(T entity){
     try{
       ofy().delete(entity);
@@ -59,11 +65,22 @@ public class NapoleonDao<T> extends DAOBase{
   }
   public List<T> listAll()
   {
+          System.out.println("List all for Parent " + companyKey.toString());
           Query<T> q = ofy().query(this.clazz);
+          q.ancestor(companyKey);
           return q.list();
   }
   public void deleteAll(Iterable<T> entities)
   {
           ofy().delete(entities);
+  }
+  public T getById(String id) {
+    try {
+      T entity = ofy().get(new Key<T>(companyKey,this.clazz, id));
+      return entity;
+    } catch (Exception e) {
+      e.printStackTrace();
+      return null;
+    }
   }
 }
