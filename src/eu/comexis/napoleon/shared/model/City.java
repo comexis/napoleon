@@ -2,11 +2,19 @@ package eu.comexis.napoleon.shared.model;
 
 import javax.persistence.Id;
 
-public class City {
+import com.google.gwt.user.client.rpc.IsSerializable;
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.annotation.Parent;
+
+public class City implements IsSerializable{
   @Id
-  private Long id;
+  private String id;
+  @Parent
+  private Key<Company> company;
   private Long name;
+
   private String postalCode;
+
   private String country;
 
   public City() {
@@ -17,7 +25,7 @@ public class City {
     return country;
   }
 
-  public Long getId() {
+  public String getId() {
     return id;
   }
 
@@ -25,20 +33,22 @@ public class City {
     return name;
   }
 
-  public String getPostCode() {
+  public String getPostalCode() {
     return postalCode;
   }
 
   public void setCountry(String country) {
     this.country = country;
   }
-
+  public void setId(String id) {
+    this.id = id;
+  }
   public void setName(Long name) {
     this.name = name;
   }
 
-  public void setPostCode(String postCode) {
-    this.postalCode = postCode;
+  public void setPostalCode(String postalCode) {
+    this.postalCode = postalCode;
   }
 
 }

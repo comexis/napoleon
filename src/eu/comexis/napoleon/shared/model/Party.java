@@ -5,6 +5,9 @@ import java.util.Date;
 import javax.persistence.Id;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.annotation.Indexed;
+import com.googlecode.objectify.annotation.Parent;
 import com.googlecode.objectify.annotation.Unindexed;
 
 /**
@@ -17,24 +20,28 @@ import com.googlecode.objectify.annotation.Unindexed;
 @Unindexed
 public abstract class Party implements IsSerializable {
 
+  @Id
+  private String id;
+  @Parent
+  private Key<Company> company;
+  
 	private String bankAccountNumber;
-	private String bic;
-	private String city;
-	private String country;
-	private Date dateOfBirth;
-	private String email;
-	private String fax;
+  private String bic;
+  private String city;
+  private String country;
+  private Date dateOfBirth;
+  private String email;
+
+  private String fax;
 	private String firstName;
 	private String iban;
-	@Id
-	private String id;
-	//private Long id;
 	private String jobTitle;
 	private String lastName;
 	private MaritalStatus maritalStatus;
 	private MatrimonialRegime matrimonialRegime;
 	private String mobilePhoneNumber;
 	private String nationality;
+	
 	private String nationalRegisterNumber;
 	private String phoneNumber;
 	private String placeOfBirth;
@@ -42,7 +49,6 @@ public abstract class Party implements IsSerializable {
 	private String status;
 	private String street;
 	private String title;
-
 	/**
 	 * 
 	 */
@@ -51,19 +57,22 @@ public abstract class Party implements IsSerializable {
 	public String getBankAccountNumber() {
 		return bankAccountNumber;
 	}
-
+	public String getBic() {
+    return bic;
+  }
 	public String getBIC() {
 		return bic;
 	}
-
 	public String getCity() {
 		return city;
 	}
+	public Key<Company> getCompany() {
+    return company;
+  }
 
 	public String getCountry() {
 		return country;
 	}
-
 	public Date getDateOfBirth() {
 		return dateOfBirth;
 	}
@@ -79,6 +88,10 @@ public abstract class Party implements IsSerializable {
 	public String getFirstName() {
 		return firstName;
 	}
+
+	public String getIban() {
+    return iban;
+  }
 
 	public String getIBAN() {
 		return iban;
@@ -103,6 +116,7 @@ public abstract class Party implements IsSerializable {
 	public MatrimonialRegime getMatrimonialRegime() {
 		return matrimonialRegime;
 	}
+
 	/**
 	 * Auto-increment version # whenever persisted
 	 */
@@ -118,7 +132,6 @@ public abstract class Party implements IsSerializable {
 	public String getNationalRegisterNumber() {
 		return nationalRegisterNumber;
 	}
-
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
@@ -147,6 +160,10 @@ public abstract class Party implements IsSerializable {
 		bankAccountNumber = value;
 	}
 
+	public void setBic(String bic) {
+    this.bic = bic;
+  }
+
 	public void setBIC(String value) {
 		bic = value;
 	}
@@ -154,6 +171,10 @@ public abstract class Party implements IsSerializable {
 	public void setCity(String value) {
 		city = value;
 	}
+
+	public void setCompany(Key<Company> company) {
+    this.company = company;
+  }
 
 	public void setCountry(String value) {
 		country = value;
@@ -174,6 +195,10 @@ public abstract class Party implements IsSerializable {
 	public void setFirstName(String value) {
 		firstName = value;
 	}
+
+	public void setIban(String iban) {
+    this.iban = iban;
+  }
 
 	public void setIBAN(String value) {
 		iban = value;

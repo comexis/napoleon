@@ -6,9 +6,9 @@ package eu.comexis.napoleon.shared.model;
  * @author jDramaix
  * 
  */
-public class Client {
-
-	private String id;
+public class Client{
+  
+  private String id;
 	private String name;
 	private String address;
 	private String email;

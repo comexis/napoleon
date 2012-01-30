@@ -6,13 +6,22 @@ import java.util.UUID;
 
 import com.googlecode.objectify.Key;
 
+import eu.comexis.napoleon.shared.model.Client;
+import eu.comexis.napoleon.shared.model.Company;
 import eu.comexis.napoleon.shared.model.Owner;
 import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 
 public class OwnerDao extends NapoleonDao<Owner> {
 
-	public Owner create() {
+  public OwnerDao(String companyId) {
+    super(companyId);
+    // TODO Auto-generated constructor stub
+  }
+
+  public Owner create() {
 		Owner owner = new Owner();
+		System.out.println("Set company key " + companyKey.toString());
+		owner.setCompany(companyKey);
 		return owner;
 	}
 
@@ -25,34 +34,7 @@ public class OwnerDao extends NapoleonDao<Owner> {
 			System.out.println("Creating Uuid " + uuid.toString());
 			owner.setId(uuid.toString());
 		}
-		
-		try {
-
-			Key<Owner> ownerKey = ofy().put(owner);
-			return ofy().get(ownerKey);
-		} catch (Exception e) {
-			// should raise a NapoleonDaoUpdateFailed exception
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	
-	/**
-	 * returns the owner (full) corresponding to the given id
-	 * 
-	 * @param name
-	 *            : the owner's id
-	 * @return
-	 */
-	public Owner getById(String id) {
-		try {
-			Owner owner = ofy().get(Owner.class, id);
-			return owner;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
+		return super.update(owner);
 	}
 
 	/**

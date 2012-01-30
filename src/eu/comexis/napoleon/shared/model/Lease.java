@@ -8,14 +8,16 @@ import java.util.Date;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Indexed;
+import com.googlecode.objectify.annotation.Parent;
 
 /**
  * @author xavier
  * Location
  */
-public class Lease {
+public class Lease implements IsSerializable{
 
 	/**
 	 * 
@@ -24,36 +26,11 @@ public class Lease {
 		// TODO Auto-generated constructor stub
 	}
 	@Id
-	private Long id;
-	public Long getId() {
-		return id;
-	}
+  private String id;
+  @Parent
+  private Key<Company> company;
 	private Date startDate;
-	public Date getStartDate() {
-		return startDate;
-	}
-	public void setStartDate(Date value) {
-		startDate = value;
-	}
 	private Date endDate;
-	public Date getEndDate() {
-		return endDate;
-	}
-	public void setEndDate(Date value) {
-		endDate = value;
-	}
-	private Long tenantId;
-	public Long getTenantId(){
-		return tenantId;
-	}
-	public void setTenantId(Long id){
-		tenantId = id;
-	}
-	private Long realEstateId;
-	public Long getRealEstateId(){
-		return realEstateId;
-	}
-	public void setRealEstateId(Long id){
-		realEstateId = id;
-	}
+	private Key<Tenant> tenant;
+	private Key<RealEstate> realEstate;
 }

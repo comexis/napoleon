@@ -6,10 +6,12 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import eu.comexis.napoleon.client.rpc.OwnerService;
 import eu.comexis.napoleon.server.dao.OwnerDao;
+import eu.comexis.napoleon.server.manager.UserManager;
 import eu.comexis.napoleon.shared.command.owner.GetAllOwnerCommand;
 import eu.comexis.napoleon.shared.command.owner.GetAllOwnerResponse;
 import eu.comexis.napoleon.shared.command.owner.GetOwnerCommand;
 import eu.comexis.napoleon.shared.command.owner.GetOwnerResponse;
+import eu.comexis.napoleon.shared.model.Company;
 import eu.comexis.napoleon.shared.model.Owner;
 import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 
@@ -25,7 +27,8 @@ public class OwnerServiceImpl extends RemoteServiceServlet implements
 
 	@Override
 	public GetAllOwnerResponse execute(GetAllOwnerCommand command) {
-		OwnerDao ownerData = new OwnerDao();
+	  String companyId = UserManager.INSTANCE.getCompanyId();
+		OwnerDao ownerData = new OwnerDao(companyId);
 		ArrayList<SimpleOwner> owners = ownerData.getListSimpleOwners();
 
 		GetAllOwnerResponse response = new GetAllOwnerResponse();
@@ -44,8 +47,8 @@ public class OwnerServiceImpl extends RemoteServiceServlet implements
 			//will generate an error 500. Do put to many info
 			throw new RuntimeException("Ooops something wrong happened");
 		}
-		
-		OwnerDao dao = new OwnerDao();
+		String companyId = UserManager.INSTANCE.getCompanyId();
+		OwnerDao dao = new OwnerDao(companyId);
 		Owner o = dao.getById(id);
 		
 		GetOwnerResponse response = new GetOwnerResponse();
