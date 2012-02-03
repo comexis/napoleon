@@ -41,15 +41,16 @@ public enum UserManager {
 			return null;
 		}
 	}
+	
+	public Company getConnectedCompany(){
+		CompanyDao companyData = new CompanyDao();
+		return companyData.getById(getConnectedUser().getCompany().getName());	
+	}
 
 	public String getCompanyId() {
-		// should return a company id based on the session data
-		// for the moment get id from data store + hardcoded name
-		CompanyDao companyData = new CompanyDao();
-		Company company = companyData.getByName("Agence de l'aiglon");
-		System.out.println("Get company by mane: " + company.getId());
-		return company.getId();
+		return getConnectedUser().getCompany().getName();
 	}
+	
 
 	/**
 	 * retrieve a user linked to an email. If no user exists for this email,
@@ -59,9 +60,7 @@ public enum UserManager {
 	 * @return
 	 */
 	public ApplicationUser getUser(String email) {
-
-		String id = getCompanyId();
-		ApplicationUserDao userData = new ApplicationUserDao(id);
+		ApplicationUserDao userData = new ApplicationUserDao();
 		return userData.getByEMail(email);
 
 	}

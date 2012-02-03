@@ -1,10 +1,10 @@
 <!doctype html>
 
+<%@page import="eu.comexis.napoleon.shared.model.Company"%>
+<%@page import="eu.comexis.napoleon.shared.model.ApplicationUser"%>
 <%@page import="eu.comexis.napoleon.server.utils.JSONHelper"%>
 <%@page import="org.json.JSONObject"%>
-<%@page import="eu.comexis.napoleon.shared.model.Client"%>
 <%@page import="eu.comexis.napoleon.server.manager.UserManager"%>
-<%@page import="eu.comexis.napoleon.shared.model.AppUser"%>
 <%@page import="com.google.appengine.api.users.UserServiceFactory"%>
 <%@page import="com.google.appengine.api.users.UserService"%>
 
@@ -21,7 +21,7 @@ if (!userService.isUserLoggedIn()) {
 }
 
 //user is logged, check if he has access to the application
-AppUser user = UserManager.INSTANCE.getConnectedUser();
+ApplicationUser user = UserManager.INSTANCE.getConnectedUser();
 
 //the google acount is not authorize to access to the application
 if (user == null){
@@ -30,7 +30,7 @@ if (user == null){
 	return;
 }
 
-Client client = user.getClient();
+Company client = UserManager.INSTANCE.getConnectedCompany();
 %>
 
 <html>
@@ -38,7 +38,7 @@ Client client = user.getClient();
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		
 
-	<title><%=user.getClient().getName()%></title>
+	<title><%client.getName();%></title>
 	
 	<script type="text/javascript" language="javascript" src="napoleon/napoleon.nocache.js"></script>
 	
