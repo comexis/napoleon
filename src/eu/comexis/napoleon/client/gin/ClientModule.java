@@ -32,7 +32,6 @@ public class ClientModule extends AbstractPresenterModule {
 		bindConstant().annotatedWith(DefaultPlace.class).to(
 				NameTokens.dashboard);
 
-
 		bindPresenter(MainLayoutPresenter.class,
 				MainLayoutPresenter.MyView.class, MainLayoutView.class,
 				MainLayoutPresenter.MyProxy.class);
@@ -48,21 +47,21 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenter(OwnerDetailsPresenter.class,
 				OwnerDetailsPresenter.MyView.class, OwnerDetailsView.class,
 				OwnerDetailsPresenter.MyProxy.class);
-		
-		bindPresenter(OwnerUpdatePresenter.class,
-        OwnerUpdatePresenter.MyView.class, OwnerUpdateView.class,
-        OwnerUpdatePresenter.MyProxy.class);
-		
-		bindPresenter(TenantListPresenter.class,
-		    TenantListPresenter.MyView.class, TenantListView.class,
-		    TenantListPresenter.MyProxy.class);
 
-    bindPresenter(TenantDetailsPresenter.class,
-        TenantDetailsPresenter.MyView.class, TenantDetailsView.class,
-        TenantDetailsPresenter.MyProxy.class);
-    
-    bindPresenter(TenantUpdatePresenter.class,
-        TenantUpdatePresenter.MyView.class, TenantUpdateView.class,
-        TenantUpdatePresenter.MyProxy.class);
+		bindPresenter(OwnerUpdatePresenter.class,
+				OwnerUpdatePresenter.MyView.class, OwnerUpdateView.class,
+				OwnerUpdatePresenter.MyProxy.class);
+
+		bindPresenter(TenantListPresenter.class,
+				TenantListPresenter.MyView.class, TenantListView.class,
+				TenantListPresenter.MyProxy.class);
+
+		bindPresenter(TenantDetailsPresenter.class,
+				TenantDetailsPresenter.MyView.class, TenantDetailsView.class,
+				TenantDetailsPresenter.MyProxy.class);
+
+		bindPresenter(TenantUpdatePresenter.class,
+				TenantUpdatePresenter.MyView.class, TenantUpdateView.class,
+				TenantUpdatePresenter.MyProxy.class);
 	}
 }
