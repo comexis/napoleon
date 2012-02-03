@@ -6,7 +6,6 @@ import javax.persistence.Id;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.googlecode.objectify.Key;
-import com.googlecode.objectify.annotation.Indexed;
 import com.googlecode.objectify.annotation.Parent;
 import com.googlecode.objectify.annotation.Unindexed;
 
@@ -20,21 +19,21 @@ import com.googlecode.objectify.annotation.Unindexed;
 @Unindexed
 public abstract class Party implements IsSerializable {
 
-	@Id
-	private String id;
-	@Parent
-	private Key<Company> company;
-
 	private String bankAccountNumber;
 	private String bic;
+
 	private String city;
+	@Parent
+	private Key<Company> company;
 	private String country;
 	private Date dateOfBirth;
 	private String email;
-
 	private String fax;
+
 	private String firstName;
 	private String iban;
+	@Id
+	private String id;
 	private String jobTitle;
 	private String lastName;
 	private MaritalStatus maritalStatus;
@@ -48,11 +47,9 @@ public abstract class Party implements IsSerializable {
 	private String postalCode;
 	private String status;
 	private String street;
-	private String title;
+	private Title title;
 
-	/**
-	 * 
-	 */
+
 	public Party() {
 	}
 
@@ -160,7 +157,7 @@ public abstract class Party implements IsSerializable {
 		return street;
 	}
 
-	public String getTitle() {
+	public Title getTitle() {
 		return title;
 	}
 
@@ -247,24 +244,25 @@ public abstract class Party implements IsSerializable {
 	public void setPhoneNumber(String value) {
 		phoneNumber = value;
 	}
-
+	
 	public void setPlaceOfBirth(String value) {
 		placeOfBirth = value;
 	}
 
-	public void setPostalCode(String value) {
-		postalCode = value;
+	public void setPostalCode(String postalCode) {
+		this.postalCode = postalCode;
 	}
 
 	public void setStatus(String value) {
 		status = value;
 	}
-
+	
 	public void setStreet(String value) {
 		street = value;
 	}
-
-	public void setTitle(String value) {
+	
+	public void setTitle(Title value) {
 		title = value;
 	}
+	
 }

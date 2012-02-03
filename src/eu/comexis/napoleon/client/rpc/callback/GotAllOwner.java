@@ -1,6 +1,7 @@
 package eu.comexis.napoleon.client.rpc.callback;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import eu.comexis.napoleon.shared.command.owner.GetAllOwnerCommand;
 import eu.comexis.napoleon.shared.command.owner.GetAllOwnerResponse;

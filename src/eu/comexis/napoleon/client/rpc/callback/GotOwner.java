@@ -1,5 +1,7 @@
 package eu.comexis.napoleon.client.rpc.callback;
 
+import java.util.logging.Logger;
+
 import eu.comexis.napoleon.shared.command.owner.GetAllOwnerCommand;
 import eu.comexis.napoleon.shared.command.owner.GetAllOwnerResponse;
 import eu.comexis.napoleon.shared.command.owner.GetOwnerResponse;
@@ -16,7 +18,6 @@ public  abstract class GotOwner extends AbstractCallback<GetOwnerResponse>{
 	@Override
 	public void onSuccess(GetOwnerResponse result) {
 		got(result.getOwner());
-		
 	}
 	
 	public abstract void got(Owner owner);

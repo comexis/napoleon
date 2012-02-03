@@ -91,7 +91,6 @@ public class ModelTests {
 		oProprio.setCountry("Belgique");
 		oProprio.setEmail("legrand.gouyasse@ducasse.org");
 		oProprio.setStreet("Rue de la brasserie, 69");
-		oProprio.setPostalCode("B-7800");
 		oProprio.setFee(new BigDecimal(10.25));
 		oProprio.setUnit("%");
 		oProprio.setBankAccountNumber("069-0696969-69");
@@ -116,7 +115,6 @@ public class ModelTests {
 		oLocataire.setCountry("Belgique");
 		oLocataire.setEmail("eliot.ledragon@guindaille.org");
 		oLocataire.setStreet("Rue de la malterie, 69");
-		oLocataire.setPostalCode("B-7000");
 		oLocataire.setBankAccountNumber("069-0696969-65");
 		oLocataire.setIBAN("BE69 0690 6969 6965");
 		oLocataire.setBIC("GKCCBEBB");
@@ -136,11 +134,10 @@ public class ModelTests {
 		Owner oProprio2 = ofy.query(Owner.class).filter("lastName", "Legrand").get();
 		assertEquals("Legrand",oProprio2.getLastName());
 		assertEquals("Gouyasse",oProprio2.getFirstName());
-		assertEquals("Ath",oProprio2.getCity());
+		assertEquals("7800 Ath",oProprio2.getCity());
 		assertEquals("Belgique",oProprio2.getCountry());
 		assertEquals("legrand.gouyasse@ducasse.org",oProprio2.getEmail());
 		assertEquals("Rue de la brasserie, 69",oProprio2.getStreet());
-		assertEquals("B-7800",oProprio2.getPostalCode());
 		assertEquals(new BigDecimal(10.25),oProprio2.getFee());
 		assertEquals("%",oProprio2.getUnit());
 		assertEquals("069-0696969-69",oProprio2.getBankAccountNumber());

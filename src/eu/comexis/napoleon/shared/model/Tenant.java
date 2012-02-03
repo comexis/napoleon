@@ -1,23 +1,17 @@
-/**
- * 
- */
 package eu.comexis.napoleon.shared.model;
 
+import java.math.BigDecimal;
+
+import com.google.gwt.user.client.rpc.IsSerializable;
+import com.googlecode.objectify.annotation.Unindexed;
+
 /**
+ * Represent the Tenant (Proprio) of a RealEstate (Bien immo) (It's considered to
+ * be a single person)
+ * 
  * @author xavier
- * Locatiare d'un bien immobilier
+ * 
  */
-public class Tenant extends Party{
-
-	/**
-	 * 
-	 */
-	// location
-
-	// référence
-
-	public Tenant() {
-	  super();
-	}
-
+@Unindexed
+public class Tenant extends Party implements IsSerializable{
 }

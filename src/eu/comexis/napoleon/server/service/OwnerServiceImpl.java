@@ -14,6 +14,8 @@ import eu.comexis.napoleon.shared.command.owner.GetAllOwnerCommand;
 import eu.comexis.napoleon.shared.command.owner.GetAllOwnerResponse;
 import eu.comexis.napoleon.shared.command.owner.GetOwnerCommand;
 import eu.comexis.napoleon.shared.command.owner.GetOwnerResponse;
+import eu.comexis.napoleon.shared.command.owner.UpdateOwnerCommand;
+import eu.comexis.napoleon.shared.command.owner.UpdateOwnerResponse;
 import eu.comexis.napoleon.shared.model.Owner;
 import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 
@@ -54,10 +56,20 @@ public class OwnerServiceImpl extends RemoteServiceServlet implements
 		String companyId = UserManager.INSTANCE.getCompanyId();
 		OwnerDao dao = new OwnerDao(companyId);
 		Owner o = dao.getById(id);
-
 		GetOwnerResponse response = new GetOwnerResponse();
 		response.setOwner(o);
 
+		return response;
+	}
+
+	@Override
+	public UpdateOwnerResponse execute(UpdateOwnerCommand command) {
+		Owner owner = command.getOwner();
+		String companyId = UserManager.INSTANCE.getCompanyId();
+		OwnerDao dao = new OwnerDao(companyId);
+		owner = dao.update(owner);
+		UpdateOwnerResponse response = new UpdateOwnerResponse();
+		response.setOwner(owner);
 		return response;
 	}
 

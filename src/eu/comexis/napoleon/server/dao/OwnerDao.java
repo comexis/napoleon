@@ -4,20 +4,25 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.UUID;
 
+import eu.comexis.napoleon.shared.model.City;
+import eu.comexis.napoleon.shared.model.Country;
 import eu.comexis.napoleon.shared.model.Owner;
 import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 
-public class OwnerDao extends NapoleonDao<Owner> {
 
+
+public class OwnerDao extends NapoleonDao<Owner> {
+  private CountryDao countryData;
   public OwnerDao(String companyId) {
     super(companyId);
+    countryData = new CountryDao(companyId);
     // TODO Auto-generated constructor stub
   }
 
   public Owner create() {
 		Owner owner = new Owner();
-		System.out.println("Set company key " + ancestor.toString());
-		owner.setCompany(ancestor);
+		System.out.println("Set company key " + companyKey.toString());
+		owner.setCompany(companyKey);
 		return owner;
 	}
 
@@ -29,6 +34,17 @@ public class OwnerDao extends NapoleonDao<Owner> {
 			UUID uuid = UUID.randomUUID();
 			System.out.println("Creating Uuid " + uuid.toString());
 			owner.setId(uuid.toString());
+		}
+		// if country does not exist, create it.
+		Country country = countryData.getByName(owner.getCountry());
+		if (country == null){
+		  country = countryData.create();
+		  country.setName(owner.getCountry());
+		  countryData.update(country);
+		}
+		City city = countryData.getCityByName(country.getId(), owner.getCity());
+		if (city == null){
+		  city = countryData.addCity(country.getId(), owner.getCity());
 		}
 		return super.update(owner);
 	}
@@ -47,7 +63,6 @@ public class OwnerDao extends NapoleonDao<Owner> {
 			SimpleOwner o = new SimpleOwner();
 			o.setId(owner.getId());
 			o.setName(owner.getLastName());
-			o.setPostalCode(owner.getPostalCode());
 			o.setCity(owner.getCity());
 			o.setAddress(owner.getStreet());
 			o.setMobileNumber(owner.getMobilePhoneNumber());

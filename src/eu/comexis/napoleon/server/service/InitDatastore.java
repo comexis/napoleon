@@ -13,11 +13,16 @@ import com.googlecode.objectify.Objectify;
 
 import eu.comexis.napoleon.server.dao.ApplicationUserDao;
 import eu.comexis.napoleon.server.dao.CompanyDao;
+import eu.comexis.napoleon.server.dao.CountryDao;
 import eu.comexis.napoleon.server.dao.OwnerDao;
+import eu.comexis.napoleon.server.dao.TenantDao;
 import eu.comexis.napoleon.shared.model.ApplicationUser;
 import eu.comexis.napoleon.shared.model.Company;
+import eu.comexis.napoleon.shared.model.Country;
 import eu.comexis.napoleon.shared.model.MaritalStatus;
 import eu.comexis.napoleon.shared.model.Owner;
+import eu.comexis.napoleon.shared.model.Tenant;
+import eu.comexis.napoleon.shared.model.Title;
 
 @SuppressWarnings("serial")
 public class InitDatastore extends HttpServlet {
@@ -69,6 +74,14 @@ public class InitDatastore extends HttpServlet {
 		OwnerDao ownerData = new OwnerDao(companyId);
 		for (Owner o : ownerData.listAll()){
 			out.println("<p>Owner (" + o.getId() + ") " + o.getLastName()
+					+ " has been created</p>");
+		}
+		
+		//print tenant
+		
+		TenantDao tenantDao = new TenantDao(companyId);
+		for (Tenant t : tenantDao.listAll()){
+			out.println("<p>Tenant (" + t.getId() + ") " + t.getLastName()
 					+ " has been created</p>");
 		}
 		
@@ -144,6 +157,41 @@ public class InitDatastore extends HttpServlet {
 		
 	}
 
+      
+	private void createTenantDao(String companyId) {
+      TenantDao tenantData = new TenantDao(companyId);
+      tenantData.deleteAll(tenantData.listAll());
+      Tenant t = tenantData.create();
+      t.setFirstName("Sophie");
+      t.setLastName("Delamontagne");
+      t.setTitle(Title.MISS);
+      t.setCity("38000 Grenoble");
+      t.setStreet("Rue de 3 pucelles, 69");
+      t.setPhoneNumber("+33 4 69 69 69 69");
+      t.setMobilePhoneNumber("+33 5 69 69 69 69");
+      t.setCountry("France");
+      t.setEmail("sophie.delamontagne@gmail.com");
+      t.setDateOfBirth(new Date());
+      t.setMaritalStatus(MaritalStatus.SINGLE);
+      t = tenantData.update(t);
+      
+      
+      t = tenantData.create();
+      t.setFirstName("Martine");
+      t.setLastName("Auclubmed");
+      t.setTitle(Title.MISS);
+      t.setCity("13008 Marseille");
+      t.setStreet("Rue de la bouillabaise, 69");
+      t.setPhoneNumber("+33 9 69 69 69 69");
+      t.setMobilePhoneNumber("+33 7 69 69 69 69");
+      t.setCountry("France");
+      t.setEmail("martine.auclubmed@gmail.com");
+      t.setDateOfBirth(new Date());
+      t.setMaritalStatus(MaritalStatus.SINGLE);
+      t = tenantData.update(t);
+      
+	}
+	
 	private String createCompany() {
 		CompanyDao companyData = new CompanyDao();
 		Company c = companyData.create();
@@ -175,6 +223,10 @@ public class InitDatastore extends HttpServlet {
 		//delete owners
 		OwnerDao ownerData = new OwnerDao("dummy");
 		ownerData.deleteAll(ownerData.listAll());
+		
+		//delete tenant
+		TenantDao tenantData = new TenantDao("dummy");
+	    tenantData.deleteAll(tenantData.listAll());
 		
 	}
 

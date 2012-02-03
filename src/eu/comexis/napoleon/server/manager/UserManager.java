@@ -1,5 +1,7 @@
 package eu.comexis.napoleon.server.manager;
 
+import java.util.logging.Logger;
+
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
@@ -18,7 +20,9 @@ import eu.comexis.napoleon.shared.model.Company;
  */
 // enum is a thread-safe and lazy-loading way to implements a Singleton !!!
 public enum UserManager {
-	INSTANCE;
+	INSTANCE; 
+	Logger logger = Logger.getLogger(UserManager.class.getName());
+
 
 	private UserManager() {
 	}
@@ -62,6 +66,5 @@ public enum UserManager {
 	public ApplicationUser getUser(String email) {
 		ApplicationUserDao userData = new ApplicationUserDao();
 		return userData.getByEMail(email);
-
 	}
 }

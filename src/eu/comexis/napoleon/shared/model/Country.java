@@ -12,6 +12,14 @@ public class Country implements IsSerializable{
   @Parent
   private Key<Company> company;
 
+  public Key<Company> getCompany() {
+    return company;
+  }
+
+  public void setCompany(Key<Company> company) {
+    this.company = company;
+  }
+
   private String name;
 
   public Country(){

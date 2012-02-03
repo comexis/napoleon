@@ -10,18 +10,14 @@ public class City implements IsSerializable{
   @Id
   private String id;
   @Parent
-  private Key<Company> company;
-  private Long name;
-
-  private String postalCode;
-
-  private String country;
+  private Key<Country> country;
+  private String name;
 
   public City() {
     // TODO Auto-generated constructor stub
   }
 
-  public String getCountry() {
+  public Key<Country> getCountry() {
     return country;
   }
 
@@ -29,26 +25,18 @@ public class City implements IsSerializable{
     return id;
   }
 
-  public Long getName() {
+  public String getName() {
     return name;
   }
 
-  public String getPostalCode() {
-    return postalCode;
-  }
-
-  public void setCountry(String country) {
+  public void setCountry(Key<Country> country) {
     this.country = country;
   }
   public void setId(String id) {
     this.id = id;
   }
-  public void setName(Long name) {
+  public void setName(String name) {
     this.name = name;
-  }
-
-  public void setPostalCode(String postalCode) {
-    this.postalCode = postalCode;
   }
 
 }

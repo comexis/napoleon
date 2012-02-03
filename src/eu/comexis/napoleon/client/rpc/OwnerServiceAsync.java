@@ -7,6 +7,8 @@ import eu.comexis.napoleon.shared.command.owner.GetAllOwnerCommand;
 import eu.comexis.napoleon.shared.command.owner.GetAllOwnerResponse;
 import eu.comexis.napoleon.shared.command.owner.GetOwnerCommand;
 import eu.comexis.napoleon.shared.command.owner.GetOwnerResponse;
+import eu.comexis.napoleon.shared.command.owner.UpdateOwnerCommand;
+import eu.comexis.napoleon.shared.command.owner.UpdateOwnerResponse;
 
 
 public interface OwnerServiceAsync {
@@ -18,5 +20,7 @@ public interface OwnerServiceAsync {
 
 	void execute(GetOwnerCommand command,
 			AsyncCallback<GetOwnerResponse> callback);
+	void execute(UpdateOwnerCommand command,
+      AsyncCallback<UpdateOwnerResponse> callback);
 
 }

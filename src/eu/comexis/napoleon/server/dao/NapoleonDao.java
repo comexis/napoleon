@@ -6,6 +6,7 @@ package eu.comexis.napoleon.server.dao;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.logging.Logger;
 
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
@@ -26,9 +27,11 @@ import eu.comexis.napoleon.shared.model.Tenant;
  * @author xavier
  * 
  */
-
 public class NapoleonDao<T> extends DAOBase {
-
+	Logger logger = Logger.getLogger(NapoleonDao.class.getName());
+	/**
+	 * 
+	 */
 	static {
 		ObjectifyService.register(Country.class);
 		ObjectifyService.register(City.class);
@@ -39,10 +42,9 @@ public class NapoleonDao<T> extends DAOBase {
 		ObjectifyService.register(Lease.class);
 		ObjectifyService.register(ApplicationUser.class);
 	}
-	
 	protected Class<T> clazz;
-	protected Key<Company> ancestor;
-	
+	protected Key<Company> companyKey;
+
 	@SuppressWarnings("unchecked")
 	public NapoleonDao() {
 		Type genericSuperclass = getClass().getGenericSuperclass();
@@ -53,10 +55,22 @@ public class NapoleonDao<T> extends DAOBase {
 					.getActualTypeArguments()[0];
 	}
 
-	//TODO delete this constructor !!!
+	// TODO delete this constructor !!!
 	public NapoleonDao(String companyId) {
 		this();
-		ancestor = new Key<Company>(Company.class, companyId);
+		companyKey = new Key<Company>(Company.class, companyId);
+	}
+
+	public T update(T entity) {
+		try {
+			Key<T> entityKey = ofy().put(entity);
+			logger.info("Entity " + clazz + " has been updated");
+			return ofy().get(entityKey);
+		} catch (Exception e) {
+			logger.severe("Entity " + clazz + " cannot be updated: "
+					+ e.getMessage());
+			return null;
+		}
 	}
 
 	public Boolean delete(T entity) {
@@ -69,13 +83,22 @@ public class NapoleonDao<T> extends DAOBase {
 		}
 	}
 
+	public List<T> listAll() {
+		System.out.println("List all for Parent " + companyKey.toString());
+		Query<T> q = ofy().query(this.clazz);
+		if (companyKey != null) {
+			q.ancestor(companyKey);
+		}
+		return q.list();
+	}
+
 	public void deleteAll(Iterable<T> entities) {
 		ofy().delete(entities);
 	}
 
 	public T getById(String id) {
 		try {
-			T entity = ofy().get(new Key<T>(ancestor, this.clazz, id));
+			T entity = ofy().get(new Key<T>(companyKey, this.clazz, id));
 			return entity;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -83,22 +106,4 @@ public class NapoleonDao<T> extends DAOBase {
 		}
 	}
 
-	public List<T> listAll() {
-		Query<T> q = ofy().query(this.clazz);
-		if (ancestor != null){
-			q.ancestor(ancestor);
-		}
-		return q.list();
-	}
-
-	public T update(T entity) {
-		try {
-			Key<T> entityKey = ofy().put(entity);
-			return ofy().get(entityKey);
-		} catch (Exception e) {
-			// should raise a NapoleonDaoUpdateFailed exception
-			e.printStackTrace();
-			return null;
-		}
-	}
 }

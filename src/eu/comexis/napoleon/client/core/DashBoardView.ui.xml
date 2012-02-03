@@ -10,7 +10,7 @@
 			position: relative;
 			display: inline-block;
 			width: 120px;
-			height: 120px;
+			height: 50px;
 			border: solid 1px black;
 		}
 		
@@ -24,6 +24,10 @@
 		<div class="{style.main}">
 			<a class="{style.item}" href="#ownerlist">
 				<div>Propriétaires</div>
+			</a>
+			<br/>
+			<a class="{style.item}" href="#tenantlist">
+				<div>Locataire</div>
 			</a>
 		</div>
 	</g:HTMLPanel>

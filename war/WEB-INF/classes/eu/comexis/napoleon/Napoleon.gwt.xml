@@ -1,5 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <module rename-to='napoleon'>
+    <!-- Inherit Objectify stuff; this line is mandatory if you want to pass object with "Key" to the client -->
+    <inherits name="com.googlecode.objectify.Objectify" />
 	<!-- Inherit the core Web Toolkit stuff. -->
 	<inherits name='com.google.gwt.user.User' />
 	<inherits name='com.google.gwt.inject.Inject' />

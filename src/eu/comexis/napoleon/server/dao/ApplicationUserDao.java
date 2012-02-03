@@ -22,7 +22,7 @@ public class ApplicationUserDao extends NapoleonDao<ApplicationUser> {
 	public ApplicationUser create(String companyId) {
 		ApplicationUser user = new ApplicationUser();
 		
-		LOG.info("Set company key " + ancestor.toString());
+		LOG.info("Set company key " + companyKey.toString());
 
 		user.setCompany(new Key<Company>(Company.class, companyId));
 		return user;
@@ -35,19 +35,21 @@ public class ApplicationUserDao extends NapoleonDao<ApplicationUser> {
 			ApplicationUser user = query.filter("email", email).get();
 			return user;
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Cannot get ApplicationUser by email(" + email + ")", e);
 			return null;
 		}
 	}
 
 	@Override
 	public ApplicationUser update(ApplicationUser user) {
-		String ownerId = user.getId();
+		String userId = user.getId();
 
-		if (ownerId == null || ownerId.length() == 0) {
+		if (userId == null || userId.length() == 0) {
 			UUID uuid = UUID.randomUUID();
 			LOG.info("Creating Uuid " + uuid.toString());
 			user.setId(uuid.toString());
+		}else{
+			LOG.info("Update Application user with Uuid " + userId);
 		}
 		return super.update(user);
 	}
