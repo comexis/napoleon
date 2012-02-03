@@ -13,12 +13,10 @@ import com.googlecode.objectify.Objectify;
 
 import eu.comexis.napoleon.server.dao.ApplicationUserDao;
 import eu.comexis.napoleon.server.dao.CompanyDao;
-import eu.comexis.napoleon.server.dao.CountryDao;
 import eu.comexis.napoleon.server.dao.OwnerDao;
 import eu.comexis.napoleon.server.dao.TenantDao;
 import eu.comexis.napoleon.shared.model.ApplicationUser;
 import eu.comexis.napoleon.shared.model.Company;
-import eu.comexis.napoleon.shared.model.Country;
 import eu.comexis.napoleon.shared.model.MaritalStatus;
 import eu.comexis.napoleon.shared.model.Owner;
 import eu.comexis.napoleon.shared.model.Tenant;
@@ -38,6 +36,8 @@ public class InitDatastore extends HttpServlet {
 		createApplicationUsers(companyId);
 		
 		createOwners(companyId);
+		
+		createTenantDao(companyId);
 		
 		printResults(companyId, resp);
 		
