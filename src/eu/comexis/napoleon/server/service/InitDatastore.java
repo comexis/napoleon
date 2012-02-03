@@ -3,11 +3,13 @@ package eu.comexis.napoleon.server.service;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
-import java.util.Iterator;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.googlecode.objectify.Objectify;
 
 import eu.comexis.napoleon.server.dao.ApplicationUserDao;
 import eu.comexis.napoleon.server.dao.CompanyDao;
@@ -17,95 +19,163 @@ import eu.comexis.napoleon.shared.model.Company;
 import eu.comexis.napoleon.shared.model.MaritalStatus;
 import eu.comexis.napoleon.shared.model.Owner;
 
+@SuppressWarnings("serial")
 public class InitDatastore extends HttpServlet {
-
-	public void service(HttpServletRequest request, HttpServletResponse response) {
-		try {
+	
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
 		
-		  
-			PrintWriter out = response.getWriter();
-			out.println("<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\">");
-			out.println("<title>Napoleon initialisation</title>");
-			// create the company
-			CompanyDao companyData = new CompanyDao();
-			Company c = companyData.create();
-			c.setName("Agence de l'aiglon");
-	    c.setAddress("Passage de l'Ergot, 44 - 1348 Louvain-la-Neuve");
-	    c.setEmail("aiglon@skynet.be");
-	    c.setUrl("http://www.aiglon.be");
-	    c.setTelephone("010/45.51.00");
-	    c.setFax(" 010/45.59.58");
-	    companyData.update(c);
-	    out.println("<p>Company (" + c.getId() + ") "
-          + c.getName() + " has been created</p>");
-	    
-	    ApplicationUserDao userData = new ApplicationUserDao(c.getId());
-	    ApplicationUser u = userData.create();
-	    u.setFirstName("Xavier");
-	    u.setLastName("Platiaux");
-	    u.setEmail("xavier.platiaux@gmail.com");
-	    userData.update(u);
-	    Iterator<ApplicationUser> iterator = userData.listAll().iterator();
-      while (iterator.hasNext()) {
-        u = iterator.next();
-        out.println("<p>User (" + u.getId() + ") "
-            + u.getEmail() + " has been created</p>");
-      }
-			OwnerDao ownerData = new OwnerDao(c.getId());
-			ownerData.deleteAll(ownerData.listAll());
-			Owner o = ownerData.create();
-			o.setFirstName("Oufti");
-			o.setLastName("Biloute");
-			o.setPostalCode("7800");
-			o.setCity("Ath");
-			o.setStreet("Rue de la brasserie, 69");
-			o.setPhoneNumber("064/659874");
-			o.setMobilePhoneNumber("0497/063970");
-			o.setCountry("Belgiaue");
-			o.setEmail("oufti.biloute@gmail.com");
-			o.setDateOfBirth(new Date());
-			o.setMaritalStatus(MaritalStatus.MARRIED);
+		deleteAll();
+		
+		String companyId = createCompany();
+		
+		createApplicationUsers(companyId);
+		
+		createOwners(companyId);
+		
+		printResults(companyId, resp);
+		
+		
+	}
 
-			o = ownerData.update(o);
-			// --------------------------------------------------------------------------
-			o = ownerData.create();
-			o.setFirstName("Machin");
-			o.setLastName("Brol");
-			o.setPostalCode("7000");
-			o.setCity("Mons");
-			o.setStreet("Rue de la bazar, 1");
-			o.setPhoneNumber("065/896574");
-			o.setMobilePhoneNumber("0497/895476");
-			o.setCountry("Belgiaue");
-			o.setEmail("machin.brol@gmail.com");
-			o.setDateOfBirth(new Date());
-			o.setMaritalStatus(MaritalStatus.SINGLE);
-
-			o = ownerData.update(o);
-			// --------------------------------------------------------------------------
-			o = ownerData.create();
-			o.setFirstName("Cindy");
-			o.setLastName("Troforte");
-			o.setPostalCode("1000");
-			o.setCity("Bruxelles");
-			o.setStreet("Rue de la gaindaille, 5");
-			o.setPhoneNumber("02/6545874");
-			o.setMobilePhoneNumber("0497/089654");
-			o.setCountry("Belgiaue");
-			o.setEmail("cindy.troforte@gmail.com");
-			o.setDateOfBirth(new Date());
-			o.setMaritalStatus(MaritalStatus.COHABITATION);
-			o = ownerData.update(o);
-
-			Iterator<Owner> iter = ownerData.listAll().iterator();
-			while (iter.hasNext()) {
-				o = iter.next();
-				out.println("<p>Owner (" + o.getId() + ") "
-						+ o.getLastName() + " has been created</p>");
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
+	private void printResults(String companyId, HttpServletResponse response) throws IOException {
+		
+		PrintWriter out = response.getWriter();
+		
+		out.println("<!DOCTYPE html>");
+		out.println("<html>");
+		out.println("<head>");
+		out.println("<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">");	
+		out.println("<title>Napoleon initialisation</title>");
+		out.println("</head>");
+		out.println("<body>");
+		
+		//print company
+		CompanyDao companyData = new CompanyDao();
+		Company c = companyData.getById(companyId);
+		out.println("<p>Company (" + c.getId() + ") " + c.getName()
+				+ " has been created</p>");
+		
+		//print application user
+		ApplicationUserDao appUserDao = new ApplicationUserDao();
+		for  (ApplicationUser u : appUserDao.listAll()){
+			out.println("<p>User (" + u.getId() + ") " + u.getEmail()
+					+ " has been created</p>");
 		}
+		
+		
+		//print owner
+		OwnerDao ownerData = new OwnerDao(companyId);
+		for (Owner o : ownerData.listAll()){
+			out.println("<p>Owner (" + o.getId() + ") " + o.getLastName()
+					+ " has been created</p>");
+		}
+		
+		
+	}
+
+	private void createOwners(String companyId) {
+		OwnerDao ownerData = new OwnerDao(companyId);
+		ownerData.deleteAll(ownerData.listAll());
+		
+		Owner o = ownerData.create();
+		o.setFirstName("Oufti");
+		o.setLastName("Biloute");
+		o.setPostalCode("7800");
+		o.setCity("Ath");
+		o.setStreet("Rue de la brasserie, 69");
+		o.setPhoneNumber("064/659874");
+		o.setMobilePhoneNumber("0497/063970");
+		o.setCountry("Belgiaue");
+		o.setEmail("oufti.biloute@gmail.com");
+		o.setDateOfBirth(new Date());
+		o.setMaritalStatus(MaritalStatus.MARRIED);
+		o = ownerData.update(o);
+		
+		// --------------------------------------------------------------------------
+		o = ownerData.create();
+		o.setFirstName("Machin");
+		o.setLastName("Brol");
+		o.setPostalCode("7000");
+		o.setCity("Mons");
+		o.setStreet("Rue de la bazar, 1");
+		o.setPhoneNumber("065/896574");
+		o.setMobilePhoneNumber("0497/895476");
+		o.setCountry("Belgiaue");
+		o.setEmail("machin.brol@gmail.com");
+		o.setDateOfBirth(new Date());
+		o.setMaritalStatus(MaritalStatus.SINGLE);
+		o = ownerData.update(o);
+		
+		// --------------------------------------------------------------------------
+		o = ownerData.create();
+		o.setFirstName("Cindy");
+		o.setLastName("Troforte");
+		o.setPostalCode("1000");
+		o.setCity("Bruxelles");
+		o.setStreet("Rue de la gaindaille, 5");
+		o.setPhoneNumber("02/6545874");
+		o.setMobilePhoneNumber("0497/089654");
+		o.setCountry("Belgiaue");
+		o.setEmail("cindy.troforte@gmail.com");
+		o.setDateOfBirth(new Date());
+		o.setMaritalStatus(MaritalStatus.COHABITATION);
+		o = ownerData.update(o);
+		
+	}
+
+	private void createApplicationUsers(String companyId) {
+		
+		//create user xavier.platiaux@gmail.com
+		ApplicationUserDao userData = new ApplicationUserDao();
+		ApplicationUser u = userData.create(companyId);
+		u.setFirstName("Xavier");
+		u.setLastName("Platiaux");
+		u.setEmail("xavier.platiaux@gmail.com");
+		userData.update(u);
+		
+		//create user julien.dramaix@gmail.com
+		u = userData.create(companyId);
+		u.setFirstName("Julien");
+		u.setLastName("Dramaix");
+		u.setEmail("julien.dramaix@gmail.com");
+		userData.update(u);
+		
+	}
+
+	private String createCompany() {
+		CompanyDao companyData = new CompanyDao();
+		Company c = companyData.create();
+		c.setName("Agence de l'aiglon");
+		c.setAddress("Passage de l'Ergot, 44 - 1348 Louvain-la-Neuve");
+		c.setEmail("aiglon@skynet.be");
+		c.setUrl("http://www.aiglon.be");
+		c.setTelephone("010/45.51.00");
+		c.setFax(" 010/45.59.58");
+		companyData.update(c);
+		
+		return c.getId();
+		
+	}
+
+
+
+	private void deleteAll() {
+		//first delete company
+		//TODO add deleteAll and listAll in CompanyDao
+		CompanyDao companyData = new CompanyDao();
+		Objectify ofy = companyData.ofy();
+		ofy.delete(ofy.query(Company.class).list());
+		
+		//delete application users
+		ApplicationUserDao appUserDao = new ApplicationUserDao();
+		appUserDao.deleteAll(appUserDao.listAll());
+		
+		//delete owners
+		OwnerDao ownerData = new OwnerDao("dummy");
+		ownerData.deleteAll(ownerData.listAll());
+		
 	}
 
 }

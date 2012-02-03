@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.UUID;
 
-import com.googlecode.objectify.Key;
-
-import eu.comexis.napoleon.shared.model.Client;
-import eu.comexis.napoleon.shared.model.Company;
 import eu.comexis.napoleon.shared.model.Owner;
 import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 
@@ -20,8 +16,8 @@ public class OwnerDao extends NapoleonDao<Owner> {
 
   public Owner create() {
 		Owner owner = new Owner();
-		System.out.println("Set company key " + companyKey.toString());
-		owner.setCompany(companyKey);
+		System.out.println("Set company key " + ancestor.toString());
+		owner.setCompany(ancestor);
 		return owner;
 	}
 

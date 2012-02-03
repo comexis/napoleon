@@ -5,31 +5,33 @@ import java.util.UUID;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Query;
 
 import eu.comexis.napoleon.shared.model.ApplicationUser;
+import eu.comexis.napoleon.shared.model.Company;
 
 public class ApplicationUserDao extends NapoleonDao<ApplicationUser> {
 
 	public static Log LOG = LogFactory.getLog(ApplicationUserDao.class);
 
-	public ApplicationUserDao(String companyId) {
-		super(companyId);
+	public ApplicationUserDao() {
+		super();
 	}
 
-	public ApplicationUser create() {
+	public ApplicationUser create(String companyId) {
 		ApplicationUser user = new ApplicationUser();
 		
-		LOG.info("Set company key " + companyKey.toString());
+		LOG.info("Set company key " + ancestor.toString());
 
-		user.setCompany(companyKey);
+		user.setCompany(new Key<Company>(Company.class, companyId));
 		return user;
 	}
 
 	public ApplicationUser getByEMail(String email) {
 		try {
 			Query<ApplicationUser> query = ofy().query(ApplicationUser.class);
-			query.ancestor(companyKey);
+			//query.ancestor(companyKey);
 			ApplicationUser user = query.filter("email", email).get();
 			return user;
 		} catch (Exception e) {
