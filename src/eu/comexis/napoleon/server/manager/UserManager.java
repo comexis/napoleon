@@ -1,8 +1,13 @@
 package eu.comexis.napoleon.server.manager;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.gwt.logging.client.LogConfiguration;
 
+import eu.comexis.napoleon.client.rpc.callback.GotOwner;
 import eu.comexis.napoleon.server.dao.ApplicationUserDao;
 import eu.comexis.napoleon.server.dao.CompanyDao;
 import eu.comexis.napoleon.shared.model.AppUser;
@@ -20,7 +25,7 @@ import eu.comexis.napoleon.shared.model.Company;
 //enum is a thread-safe and lazy-loading way to implements a Singleton !!!
 public enum UserManager {
 	INSTANCE; 
-	
+	Logger logger = Logger.getLogger(UserManager.class.getName());
 
 	private UserManager() {
 	}
@@ -45,7 +50,6 @@ public enum UserManager {
 	  // for the moment get id from data store + hardcoded name
 	  CompanyDao companyData = new CompanyDao();
     Company company = companyData.getByName("Agence de l'aiglon");
-    System.out.println("Get company by mane: " + company.getId());
     return company.getId();
 	}
 	/**
@@ -82,8 +86,8 @@ public enum UserManager {
 	    user.setClient(company.toClient());
 	    return user;
 	  }catch (Exception e){
-	    e.printStackTrace();
-	    return null;
+	      logger.log(Level.WARNING, "User cannot be return " + e.getMessage());
+	      return null;
 	  }
 		
 	}

@@ -42,6 +42,26 @@
 		<url-pattern>/napoleon/owner</url-pattern>
 	</servlet-mapping>
 	
+	<servlet>
+		<servlet-name>tenantServlet</servlet-name>
+		<servlet-class>eu.comexis.napoleon.server.service.TenantServiceImpl</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>tenantServlet</servlet-name>
+		<url-pattern>/napoleon/tenant</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>countryServlet</servlet-name>
+		<servlet-class>eu.comexis.napoleon.server.service.CountryServiceImpl</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>countryServlet</servlet-name>
+		<url-pattern>/napoleon/country</url-pattern>
+	</servlet-mapping>
+	
 	<!-- Add this to your web.xml to enable remote API on Java. -->
   <servlet>
     <servlet-name>remoteapi</servlet-name>

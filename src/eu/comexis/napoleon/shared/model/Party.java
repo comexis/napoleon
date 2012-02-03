@@ -45,10 +45,9 @@ public abstract class Party implements IsSerializable {
 	private String nationalRegisterNumber;
 	private String phoneNumber;
 	private String placeOfBirth;
-	private String postalCode;
 	private String status;
 	private String street;
-	private String title;
+	private Title title;
 	/**
 	 * 
 	 */
@@ -140,10 +139,6 @@ public abstract class Party implements IsSerializable {
 		return placeOfBirth;
 	}
 
-	public String getPostalCode() {
-		return postalCode;
-	}
-
 	public String getStatus() {
 		return status;
 	}
@@ -152,7 +147,7 @@ public abstract class Party implements IsSerializable {
 		return street;
 	}
 
-	public String getTitle() {
+	public Title getTitle() {
 		return title;
 	}
 
@@ -243,11 +238,7 @@ public abstract class Party implements IsSerializable {
 	public void setPlaceOfBirth(String value) {
 		placeOfBirth = value;
 	}
-
-	public void setPostalCode(String value) {
-		postalCode = value;
-	}
-
+	
 	public void setStatus(String value) {
 		status = value;
 	}
@@ -256,7 +247,7 @@ public abstract class Party implements IsSerializable {
 		street = value;
 	}
 
-	public void setTitle(String value) {
+	public void setTitle(Title value) {
 		title = value;
 	}
 }

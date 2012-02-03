@@ -11,6 +11,8 @@ import eu.comexis.napoleon.shared.command.owner.GetAllOwnerCommand;
 import eu.comexis.napoleon.shared.command.owner.GetAllOwnerResponse;
 import eu.comexis.napoleon.shared.command.owner.GetOwnerCommand;
 import eu.comexis.napoleon.shared.command.owner.GetOwnerResponse;
+import eu.comexis.napoleon.shared.command.owner.UpdateOwnerCommand;
+import eu.comexis.napoleon.shared.command.owner.UpdateOwnerResponse;
 import eu.comexis.napoleon.shared.model.Company;
 import eu.comexis.napoleon.shared.model.Owner;
 import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
@@ -40,23 +42,33 @@ public class OwnerServiceImpl extends RemoteServiceServlet implements
 	@Override
 	public GetOwnerResponse execute(GetOwnerCommand command) {
 		String id = command.getId();
-		
+		String companyId = UserManager.INSTANCE.getCompanyId();
+    OwnerDao dao = new OwnerDao(companyId);
+    Owner o;
 		if (id == null || id.length() == 0){
 			//TODO add logging
 			
 			//will generate an error 500. Do put to many info
-			throw new RuntimeException("Ooops something wrong happened");
+			//throw new RuntimeException("Ooops something wrong happened");
+		  o = dao.create();
+		}else{
+		  o = dao.getById(id);
 		}
-		String companyId = UserManager.INSTANCE.getCompanyId();
-		OwnerDao dao = new OwnerDao(companyId);
-		Owner o = dao.getById(id);
-		
 		GetOwnerResponse response = new GetOwnerResponse();
 		response.setOwner(o);
 		
 		return response;
 	}
-
+	@Override
+  public UpdateOwnerResponse execute(UpdateOwnerCommand command) {
+    Owner owner = command.getOwner();
+    String companyId = UserManager.INSTANCE.getCompanyId();
+    OwnerDao dao = new OwnerDao(companyId);
+    owner = dao.update(owner);
+    UpdateOwnerResponse response = new UpdateOwnerResponse();
+    response.setOwner(owner);
+    return response;
+  }
 
 
 }

@@ -10,6 +10,10 @@ import eu.comexis.napoleon.client.core.MainLayoutPresenter;
 import eu.comexis.napoleon.client.core.DashBoardPresenter;
 import eu.comexis.napoleon.client.core.owner.OwnerListPresenter;
 import eu.comexis.napoleon.client.core.owner.OwnerDetailsPresenter;
+import eu.comexis.napoleon.client.core.owner.OwnerUpdatePresenter;
+import eu.comexis.napoleon.client.core.tenant.TenantDetailsPresenter;
+import eu.comexis.napoleon.client.core.tenant.TenantListPresenter;
+import eu.comexis.napoleon.client.core.tenant.TenantUpdatePresenter;
 
 @GinModules({ DispatchAsyncModule.class, ClientModule.class })
 public interface ClientGinjector extends Ginjector {
@@ -25,4 +29,12 @@ public interface ClientGinjector extends Ginjector {
 	AsyncProvider<OwnerListPresenter> getOwnerListPresenter();
 
 	AsyncProvider<OwnerDetailsPresenter> getOwnerDetailsPresenter();
+	
+	AsyncProvider<OwnerUpdatePresenter> getOwnerUpdatePresenter();
+	
+	AsyncProvider<TenantListPresenter> getTenantListPresenter();
+
+  AsyncProvider<TenantDetailsPresenter> getTenantDetailsPresenter();
+  
+  AsyncProvider<TenantUpdatePresenter> getTenantUpdatePresenter();
 }

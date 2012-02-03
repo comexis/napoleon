@@ -1,5 +1,7 @@
 package eu.comexis.napoleon.client.core.owner;
 
+import static eu.comexis.napoleon.client.core.owner.OwnerDetailsPresenter.UUID_PARAMETER;
+
 import java.util.logging.Logger;
 
 import com.google.gwt.event.shared.EventBus;
@@ -19,14 +21,15 @@ import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.rpc.callback.GotOwner;
 import eu.comexis.napoleon.shared.command.owner.GetOwnerCommand;
 import eu.comexis.napoleon.shared.model.Owner;
+import eu.comexis.napoleon.client.core.owner.OwnerDetailUiHandlers.HasOwnerDetailUiHandlers;
 
 public class OwnerDetailsPresenter extends
-		Presenter<OwnerDetailsPresenter.MyView, OwnerDetailsPresenter.MyProxy> {
+		Presenter<OwnerDetailsPresenter.MyView, OwnerDetailsPresenter.MyProxy> implements OwnerDetailUiHandlers{
 
 	public static final String UUID_PARAMETER = "uuid";
 	private static final Logger LOG = Logger.getLogger(OwnerDetailsPresenter.class.getName());
 	
-	public interface MyView extends View {
+	public interface MyView extends View,HasOwnerDetailUiHandlers{
 		public void setOwner(Owner o);
 	}
 
@@ -43,8 +46,14 @@ public class OwnerDetailsPresenter extends
 	public OwnerDetailsPresenter(final EventBus eventBus, final MyView view,
 			final MyProxy proxy, final PlaceManager placeManager) {
 		super(eventBus, view, proxy);
+		this.placeManager = placeManager;
 	}
+	@Override
+  protected void onBind() {
+    super.onBind();
 
+    getView().setOwnerDetailUiHandler(this);
+  }
 	@Override
 	protected void revealInParent() {
 		RevealContentEvent.fire(this, MainLayoutPresenter.MAIN_CONTENT, this);
@@ -65,7 +74,18 @@ public class OwnerDetailsPresenter extends
 		
 		
 	}
-	
+	@Override
+  public void onButtonUpdateClick() {
+    PlaceRequest myRequest = new PlaceRequest(NameTokens.updateOwner);
+    // add the id of the owner to load
+    myRequest = myRequest.with(UUID_PARAMETER, OwnerDetailsPresenter.this.owner.getId());
+    placeManager.revealPlace(myRequest);
+  }
+	@Override
+  public void onButtonBackToDashBoardClick() {
+    PlaceRequest myRequest = new PlaceRequest(NameTokens.dashboard);
+    placeManager.revealPlace(myRequest);
+  }
 	/**
 	 * Retrieve the id of the owner to show it
 	 */

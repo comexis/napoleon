@@ -1,0 +1,73 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	xmlns:dp="urn:import:com.google.gwt.user.datepicker.client"
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+	<g:HTMLPanel>
+		<div>
+			<g:ListBox ui:field="title" />
+			<span>Nom :</span>
+			<g:TextBox ui:field="name" />
+			<span>Prénom :</span>
+			<g:TextBox ui:field="firstName" />
+		</div>
+		<div>
+			<span>Email :</span>
+			<g:TextBox ui:field="email" />
+		</div>
+		<div>
+			<span>Téléphone :</span>
+			<g:TextBox ui:field="phoneNumber" />
+		</div>
+		<div>
+			<span>GSM :</span>
+			<g:TextBox ui:field="mobileNumber" />
+		</div>
+		<div>
+			<span>Date de naissance :</span>
+			<dp:DateBox ui:field="birthDayDateBox" />
+		</div>
+		<div>
+			<span>Adresse :</span>
+			<g:TextBox ui:field="addresse" />
+		</div>
+		
+		<table>
+			<tr id="country">
+				<td>
+					<span>Pays :</span>
+					<g:ListBox ui:field="country" />
+				</td>
+				<td id="countryOther">
+					<span>autre :</span>
+					<g:TextBox ui:field="countryOther" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<span>Municipalité :</span>
+					<g:ListBox ui:field="city" />
+				</td>
+				<td id="cityOther">
+					<span>Autre municipalité :</span>
+					<g:TextBox ui:field="cityOther" />
+				</td>
+			</tr>
+		</table>
+		<div>
+			<span>Marital status :</span>
+			<g:ListBox ui:field="maritalStatus" />
+		</div>
+		<div id="matrimonialRegime">
+			<span>Régime matrimonial :</span>
+			<g:ListBox ui:field="matrimonialRegime" />
+		</div>
+		<div>
+			<g:Button ui:field="btnSave" />
+			<g:Button ui:field="btnCancel" />
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder>

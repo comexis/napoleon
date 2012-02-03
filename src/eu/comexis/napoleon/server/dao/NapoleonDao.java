@@ -6,8 +6,10 @@ import java.lang.reflect.Type;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 
+import com.google.gwt.logging.client.LogConfiguration;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
@@ -21,6 +23,7 @@ import eu.comexis.napoleon.shared.model.*;
  */
 
 public class NapoleonDao<T> extends DAOBase{
+  Logger logger = Logger.getLogger(NapoleonDao.class.getName());
 	/**
 	 * 
 	 */
@@ -46,10 +49,10 @@ public class NapoleonDao<T> extends DAOBase{
   public T update(T entity){
     try{
       Key<T> entityKey = ofy().put(entity);
+      logger.info("Entity " + clazz + " has been updated");
       return ofy().get(entityKey);
     }catch (Exception e){
-      // should raise a NapoleonDaoUpdateFailed exception
-      e.printStackTrace();
+      logger.severe("Entity " + clazz + " cannot be updated: " + e.getMessage());
       return null;
     }
   }
