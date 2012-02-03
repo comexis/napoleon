@@ -21,9 +21,6 @@ public class ApplicationUserDao extends NapoleonDao<ApplicationUser> {
 
 	public ApplicationUser create(String companyId) {
 		ApplicationUser user = new ApplicationUser();
-		
-		LOG.info("Set company key " + companyKey.toString());
-
 		user.setCompany(new Key<Company>(Company.class, companyId));
 		return user;
 	}
