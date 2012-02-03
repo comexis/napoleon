@@ -68,7 +68,7 @@ public class NapoleonDao<T> extends DAOBase{
   }
   public List<T> listAll()
   {
-          System.out.println("List all for Parent " + companyKey.toString());
+          logger.info("List all for Parent " + companyKey.toString());
           Query<T> q = ofy().query(this.clazz);
           q.ancestor(companyKey);
           return q.list();

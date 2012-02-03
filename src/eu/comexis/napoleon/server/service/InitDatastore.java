@@ -13,14 +13,18 @@ import eu.comexis.napoleon.server.dao.ApplicationUserDao;
 import eu.comexis.napoleon.server.dao.CompanyDao;
 import eu.comexis.napoleon.server.dao.CountryDao;
 import eu.comexis.napoleon.server.dao.OwnerDao;
+import eu.comexis.napoleon.server.dao.RealEstateDao;
 import eu.comexis.napoleon.server.dao.TenantDao;
 import eu.comexis.napoleon.shared.model.ApplicationUser;
 import eu.comexis.napoleon.shared.model.Company;
 import eu.comexis.napoleon.shared.model.Country;
 import eu.comexis.napoleon.shared.model.MaritalStatus;
 import eu.comexis.napoleon.shared.model.Owner;
+import eu.comexis.napoleon.shared.model.RealEstate;
+import eu.comexis.napoleon.shared.model.RealEstateState;
 import eu.comexis.napoleon.shared.model.Tenant;
 import eu.comexis.napoleon.shared.model.Title;
+import eu.comexis.napoleon.shared.model.TypeOfRealEstate;
 
 public class InitDatastore extends HttpServlet {
 
@@ -97,6 +101,27 @@ public class InitDatastore extends HttpServlet {
         u = iterator.next();
         out.println("<p>User (" + u.getId() + ") "
             + u.getEmail() + " has been created</p>");
+      }
+      
+      
+      RealEstateDao estateData = new RealEstateDao(c.getId());
+      RealEstate e = new RealEstate();
+      e.setReference("REF001");
+      e.setStreet("Rue des branleurs, 68");
+      e.setCity("7800 Ath");
+      e.setCountry("Belgique");
+      e.setNumber(new Long(101));
+      e.setSquare("Le guet à pintes");
+      e.setState(RealEstateState.EXCELLENT);
+      e.setType(TypeOfRealEstate.A2);
+      e = estateData.update(e);
+      out.println("<p>RealEstate (" + e.getId() + "</p>");
+      
+      Iterator<RealEstate> iter = estateData.listAll().iterator();
+      while (iter.hasNext()) {
+        e = iter.next();
+        out.println("<p>RealEstate (" + e.getId() + ") "
+            + e.getReference() + " has been created</p>");
       }
       
       TenantDao tenantData = new TenantDao(c.getId());
@@ -176,9 +201,9 @@ public class InitDatastore extends HttpServlet {
 			o.setMaritalStatus(MaritalStatus.COHABITATION);
 			o = ownerData.update(o);
 
-			Iterator<Owner> iter = ownerData.listAll().iterator();
-			while (iter.hasNext()) {
-				o = iter.next();
+			Iterator<Owner> iter3 = ownerData.listAll().iterator();
+			while (iter3.hasNext()) {
+				o = iter3.next();
 				out.println("<p>Owner (" + o.getId() + ") "
 						+ o.getLastName() + " has been created</p>");
 			}

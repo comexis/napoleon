@@ -8,6 +8,9 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.google.gwt.inject.client.AsyncProvider;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter;
 import eu.comexis.napoleon.client.core.DashBoardPresenter;
+import eu.comexis.napoleon.client.core.estate.RealEstateDetailsPresenter;
+import eu.comexis.napoleon.client.core.estate.RealEstateListPresenter;
+import eu.comexis.napoleon.client.core.estate.RealEstateUpdatePresenter;
 import eu.comexis.napoleon.client.core.owner.OwnerListPresenter;
 import eu.comexis.napoleon.client.core.owner.OwnerDetailsPresenter;
 import eu.comexis.napoleon.client.core.owner.OwnerUpdatePresenter;
@@ -37,4 +40,10 @@ public interface ClientGinjector extends Ginjector {
   AsyncProvider<TenantDetailsPresenter> getTenantDetailsPresenter();
   
   AsyncProvider<TenantUpdatePresenter> getTenantUpdatePresenter();
+  
+  AsyncProvider<RealEstateListPresenter> getRealEstateListPresenter();
+
+  AsyncProvider<RealEstateDetailsPresenter> getRealEstateDetailsPresenter();
+  
+  AsyncProvider<RealEstateUpdatePresenter> getRealEstateUpdatePresenter();
 }

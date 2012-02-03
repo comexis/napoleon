@@ -27,7 +27,11 @@
 			</a>
 			<br/>
 			<a class="{style.item}" href="#tenantlist">
-				<div>Locataire</div>
+				<div>Locataires</div>
+			</a>
+			<br/>
+			<a class="{style.item}" href="#realEstatelist">
+				<div>Biens</div>
 			</a>
 		</div>
 	</g:HTMLPanel>

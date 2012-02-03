@@ -10,6 +10,12 @@ import eu.comexis.napoleon.client.core.MainLayoutView;
 import eu.comexis.napoleon.client.place.ClientPlaceManager;
 import eu.comexis.napoleon.client.place.DefaultPlace;
 import eu.comexis.napoleon.client.place.NameTokens;
+import eu.comexis.napoleon.client.core.estate.RealEstateDetailsPresenter;
+import eu.comexis.napoleon.client.core.estate.RealEstateDetailsView;
+import eu.comexis.napoleon.client.core.estate.RealEstateListPresenter;
+import eu.comexis.napoleon.client.core.estate.RealEstateListView;
+import eu.comexis.napoleon.client.core.estate.RealEstateUpdatePresenter;
+import eu.comexis.napoleon.client.core.estate.RealEstateUpdateView;
 import eu.comexis.napoleon.client.core.owner.OwnerListPresenter;
 import eu.comexis.napoleon.client.core.owner.OwnerListView;
 import eu.comexis.napoleon.client.core.owner.OwnerDetailsPresenter;
@@ -64,5 +70,17 @@ public class ClientModule extends AbstractPresenterModule {
     bindPresenter(TenantUpdatePresenter.class,
         TenantUpdatePresenter.MyView.class, TenantUpdateView.class,
         TenantUpdatePresenter.MyProxy.class);
+    
+    bindPresenter(RealEstateListPresenter.class,
+        RealEstateListPresenter.MyView.class, RealEstateListView.class,
+        RealEstateListPresenter.MyProxy.class);
+
+    bindPresenter(RealEstateDetailsPresenter.class,
+        RealEstateDetailsPresenter.MyView.class, RealEstateDetailsView.class,
+        RealEstateDetailsPresenter.MyProxy.class);
+    
+    bindPresenter(RealEstateUpdatePresenter.class,
+        RealEstateUpdatePresenter.MyView.class, RealEstateUpdateView.class,
+        RealEstateUpdatePresenter.MyProxy.class);
 	}
 }

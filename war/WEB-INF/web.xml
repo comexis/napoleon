@@ -53,6 +53,16 @@
 	</servlet-mapping>
 	
 	<servlet>
+		<servlet-name>realEstateServlet</servlet-name>
+		<servlet-class>eu.comexis.napoleon.server.service.RealEstateServiceImpl</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>realEstateServlet</servlet-name>
+		<url-pattern>/napoleon/realEstate</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 		<servlet-name>countryServlet</servlet-name>
 		<servlet-class>eu.comexis.napoleon.server.service.CountryServiceImpl</servlet-class>
 	</servlet>

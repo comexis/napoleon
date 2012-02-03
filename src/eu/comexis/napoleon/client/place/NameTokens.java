@@ -9,6 +9,9 @@ public class NameTokens {
 	public static final String tenantlist = "tenantlist";
   public static final String tenant = "tenant";
   public static final String updateTenant = "updateTenant";
+  public static final String realEstatelist = "realEstatelist";
+  public static final String realEstate = "realEstate";
+  public static final String updateRealEstate = "updateRealEstate";
 
 	public static String getDashboard() {
 		return dashboard;
@@ -33,6 +36,16 @@ public class NameTokens {
 
   public static String getTenant() {
     return tenant;
+  }
+  public static String getUpdateRealEstate() {
+    return updateRealEstate;
+  }
+  public static String getRealEstatelist() {
+    return realEstatelist;
+  }
+
+  public static String getRealEstate() {
+    return realEstate;
   }
   
   
