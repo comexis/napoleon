@@ -5,10 +5,10 @@ public class NameTokens {
 	public static final String dashboard = "dashboard";
 	public static final String ownerlist = "ownerlist";
 	public static final String owner = "owner";
-	public static final String updateOwner = "updateOwner";
+	public static final String updateOwner = "updateowner";
 	public static final String tenantlist = "tenantlist";
   public static final String tenant = "tenant";
-  public static final String updateTenant = "updateTenant";
+  public static final String updateTenant = "updatetenant";
 
 	public static String getDashboard() {
 		return dashboard;
