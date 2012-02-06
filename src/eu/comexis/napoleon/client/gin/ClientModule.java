@@ -65,10 +65,6 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenter(TenantDetailsPresenter.class,
 				TenantDetailsPresenter.MyView.class, TenantDetailsView.class,
 				TenantDetailsPresenter.MyProxy.class);
-
-    bindPresenter(TenantDetailsPresenter.class,
-        TenantDetailsPresenter.MyView.class, TenantDetailsView.class,
-        TenantDetailsPresenter.MyProxy.class);
     
     bindPresenter(TenantUpdatePresenter.class,
         TenantUpdatePresenter.MyView.class, TenantUpdateView.class,
