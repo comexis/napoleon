@@ -35,8 +35,8 @@ public class OwnerServiceImpl extends RemoteServiceServlet implements
 	public GetAllOwnerResponse execute(GetAllOwnerCommand command) {
 
 		String companyId = UserManager.INSTANCE.getCompanyId();
-		OwnerDao ownerData = new OwnerDao(companyId);
-		ArrayList<SimpleOwner> owners = ownerData.getListSimpleOwners();
+		OwnerDao ownerData = new OwnerDao();
+		ArrayList<SimpleOwner> owners = ownerData.getListSimpleOwners(companyId);
 
 		GetAllOwnerResponse response = new GetAllOwnerResponse();
 		response.setOwners(owners);
@@ -54,8 +54,8 @@ public class OwnerServiceImpl extends RemoteServiceServlet implements
 			throw new RuntimeException("Ooops something wrong happened");
 		}
 		String companyId = UserManager.INSTANCE.getCompanyId();
-		OwnerDao dao = new OwnerDao(companyId);
-		Owner o = dao.getById(id);
+		OwnerDao dao = new OwnerDao();
+		Owner o = dao.getById(id,companyId);
 		GetOwnerResponse response = new GetOwnerResponse();
 		response.setOwner(o);
 
@@ -66,7 +66,7 @@ public class OwnerServiceImpl extends RemoteServiceServlet implements
 	public UpdateOwnerResponse execute(UpdateOwnerCommand command) {
 		Owner owner = command.getOwner();
 		String companyId = UserManager.INSTANCE.getCompanyId();
-		OwnerDao dao = new OwnerDao(companyId);
+		OwnerDao dao = new OwnerDao();
 		owner = dao.update(owner);
 		UpdateOwnerResponse response = new UpdateOwnerResponse();
 		response.setOwner(owner);

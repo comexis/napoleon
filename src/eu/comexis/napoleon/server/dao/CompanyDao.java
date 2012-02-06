@@ -1,9 +1,11 @@
 package eu.comexis.napoleon.server.dao;
 
+import java.util.List;
 import java.util.UUID;
 
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
+import com.googlecode.objectify.Query;
 import com.googlecode.objectify.util.DAOBase;
 
 import eu.comexis.napoleon.shared.model.Company;
@@ -67,4 +69,11 @@ public class CompanyDao extends DAOBase {
 			return null;
 		}
 	}
+	public void deleteAll(Iterable<Company> entities) {
+    ofy().delete(entities);
+  }
+	public List<Company> listAll() {
+    Query<Company> q = ofy().query(Company.class);
+    return q.list();
+  }
 }

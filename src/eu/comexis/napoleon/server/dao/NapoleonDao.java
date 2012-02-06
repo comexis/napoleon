@@ -6,7 +6,8 @@ package eu.comexis.napoleon.server.dao;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
-import java.util.logging.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
@@ -28,7 +29,7 @@ import eu.comexis.napoleon.shared.model.Tenant;
  * 
  */
 public class NapoleonDao<T> extends DAOBase {
-  Logger logger = Logger.getLogger(NapoleonDao.class.getName());
+  public static Log LOG = LogFactory.getLog(NapoleonDao.class);
   /**
    * 
    */
@@ -43,7 +44,7 @@ public class NapoleonDao<T> extends DAOBase {
     ObjectifyService.register(ApplicationUser.class);
   }
   protected Class<T> clazz;
-  protected Key<Company> companyKey;
+  //protected Key<Company> companyKey;
 
   @SuppressWarnings("unchecked")
   public NapoleonDao() {
@@ -54,26 +55,21 @@ public class NapoleonDao<T> extends DAOBase {
       clazz = (Class<T>) ((ParameterizedType) genericSuperclass)
           .getActualTypeArguments()[0];
   }
-
-  // TODO delete this constructor !!!
-  public NapoleonDao(String companyId) {
-    this();
-    companyKey = new Key<Company>(Company.class, companyId);
-  }
-
   public T update(T entity) {
+    LOG.info("Update Entity " + clazz);
     try {
       Key<T> entityKey = ofy().put(entity);
-      logger.info("Entity " + clazz + " has been updated");
+      LOG.info("Entity " + clazz + " has been updated");
       return ofy().get(entityKey);
     } catch (Exception e) {
-      logger.severe("Entity " + clazz + " cannot be updated: "
+      LOG.fatal("Entity " + clazz + " cannot be updated: "
           + e.getMessage());
       return null;
     }
   }
 
   public Boolean delete(T entity) {
+    LOG.info("Delete Entity " + clazz);
     try {
       ofy().delete(entity);
       return true;
@@ -82,25 +78,35 @@ public class NapoleonDao<T> extends DAOBase {
       return false;
     }
   }
-
-  public List<T> listAll() {
+  public List<T> listAll(String companyId) {
+    Key<Company> companyKey = new Key<Company>(Company.class, companyId);
+    return listAll(companyKey);
+  }
+  public List<T> listAll(Key<Company> companyKey) {
+    LOG.info("List all Entity " + clazz + " for company " + companyKey.toString());
     Query<T> q = ofy().query(this.clazz);
     if (companyKey != null) {
       q.ancestor(companyKey);
     }
     return q.list();
   }
-
   public void deleteAll(Iterable<T> entities) {
+    LOG.info("Delete all Entities " + entities.toString());
     ofy().delete(entities);
+    LOG.info("Done");
   }
-
-  public T getById(String id) {
+  public T getById(String id,String companyId) {
+    Key<Company> companyKey = new Key<Company>(Company.class, companyId);
+    return getById(id,companyKey);
+  }
+  public T getById(String id,Key<Company> companyKey) {
+    LOG.info("Get Entity " + clazz + " by id " + id + " for company " + companyKey.toString());
     try {
       T entity = ofy().get(new Key<T>(companyKey, this.clazz, id));
       return entity;
     } catch (Exception e) {
       e.printStackTrace();
+      LOG.error("Entity not found " + e.getMessage());
       return null;
     }
   }

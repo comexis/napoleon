@@ -30,8 +30,8 @@ public class TenantServiceImpl extends RemoteServiceServlet implements
 	@Override
 	public GetAllTenantResponse execute(GetAllTenantCommand command) {
 	  String companyId = UserManager.INSTANCE.getCompanyId();
-		TenantDao tenantData = new TenantDao(companyId);
-		ArrayList<SimpleTenant> tenants = tenantData.getListSimpleTenants();
+		TenantDao tenantData = new TenantDao();
+		ArrayList<SimpleTenant> tenants = tenantData.getListSimpleTenants(companyId);
 
 		GetAllTenantResponse response = new GetAllTenantResponse();
 		response.setTenants(tenants);
@@ -43,16 +43,16 @@ public class TenantServiceImpl extends RemoteServiceServlet implements
 	public GetTenantResponse execute(GetTenantCommand command) {
 		String id = command.getId();
 		String companyId = UserManager.INSTANCE.getCompanyId();
-    TenantDao dao = new TenantDao(companyId);
+    TenantDao dao = new TenantDao();
     Tenant o;
 		if (id == null || id.length() == 0){
 			//TODO add logging
 			
 			//will generate an error 500. Do put to many info
 			//throw new RuntimeException("Ooops something wrong happened");
-		  o = dao.create();
+		  o = dao.create(companyId);
 		}else{
-		  o = dao.getById(id);
+		  o = dao.getById(id,companyId);
 		}
 		GetTenantResponse response = new GetTenantResponse();
 		response.setTenant(o);
@@ -63,7 +63,7 @@ public class TenantServiceImpl extends RemoteServiceServlet implements
   public UpdateTenantResponse execute(UpdateTenantCommand command) {
     Tenant tenant = command.getTenant();
     String companyId = UserManager.INSTANCE.getCompanyId();
-    TenantDao dao = new TenantDao(companyId);
+    TenantDao dao = new TenantDao();
     tenant = dao.update(tenant);
     UpdateTenantResponse response = new UpdateTenantResponse();
     response.setTenant(tenant);

@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.UUID;
 
+import com.googlecode.objectify.Key;
+
 import eu.comexis.napoleon.shared.model.City;
+import eu.comexis.napoleon.shared.model.Company;
 import eu.comexis.napoleon.shared.model.Country;
 import eu.comexis.napoleon.shared.model.Owner;
 import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
@@ -12,14 +15,13 @@ import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 
 
 public class OwnerDao extends NapoleonDao<Owner> {
-  private CountryDao countryData;
-  public OwnerDao(String companyId) {
-    super(companyId);
-    countryData = new CountryDao(companyId);
+  public OwnerDao() {
+    super();
     // TODO Auto-generated constructor stub
   }
 
-  public Owner create() {
+  public Owner create(String companyId) {
+    Key<Company> companyKey = new Key<Company>(Company.class, companyId);
 		Owner owner = new Owner();
 		System.out.println("Set company key " + companyKey.toString());
 		owner.setCompany(companyKey);
@@ -29,16 +31,17 @@ public class OwnerDao extends NapoleonDao<Owner> {
 	@Override
 	public Owner update(Owner owner) {
 		String ownerId = owner.getId();
-		
+		Key<Company> companyKey = owner.getCompany();
+		CountryDao countryData = new CountryDao();
 		if (ownerId == null || ownerId.length() == 0){
 			UUID uuid = UUID.randomUUID();
 			System.out.println("Creating Uuid " + uuid.toString());
 			owner.setId(uuid.toString());
 		}
 		// if country does not exist, create it.
-		Country country = countryData.getByName(owner.getCountry());
+		Country country = countryData.getByName(owner.getCountry(),companyKey);
 		if (country == null){
-		  country = countryData.create();
+		  country = countryData.create(companyKey);
 		  country.setName(owner.getCountry());
 		  countryData.update(country);
 		}
@@ -55,8 +58,10 @@ public class OwnerDao extends NapoleonDao<Owner> {
 	 * 
 	 * @return The list of owners
 	 */
-	public ArrayList<SimpleOwner> getListSimpleOwners() {
-		Iterator<Owner> iterator = this.listAll().iterator();
+	public ArrayList<SimpleOwner> getListSimpleOwners(String companyId) {
+	  LOG.info("Get list Owners (" + clazz + ") for company " + companyId);
+	  Key<Company> companyKey = new Key<Company>(Company.class, companyId);
+		Iterator<Owner> iterator = this.listAll(companyId).iterator();
 		ArrayList<SimpleOwner> owners = new ArrayList<SimpleOwner>();
 		while (iterator.hasNext()) {
 			Owner owner = iterator.next();

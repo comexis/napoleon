@@ -14,11 +14,15 @@ import eu.comexis.napoleon.shared.model.Country;
 
 public class CountryDao extends NapoleonDao<Country>{
 
-  public CountryDao(String companyId) {
-    super(companyId);
+  public CountryDao() {
+    super();
     // TODO Auto-generated constructor stub
   }
-  public Country create() {
+  public Country create(String companyId) {
+    Key<Company> companyKey = new Key<Company>(Company.class, companyId);
+    return create(companyKey);
+  }
+  public Country create(Key<Company> companyKey) {
     Country country = new Country();
     country.setCompany(companyKey);
     return country;
@@ -33,8 +37,8 @@ public class CountryDao extends NapoleonDao<Country>{
     }
     return super.update(country);
   }
-  public ArrayList<Country> getList(){
-    Iterator<Country> iterator = this.listAll().iterator();
+  public ArrayList<Country> getList(String companyId){
+    Iterator<Country> iterator = this.listAll(companyId).iterator();
     ArrayList<Country> countries = new ArrayList<Country>();
     while (iterator.hasNext()) {
       Country c = iterator.next();
@@ -57,7 +61,11 @@ public class CountryDao extends NapoleonDao<Country>{
       return null;
     }
   }
-  public Country getByName(String name){
+  public Country getByName(String name, String companyId){
+     Key<Company> companyKey = new Key<Company>(Company.class, companyId);
+     return getByName(name, companyKey);
+  }
+  public Country getByName(String name, Key<Company> companyKey){
     try{
       Query<Country> q = ofy().query(Country.class);
       q.ancestor(companyKey);

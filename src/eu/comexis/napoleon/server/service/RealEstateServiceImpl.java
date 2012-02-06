@@ -30,8 +30,8 @@ public class RealEstateServiceImpl extends RemoteServiceServlet implements
 	@Override
 	public GetAllRealEstateResponse execute(GetAllRealEstateCommand command) {
 	  String companyId = UserManager.INSTANCE.getCompanyId();
-		RealEstateDao realEstateData = new RealEstateDao(companyId);
-		ArrayList<SimpleRealEstate> realEstates = realEstateData.getListSimpleRealEstates();
+		RealEstateDao realEstateData = new RealEstateDao();
+		ArrayList<SimpleRealEstate> realEstates = realEstateData.getListSimpleRealEstates(companyId);
 
 		GetAllRealEstateResponse response = new GetAllRealEstateResponse();
 		response.setRealEstates(realEstates);
@@ -43,16 +43,16 @@ public class RealEstateServiceImpl extends RemoteServiceServlet implements
 	public GetRealEstateResponse execute(GetRealEstateCommand command) {
 		String id = command.getId();
 		String companyId = UserManager.INSTANCE.getCompanyId();
-    RealEstateDao dao = new RealEstateDao(companyId);
+    RealEstateDao dao = new RealEstateDao();
     RealEstate o;
 		if (id == null || id.length() == 0){
 			//TODO add logging
 			
 			//will generate an error 500. Do put to many info
 			//throw new RuntimeException("Ooops something wrong happened");
-		  o = dao.create();
+		  o = dao.create(companyId);
 		}else{
-		  o = dao.getById(id);
+		  o = dao.getById(id,companyId);
 		}
 		GetRealEstateResponse response = new GetRealEstateResponse();
 		response.setRealEstate(o);
@@ -63,7 +63,7 @@ public class RealEstateServiceImpl extends RemoteServiceServlet implements
   public UpdateRealEstateResponse execute(UpdateRealEstateCommand command) {
     RealEstate realEstate = command.getRealEstate();
     String companyId = UserManager.INSTANCE.getCompanyId();
-    RealEstateDao dao = new RealEstateDao(companyId);
+    RealEstateDao dao = new RealEstateDao();
     realEstate = dao.update(realEstate);
     UpdateRealEstateResponse response = new UpdateRealEstateResponse();
     response.setRealEstate(realEstate);

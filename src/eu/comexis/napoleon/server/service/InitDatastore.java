@@ -3,6 +3,7 @@ package eu.comexis.napoleon.server.service;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,13 +15,17 @@ import com.googlecode.objectify.Objectify;
 import eu.comexis.napoleon.server.dao.ApplicationUserDao;
 import eu.comexis.napoleon.server.dao.CompanyDao;
 import eu.comexis.napoleon.server.dao.OwnerDao;
+import eu.comexis.napoleon.server.dao.RealEstateDao;
 import eu.comexis.napoleon.server.dao.TenantDao;
 import eu.comexis.napoleon.shared.model.ApplicationUser;
 import eu.comexis.napoleon.shared.model.Company;
 import eu.comexis.napoleon.shared.model.MaritalStatus;
 import eu.comexis.napoleon.shared.model.Owner;
+import eu.comexis.napoleon.shared.model.RealEstate;
+import eu.comexis.napoleon.shared.model.RealEstateState;
 import eu.comexis.napoleon.shared.model.Tenant;
 import eu.comexis.napoleon.shared.model.Title;
+import eu.comexis.napoleon.shared.model.TypeOfRealEstate;
 
 @SuppressWarnings("serial")
 public class InitDatastore extends HttpServlet {
@@ -38,6 +43,8 @@ public class InitDatastore extends HttpServlet {
 		createOwners(companyId);
 
 		createTenantDao(companyId);
+		
+		createRealEstate(companyId);
 
 		printResults(companyId, resp);
 
@@ -64,35 +71,42 @@ public class InitDatastore extends HttpServlet {
 
 		//print application user
 		ApplicationUserDao appUserDao = new ApplicationUserDao();
-		for  (ApplicationUser u : appUserDao.listAll()){
+		for  (ApplicationUser u : appUserDao.listAll(companyId)){
 			out.println("<p>User (" + u.getId() + ") " + u.getEmail()
 					+ " has been created</p>");
 		}
 
 
 		//print owner
-		OwnerDao ownerData = new OwnerDao(companyId);
-		for (Owner o : ownerData.listAll()){
+		OwnerDao ownerData = new OwnerDao();
+		for (Owner o : ownerData.listAll(companyId)){
 			out.println("<p>Owner (" + o.getId() + ") " + o.getLastName()
 					+ " has been created</p>");
 		}
 
 		//print tenant
 
-		TenantDao tenantDao = new TenantDao(companyId);
-		for (Tenant t : tenantDao.listAll()){
+		TenantDao tenantDao = new TenantDao();
+		for (Tenant t : tenantDao.listAll(companyId)){
 			out.println("<p>Tenant (" + t.getId() + ") " + t.getLastName()
 					+ " has been created</p>");
 		}
+		
+	//print realEstate
 
-
+		RealEstateDao estateDao = new RealEstateDao();
+    for (RealEstate t : estateDao.listAll(companyId)){
+      out.println("<p>Real Estate (" + t.getId() + ") " + t.getReference()
+          + " has been created</p>");
+    }
 	}
 
 	private void createOwners(String companyId) {
-		OwnerDao ownerData = new OwnerDao(companyId);
-		ownerData.deleteAll(ownerData.listAll());
+		OwnerDao ownerData = new OwnerDao();
+		ownerData.deleteAll(ownerData.listAll(companyId));
 
-		Owner o = ownerData.create();
+		Owner o = ownerData.create(companyId);
+		o.setTitle(Title.MRS);
 		o.setFirstName("Oufti");
 		o.setLastName("Biloute");
 		o.setPostalCode("7800");
@@ -100,14 +114,15 @@ public class InitDatastore extends HttpServlet {
 		o.setStreet("Rue de la brasserie, 69");
 		o.setPhoneNumber("064/659874");
 		o.setMobilePhoneNumber("0497/063970");
-		o.setCountry("Belgiaue");
+		o.setCountry("Belgique");
 		o.setEmail("oufti.biloute@gmail.com");
 		o.setDateOfBirth(new Date());
 		o.setMaritalStatus(MaritalStatus.MARRIED);
 		o = ownerData.update(o);
 
 		// --------------------------------------------------------------------------
-		o = ownerData.create();
+		o = ownerData.create(companyId);
+		o.setTitle(Title.MR);
 		o.setFirstName("Machin");
 		o.setLastName("Brol");
 		o.setPostalCode("7000");
@@ -115,14 +130,15 @@ public class InitDatastore extends HttpServlet {
 		o.setStreet("Rue de la bazar, 1");
 		o.setPhoneNumber("065/896574");
 		o.setMobilePhoneNumber("0497/895476");
-		o.setCountry("Belgiaue");
+		o.setCountry("Belgique");
 		o.setEmail("machin.brol@gmail.com");
 		o.setDateOfBirth(new Date());
 		o.setMaritalStatus(MaritalStatus.SINGLE);
 		o = ownerData.update(o);
 
 		// --------------------------------------------------------------------------
-		o = ownerData.create();
+		o = ownerData.create(companyId);
+		o.setTitle(Title.MISS);
 		o.setFirstName("Cindy");
 		o.setLastName("Troforte");
 		o.setPostalCode("1000");
@@ -130,7 +146,7 @@ public class InitDatastore extends HttpServlet {
 		o.setStreet("Rue de la gaindaille, 5");
 		o.setPhoneNumber("02/6545874");
 		o.setMobilePhoneNumber("0497/089654");
-		o.setCountry("Belgiaue");
+		o.setCountry("Belgique");
 		o.setEmail("cindy.troforte@gmail.com");
 		o.setDateOfBirth(new Date());
 		o.setMaritalStatus(MaritalStatus.COHABITATION);
@@ -159,9 +175,9 @@ public class InitDatastore extends HttpServlet {
 
       
 	private void createTenantDao(String companyId) {
-      TenantDao tenantData = new TenantDao(companyId);
-      tenantData.deleteAll(tenantData.listAll());
-      Tenant t = tenantData.create();
+      TenantDao tenantData = new TenantDao();
+      tenantData.deleteAll(tenantData.listAll(companyId));
+      Tenant t = tenantData.create(companyId);
       t.setFirstName("Sophie");
       t.setLastName("Delamontagne");
       t.setTitle(Title.MISS);
@@ -176,7 +192,7 @@ public class InitDatastore extends HttpServlet {
       t = tenantData.update(t);
       
       
-      t = tenantData.create();
+      t = tenantData.create(companyId);
       t.setFirstName("Martine");
       t.setLastName("Auclubmed");
       t.setTitle(Title.MISS);
@@ -207,27 +223,38 @@ public class InitDatastore extends HttpServlet {
 
 	}
 
-
+  private void createRealEstate(String companyId){
+    RealEstateDao estateData = new RealEstateDao();
+    RealEstate e = estateData.create(companyId);
+    e.setReference("REF001");
+    e.setStreet("Rue des branleurs, 68");
+    e.setCity("7800 Ath");
+    e.setCountry("Belgique");
+    e.setNumber(new Long(101));
+    e.setSquare("Le guet à pintes");
+    e.setState(RealEstateState.EXCELLENT);
+    e.setType(TypeOfRealEstate.A2);
+    e = estateData.update(e);
+  }
 
 	private void deleteAll() {
-		//first delete company
-		//TODO add deleteAll and listAll in CompanyDao
-		CompanyDao companyData = new CompanyDao();
-		Objectify ofy = companyData.ofy();
-		ofy.delete(ofy.query(Company.class).list());
-
-		//delete application users
-		ApplicationUserDao appUserDao = new ApplicationUserDao();
-		appUserDao.deleteAll(appUserDao.listAll());
-
-		//delete owners
-		OwnerDao ownerData = new OwnerDao("dummy");
-		ownerData.deleteAll(ownerData.listAll());
-
-		//delete tenant
-		TenantDao tenantData = new TenantDao("dummy");
-	    tenantData.deleteAll(tenantData.listAll());
-
+	  CompanyDao companyData = new CompanyDao();
+		for  (Company c : companyData.listAll()){
+  		//delete application users
+  		ApplicationUserDao appUserDao = new ApplicationUserDao();
+  		appUserDao.deleteAll(appUserDao.listAll(c.getId()));
+  
+  		//delete owners
+  		OwnerDao ownerData = new OwnerDao();
+  		ownerData.deleteAll(ownerData.listAll(c.getId()));
+  
+  		//delete tenant
+  		TenantDao tenantData = new TenantDao();
+  	    tenantData.deleteAll(tenantData.listAll(c.getId()));
+  	    
+  	  companyData.delete(c);
+		}
+	  //At the end delete company
 	}
 
 }

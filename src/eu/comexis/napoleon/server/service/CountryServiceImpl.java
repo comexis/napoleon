@@ -22,8 +22,8 @@ public class CountryServiceImpl extends RemoteServiceServlet implements CountryS
   @Override
   public GetAllCountriesResponse execute(GetAllCountriesCommand command) {
     String companyId = UserManager.INSTANCE.getCompanyId();
-    CountryDao countryData = new CountryDao(companyId);
-    ArrayList<Country> countries = countryData.getList();
+    CountryDao countryData = new CountryDao();
+    ArrayList<Country> countries = countryData.getList(companyId);
 
     GetAllCountriesResponse response = new GetAllCountriesResponse();
     response.setCountries(countries);
@@ -33,7 +33,7 @@ public class CountryServiceImpl extends RemoteServiceServlet implements CountryS
   @Override
   public GetAllCitiesResponse execute(GetAllCitiesCommand command) {
     String companyId = UserManager.INSTANCE.getCompanyId();
-    CountryDao countryData = new CountryDao(companyId);
+    CountryDao countryData = new CountryDao();
     ArrayList<String> cities = countryData.getListCities(command.getName());
 
     GetAllCitiesResponse response = new GetAllCitiesResponse();
