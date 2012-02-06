@@ -1,7 +1,5 @@
 package eu.comexis.napoleon.client.core.owner;
 
-import static eu.comexis.napoleon.client.core.owner.OwnerDetailsPresenter.UUID_PARAMETER;
-
 import java.util.logging.Logger;
 
 import com.google.gwt.event.shared.EventBus;
@@ -17,11 +15,11 @@ import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
 import eu.comexis.napoleon.client.core.MainLayoutPresenter;
+import eu.comexis.napoleon.client.core.owner.OwnerDetailUiHandlers.HasOwnerDetailUiHandlers;
 import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.rpc.callback.GotOwner;
 import eu.comexis.napoleon.shared.command.owner.GetOwnerCommand;
 import eu.comexis.napoleon.shared.model.Owner;
-import eu.comexis.napoleon.client.core.owner.OwnerDetailUiHandlers.HasOwnerDetailUiHandlers;
 
 public class OwnerDetailsPresenter extends
 		Presenter<OwnerDetailsPresenter.MyView, OwnerDetailsPresenter.MyProxy> implements OwnerDetailUiHandlers{

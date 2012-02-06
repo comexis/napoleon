@@ -1,6 +1,5 @@
 package eu.comexis.napoleon.client.core.owner;
 
-import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 
 public interface OwnerUpdateUiHandlers {
   public interface HasOwnerUpdateUiHandler {

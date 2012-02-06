@@ -6,12 +6,12 @@ import java.util.List;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -65,15 +65,21 @@ public class OwnerUpdateView extends ViewImpl implements
 	DateBox birthDayDateBox;
 	@UiField(provided = true)
 	ListBox title;
-	@UiField(provided = true)
-	Button btnSave;
-	@UiField(provided = true)
-	Button btnCancel;
 
 	@Inject
 	public OwnerUpdateView(final Binder binder) {
 		init();
 		widget = binder.createAndBindUi(this);
+	}
+
+	@UiHandler("btnSave")
+	public void onSave(ClickEvent e){
+		presenter.onButtonSaveClick();
+	}
+	
+	@UiHandler("btnCancel")
+	public void onCancel(ClickEvent e){
+		presenter.onButtonCancelClick();
 	}
 
 	@Override
@@ -123,8 +129,7 @@ public class OwnerUpdateView extends ViewImpl implements
 
 	@Override
 	public Owner updateOwner(Owner o) {
-		o.setTitle(Title.valueOf(title.getValue(title
-				.getSelectedIndex())));
+		o.setTitle(Title.valueOf(title.getValue(title.getSelectedIndex())));
 		o.setFirstName(firstName.getValue());
 		o.setLastName(name.getValue());
 		o.setEmail(email.getValue());
@@ -213,7 +218,8 @@ public class OwnerUpdateView extends ViewImpl implements
 		matrimonialRegime.addItem(
 				translateMR.fromEnumToString(MatrimonialRegime.SEPARATION),
 				MatrimonialRegime.SEPARATION.name());
-		city = new ListBox(false);
+		
+		city = new ListBox();
 		city.addChangeHandler(new ChangeHandler() {
 			public void onChange(ChangeEvent event) {
 				int selectedIndex = city.getSelectedIndex();
@@ -222,6 +228,7 @@ public class OwnerUpdateView extends ViewImpl implements
 				}
 			}
 		});
+		
 		country = new ListBox();
 		country.addChangeHandler(new ChangeHandler() {
 			public void onChange(ChangeEvent event) {
@@ -229,16 +236,6 @@ public class OwnerUpdateView extends ViewImpl implements
 				if (selectedIndex > -1) {
 					presenter.onCountrySelect(country.getValue(selectedIndex));
 				}
-			}
-		});
-		btnSave = new Button("Sauver", new ClickListener() {
-			public void onClick(Widget sender) {
-				presenter.onButtonSaveClick();
-			}
-		});
-		btnCancel = new Button("Abandonner", new ClickListener() {
-			public void onClick(Widget sender) {
-				presenter.onButtonCancelClick();
 			}
 		});
 	}

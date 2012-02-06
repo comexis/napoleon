@@ -1,11 +1,11 @@
 package eu.comexis.napoleon.client.core.owner;
 
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
@@ -17,9 +17,10 @@ public class OwnerDetailsView extends ViewImpl implements
 
 	private final Widget widget;
 	private OwnerDetailUiHandlers presenter;
+
 	public interface Binder extends UiBinder<Widget, OwnerDetailsView> {
 	}
-	
+
 	@UiField
 	Element name;
 	@UiField
@@ -36,60 +37,58 @@ public class OwnerDetailsView extends ViewImpl implements
 	Element addresse;
 	@UiField
 	Element maritalStatus;
-	@UiField(provided = true)
-  Button btnUpdate;
-	@UiField(provided = true)
-  Button btnDelete;
-	@UiField(provided = true)
-  Button btnToDashBoard;
+
 
 	@Inject
 	public OwnerDetailsView(final Binder binder) {
-	  init();
 		widget = binder.createAndBindUi(this);
+		
 	}
 
 	@Override
 	public Widget asWidget() {
 		return widget;
 	}
-	private void init(){
-	  btnUpdate = new Button("Editer",new ClickListener() {
-      public void onClick(Widget sender) {
-        presenter.onButtonUpdateClick();
-      }
-	  });
-	  btnToDashBoard = new Button("Retour vers le tableau de bord",new ClickListener() {
-      public void onClick(Widget sender) {
-        presenter.onButtonBackToDashBoardClick();
-      }
-    });
-	  btnDelete = new Button("Supprimer",new ClickListener() {
-      public void onClick(Widget sender) {
-        Window.alert("Supprimer");
-      }
-    });
+	
+	@UiHandler("btnUpdate")
+	public void onUpdateClicked(ClickEvent e){
+		presenter.onButtonUpdateClick();
 	}
-	@Override
-  public void setOwnerDetailUiHandler(OwnerDetailUiHandlers handler) {
-    this.presenter = handler;
+	
+	@UiHandler("btnDelete")
+	public void onDeleteClicked(ClickEvent e){
+		Window.alert("Supprimer");
+	}
 
-  }
+
+	@UiHandler("btnToDashBoard")
+	public void onGoHomeClicked(ClickEvent e){
+		presenter.onButtonBackToDashBoardClick();
+	}
+
+	@Override
+	public void setOwnerDetailUiHandler(OwnerDetailUiHandlers handler) {
+		this.presenter = handler;
+
+	}
+
 	@Override
 	public void setOwner(Owner o) {
-		//TODO improve and continue
-		
+		// TODO improve and continue
+
 		name.setInnerText(o.getLastName());
 		firstName.setInnerText(o.getFirstName());
 		email.setInnerText(o.getEmail());
 		phoneNumber.setInnerText(o.getPhoneNumber());
 		mobileNumber.setInnerText(o.getMobilePhoneNumber());
-		birthDay.setInnerText(o.getDateOfBirth() != null ? o.getDateOfBirth().toGMTString() : "");
-		addresse.setInnerText(o.getStreet()+ " " +o.getCity()+ " " +o.getCountry());
-		maritalStatus.setInnerText(o.getMaritalStatus() != null ? o.getMaritalStatus().name().toLowerCase() : "");
-		
-		
+		birthDay.setInnerText(o.getDateOfBirth() != null ? o.getDateOfBirth()
+				.toGMTString() : "");
+		addresse.setInnerText(o.getStreet() + " " + o.getCity() + " "
+				+ o.getCountry());
+		maritalStatus.setInnerText(o.getMaritalStatus() != null ? o
+				.getMaritalStatus().name().toLowerCase() : "");
+
 		// TODO Auto-generated method stub
-		
+
 	}
 }
