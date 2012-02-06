@@ -1,13 +1,11 @@
 package eu.comexis.napoleon.client.core.estate;
 
-import java.util.Iterator;
+import static com.google.gwt.query.client.GQuery.$;
+
 import java.util.List;
 
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
@@ -16,21 +14,11 @@ import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.datepicker.client.DateBox;
-import com.google.gwt.user.datepicker.client.DateBox.Format;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
-import static com.google.gwt.query.client.GQuery.$;
-
 import eu.comexis.napoleon.shared.model.Country;
-import eu.comexis.napoleon.shared.model.MaritalStatus;
-import eu.comexis.napoleon.shared.model.MatrimonialRegime;
 import eu.comexis.napoleon.shared.model.RealEstate;
-import eu.comexis.napoleon.shared.model.Title;
-import eu.comexis.napoleon.shared.model.utils.MaritalStatusTranslator;
-import eu.comexis.napoleon.shared.model.utils.MatrimonialRegimeTranslator;
-import eu.comexis.napoleon.shared.model.utils.TitleTranslator;
 
 public class RealEstateUpdateView extends ViewImpl implements
   RealEstateUpdatePresenter.MyView {

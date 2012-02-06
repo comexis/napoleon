@@ -19,14 +19,13 @@ import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
+import eu.comexis.napoleon.client.resources.Literals;
+import eu.comexis.napoleon.client.utils.UiHelper;
 import eu.comexis.napoleon.shared.model.Country;
 import eu.comexis.napoleon.shared.model.MaritalStatus;
 import eu.comexis.napoleon.shared.model.MatrimonialRegime;
 import eu.comexis.napoleon.shared.model.Owner;
 import eu.comexis.napoleon.shared.model.Title;
-import eu.comexis.napoleon.shared.model.utils.MaritalStatusTranslator;
-import eu.comexis.napoleon.shared.model.utils.MatrimonialRegimeTranslator;
-import eu.comexis.napoleon.shared.model.utils.TitleTranslator;
 
 public class OwnerUpdateView extends ViewImpl implements
 		OwnerUpdatePresenter.MyView {
@@ -189,35 +188,12 @@ public class OwnerUpdateView extends ViewImpl implements
 		// TODO Auto-generated method stub
 
 	}
-
+	
 	private void init() {
-		title = new ListBox(false);
-		TitleTranslator translate = new TitleTranslator();
-		title.addItem(translate.fromEnumToString(Title.MISS), Title.MISS.name());
-		title.addItem(translate.fromEnumToString(Title.MRS), Title.MRS.name());
-		title.addItem(translate.fromEnumToString(Title.MR), Title.MR.name());
-		maritalStatus = new ListBox(false);
-		MaritalStatusTranslator translateMT = new MaritalStatusTranslator();
-		maritalStatus.addItem(
-				translateMT.fromEnumToString(MaritalStatus.COHABITATION),
-				MaritalStatus.COHABITATION.name());
-		maritalStatus.addItem(
-				translateMT.fromEnumToString(MaritalStatus.MARRIED),
-				MaritalStatus.MARRIED.name());
-		maritalStatus.addItem(
-				translateMT.fromEnumToString(MaritalStatus.SINGLE),
-				MaritalStatus.SINGLE.name());
-		matrimonialRegime = new ListBox(false);
-		MatrimonialRegimeTranslator translateMR = new MatrimonialRegimeTranslator();
-		matrimonialRegime.addItem(
-				translateMR.fromEnumToString(MatrimonialRegime.NONE),
-				MatrimonialRegime.NONE.name());
-		matrimonialRegime.addItem(
-				translateMR.fromEnumToString(MatrimonialRegime.COMMUNITY),
-				MatrimonialRegime.COMMUNITY.name());
-		matrimonialRegime.addItem(
-				translateMR.fromEnumToString(MatrimonialRegime.SEPARATION),
-				MatrimonialRegime.SEPARATION.name());
+	
+		title = UiHelper.createListBoxForEnum(Title.class, "Title_", false);
+		maritalStatus = UiHelper.createListBoxForEnum(MaritalStatus.class, "MaritalStatus_", false);
+		matrimonialRegime = UiHelper.createListBoxForEnum(MatrimonialRegime.class, "MatrimonialRegime_", false);
 		
 		city = new ListBox();
 		city.addChangeHandler(new ChangeHandler() {
