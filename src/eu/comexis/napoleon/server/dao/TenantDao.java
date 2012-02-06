@@ -4,11 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.UUID;
 
-import com.googlecode.objectify.Key;
-
 import eu.comexis.napoleon.shared.model.City;
-import eu.comexis.napoleon.shared.model.Client;
-import eu.comexis.napoleon.shared.model.Company;
 import eu.comexis.napoleon.shared.model.Country;
 import eu.comexis.napoleon.shared.model.Tenant;
 import eu.comexis.napoleon.shared.model.simple.SimpleTenant;

@@ -2,15 +2,16 @@ package eu.comexis.napoleon.client.utils;
 
 import com.google.gwt.core.client.JsArrayMixed;
 
-import eu.comexis.napoleon.shared.model.AppUser;
-import eu.comexis.napoleon.shared.model.Client;
+import eu.comexis.napoleon.shared.model.ApplicationUser;
+import eu.comexis.napoleon.shared.model.Company;
 
 /**
- * Helper keeping data on connected user/client and other static stuff. 
+ * Helper keeping data on connected user/client and other static stuff.
  * 
- * For example : the logout must be created by the server. It will inject into the
- * index.jsp in a javascript array (containing other settings needed by the
- * application). This class will offer a way to read and access to this property. 
+ * For example : the logout must be created by the server. It will inject into
+ * the index.jsp in a javascript array (containing other settings needed by the
+ * application). This class will offer a way to read and access to this
+ * property.
  * 
  * @author jDramaix
  * 
@@ -19,55 +20,53 @@ import eu.comexis.napoleon.shared.model.Client;
 public enum ApplicationHelper {
 	INSTANCE;
 
-	private AppUser user;
+	private ApplicationUser user;
+	private Company company;
 	private String logoutUrl;
-	
+
 	private ApplicationHelper() {
 		readStaticInfo();
 	}
 
-	public AppUser getLoggedUser() {
+	public ApplicationUser getLoggedUser() {
 		return user;
 	}
-	
+
+	public Company getLoggedCompany() {
+		return company;
+	}
+
 	public String getLogoutUrl() {
 		return logoutUrl;
 	}
-	
-	private void readStaticInfo(){
-		user = getUserFromJs();
-		logoutUrl = getLogoutUrlFromJs();
-	}
-	
-	private AppUser getUserFromJs() {
-		AppUser userFromJs = new AppUser();
+
+	private void readStaticInfo() {
+
+		user = new ApplicationUser();
 		JsArrayMixed array = getJsonUserFromJs();
-		userFromJs = new AppUser();
-		userFromJs.setEmail(array.getString(0));
-		userFromJs.setFirstName(array.getString(1));
-		userFromJs.setLastName(array.getString(2));
-		
-		Client c = new Client();
+		user.setEmail(array.getString(0));
+		user.setFirstName(array.getString(1));
+		user.setLastName(array.getString(2));
+
+		company = new Company();
 		JsArrayMixed clientArray = array.getObject(3).cast();
 		int i = 0;
-		c.setId(clientArray.getString(i++));
-		c.setAddress(clientArray.getString(i++));
-		c.setEmail(clientArray.getString(i++));
-		c.setFax(clientArray.getString(i++));
-		c.setName(clientArray.getString(i++));
-		c.setTelephone(clientArray.getString(i++));
-		c.setUrl(clientArray.getString(i++));
-		
-		userFromJs.setClient(c);
-		
-		return userFromJs;
+		company.setId(clientArray.getString(i++));
+		company.setAddress(clientArray.getString(i++));
+		company.setEmail(clientArray.getString(i++));
+		company.setFax(clientArray.getString(i++));
+		company.setName(clientArray.getString(i++));
+		company.setTelephone(clientArray.getString(i++));
+		company.setUrl(clientArray.getString(i++));
+
+		logoutUrl = getLogoutUrlFromJs();
+
 	}
 
 	private native JsArrayMixed getJsonUserFromJs()/*-{
 		return $wnd.__GLOBALS[0];
 	}-*/;
-	
-	
+
 	private native String getLogoutUrlFromJs()/*-{
 		return $wnd.__GLOBALS[1];
 	}-*/;

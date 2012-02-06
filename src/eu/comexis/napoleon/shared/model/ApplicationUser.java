@@ -18,15 +18,6 @@ public class ApplicationUser {
   public ApplicationUser() {
   }
   
-  public AppUser toAppUser(){
-    AppUser user = new AppUser();
-    user.setId(id);
-    user.setEmail(email);
-    user.setFirstName(firstName);
-    user.setLastName(lastName);
-    return user;
-  }
-  
   public Key<Company> getCompany() {
     return company;
   }

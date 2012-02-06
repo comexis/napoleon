@@ -2,8 +2,9 @@ package eu.comexis.napoleon.server.utils;
 
 import org.json.JSONArray;
 
-import eu.comexis.napoleon.shared.model.AppUser;
-import eu.comexis.napoleon.shared.model.Client;
+import eu.comexis.napoleon.server.dao.CompanyDao;
+import eu.comexis.napoleon.shared.model.ApplicationUser;
+import eu.comexis.napoleon.shared.model.Company;
 
 public class JSONHelper {
 	
@@ -11,17 +12,19 @@ public class JSONHelper {
 	}
 	
 	
-	public static String toJSONArray(AppUser user){
+	public static String toJSONArray(ApplicationUser user){
 		JSONArray json = new JSONArray();
 		json.put(user.getEmail());
 		json.put(user.getFirstName());
 		json.put(user.getLastName());
-		json.put(toJSONArray(user.getClient()));
+		
+		Company c = new CompanyDao().getById(user.getCompany().getName());
+		json.put(toJSONArray(c));
 		
 		return json.toString();
 	}
 	
-	private static JSONArray toJSONArray(Client c){
+	private static JSONArray toJSONArray(Company c){
 		JSONArray json = new JSONArray();
 		json.put(c.getId());
 		json.put(c.getAddress());
