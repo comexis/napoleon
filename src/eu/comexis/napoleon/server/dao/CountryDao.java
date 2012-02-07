@@ -83,7 +83,19 @@ public class CountryDao extends NapoleonDao<Country> {
     }
     return countries;
   }
-
+  public ArrayList<String> getListCitiesByCountryName(String countryName,String companyId) {
+    Country cnty = getByName(countryName,companyId);
+    Key<Country> countryKey = new Key<Country>(Country.class, cnty.getId());
+    Query<City> q = ofy().query(City.class);
+    q.ancestor(countryKey);
+    Iterator<City> iterator = q.list().iterator();
+    ArrayList<String> cities = new ArrayList<String>();
+    while (iterator.hasNext()) {
+      City c = iterator.next();
+      cities.add(c.getName());
+    }
+    return cities;
+  }
   public ArrayList<String> getListCities(String countryId) {
     Key<Country> countryKey = new Key<Country>(Country.class, countryId);
     Query<City> q = ofy().query(City.class);

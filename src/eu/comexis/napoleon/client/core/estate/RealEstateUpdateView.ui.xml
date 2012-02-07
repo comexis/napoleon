@@ -23,7 +23,7 @@
 			<span>Adresse :</span>
 			<g:TextBox ui:field="addresse" />
 		</div>
-		
+
 		<table>
 			<tr id="country">
 				<td>
@@ -47,8 +47,8 @@
 			</tr>
 		</table>
 		<div>
-			<g:Button ui:field="btnSave" />
-			<g:Button ui:field="btnCancel" />
+			<g:Button ui:field="btnSave">Sauver</g:Button>
+			<g:Button ui:field="btnCancel">Annuler</g:Button>
 		</div>
 	</g:HTMLPanel>
 </ui:UiBinder>

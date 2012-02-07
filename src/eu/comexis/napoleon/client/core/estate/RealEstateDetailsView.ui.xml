@@ -15,9 +15,9 @@
 			<span ui:field="addresse" />
 		</div>
 		<div>
-			<g:Button ui:field="btnUpdate" />
-			<g:Button ui:field="btnDelete" />
-			<g:Button ui:field="btnToDashBoard" />
+			<g:Button ui:field="btnUpdate">Editer</g:Button>
+			<g:Button ui:field="btnDelete">Effacer</g:Button>
+			<g:Button ui:field="btnToDashBoard">Retour vers le dashboard</g:Button>
 		</div>
 	</g:HTMLPanel>
 </ui:UiBinder>

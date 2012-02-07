@@ -66,8 +66,8 @@
 			<g:ListBox ui:field="matrimonialRegime" />
 		</div>
 		<div>
-			<g:Button ui:field="btnSave" />
-			<g:Button ui:field="btnCancel" />
+			<g:Button ui:field="btnSave">Sauver</g:Button>
+			<g:Button ui:field="btnCancel">Abandonner</g:Button>
 		</div>
 	</g:HTMLPanel>
 </ui:UiBinder>

@@ -20,4 +20,8 @@ public class UiHelper {
     
     return box;
   }
+  public static String translateEnum(String suffix, Enum<?> e){
+      String literalKey = suffix +e.name();
+      return Literals.INSTANCE.getString(literalKey);
+  }
 }
