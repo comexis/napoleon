@@ -10,17 +10,14 @@ import eu.comexis.napoleon.shared.command.owner.GetOwnerResponse;
 import eu.comexis.napoleon.shared.command.owner.UpdateOwnerCommand;
 import eu.comexis.napoleon.shared.command.owner.UpdateOwnerResponse;
 
-
 public interface OwnerServiceAsync {
 
-	public OwnerServiceAsync INSTANCE = GWT.create(OwnerService.class);
-	
-	void execute(GetAllOwnerCommand command,
-			AsyncCallback<GetAllOwnerResponse> callback);
+  public OwnerServiceAsync INSTANCE = GWT.create(OwnerService.class);
 
-	void execute(GetOwnerCommand command,
-			AsyncCallback<GetOwnerResponse> callback);
-	void execute(UpdateOwnerCommand command,
-      AsyncCallback<UpdateOwnerResponse> callback);
+  void execute(GetAllOwnerCommand command, AsyncCallback<GetAllOwnerResponse> callback);
+
+  void execute(GetOwnerCommand command, AsyncCallback<GetOwnerResponse> callback);
+
+  void execute(UpdateOwnerCommand command, AsyncCallback<UpdateOwnerResponse> callback);
 
 }

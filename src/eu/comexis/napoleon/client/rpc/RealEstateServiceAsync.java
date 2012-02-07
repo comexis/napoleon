@@ -10,17 +10,14 @@ import eu.comexis.napoleon.shared.command.estate.GetRealEstateResponse;
 import eu.comexis.napoleon.shared.command.estate.UpdateRealEstateCommand;
 import eu.comexis.napoleon.shared.command.estate.UpdateRealEstateResponse;
 
-
 public interface RealEstateServiceAsync {
 
-	public RealEstateServiceAsync INSTANCE = GWT.create(RealEstateService.class);
-	
-	void execute(GetAllRealEstateCommand command,
-			AsyncCallback<GetAllRealEstateResponse> callback);
+  public RealEstateServiceAsync INSTANCE = GWT.create(RealEstateService.class);
 
-	void execute(GetRealEstateCommand command,
-			AsyncCallback<GetRealEstateResponse> callback);
-	void execute(UpdateRealEstateCommand command,
-      AsyncCallback<UpdateRealEstateResponse> callback);
+  void execute(GetAllRealEstateCommand command, AsyncCallback<GetAllRealEstateResponse> callback);
+
+  void execute(GetRealEstateCommand command, AsyncCallback<GetRealEstateResponse> callback);
+
+  void execute(UpdateRealEstateCommand command, AsyncCallback<UpdateRealEstateResponse> callback);
 
 }

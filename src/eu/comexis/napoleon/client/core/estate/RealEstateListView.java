@@ -23,215 +23,206 @@ import com.gwtplatform.mvp.client.ViewImpl;
 
 import eu.comexis.napoleon.shared.model.simple.SimpleRealEstate;
 
-public class RealEstateListView extends ViewImpl implements
-		RealEstateListPresenter.MyView {
+public class RealEstateListView extends ViewImpl implements RealEstateListPresenter.MyView {
 
-	public interface Binder extends UiBinder<Widget, RealEstateListView> {
-	}
+  public interface Binder extends UiBinder<Widget, RealEstateListView> {
+  }
 
-	// key provider object implementation for SimpleRealEstate object
-	private static final ProvidesKey<SimpleRealEstate> KEY_PROVIDER = new ProvidesKey<SimpleRealEstate>() {
-		public Object getKey(SimpleRealEstate item) {
-			// Always do a null check.
-			return (item == null) ? null : item.getId();
-		}
-	};
-	// list containing the realEstates to display
-	private ListDataProvider<SimpleRealEstate> dataProvider;
+  // key provider object implementation for SimpleRealEstate object
+  private static final ProvidesKey<SimpleRealEstate> KEY_PROVIDER =
+      new ProvidesKey<SimpleRealEstate>() {
+        public Object getKey(SimpleRealEstate item) {
+          // Always do a null check.
+          return (item == null) ? null : item.getId();
+        }
+      };
+  // list containing the realEstates to display
+  private ListDataProvider<SimpleRealEstate> dataProvider;
 
-	@UiField(provided = true)
-	CellTable<SimpleRealEstate> realEstateTable;
+  @UiField(provided = true)
+  CellTable<SimpleRealEstate> realEstateTable;
 
-	@UiField(provided = true)
-	SimplePager pager;
+  @UiField(provided = true)
+  SimplePager pager;
 
-	private RealEstateListUiHandlers presenter;
-	private final Widget widget;
+  private RealEstateListUiHandlers presenter;
+  private final Widget widget;
 
-	@Inject
-	public RealEstateListView(final Binder binder) {
+  @Inject
+  public RealEstateListView(final Binder binder) {
 
-		init();
-		widget = binder.createAndBindUi(this);
+    init();
+    widget = binder.createAndBindUi(this);
 
-	}
+  }
 
-	@Override
-	public Widget asWidget() {
-		return widget;
-	}
+  @Override
+  public Widget asWidget() {
+    return widget;
+  }
 
-	private void init() {
+  @Override
+  public void setData(List<SimpleRealEstate> realEstates) {
+    dataProvider.getList().clear();
+    dataProvider.getList().addAll(realEstates);
+    dataProvider.refresh();
 
-		dataProvider = new ListDataProvider<SimpleRealEstate>();
+  }
 
-		realEstateTable = new CellTable<SimpleRealEstate>(40, KEY_PROVIDER);
+  @Override
+  public void setRealEstateListUiHandler(RealEstateListUiHandlers handler) {
+    this.presenter = handler;
 
-		realEstateTable.setWidth("100%");
+  }
 
-		// Create a Pager to control the table.
-		SimplePager.Resources pagerResources = GWT
-				.create(SimplePager.Resources.class);
-		pager = new SimplePager(TextLocation.CENTER, pagerResources, true, 50,
-				true);
-		
-		//link the pager to the table
-		pager.setDisplay(realEstateTable);
+  private void init() {
 
-		//allow user to navigate in the table with arrows key, selection on the keyboard is done with space key
-		realEstateTable
-				.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
+    dataProvider = new ListDataProvider<SimpleRealEstate>();
 
-		// Add a selection model so we can select cells.
-		final SingleSelectionModel<SimpleRealEstate> selectionModel = new SingleSelectionModel<SimpleRealEstate>(
-				KEY_PROVIDER);
-		realEstateTable.setSelectionModel(selectionModel);
+    realEstateTable = new CellTable<SimpleRealEstate>(40, KEY_PROVIDER);
 
-		//call the presenter when user select an realEstate on the list
-		selectionModel
-				.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-					public void onSelectionChange(SelectionChangeEvent event) {
-						presenter.onSelect(selectionModel.getSelectedObject());
-					}
-				});
+    realEstateTable.setWidth("100%");
 
-		// Attach a column sort handler to the ListDataProvider to sort the
-		// list.
-		ListHandler<SimpleRealEstate> sortHandler = new ListHandler<SimpleRealEstate>(
-				dataProvider.getList());
-		realEstateTable.addColumnSortHandler(sortHandler);
+    // Create a Pager to control the table.
+    SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
+    pager = new SimplePager(TextLocation.CENTER, pagerResources, true, 50, true);
 
-		// Initialize the columns.
-		initTableColumns(selectionModel, sortHandler);
+    // link the pager to the table
+    pager.setDisplay(realEstateTable);
 
-		// Connect the table to the data provider.
-		dataProvider.addDataDisplay(realEstateTable);
+    // allow user to navigate in the table with arrows key, selection on the keyboard is done with
+    // space key
+    realEstateTable.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 
-	}
+    // Add a selection model so we can select cells.
+    final SingleSelectionModel<SimpleRealEstate> selectionModel =
+        new SingleSelectionModel<SimpleRealEstate>(KEY_PROVIDER);
+    realEstateTable.setSelectionModel(selectionModel);
 
-	private void initTableColumns(
-			SingleSelectionModel<SimpleRealEstate> selectionModel,
-			ListHandler<SimpleRealEstate> sortHandler) {
+    // call the presenter when user select an realEstate on the list
+    selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+      public void onSelectionChange(SelectionChangeEvent event) {
+        presenter.onSelect(selectionModel.getSelectedObject());
+      }
+    });
 
-		// Client id
-		/*Column<SimpleRealEstate, String> clientIdColumn = new Column<SimpleRealEstate, String>(
-				new TextCell()) {
-			@Override
-			public String getValue(SimpleRealEstate object) {
-				return object.getClientId();
-			}
-		};
+    // Attach a column sort handler to the ListDataProvider to sort the
+    // list.
+    ListHandler<SimpleRealEstate> sortHandler =
+        new ListHandler<SimpleRealEstate>(dataProvider.getList());
+    realEstateTable.addColumnSortHandler(sortHandler);
 
-		clientIdColumn.setSortable(true);
-		sortHandler.setComparator(clientIdColumn,
-				new Comparator<SimpleRealEstate>() {
-					public int compare(SimpleRealEstate o1, SimpleRealEstate o2) {
-						return o1.getClientId().compareTo(o2.getClientId());
-					}
-				});
+    // Initialize the columns.
+    initTableColumns(selectionModel, sortHandler);
 
-		realEstateTable.addColumn(clientIdColumn, "ID");*/
+    // Connect the table to the data provider.
+    dataProvider.addDataDisplay(realEstateTable);
 
-		// Name.
-		Column<SimpleRealEstate, String> referenceColumn = new Column<SimpleRealEstate, String>(
-				new TextCell()) {
-			@Override
-			public String getValue(SimpleRealEstate object) {
-				return object.getReference();
-			}
-		};
+  }
 
-		referenceColumn.setSortable(true);
-		sortHandler.setComparator(referenceColumn, new Comparator<SimpleRealEstate>() {
-			public int compare(SimpleRealEstate o1, SimpleRealEstate o2) {
-				return o1.getReference().compareTo(o2.getReference());
-			}
-		});
+  private void initTableColumns(SingleSelectionModel<SimpleRealEstate> selectionModel,
+      ListHandler<SimpleRealEstate> sortHandler) {
 
-		realEstateTable.addColumn(referenceColumn, "Référence");
+    // Client id
+    /*
+     * Column<SimpleRealEstate, String> clientIdColumn = new Column<SimpleRealEstate, String>( new
+     * TextCell()) {
+     * 
+     * @Override public String getValue(SimpleRealEstate object) { return object.getClientId(); } };
+     * 
+     * clientIdColumn.setSortable(true); sortHandler.setComparator(clientIdColumn, new
+     * Comparator<SimpleRealEstate>() { public int compare(SimpleRealEstate o1, SimpleRealEstate o2)
+     * { return o1.getClientId().compareTo(o2.getClientId()); } });
+     * 
+     * realEstateTable.addColumn(clientIdColumn, "ID");
+     */
 
-		// address.
-		Column<SimpleRealEstate, String> addressColumn = new Column<SimpleRealEstate, String>(
-				new TextCell()) {
-			@Override
-			public String getValue(SimpleRealEstate object) {
-				return object.getAddress();
-			}
-		};
+    // Name.
+    Column<SimpleRealEstate, String> referenceColumn =
+        new Column<SimpleRealEstate, String>(new TextCell()) {
+          @Override
+          public String getValue(SimpleRealEstate object) {
+            return object.getReference();
+          }
+        };
 
-		addressColumn.setSortable(true);
-		sortHandler.setComparator(addressColumn, new Comparator<SimpleRealEstate>() {
-			public int compare(SimpleRealEstate o1, SimpleRealEstate o2) {
-				return o1.getAddress().compareTo(o2.getAddress());
-			}
-		});
+    referenceColumn.setSortable(true);
+    sortHandler.setComparator(referenceColumn, new Comparator<SimpleRealEstate>() {
+      public int compare(SimpleRealEstate o1, SimpleRealEstate o2) {
+        return o1.getReference().compareTo(o2.getReference());
+      }
+    });
 
-		realEstateTable.addColumn(addressColumn, "Adresse");
+    realEstateTable.addColumn(referenceColumn, "Référence");
 
-		// City
-		Column<SimpleRealEstate, String> cityColumn = new Column<SimpleRealEstate, String>(
-				new TextCell()) {
-			@Override
-			public String getValue(SimpleRealEstate object) {
-				return object.getCity();
-			}
-		};
+    // address.
+    Column<SimpleRealEstate, String> addressColumn =
+        new Column<SimpleRealEstate, String>(new TextCell()) {
+          @Override
+          public String getValue(SimpleRealEstate object) {
+            return object.getAddress();
+          }
+        };
 
-		cityColumn.setSortable(true);
-		sortHandler.setComparator(cityColumn, new Comparator<SimpleRealEstate>() {
-			public int compare(SimpleRealEstate o1, SimpleRealEstate o2) {
-				return o1.getCity().compareTo(o2.getCity());
-			}
-		});
-		realEstateTable.addColumn(cityColumn, "Localité");
+    addressColumn.setSortable(true);
+    sortHandler.setComparator(addressColumn, new Comparator<SimpleRealEstate>() {
+      public int compare(SimpleRealEstate o1, SimpleRealEstate o2) {
+        return o1.getAddress().compareTo(o2.getAddress());
+      }
+    });
 
-		// tel
-		Column<SimpleRealEstate, String> telColumn = new Column<SimpleRealEstate, String>(
-				new TextCell()) {
-			@Override
-			public String getValue(SimpleRealEstate object) {
-				return object.getPhoneNumber();
-			}
-		};
+    realEstateTable.addColumn(addressColumn, "Adresse");
 
-		telColumn.setSortable(true);
-		sortHandler.setComparator(telColumn, new Comparator<SimpleRealEstate>() {
-			public int compare(SimpleRealEstate o1, SimpleRealEstate o2) {
-				return o1.getPhoneNumber().compareTo(o2.getPhoneNumber());
-			}
-		});
-		realEstateTable.addColumn(telColumn, "Téléphone");
+    // City
+    Column<SimpleRealEstate, String> cityColumn =
+        new Column<SimpleRealEstate, String>(new TextCell()) {
+          @Override
+          public String getValue(SimpleRealEstate object) {
+            return object.getCity();
+          }
+        };
 
-		// Mobile
-		Column<SimpleRealEstate, String> mobileColumn = new Column<SimpleRealEstate, String>(
-				new TextCell()) {
-			@Override
-			public String getValue(SimpleRealEstate object) {
-				return object.getMobile();
-			}
-		};
+    cityColumn.setSortable(true);
+    sortHandler.setComparator(cityColumn, new Comparator<SimpleRealEstate>() {
+      public int compare(SimpleRealEstate o1, SimpleRealEstate o2) {
+        return o1.getCity().compareTo(o2.getCity());
+      }
+    });
+    realEstateTable.addColumn(cityColumn, "Localité");
 
-		mobileColumn.setSortable(true);
-		sortHandler.setComparator(mobileColumn, new Comparator<SimpleRealEstate>() {
-			public int compare(SimpleRealEstate o1, SimpleRealEstate o2) {
-				return o1.getMobile().compareTo(o2.getMobile());
-			}
-		});
-		realEstateTable.addColumn(mobileColumn, "Mobile");
+    // tel
+    Column<SimpleRealEstate, String> telColumn =
+        new Column<SimpleRealEstate, String>(new TextCell()) {
+          @Override
+          public String getValue(SimpleRealEstate object) {
+            return object.getPhoneNumber();
+          }
+        };
 
-	}
+    telColumn.setSortable(true);
+    sortHandler.setComparator(telColumn, new Comparator<SimpleRealEstate>() {
+      public int compare(SimpleRealEstate o1, SimpleRealEstate o2) {
+        return o1.getPhoneNumber().compareTo(o2.getPhoneNumber());
+      }
+    });
+    realEstateTable.addColumn(telColumn, "Téléphone");
 
-	@Override
-	public void setData(List<SimpleRealEstate> realEstates) {
-		dataProvider.getList().clear();
-		dataProvider.getList().addAll(realEstates);
-		dataProvider.refresh();
+    // Mobile
+    Column<SimpleRealEstate, String> mobileColumn =
+        new Column<SimpleRealEstate, String>(new TextCell()) {
+          @Override
+          public String getValue(SimpleRealEstate object) {
+            return object.getMobile();
+          }
+        };
 
-	}
+    mobileColumn.setSortable(true);
+    sortHandler.setComparator(mobileColumn, new Comparator<SimpleRealEstate>() {
+      public int compare(SimpleRealEstate o1, SimpleRealEstate o2) {
+        return o1.getMobile().compareTo(o2.getMobile());
+      }
+    });
+    realEstateTable.addColumn(mobileColumn, "Mobile");
 
-	@Override
-	public void setRealEstateListUiHandler(RealEstateListUiHandlers handler) {
-		this.presenter = handler;
-
-	}
+  }
 }

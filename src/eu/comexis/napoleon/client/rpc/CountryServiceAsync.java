@@ -9,10 +9,9 @@ import eu.comexis.napoleon.shared.command.country.GetAllCountriesCommand;
 import eu.comexis.napoleon.shared.command.country.GetAllCountriesResponse;
 
 public interface CountryServiceAsync {
-public CountryServiceAsync INSTANCE = GWT.create(CountryService.class);
-  
-  void execute(GetAllCountriesCommand command,
-      AsyncCallback<GetAllCountriesResponse> callback);
-  void execute(GetAllCitiesCommand command,
-      AsyncCallback<GetAllCitiesResponse> callback);
+  public CountryServiceAsync INSTANCE = GWT.create(CountryService.class);
+
+  void execute(GetAllCitiesCommand command, AsyncCallback<GetAllCitiesResponse> callback);
+
+  void execute(GetAllCountriesCommand command, AsyncCallback<GetAllCountriesResponse> callback);
 }

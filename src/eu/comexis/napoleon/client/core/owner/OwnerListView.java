@@ -24,245 +24,227 @@ import com.gwtplatform.mvp.client.ViewImpl;
 import eu.comexis.napoleon.client.widget.LoadingDataIndicator;
 import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 
-public class OwnerListView extends ViewImpl implements
-		OwnerListPresenter.MyView {
+public class OwnerListView extends ViewImpl implements OwnerListPresenter.MyView {
 
-	public interface Binder extends UiBinder<Widget, OwnerListView> {
-	}
+  public interface Binder extends UiBinder<Widget, OwnerListView> {
+  }
 
-	// key provider object implementation for SimpleOwner object
-	private static final ProvidesKey<SimpleOwner> KEY_PROVIDER = new ProvidesKey<SimpleOwner>() {
-		public Object getKey(SimpleOwner item) {
-			// Always do a null check.
-			return (item == null) ? null : item.getId();
-		}
-	};
-	// list containing the owners to display
-	private ListDataProvider<SimpleOwner> dataProvider;
+  // key provider object implementation for SimpleOwner object
+  private static final ProvidesKey<SimpleOwner> KEY_PROVIDER = new ProvidesKey<SimpleOwner>() {
+    public Object getKey(SimpleOwner item) {
+      // Always do a null check.
+      return (item == null) ? null : item.getId();
+    }
+  };
+  // list containing the owners to display
+  private ListDataProvider<SimpleOwner> dataProvider;
 
-	@UiField(provided = true)
-	CellTable<SimpleOwner> ownerTable;
+  @UiField(provided = true)
+  CellTable<SimpleOwner> ownerTable;
 
-	@UiField(provided = true)
-	SimplePager pager;
+  @UiField(provided = true)
+  SimplePager pager;
 
-	private OwnerListUiHandlers presenter;
-	private final Widget widget;
+  private OwnerListUiHandlers presenter;
+  private final Widget widget;
 
-	@Inject
-	public OwnerListView(final Binder binder) {
+  @Inject
+  public OwnerListView(final Binder binder) {
 
-		init();
-		widget = binder.createAndBindUi(this);
+    init();
+    widget = binder.createAndBindUi(this);
 
-	}
+  }
 
-	@Override
-	public Widget asWidget() {
-		return widget;
-	}
+  @Override
+  public Widget asWidget() {
+    return widget;
+  }
 
-	private void init() {
+  @Override
+  public void dataIsLoading() {
+    ownerTable.setVisibleRangeAndClearData(ownerTable.getVisibleRange(), true);
+  }
 
-		dataProvider = new ListDataProvider<SimpleOwner>();
+  @Override
+  public void setData(List<SimpleOwner> owners) {
+    // ok find better...
+    if (!dataProvider.getDataDisplays().contains(ownerTable)) {
+      dataProvider.addDataDisplay(ownerTable);
+    }
+    // ownerTable.setRowData(owners);
+    dataProvider.getList().clear();
+    dataProvider.getList().addAll(owners);
+    dataProvider.refresh();
 
-		ownerTable = new CellTable<SimpleOwner>(40, KEY_PROVIDER);
+  }
 
-		ownerTable.setWidth("100%");
-		
-		//set the table in a loading state
-		ownerTable.setLoadingIndicator(new LoadingDataIndicator());
+  @Override
+  public void setOwnerListUiHandler(OwnerListUiHandlers handler) {
+    this.presenter = handler;
 
-		// Create a Pager to control the table.
-		SimplePager.Resources pagerResources = GWT
-				.create(SimplePager.Resources.class);
-		pager = new SimplePager(TextLocation.CENTER, pagerResources, true, 50,
-				true);
-		
-		//link the pager to the table
-		pager.setDisplay(ownerTable);
+  }
 
-		//allow user to navigate in the table with arrows key, selection on the keyboard is done with space key
-		ownerTable
-				.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
+  private void init() {
 
-		// Add a selection model so we can select cells.
-		final SingleSelectionModel<SimpleOwner> selectionModel = new SingleSelectionModel<SimpleOwner>(
-				KEY_PROVIDER);
-		ownerTable.setSelectionModel(selectionModel);
+    dataProvider = new ListDataProvider<SimpleOwner>();
 
-		//call the presenter when user select an owner on the list
-		selectionModel
-				.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-					public void onSelectionChange(SelectionChangeEvent event) {
-						presenter.onSelect(selectionModel.getSelectedObject());
-					}
-				});
+    ownerTable = new CellTable<SimpleOwner>(40, KEY_PROVIDER);
 
-		// Attach a column sort handler to the ListDataProvider to sort the
-		// list.
-		ListHandler<SimpleOwner> sortHandler = new ListHandler<SimpleOwner>(
-				dataProvider.getList());
-		ownerTable.addColumnSortHandler(sortHandler);
+    ownerTable.setWidth("100%");
 
-		// Initialize the columns.
-		initTableColumns(selectionModel, sortHandler);
-		
+    // set the table in a loading state
+    ownerTable.setLoadingIndicator(new LoadingDataIndicator());
 
-	}
+    // Create a Pager to control the table.
+    SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
+    pager = new SimplePager(TextLocation.CENTER, pagerResources, true, 50, true);
 
-	private void initTableColumns(
-			SingleSelectionModel<SimpleOwner> selectionModel,
-			ListHandler<SimpleOwner> sortHandler) {
+    // link the pager to the table
+    pager.setDisplay(ownerTable);
 
-		// Client id
-		/*Column<SimpleOwner, String> clientIdColumn = new Column<SimpleOwner, String>(
-				new TextCell()) {
-			@Override
-			public String getValue(SimpleOwner object) {
-				return object.getClientId();
-			}
-		};
+    // allow user to navigate in the table with arrows key, selection on the keyboard is done with
+    // space key
+    ownerTable.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 
-		clientIdColumn.setSortable(true);
-		sortHandler.setComparator(clientIdColumn,
-				new Comparator<SimpleOwner>() {
-					public int compare(SimpleOwner o1, SimpleOwner o2) {
-						return o1.getClientId().compareTo(o2.getClientId());
-					}
-				});
+    // Add a selection model so we can select cells.
+    final SingleSelectionModel<SimpleOwner> selectionModel =
+        new SingleSelectionModel<SimpleOwner>(KEY_PROVIDER);
+    ownerTable.setSelectionModel(selectionModel);
 
-		ownerTable.addColumn(clientIdColumn, "ID");*/
+    // call the presenter when user select an owner on the list
+    selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+      public void onSelectionChange(SelectionChangeEvent event) {
+        presenter.onSelect(selectionModel.getSelectedObject());
+      }
+    });
 
-		// Name.
-		Column<SimpleOwner, String> nameColumn = new Column<SimpleOwner, String>(
-				new TextCell()) {
-			@Override
-			public String getValue(SimpleOwner object) {
-				return object.getName();
-			}
-		};
+    // Attach a column sort handler to the ListDataProvider to sort the
+    // list.
+    ListHandler<SimpleOwner> sortHandler = new ListHandler<SimpleOwner>(dataProvider.getList());
+    ownerTable.addColumnSortHandler(sortHandler);
 
-		nameColumn.setSortable(true);
-		sortHandler.setComparator(nameColumn, new Comparator<SimpleOwner>() {
-			public int compare(SimpleOwner o1, SimpleOwner o2) {
-				return o1.getName().compareTo(o2.getName());
-			}
-		});
+    // Initialize the columns.
+    initTableColumns(selectionModel, sortHandler);
 
-		ownerTable.addColumn(nameColumn, "Nom");
+  }
 
-		// address.
-		Column<SimpleOwner, String> addressColumn = new Column<SimpleOwner, String>(
-				new TextCell()) {
-			@Override
-			public String getValue(SimpleOwner object) {
-				return object.getAddress();
-			}
-		};
+  private void initTableColumns(SingleSelectionModel<SimpleOwner> selectionModel,
+      ListHandler<SimpleOwner> sortHandler) {
 
-		addressColumn.setSortable(true);
-		sortHandler.setComparator(addressColumn, new Comparator<SimpleOwner>() {
-			public int compare(SimpleOwner o1, SimpleOwner o2) {
-				return o1.getAddress().compareTo(o2.getAddress());
-			}
-		});
+    // Client id
+    /*
+     * Column<SimpleOwner, String> clientIdColumn = new Column<SimpleOwner, String>( new TextCell())
+     * {
+     * 
+     * @Override public String getValue(SimpleOwner object) { return object.getClientId(); } };
+     * 
+     * clientIdColumn.setSortable(true); sortHandler.setComparator(clientIdColumn, new
+     * Comparator<SimpleOwner>() { public int compare(SimpleOwner o1, SimpleOwner o2) { return
+     * o1.getClientId().compareTo(o2.getClientId()); } });
+     * 
+     * ownerTable.addColumn(clientIdColumn, "ID");
+     */
 
-		ownerTable.addColumn(addressColumn, "Adresse");
+    // Name.
+    Column<SimpleOwner, String> nameColumn = new Column<SimpleOwner, String>(new TextCell()) {
+      @Override
+      public String getValue(SimpleOwner object) {
+        return object.getName();
+      }
+    };
 
-		// Postal Code.
-		Column<SimpleOwner, String> cpColumn = new Column<SimpleOwner, String>(
-				new TextCell()) {
-			@Override
-			public String getValue(SimpleOwner object) {
-				return object.getPostalCode();
-			}
-		};
+    nameColumn.setSortable(true);
+    sortHandler.setComparator(nameColumn, new Comparator<SimpleOwner>() {
+      public int compare(SimpleOwner o1, SimpleOwner o2) {
+        return o1.getName().compareTo(o2.getName());
+      }
+    });
 
-		cpColumn.setSortable(true);
-		
-		sortHandler.setComparator(cpColumn, new Comparator<SimpleOwner>() {
-			public int compare(SimpleOwner o1, SimpleOwner o2) {
-				return o1.getPostalCode().compareTo(o2.getPostalCode());
-			}
-		});
-		ownerTable.addColumn(cpColumn, "Code Postal");
-		ownerTable.setColumnWidth(cpColumn, "20%");
+    ownerTable.addColumn(nameColumn, "Nom");
 
-		// City
-		Column<SimpleOwner, String> cityColumn = new Column<SimpleOwner, String>(
-				new TextCell()) {
-			@Override
-			public String getValue(SimpleOwner object) {
-				return object.getCity();
-			}
-		};
+    // address.
+    Column<SimpleOwner, String> addressColumn = new Column<SimpleOwner, String>(new TextCell()) {
+      @Override
+      public String getValue(SimpleOwner object) {
+        return object.getAddress();
+      }
+    };
 
-		cityColumn.setSortable(true);
-		sortHandler.setComparator(cityColumn, new Comparator<SimpleOwner>() {
-			public int compare(SimpleOwner o1, SimpleOwner o2) {
-				return o1.getCity().compareTo(o2.getCity());
-			}
-		});
-		ownerTable.addColumn(cityColumn, "Localité");
+    addressColumn.setSortable(true);
+    sortHandler.setComparator(addressColumn, new Comparator<SimpleOwner>() {
+      public int compare(SimpleOwner o1, SimpleOwner o2) {
+        return o1.getAddress().compareTo(o2.getAddress());
+      }
+    });
 
-		// tel
-		Column<SimpleOwner, String> telColumn = new Column<SimpleOwner, String>(
-				new TextCell()) {
-			@Override
-			public String getValue(SimpleOwner object) {
-				return object.getPhoneNumber();
-			}
-		};
+    ownerTable.addColumn(addressColumn, "Adresse");
 
-		telColumn.setSortable(true);
-		sortHandler.setComparator(telColumn, new Comparator<SimpleOwner>() {
-			public int compare(SimpleOwner o1, SimpleOwner o2) {
-				return o1.getPhoneNumber().compareTo(o2.getPhoneNumber());
-			}
-		});
-		ownerTable.addColumn(telColumn, "Téléphone");
+    // Postal Code.
+    Column<SimpleOwner, String> cpColumn = new Column<SimpleOwner, String>(new TextCell()) {
+      @Override
+      public String getValue(SimpleOwner object) {
+        return object.getPostalCode();
+      }
+    };
 
-		// Mobile
-		Column<SimpleOwner, String> mobileColumn = new Column<SimpleOwner, String>(
-				new TextCell()) {
-			@Override
-			public String getValue(SimpleOwner object) {
-				return object.getMobileNumber();
-			}
-		};
+    cpColumn.setSortable(true);
 
-		mobileColumn.setSortable(true);
-		sortHandler.setComparator(mobileColumn, new Comparator<SimpleOwner>() {
-			public int compare(SimpleOwner o1, SimpleOwner o2) {
-				return o1.getMobileNumber().compareTo(o2.getMobileNumber());
-			}
-		});
-		ownerTable.addColumn(mobileColumn, "Mobile");
+    sortHandler.setComparator(cpColumn, new Comparator<SimpleOwner>() {
+      public int compare(SimpleOwner o1, SimpleOwner o2) {
+        return o1.getPostalCode().compareTo(o2.getPostalCode());
+      }
+    });
+    ownerTable.addColumn(cpColumn, "Code Postal");
+    ownerTable.setColumnWidth(cpColumn, "20%");
 
-	}
+    // City
+    Column<SimpleOwner, String> cityColumn = new Column<SimpleOwner, String>(new TextCell()) {
+      @Override
+      public String getValue(SimpleOwner object) {
+        return object.getCity();
+      }
+    };
 
-	@Override
-	public void setData(List<SimpleOwner> owners) {
-		//ok find better...
-		if (!dataProvider.getDataDisplays().contains(ownerTable)){
-			dataProvider.addDataDisplay(ownerTable);
-		}
-		//ownerTable.setRowData(owners);
-		dataProvider.getList().clear();
-		dataProvider.getList().addAll(owners);
-		dataProvider.refresh();
+    cityColumn.setSortable(true);
+    sortHandler.setComparator(cityColumn, new Comparator<SimpleOwner>() {
+      public int compare(SimpleOwner o1, SimpleOwner o2) {
+        return o1.getCity().compareTo(o2.getCity());
+      }
+    });
+    ownerTable.addColumn(cityColumn, "Localité");
 
-	}
+    // tel
+    Column<SimpleOwner, String> telColumn = new Column<SimpleOwner, String>(new TextCell()) {
+      @Override
+      public String getValue(SimpleOwner object) {
+        return object.getPhoneNumber();
+      }
+    };
 
-	@Override
-	public void setOwnerListUiHandler(OwnerListUiHandlers handler) {
-		this.presenter = handler;
+    telColumn.setSortable(true);
+    sortHandler.setComparator(telColumn, new Comparator<SimpleOwner>() {
+      public int compare(SimpleOwner o1, SimpleOwner o2) {
+        return o1.getPhoneNumber().compareTo(o2.getPhoneNumber());
+      }
+    });
+    ownerTable.addColumn(telColumn, "Téléphone");
 
-	}
-	
-	@Override
-	public void dataIsLoading(){
-		ownerTable.setVisibleRangeAndClearData(ownerTable.getVisibleRange(), true);
-	}
+    // Mobile
+    Column<SimpleOwner, String> mobileColumn = new Column<SimpleOwner, String>(new TextCell()) {
+      @Override
+      public String getValue(SimpleOwner object) {
+        return object.getMobileNumber();
+      }
+    };
+
+    mobileColumn.setSortable(true);
+    sortHandler.setComparator(mobileColumn, new Comparator<SimpleOwner>() {
+      public int compare(SimpleOwner o1, SimpleOwner o2) {
+        return o1.getMobileNumber().compareTo(o2.getMobileNumber());
+      }
+    });
+    ownerTable.addColumn(mobileColumn, "Mobile");
+
+  }
 }

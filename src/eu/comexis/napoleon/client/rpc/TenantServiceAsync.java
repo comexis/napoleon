@@ -10,17 +10,14 @@ import eu.comexis.napoleon.shared.command.tenant.GetTenantResponse;
 import eu.comexis.napoleon.shared.command.tenant.UpdateTenantCommand;
 import eu.comexis.napoleon.shared.command.tenant.UpdateTenantResponse;
 
-
 public interface TenantServiceAsync {
 
-	public TenantServiceAsync INSTANCE = GWT.create(TenantService.class);
-	
-	void execute(GetAllTenantCommand command,
-			AsyncCallback<GetAllTenantResponse> callback);
+  public TenantServiceAsync INSTANCE = GWT.create(TenantService.class);
 
-	void execute(GetTenantCommand command,
-			AsyncCallback<GetTenantResponse> callback);
-	void execute(UpdateTenantCommand command,
-      AsyncCallback<UpdateTenantResponse> callback);
+  void execute(GetAllTenantCommand command, AsyncCallback<GetAllTenantResponse> callback);
+
+  void execute(GetTenantCommand command, AsyncCallback<GetTenantResponse> callback);
+
+  void execute(UpdateTenantCommand command, AsyncCallback<UpdateTenantResponse> callback);
 
 }

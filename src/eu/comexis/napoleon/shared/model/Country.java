@@ -6,24 +6,20 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Parent;
 
-public class Country implements IsSerializable{
+public class Country implements IsSerializable {
   @Id
   private String id;
   @Parent
   private Key<Company> company;
 
-  public Key<Company> getCompany() {
-    return company;
-  }
-
-  public void setCompany(Key<Company> company) {
-    this.company = company;
-  }
-
   private String name;
 
-  public Country(){
+  public Country() {
     // TODO Auto-generated constructor stub
+  }
+
+  public Key<Company> getCompany() {
+    return company;
   }
 
   public String getId() {
@@ -32,6 +28,10 @@ public class Country implements IsSerializable{
 
   public String getName() {
     return name;
+  }
+
+  public void setCompany(Key<Company> company) {
+    this.company = company;
   }
 
   public void setId(String id) {

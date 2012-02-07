@@ -9,13 +9,13 @@ import com.googlecode.objectify.annotation.Parent;
 /**
  * @author xavier Bien immobilier
  */
-public class RealEstate implements IsSerializable{
+public class RealEstate implements IsSerializable {
 
   @Id
   private String id;
   @Parent
   private Key<Company> company;
-	private String box;
+  private String box;
 
   private Long number;
 
@@ -38,7 +38,7 @@ public class RealEstate implements IsSerializable{
   private Condo condo;
 
   public RealEstate() {
-	}
+  }
 
   public String getBox() {
     return box;
@@ -99,38 +99,48 @@ public class RealEstate implements IsSerializable{
   public void setCity(String city) {
     this.city = city;
   }
-	public void setCompany(Key<Company> company) {
+
+  public void setCompany(Key<Company> company) {
     this.company = company;
   }
-	public void setCondo(Condo condo) {
+
+  public void setCondo(Condo condo) {
     this.condo = condo;
   }
-	public void setCountry(String country) {
+
+  public void setCountry(String country) {
     this.country = country;
   }
+
   public void setDimension(String dimension) {
     this.dimension = dimension;
   }
-	public void setId(String id) {
+
+  public void setId(String id) {
     this.id = id;
   }
-	public void setNumber(Long number) {
+
+  public void setNumber(Long number) {
     this.number = number;
   }
-	public void setReference(String reference) {
+
+  public void setReference(String reference) {
     this.reference = reference;
   }
-	public void setSquare(String square) {
+
+  public void setSquare(String square) {
     this.square = square;
   }
-	public void setState(RealEstateState state) {
+
+  public void setState(RealEstateState state) {
     this.state = state;
   }
-	public void setStreet(String street) {
+
+  public void setStreet(String street) {
     this.street = street;
   }
 
-	public void setType(TypeOfRealEstate type) {
+  public void setType(TypeOfRealEstate type) {
     this.type = type;
   }
 

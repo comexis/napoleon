@@ -23,60 +23,60 @@ import eu.comexis.napoleon.shared.command.estate.GetAllRealEstateCommand;
 import eu.comexis.napoleon.shared.model.simple.SimpleRealEstate;
 
 public class RealEstateListPresenter extends
-		Presenter<RealEstateListPresenter.MyView, RealEstateListPresenter.MyProxy>
-		implements RealEstateListUiHandlers {
+    Presenter<RealEstateListPresenter.MyView, RealEstateListPresenter.MyProxy> implements
+    RealEstateListUiHandlers {
 
-	@ProxyCodeSplit
-	@NameToken(NameTokens.realEstatelist)
-	public interface MyProxy extends ProxyPlace<RealEstateListPresenter> {
-	}
+  @ProxyCodeSplit
+  @NameToken(NameTokens.realEstatelist)
+  public interface MyProxy extends ProxyPlace<RealEstateListPresenter> {
+  }
 
-	public interface MyView extends View, HasRealEstateListUiHandlers {
-		public void setData(List<SimpleRealEstate> realEstates);
-	}
-	
-	private PlaceManager placeManager;
+  public interface MyView extends View, HasRealEstateListUiHandlers {
+    public void setData(List<SimpleRealEstate> realEstates);
+  }
 
-	@Inject
-	public RealEstateListPresenter(final EventBus eventBus, final MyView view,
-			final MyProxy proxy, final PlaceManager placeManager) {
-		super(eventBus, view, proxy);
-		
-		this.placeManager = placeManager;
+  private PlaceManager placeManager;
 
-	}
+  @Inject
+  public RealEstateListPresenter(final EventBus eventBus, final MyView view, final MyProxy proxy,
+      final PlaceManager placeManager) {
+    super(eventBus, view, proxy);
 
-	@Override
-	protected void onBind() {
-		super.onBind();
+    this.placeManager = placeManager;
 
-		getView().setRealEstateListUiHandler(this);
-	}
+  }
 
-	@Override
-	protected void onReset() {
-		super.onReset();
+  @Override
+  public void onSelect(SimpleRealEstate selectedRealEstate) {
+    PlaceRequest myRequest = new PlaceRequest(NameTokens.realEstate);
+    // add the id of the realEstate to load
+    myRequest = myRequest.with(UUID_PARAMETER, selectedRealEstate.getId());
+    placeManager.revealPlace(myRequest);
+  }
 
-		new GetAllRealEstateCommand().dispatch(new GotAllRealEstate() {
-			@Override
-			public void got(List<SimpleRealEstate> realEstates) {
-				getView().setData(realEstates);
+  @Override
+  protected void onBind() {
+    super.onBind();
 
-			}
-		});
-	}
+    getView().setRealEstateListUiHandler(this);
+  }
 
-	@Override
-	public void onSelect(SimpleRealEstate selectedRealEstate) {
-		PlaceRequest myRequest = new PlaceRequest(NameTokens.realEstate);
-		// add the id of the realEstate to load
-		myRequest = myRequest.with(UUID_PARAMETER, selectedRealEstate.getId());
-		placeManager.revealPlace(myRequest);
-	}
+  @Override
+  protected void onReset() {
+    super.onReset();
 
-	@Override
-	protected void revealInParent() {
-		RevealContentEvent.fire(this, MainLayoutPresenter.MAIN_CONTENT, this);
-	}
+    new GetAllRealEstateCommand().dispatch(new GotAllRealEstate() {
+      @Override
+      public void got(List<SimpleRealEstate> realEstates) {
+        getView().setData(realEstates);
+
+      }
+    });
+  }
+
+  @Override
+  protected void revealInParent() {
+    RevealContentEvent.fire(this, MainLayoutPresenter.MAIN_CONTENT, this);
+  }
 
 }

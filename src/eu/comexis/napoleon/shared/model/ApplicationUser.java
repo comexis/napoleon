@@ -14,14 +14,14 @@ public class ApplicationUser {
   private String lastName;
   @Parent
   private Key<Company> company;
-  
+
   public ApplicationUser() {
   }
-  
+
   public Key<Company> getCompany() {
     return company;
   }
-  
+
   public String getEmail() {
     return email;
   }
@@ -56,5 +56,5 @@ public class ApplicationUser {
 
   public void setLastName(String lastName) {
     this.lastName = lastName;
-  } 
+  }
 }

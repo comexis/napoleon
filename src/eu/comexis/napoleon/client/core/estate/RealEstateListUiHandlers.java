@@ -9,20 +9,21 @@ import eu.comexis.napoleon.shared.model.simple.SimpleRealEstate;
  * 
  */
 public interface RealEstateListUiHandlers {
-	
-	/**
-	 * interface implemented by the view
-	 * @author jDramaix
-	 *
-	 */
-	public interface HasRealEstateListUiHandlers {
-		public void setRealEstateListUiHandler(RealEstateListUiHandlers handler);
-	}
 
-	/**
-	 * Method call when the user select
-	 * 
-	 * @param selectedRealEstate
-	 */
-	public void onSelect(SimpleRealEstate selectedRealEstate);
+  /**
+   * interface implemented by the view
+   * 
+   * @author jDramaix
+   * 
+   */
+  public interface HasRealEstateListUiHandlers {
+    public void setRealEstateListUiHandler(RealEstateListUiHandlers handler);
+  }
+
+  /**
+   * Method call when the user select
+   * 
+   * @param selectedRealEstate
+   */
+  public void onSelect(SimpleRealEstate selectedRealEstate);
 }

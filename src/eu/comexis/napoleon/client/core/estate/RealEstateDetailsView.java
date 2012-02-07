@@ -12,66 +12,68 @@ import com.gwtplatform.mvp.client.ViewImpl;
 
 import eu.comexis.napoleon.shared.model.RealEstate;
 
-public class RealEstateDetailsView extends ViewImpl implements
-		RealEstateDetailsPresenter.MyView {
+public class RealEstateDetailsView extends ViewImpl implements RealEstateDetailsPresenter.MyView {
 
-	private final Widget widget;
-	private RealEstateDetailUiHandlers presenter;
-	public interface Binder extends UiBinder<Widget, RealEstateDetailsView> {
-	}
-	
-	@UiField
-	Element reference;
-	@UiField
-	Element addresse;
-	@UiField(provided = true)
+  public interface Binder extends UiBinder<Widget, RealEstateDetailsView> {
+  }
+
+  private final Widget widget;
+  private RealEstateDetailUiHandlers presenter;
+
+  @UiField
+  Element reference;
+  @UiField
+  Element addresse;
+  @UiField(provided = true)
   Button btnUpdate;
-	@UiField(provided = true)
+  @UiField(provided = true)
   Button btnDelete;
-	@UiField(provided = true)
+  @UiField(provided = true)
   Button btnToDashBoard;
 
-	@Inject
-	public RealEstateDetailsView(final Binder binder) {
-	  init();
-		widget = binder.createAndBindUi(this);
-	}
+  @Inject
+  public RealEstateDetailsView(final Binder binder) {
+    init();
+    widget = binder.createAndBindUi(this);
+  }
 
-	@Override
-	public Widget asWidget() {
-		return widget;
-	}
-	private void init(){
-	  btnUpdate = new Button("Editer",new ClickListener() {
-      public void onClick(Widget sender) {
-        presenter.onButtonUpdateClick();
-      }
-	  });
-	  btnToDashBoard = new Button("Retour vers le tableau de bord",new ClickListener() {
-      public void onClick(Widget sender) {
-        presenter.onButtonBackToDashBoardClick();
-      }
-    });
-	  btnDelete = new Button("Supprimer",new ClickListener() {
-      public void onClick(Widget sender) {
-        Window.alert("Supprimer");
-      }
-    });
-	}
-	@Override
+  @Override
+  public Widget asWidget() {
+    return widget;
+  }
+
+  @Override
+  public void setRealEstate(RealEstate o) {
+    // TODO improve and continue
+
+    reference.setInnerText(o.getReference());
+    addresse.setInnerText(o.getStreet() + " " + o.getCity() + " " + o.getCountry());
+
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
   public void setRealEstateDetailUiHandler(RealEstateDetailUiHandlers handler) {
     this.presenter = handler;
 
   }
-	@Override
-	public void setRealEstate(RealEstate o) {
-		//TODO improve and continue
-		
-		reference.setInnerText(o.getReference());
-		addresse.setInnerText(o.getStreet()+ " " +o.getCity()+ " " +o.getCountry());
-		
-		
-		// TODO Auto-generated method stub
-		
-	}
+
+  private void init() {
+    btnUpdate = new Button("Editer", new ClickListener() {
+      public void onClick(Widget sender) {
+        presenter.onButtonUpdateClick();
+      }
+    });
+    btnToDashBoard = new Button("Retour vers le tableau de bord", new ClickListener() {
+      public void onClick(Widget sender) {
+        presenter.onButtonBackToDashBoardClick();
+      }
+    });
+    btnDelete = new Button("Supprimer", new ClickListener() {
+      public void onClick(Widget sender) {
+        Window.alert("Supprimer");
+      }
+    });
+  }
 }

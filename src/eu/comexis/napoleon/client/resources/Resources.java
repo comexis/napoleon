@@ -6,12 +6,11 @@ import com.google.gwt.resources.client.ImageResource;
 
 public interface Resources extends ClientBundle {
 
-	public Resources INSTANCE = GWT.create(Resources.class);
-	
-	@Source("napoleon.css")
-	Css css();
+  public Resources INSTANCE = GWT.create(Resources.class);
 
-	ImageResource loading();
+  @Source("napoleon.css")
+  Css css();
 
+  ImageResource loading();
 
 }

@@ -7,9 +7,9 @@ import eu.comexis.napoleon.shared.command.Action;
 
 public class GetAllRealEstateCommand implements Action<GetAllRealEstateResponse> {
 
-	@Override
-	public void dispatch(AsyncCallback<GetAllRealEstateResponse> callback) {
-		RealEstateServiceAsync.INSTANCE.execute(this, callback);
-	}
+  @Override
+  public void dispatch(AsyncCallback<GetAllRealEstateResponse> callback) {
+    RealEstateServiceAsync.INSTANCE.execute(this, callback);
+  }
 
 }

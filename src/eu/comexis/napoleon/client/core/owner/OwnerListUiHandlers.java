@@ -9,20 +9,21 @@ import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
  * 
  */
 public interface OwnerListUiHandlers {
-	
-	/**
-	 * interface implemented by the view
-	 * @author jDramaix
-	 *
-	 */
-	public interface HasOwnerListUiHandlers {
-		public void setOwnerListUiHandler(OwnerListUiHandlers handler);
-	}
 
-	/**
-	 * Method call when the user select
-	 * 
-	 * @param selectedOwner
-	 */
-	public void onSelect(SimpleOwner selectedOwner);
+  /**
+   * interface implemented by the view
+   * 
+   * @author jDramaix
+   * 
+   */
+  public interface HasOwnerListUiHandlers {
+    public void setOwnerListUiHandler(OwnerListUiHandlers handler);
+  }
+
+  /**
+   * Method call when the user select
+   * 
+   * @param selectedOwner
+   */
+  public void onSelect(SimpleOwner selectedOwner);
 }

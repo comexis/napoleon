@@ -6,7 +6,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Parent;
 
-public class City implements IsSerializable{
+public class City implements IsSerializable {
   @Id
   private String id;
   @Parent
@@ -32,9 +32,11 @@ public class City implements IsSerializable{
   public void setCountry(Key<Country> country) {
     this.country = country;
   }
+
   public void setId(String id) {
     this.id = id;
   }
+
   public void setName(String name) {
     this.name = name;
   }

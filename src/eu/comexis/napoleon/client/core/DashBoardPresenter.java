@@ -14,12 +14,12 @@ import eu.comexis.napoleon.client.place.NameTokens;
 public class DashBoardPresenter extends
     Presenter<DashBoardPresenter.MyView, DashBoardPresenter.MyProxy> {
 
-  public interface MyView extends View {
-  }
-
   @ProxyCodeSplit
   @NameToken(NameTokens.dashboard)
   public interface MyProxy extends ProxyPlace<DashBoardPresenter> {
+  }
+
+  public interface MyView extends View {
   }
 
   @Inject
@@ -28,12 +28,12 @@ public class DashBoardPresenter extends
   }
 
   @Override
-  protected void revealInParent() {
-    RevealContentEvent.fire(this, MainLayoutPresenter.MAIN_CONTENT, this);
+  protected void onBind() {
+    super.onBind();
   }
 
   @Override
-  protected void onBind() {
-    super.onBind();
+  protected void revealInParent() {
+    RevealContentEvent.fire(this, MainLayoutPresenter.MAIN_CONTENT, this);
   }
 }

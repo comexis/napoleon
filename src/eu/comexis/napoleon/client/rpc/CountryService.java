@@ -9,7 +9,8 @@ import eu.comexis.napoleon.shared.command.country.GetAllCountriesCommand;
 import eu.comexis.napoleon.shared.command.country.GetAllCountriesResponse;
 
 @RemoteServiceRelativePath("country")
-public interface CountryService extends RemoteService{
-  public GetAllCountriesResponse execute(GetAllCountriesCommand command);
+public interface CountryService extends RemoteService {
   public GetAllCitiesResponse execute(GetAllCitiesCommand command);
+
+  public GetAllCountriesResponse execute(GetAllCountriesCommand command);
 }

@@ -23,60 +23,60 @@ import eu.comexis.napoleon.shared.command.tenant.GetAllTenantCommand;
 import eu.comexis.napoleon.shared.model.simple.SimpleTenant;
 
 public class TenantListPresenter extends
-		Presenter<TenantListPresenter.MyView, TenantListPresenter.MyProxy>
-		implements TenantListUiHandlers {
+    Presenter<TenantListPresenter.MyView, TenantListPresenter.MyProxy> implements
+    TenantListUiHandlers {
 
-	@ProxyCodeSplit
-	@NameToken(NameTokens.tenantlist)
-	public interface MyProxy extends ProxyPlace<TenantListPresenter> {
-	}
+  @ProxyCodeSplit
+  @NameToken(NameTokens.tenantlist)
+  public interface MyProxy extends ProxyPlace<TenantListPresenter> {
+  }
 
-	public interface MyView extends View, HasTenantListUiHandlers {
-		public void setData(List<SimpleTenant> tenants);
-	}
-	
-	private PlaceManager placeManager;
+  public interface MyView extends View, HasTenantListUiHandlers {
+    public void setData(List<SimpleTenant> tenants);
+  }
 
-	@Inject
-	public TenantListPresenter(final EventBus eventBus, final MyView view,
-			final MyProxy proxy, final PlaceManager placeManager) {
-		super(eventBus, view, proxy);
-		
-		this.placeManager = placeManager;
+  private PlaceManager placeManager;
 
-	}
+  @Inject
+  public TenantListPresenter(final EventBus eventBus, final MyView view, final MyProxy proxy,
+      final PlaceManager placeManager) {
+    super(eventBus, view, proxy);
 
-	@Override
-	protected void onBind() {
-		super.onBind();
+    this.placeManager = placeManager;
 
-		getView().setTenantListUiHandler(this);
-	}
+  }
 
-	@Override
-	protected void onReset() {
-		super.onReset();
+  @Override
+  public void onSelect(SimpleTenant selectedTenant) {
+    PlaceRequest myRequest = new PlaceRequest(NameTokens.tenant);
+    // add the id of the tenant to load
+    myRequest = myRequest.with(UUID_PARAMETER, selectedTenant.getId());
+    placeManager.revealPlace(myRequest);
+  }
 
-		new GetAllTenantCommand().dispatch(new GotAllTenant() {
-			@Override
-			public void got(List<SimpleTenant> tenants) {
-				getView().setData(tenants);
+  @Override
+  protected void onBind() {
+    super.onBind();
 
-			}
-		});
-	}
+    getView().setTenantListUiHandler(this);
+  }
 
-	@Override
-	public void onSelect(SimpleTenant selectedTenant) {
-		PlaceRequest myRequest = new PlaceRequest(NameTokens.tenant);
-		// add the id of the tenant to load
-		myRequest = myRequest.with(UUID_PARAMETER, selectedTenant.getId());
-		placeManager.revealPlace(myRequest);
-	}
+  @Override
+  protected void onReset() {
+    super.onReset();
 
-	@Override
-	protected void revealInParent() {
-		RevealContentEvent.fire(this, MainLayoutPresenter.MAIN_CONTENT, this);
-	}
+    new GetAllTenantCommand().dispatch(new GotAllTenant() {
+      @Override
+      public void got(List<SimpleTenant> tenants) {
+        getView().setData(tenants);
+
+      }
+    });
+  }
+
+  @Override
+  protected void revealInParent() {
+    RevealContentEvent.fire(this, MainLayoutPresenter.MAIN_CONTENT, this);
+  }
 
 }

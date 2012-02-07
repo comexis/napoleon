@@ -12,11 +12,11 @@ import eu.comexis.napoleon.shared.command.tenant.UpdateTenantResponse;
 
 @RemoteServiceRelativePath("tenant")
 public interface TenantService extends RemoteService {
-	
-	public GetAllTenantResponse execute(GetAllTenantCommand command);
-	
-	public GetTenantResponse execute(GetTenantCommand command);
-	
-	public UpdateTenantResponse execute(UpdateTenantCommand command);
+
+  public GetAllTenantResponse execute(GetAllTenantCommand command);
+
+  public GetTenantResponse execute(GetTenantCommand command);
+
+  public UpdateTenantResponse execute(UpdateTenantCommand command);
 
 }

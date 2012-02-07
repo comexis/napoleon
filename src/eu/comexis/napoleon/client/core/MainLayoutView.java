@@ -9,66 +9,65 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
-public class MainLayoutView extends ViewImpl implements
-		MainLayoutPresenter.MyView {
+public class MainLayoutView extends ViewImpl implements MainLayoutPresenter.MyView {
 
-	private final Widget widget;
+  public interface Binder extends UiBinder<Widget, MainLayoutView> {
+  }
 
-	public interface Binder extends UiBinder<Widget, MainLayoutView> {
-	}
+  private final Widget widget;
 
-	@UiField
-	Element userNameElement;
+  @UiField
+  Element userNameElement;
 
-	@UiField
-	Element logoElement;
+  @UiField
+  Element logoElement;
 
-	@UiField
-	AnchorElement signOutLink;
-	
-	@UiField
-	Panel centerPanel;
-	
-	@UiField
-	Panel leftPanel;
+  @UiField
+  AnchorElement signOutLink;
 
-	@Inject
-	public MainLayoutView(final Binder binder) {
-		widget = binder.createAndBindUi(this);
-	}
+  @UiField
+  Panel centerPanel;
 
-	@Override
-	public Widget asWidget() {
-		return widget;
-	}
+  @UiField
+  Panel leftPanel;
 
-	@Override
-	public void setUserName(String userName) {
-		userNameElement.setInnerText(userName);
-	}
+  @Inject
+  public MainLayoutView(final Binder binder) {
+    widget = binder.createAndBindUi(this);
+  }
 
-	@Override
-	public void setLogo(String logo) {
-		logoElement.setInnerText(logo);
+  @Override
+  public Widget asWidget() {
+    return widget;
+  }
 
-	}
+  @Override
+  public void setInSlot(Object slot, Widget content) {
+    if (slot == MainLayoutPresenter.MAIN_CONTENT) {
+      centerPanel.clear();
+      centerPanel.add(content);
+    } else if (slot == MainLayoutPresenter.LEFT_CONTENT) {
+      leftPanel.clear();
+      leftPanel.add(content);
+    } else {
+      super.setInSlot(slot, content);
+    }
+  }
 
-	@Override
-	public void setLogoutUrl(String logoutUrl) {
-		signOutLink.setHref(logoutUrl);
+  @Override
+  public void setLogo(String logo) {
+    logoElement.setInnerText(logo);
 
-	}
-	
-	 @Override
-	  public void setInSlot(Object slot, Widget content) {
-	    if (slot == MainLayoutPresenter.MAIN_CONTENT) {
-	    	centerPanel.clear();
-	    	centerPanel.add(content);
-	    } else if (slot == MainLayoutPresenter.LEFT_CONTENT) {
-	    	leftPanel.clear();
-	    	leftPanel.add(content);
-	    }else{
-	      super.setInSlot(slot, content);
-	    }
-	  }
+  }
+
+  @Override
+  public void setLogoutUrl(String logoutUrl) {
+    signOutLink.setHref(logoutUrl);
+
+  }
+
+  @Override
+  public void setUserName(String userName) {
+    userNameElement.setInnerText(userName);
+  }
 }

@@ -12,11 +12,11 @@ import eu.comexis.napoleon.shared.command.estate.UpdateRealEstateResponse;
 
 @RemoteServiceRelativePath("realEstate")
 public interface RealEstateService extends RemoteService {
-	
-	public GetAllRealEstateResponse execute(GetAllRealEstateCommand command);
-	
-	public GetRealEstateResponse execute(GetRealEstateCommand command);
-	
-	public UpdateRealEstateResponse execute(UpdateRealEstateCommand command);
+
+  public GetAllRealEstateResponse execute(GetAllRealEstateCommand command);
+
+  public GetRealEstateResponse execute(GetRealEstateCommand command);
+
+  public UpdateRealEstateResponse execute(UpdateRealEstateCommand command);
 
 }

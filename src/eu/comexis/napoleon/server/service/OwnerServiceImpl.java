@@ -26,51 +26,52 @@ import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
  * 
  */
 @SuppressWarnings("serial")
-public class OwnerServiceImpl extends RemoteServiceServlet implements
-		OwnerService {
+public class OwnerServiceImpl extends RemoteServiceServlet implements OwnerService {
 
-	private static Log LOG = LogFactory.getLog(OwnerServiceImpl.class);
+  private static Log LOG = LogFactory.getLog(OwnerServiceImpl.class);
 
-	@Override
-	public GetAllOwnerResponse execute(GetAllOwnerCommand command) {
+  @Override
+  public GetAllOwnerResponse execute(GetAllOwnerCommand command) {
 
-		String companyId = UserManager.INSTANCE.getCompanyId();
-		OwnerDao ownerData = new OwnerDao();
-		ArrayList<SimpleOwner> owners = ownerData.getListSimpleOwners(companyId);
+    String companyId = UserManager.INSTANCE.getCompanyId();
+    OwnerDao ownerData = new OwnerDao();
+    ArrayList<SimpleOwner> owners = ownerData.getListSimpleOwners(companyId);
 
-		GetAllOwnerResponse response = new GetAllOwnerResponse();
-		response.setOwners(owners);
+    GetAllOwnerResponse response = new GetAllOwnerResponse();
+    response.setOwners(owners);
 
-		return response;
-	}
+    return response;
+  }
 
-	@Override
-	public GetOwnerResponse execute(GetOwnerCommand command) {
-		String id = command.getId();
+  @Override
+  public GetOwnerResponse execute(GetOwnerCommand command) {
+    String id = command.getId();
+    String companyId = UserManager.INSTANCE.getCompanyId();
+    OwnerDao dao = new OwnerDao();
+    if (id != "new" && (id == null || id.length() == 0)) {
+      LOG.warn("Try to get an owner without passing an id !! Return error 500");
+      // will generate an error 500. Do put to many info
+      throw new RuntimeException("Ooops something wrong happened");
+    }
+    if (id == "new") {
+      Owner o = dao.create(companyId);
+    }
+    Owner o = dao.getById(id, companyId);
+    GetOwnerResponse response = new GetOwnerResponse();
+    response.setOwner(o);
 
-		if (id == null || id.length() == 0) {
-			LOG.warn("Try to get an owner without passing an id !! Return error 500");
-			// will generate an error 500. Do put to many info
-			throw new RuntimeException("Ooops something wrong happened");
-		}
-		String companyId = UserManager.INSTANCE.getCompanyId();
-		OwnerDao dao = new OwnerDao();
-		Owner o = dao.getById(id,companyId);
-		GetOwnerResponse response = new GetOwnerResponse();
-		response.setOwner(o);
+    return response;
+  }
 
-		return response;
-	}
-
-	@Override
-	public UpdateOwnerResponse execute(UpdateOwnerCommand command) {
-		Owner owner = command.getOwner();
-		String companyId = UserManager.INSTANCE.getCompanyId();
-		OwnerDao dao = new OwnerDao();
-		owner = dao.update(owner);
-		UpdateOwnerResponse response = new UpdateOwnerResponse();
-		response.setOwner(owner);
-		return response;
-	}
+  @Override
+  public UpdateOwnerResponse execute(UpdateOwnerCommand command) {
+    Owner owner = command.getOwner();
+    String companyId = UserManager.INSTANCE.getCompanyId();
+    OwnerDao dao = new OwnerDao();
+    owner = dao.update(owner);
+    UpdateOwnerResponse response = new UpdateOwnerResponse();
+    response.setOwner(owner);
+    return response;
+  }
 
 }

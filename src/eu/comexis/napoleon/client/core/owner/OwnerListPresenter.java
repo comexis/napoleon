@@ -23,71 +23,70 @@ import eu.comexis.napoleon.shared.command.owner.GetAllOwnerCommand;
 import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 
 public class OwnerListPresenter extends
-		Presenter<OwnerListPresenter.MyView, OwnerListPresenter.MyProxy>
-		implements OwnerListUiHandlers {
+    Presenter<OwnerListPresenter.MyView, OwnerListPresenter.MyProxy> implements OwnerListUiHandlers {
 
-	@ProxyCodeSplit
-	@NameToken(NameTokens.ownerlist)
-	public interface MyProxy extends ProxyPlace<OwnerListPresenter> {
-	}
+  @ProxyCodeSplit
+  @NameToken(NameTokens.ownerlist)
+  public interface MyProxy extends ProxyPlace<OwnerListPresenter> {
+  }
 
-	public interface MyView extends View, HasOwnerListUiHandlers {
-		public void setData(List<SimpleOwner> owners);
+  public interface MyView extends View, HasOwnerListUiHandlers {
+    public void dataIsLoading();
 
-		public void dataIsLoading();
-	}
-	
-	private PlaceManager placeManager;
-	private boolean dataLoaded;
+    public void setData(List<SimpleOwner> owners);
+  }
 
-	@Inject
-	public OwnerListPresenter(final EventBus eventBus, final MyView view,
-			final MyProxy proxy, final PlaceManager placeManager) {
-		super(eventBus, view, proxy);
-		
-		this.placeManager = placeManager;
-		dataLoaded = false;
+  private PlaceManager placeManager;
+  private boolean dataLoaded;
 
-	}
+  @Inject
+  public OwnerListPresenter(final EventBus eventBus, final MyView view, final MyProxy proxy,
+      final PlaceManager placeManager) {
+    super(eventBus, view, proxy);
 
-	@Override
-	protected void onBind() {
-		super.onBind();
+    this.placeManager = placeManager;
+    dataLoaded = false;
 
-		getView().setOwnerListUiHandler(this);
-	}
+  }
 
-	@Override
-	protected void onReset() {
-		super.onReset();
-		
-		if (dataLoaded){
-			return;
-		}
-		
-		getView().dataIsLoading();
-		
-		new GetAllOwnerCommand().dispatch(new GotAllOwner() {
-			@Override
-			public void got(List<SimpleOwner> owners) {
-				getView().setData(owners);
-				dataLoaded = true;
+  @Override
+  public void onSelect(SimpleOwner selectedOwner) {
+    PlaceRequest myRequest = new PlaceRequest(NameTokens.owner);
+    // add the id of the owner to load
+    myRequest = myRequest.with(UUID_PARAMETER, selectedOwner.getId());
+    placeManager.revealPlace(myRequest);
+  }
 
-			}
-		});
-	}
+  @Override
+  protected void onBind() {
+    super.onBind();
 
-	@Override
-	public void onSelect(SimpleOwner selectedOwner) {
-		PlaceRequest myRequest = new PlaceRequest(NameTokens.owner);
-		// add the id of the owner to load
-		myRequest = myRequest.with(UUID_PARAMETER, selectedOwner.getId());
-		placeManager.revealPlace(myRequest);
-	}
+    getView().setOwnerListUiHandler(this);
+  }
 
-	@Override
-	protected void revealInParent() {
-		RevealContentEvent.fire(this, MainLayoutPresenter.MAIN_CONTENT, this);
-	}
+  @Override
+  protected void onReset() {
+    super.onReset();
+
+    if (dataLoaded) {
+      return;
+    }
+
+    getView().dataIsLoading();
+
+    new GetAllOwnerCommand().dispatch(new GotAllOwner() {
+      @Override
+      public void got(List<SimpleOwner> owners) {
+        getView().setData(owners);
+        dataLoaded = true;
+
+      }
+    });
+  }
+
+  @Override
+  protected void revealInParent() {
+    RevealContentEvent.fire(this, MainLayoutPresenter.MAIN_CONTENT, this);
+  }
 
 }

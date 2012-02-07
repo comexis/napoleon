@@ -12,18 +12,20 @@ import eu.comexis.napoleon.client.resources.Resources;
 
 public class LoadingDataIndicator extends Composite {
 
-	public interface Templates extends SafeHtmlTemplates {
+  public interface Templates extends SafeHtmlTemplates {
 
-		@Template("<div class=\"{0}\"><div class=\"{1}\">{2}</div></div>")
-		SafeHtml loading(String styleOuter, String styleInner, String text);
-	}
+    @Template("<div class=\"{0}\"><div class=\"{1}\">{2}</div></div>")
+    SafeHtml loading(String styleOuter, String styleInner, String text);
+  }
 
-	public LoadingDataIndicator() {
-		Templates templates = GWT.create(Templates.class);
-		Css css = Resources.INSTANCE.css();
-				
-		HTMLPanel panel = new HTMLPanel(templates.loading(css.loadingOuter(), css.loadingInner(), Literals.INSTANCE.dataLoading()));
-		
-		initWidget(panel);
-	}
+  public LoadingDataIndicator() {
+    Templates templates = GWT.create(Templates.class);
+    Css css = Resources.INSTANCE.css();
+
+    HTMLPanel panel =
+        new HTMLPanel(templates.loading(css.loadingOuter(), css.loadingInner(), Literals.INSTANCE
+            .dataLoading()));
+
+    initWidget(panel);
+  }
 }

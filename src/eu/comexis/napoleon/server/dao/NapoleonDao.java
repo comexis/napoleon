@@ -6,6 +6,7 @@ package eu.comexis.napoleon.server.dao;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -44,7 +45,8 @@ public class NapoleonDao<T> extends DAOBase {
     ObjectifyService.register(ApplicationUser.class);
   }
   protected Class<T> clazz;
-  //protected Key<Company> companyKey;
+
+  // protected Key<Company> companyKey;
 
   @SuppressWarnings("unchecked")
   public NapoleonDao() {
@@ -52,20 +54,7 @@ public class NapoleonDao<T> extends DAOBase {
     // Allow this class to be safely instantiated with or without a
     // parameterized type
     if (genericSuperclass instanceof ParameterizedType)
-      clazz = (Class<T>) ((ParameterizedType) genericSuperclass)
-          .getActualTypeArguments()[0];
-  }
-  public T update(T entity) {
-    LOG.info("Update Entity " + clazz);
-    try {
-      Key<T> entityKey = ofy().put(entity);
-      LOG.info("Entity " + clazz + " has been updated");
-      return ofy().get(entityKey);
-    } catch (Exception e) {
-      LOG.fatal("Entity " + clazz + " cannot be updated: "
-          + e.getMessage());
-      return null;
-    }
+      clazz = (Class<T>) ((ParameterizedType) genericSuperclass).getActualTypeArguments()[0];
   }
 
   public Boolean delete(T entity) {
@@ -78,10 +67,30 @@ public class NapoleonDao<T> extends DAOBase {
       return false;
     }
   }
-  public List<T> listAll(String companyId) {
-    Key<Company> companyKey = new Key<Company>(Company.class, companyId);
-    return listAll(companyKey);
+
+  public void deleteAll(Iterable<T> entities) {
+    LOG.info("Delete all Entities " + entities.toString());
+    ofy().delete(entities);
+    LOG.info("Done");
   }
+
+  public T getById(String id, Key<Company> companyKey) {
+    LOG.info("Get Entity " + clazz + " by id " + id + " for company " + companyKey.toString());
+    try {
+      T entity = ofy().get(new Key<T>(companyKey, this.clazz, id));
+      return entity;
+    } catch (Exception e) {
+      e.printStackTrace();
+      LOG.error("Entity not found " + e.getMessage());
+      return null;
+    }
+  }
+
+  public T getById(String id, String companyId) {
+    Key<Company> companyKey = new Key<Company>(Company.class, companyId);
+    return getById(id, companyKey);
+  }
+
   public List<T> listAll(Key<Company> companyKey) {
     LOG.info("List all Entity " + clazz + " for company " + companyKey.toString());
     Query<T> q = ofy().query(this.clazz);
@@ -90,23 +99,20 @@ public class NapoleonDao<T> extends DAOBase {
     }
     return q.list();
   }
-  public void deleteAll(Iterable<T> entities) {
-    LOG.info("Delete all Entities " + entities.toString());
-    ofy().delete(entities);
-    LOG.info("Done");
-  }
-  public T getById(String id,String companyId) {
+
+  public List<T> listAll(String companyId) {
     Key<Company> companyKey = new Key<Company>(Company.class, companyId);
-    return getById(id,companyKey);
+    return listAll(companyKey);
   }
-  public T getById(String id,Key<Company> companyKey) {
-    LOG.info("Get Entity " + clazz + " by id " + id + " for company " + companyKey.toString());
+
+  public T update(T entity) {
+    LOG.info("Update Entity " + clazz);
     try {
-      T entity = ofy().get(new Key<T>(companyKey, this.clazz, id));
-      return entity;
+      Key<T> entityKey = ofy().put(entity);
+      LOG.info("Entity " + clazz + " has been updated");
+      return ofy().get(entityKey);
     } catch (Exception e) {
-      e.printStackTrace();
-      LOG.error("Entity not found " + e.getMessage());
+      LOG.fatal("Entity " + clazz + " cannot be updated: " + e.getMessage());
       return null;
     }
   }

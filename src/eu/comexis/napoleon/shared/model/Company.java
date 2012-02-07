@@ -4,72 +4,71 @@ import javax.persistence.Id;
 
 public class Company {
 
-	@Id
-	private String id;
-	private String name;
-	private String address;
-	private String email;
-	private String url;
-	private String telephone;
-	private String fax;
+  @Id
+  private String id;
+  private String name;
+  private String address;
+  private String email;
+  private String url;
+  private String telephone;
+  private String fax;
 
-	public Company() {
-	}
+  public Company() {
+  }
 
+  public String getAddress() {
+    return address;
+  }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+  public String getEmail() {
+    return email;
+  }
 
-	public String getId() {
-		return id;
-	}
+  public String getFax() {
+    return fax;
+  }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  public String getId() {
+    return id;
+  }
 
-	public String getName() {
-		return name;
-	}
+  public String getName() {
+    return name;
+  }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+  public String getTelephone() {
+    return telephone;
+  }
 
-	public String getAddress() {
-		return address;
-	}
+  public String getUrl() {
+    return url;
+  }
 
-	public String getEmail() {
-		return email;
-	}
+  public void setAddress(String address) {
+    this.address = address;
+  }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+  public void setEmail(String email) {
+    this.email = email;
+  }
 
-	public String getUrl() {
-		return url;
-	}
+  public void setFax(String fax) {
+    this.fax = fax;
+  }
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
+  public void setId(String id) {
+    this.id = id;
+  }
 
-	public String getTelephone() {
-		return telephone;
-	}
+  public void setName(String name) {
+    this.name = name;
+  }
 
-	public void setTelephone(String telephone) {
-		this.telephone = telephone;
-	}
+  public void setTelephone(String telephone) {
+    this.telephone = telephone;
+  }
 
-	public String getFax() {
-		return fax;
-	}
-
-	public void setFax(String fax) {
-		this.fax = fax;
-	}
+  public void setUrl(String url) {
+    this.url = url;
+  }
 }

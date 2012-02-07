@@ -7,9 +7,9 @@ import eu.comexis.napoleon.shared.command.Action;
 
 public class GetAllTenantCommand implements Action<GetAllTenantResponse> {
 
-	@Override
-	public void dispatch(AsyncCallback<GetAllTenantResponse> callback) {
-		TenantServiceAsync.INSTANCE.execute(this, callback);
-	}
+  @Override
+  public void dispatch(AsyncCallback<GetAllTenantResponse> callback) {
+    TenantServiceAsync.INSTANCE.execute(this, callback);
+  }
 
 }

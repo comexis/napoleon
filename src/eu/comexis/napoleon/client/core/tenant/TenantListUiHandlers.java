@@ -9,20 +9,21 @@ import eu.comexis.napoleon.shared.model.simple.SimpleTenant;
  * 
  */
 public interface TenantListUiHandlers {
-	
-	/**
-	 * interface implemented by the view
-	 * @author jDramaix
-	 *
-	 */
-	public interface HasTenantListUiHandlers {
-		public void setTenantListUiHandler(TenantListUiHandlers handler);
-	}
 
-	/**
-	 * Method call when the user select
-	 * 
-	 * @param selectedTenant
-	 */
-	public void onSelect(SimpleTenant selectedTenant);
+  /**
+   * interface implemented by the view
+   * 
+   * @author jDramaix
+   * 
+   */
+  public interface HasTenantListUiHandlers {
+    public void setTenantListUiHandler(TenantListUiHandlers handler);
+  }
+
+  /**
+   * Method call when the user select
+   * 
+   * @param selectedTenant
+   */
+  public void onSelect(SimpleTenant selectedTenant);
 }
