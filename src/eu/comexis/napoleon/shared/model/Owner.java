@@ -24,7 +24,11 @@ public class Owner extends Party implements IsSerializable {
   }
 
   public BigDecimal getFee() {
-    return new BigDecimal(fee).divide(CONVERSION_FACTOR);
+    if (fee != null) {
+      return new BigDecimal(fee).divide(CONVERSION_FACTOR);
+    } else {
+      return new BigDecimal(0);
+    }
   }
 
   public String getUnit() {
@@ -33,6 +37,11 @@ public class Owner extends Party implements IsSerializable {
 
   public void setFee(BigDecimal fee) {
     this.fee = fee.multiply(CONVERSION_FACTOR).longValueExact();
+  }
+
+  public void setFee(String fee) {
+    BigDecimal bdFee = new BigDecimal(fee);
+    this.setFee(bdFee);
   }
 
   public void setUnit(String unit) {

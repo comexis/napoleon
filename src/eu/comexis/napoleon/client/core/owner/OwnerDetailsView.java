@@ -14,114 +14,111 @@ import eu.comexis.napoleon.client.utils.UiHelper;
 import eu.comexis.napoleon.shared.model.Owner;
 import eu.comexis.napoleon.shared.model.Title;
 
-public class OwnerDetailsView extends ViewImpl implements
-		OwnerDetailsPresenter.MyView {
+public class OwnerDetailsView extends ViewImpl implements OwnerDetailsPresenter.MyView {
 
-	private final Widget widget;
-	private OwnerDetailUiHandlers presenter;
+  public interface Binder extends UiBinder<Widget, OwnerDetailsView> {
+  }
 
-	public interface Binder extends UiBinder<Widget, OwnerDetailsView> {
-	}
-	@UiField
+  private final Widget widget;
+
+  private OwnerDetailUiHandlers presenter;
+  @UiField
   Element title;
-	@UiField
-	Element name;
-	@UiField
-	Element firstName;
-	@UiField
-	Element email;
-	@UiField
-	Element phoneNumber;
-	@UiField
-	Element mobileNumber;
-	@UiField
-	Element birthDay;
-	@UiField
-	Element addresse;
-	@UiField
-	Element maritalStatus;
-	@UiField
+  @UiField
+  Element name;
+  @UiField
+  Element firstName;
+  @UiField
+  Element email;
+  @UiField
+  Element phoneNumber;
+  @UiField
+  Element mobileNumber;
+  @UiField
+  Element birthDay;
+  @UiField
+  Element addresse;
+  @UiField
+  Element maritalStatus;
+  @UiField
   Element matrimonialRegime;
-	@UiField
+  @UiField
   Element bic;
-	@UiField
+  @UiField
   Element iban;
-	@UiField
+  @UiField
   Element fee;
-	@UiField
+  @UiField
   Element nationalRegister;
-	@UiField
+  @UiField
   Element nationality;
-	@UiField
+  @UiField
   Element job;
-	@UiField
+  @UiField
   Element fax;
-	@UiField
+  @UiField
   Element placeOfBirth;
 
-	@Inject
-	public OwnerDetailsView(final Binder binder) {
-		widget = binder.createAndBindUi(this);
+  @Inject
+  public OwnerDetailsView(final Binder binder) {
+    widget = binder.createAndBindUi(this);
 
-	}
+  }
 
-	@Override
-	public Widget asWidget() {
-		return widget;
-	}
+  @Override
+  public Widget asWidget() {
+    return widget;
+  }
 
-	@UiHandler("btnUpdate")
-	public void onUpdateClicked(ClickEvent e){
-		presenter.onButtonUpdateClick();
-	}
+  @UiHandler("btnDelete")
+  public void onDeleteClicked(ClickEvent e) {
+    Window.alert("Supprimer");
+  }
 
-	@UiHandler("btnDelete")
-	public void onDeleteClicked(ClickEvent e){
-		Window.alert("Supprimer");
-	}
+  @UiHandler("btnToDashBoard")
+  public void onGoHomeClicked(ClickEvent e) {
+    presenter.onButtonBackToDashBoardClick();
+  }
 
+  @UiHandler("btnUpdate")
+  public void onUpdateClicked(ClickEvent e) {
+    presenter.onButtonUpdateClick();
+  }
 
-	@UiHandler("btnToDashBoard")
-	public void onGoHomeClicked(ClickEvent e){
-		presenter.onButtonBackToDashBoardClick();
-	}
+  @Override
+  public void setOwner(Owner o) {
+    title.setInnerText(UiHelper.translateEnum("Title_", o.getTitle()));
+    name.setInnerText(o.getLastName());
+    firstName.setInnerText(o.getFirstName());
+    if (o.getUnit() != null) {
+      if (o.getUnit().equals("%")) {
+        fee.setInnerText(o.getFee() + " % LOYER");
+      } else {
+        fee.setInnerText("SOMME FORFAITAIRE: " + o.getFee());
+      }
+    }
+    iban.setInnerText(o.getIban());
+    bic.setInnerText(o.getBic());
+    email.setInnerText(o.getEmail());
+    phoneNumber.setInnerText(o.getPhoneNumber());
+    mobileNumber.setInnerText(o.getMobilePhoneNumber());
+    fax.setInnerText(o.getFax());
+    placeOfBirth.setInnerText(o.getPlaceOfBirth());
+    nationality.setInnerText(o.getNationality());
+    job.setInnerText(o.getJobTitle());
+    nationalRegister.setInnerText(o.getNationalRegisterNumber());
+    birthDay.setInnerText(o.getDateOfBirth() != null ? o.getDateOfBirth().toGMTString() : "");
+    addresse.setInnerText(o.getStreet() + " " + o.getCity() + " " + o.getCountry());
+    maritalStatus.setInnerText(o.getMaritalStatus() != null ? o.getMaritalStatus().name()
+        .toLowerCase() : "");
 
-	@Override
-	public void setOwnerDetailUiHandler(OwnerDetailUiHandlers handler) {
-		this.presenter = handler;
+    // TODO Auto-generated method stub
 
-	}
+  }
 
-	@Override
-	public void setOwner(Owner o) {
-	  title.setInnerText(UiHelper.translateEnum("Title_", o.getTitle()));
-		name.setInnerText(o.getLastName());
-		firstName.setInnerText(o.getFirstName());
-		if (o.getUnit() != null){
-  		if (o.getUnit().equals("%")){
-  		  fee.setInnerText(o.getFee() + " % LOYER");
-  		}else{
-  		  fee.setInnerText("SOMME FORFAITAIRE: " + o.getFee());
-  		}
-		}
-		iban.setInnerText(o.getIban());
-		bic.setInnerText(o.getBic());
-		email.setInnerText(o.getEmail());
-		phoneNumber.setInnerText(o.getPhoneNumber());
-		mobileNumber.setInnerText(o.getMobilePhoneNumber());
-		fax.setInnerText(o.getFax());
-		placeOfBirth.setInnerText(o.getPlaceOfBirth());
-		nationality.setInnerText(o.getNationality());
-		job.setInnerText(o.getJobTitle());
-		nationalRegister.setInnerText(o.getNationalRegisterNumber());
-		birthDay.setInnerText(o.getDateOfBirth() != null ? o.getDateOfBirth()
-				.toGMTString() : "");
-		addresse.setInnerText(o.getStreet() + " " + o.getCity() + " "
-				+ o.getCountry());
-		maritalStatus.setInnerText(o.getMaritalStatus() != null ? o
-				.getMaritalStatus().name().toLowerCase() : "");
+  @Override
+  public void setOwnerDetailUiHandler(OwnerDetailUiHandlers handler) {
+    this.presenter = handler;
 
-		// TODO Auto-generated method stub
-
-	}
+  }
 }

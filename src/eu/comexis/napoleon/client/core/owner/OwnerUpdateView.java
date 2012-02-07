@@ -13,13 +13,14 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
+import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
-import eu.comexis.napoleon.client.resources.Literals;
 import eu.comexis.napoleon.client.utils.UiHelper;
 import eu.comexis.napoleon.shared.model.Country;
 import eu.comexis.napoleon.shared.model.MaritalStatus;
@@ -30,11 +31,11 @@ import eu.comexis.napoleon.shared.model.Title;
 public class OwnerUpdateView extends ViewImpl implements
 		OwnerUpdatePresenter.MyView {
 
-	private final Widget widget;
-	private OwnerUpdateUiHandlers presenter;
-
 	public interface Binder extends UiBinder<Widget, OwnerUpdateView> {
 	}
+	private final Widget widget;
+
+	private OwnerUpdateUiHandlers presenter;
 
 	@UiField
 	TextBox name;
@@ -64,6 +65,24 @@ public class OwnerUpdateView extends ViewImpl implements
 	DateBox birthDayDateBox;
 	@UiField(provided = true)
 	ListBox title;
+	@UiField
+  TextBox fee;
+	@UiField(provided = true)
+  ListBox unit;
+	@UiField
+  TextBox iban;
+	@UiField
+  TextBox bic;
+	@UiField
+  TextBox fax;
+	@UiField
+  TextBox placeOfBirth;
+	@UiField(provided = true)
+  SuggestBox nationality;
+	@UiField(provided = true)
+  SuggestBox job;
+	@UiField
+  TextBox nationalRegister;
 
 	@Inject
 	public OwnerUpdateView(final Binder binder) {
@@ -71,19 +90,14 @@ public class OwnerUpdateView extends ViewImpl implements
 		widget = binder.createAndBindUi(this);
 	}
 
-	@UiHandler("btnSave")
-	public void onSave(ClickEvent e){
-		presenter.onButtonSaveClick();
-	}
-
-	@UiHandler("btnCancel")
-	public void onCancel(ClickEvent e){
-		presenter.onButtonCancelClick();
-	}
-
 	@Override
 	public Widget asWidget() {
 		return widget;
+	}
+
+	@Override
+	public void displayError(String error) {
+		Window.alert(error);
 	}
 
 	@Override
@@ -100,13 +114,6 @@ public class OwnerUpdateView extends ViewImpl implements
 		}
 		city.addItem("(...)");
 		city.setItemSelected(index, true);
-	}
-
-	@Override
-	public String getSelectedCountry() {
-		Integer index = country.getSelectedIndex();
-		String countryToSelect = country.getValue(index);
-		return countryToSelect;
 	}
 
 	@Override
@@ -127,26 +134,20 @@ public class OwnerUpdateView extends ViewImpl implements
 	}
 
 	@Override
-	public Owner updateOwner(Owner o) {
-		o.setTitle(Title.valueOf(title.getValue(title.getSelectedIndex())));
-		o.setFirstName(firstName.getValue());
-		o.setLastName(name.getValue());
-		o.setEmail(email.getValue());
-		o.setPhoneNumber(phoneNumber.getValue());
-		o.setMobilePhoneNumber(mobileNumber.getValue());
-		o.setDateOfBirth(birthDayDateBox.getValue());
-		o.setStreet(addresse.getValue());
-		o.setCity(city.getValue(city.getSelectedIndex()).equals("(...)") ? cityOther
-				.getValue() : city.getValue(city.getSelectedIndex()));
-		o.setCountry(country.getItemText(country.getSelectedIndex()).equals(
-				"(...)") ? countryOther.getValue() : country
-				.getItemText(country.getSelectedIndex()));
-		o.setMaritalStatus(MaritalStatus.fromStringToEnum(maritalStatus
-				.getValue(maritalStatus.getSelectedIndex())));
-		o.setMatrimonialRegime(MatrimonialRegime
-				.fromStringToEnum(matrimonialRegime.getValue(matrimonialRegime
-						.getSelectedIndex())));
-		return o;
+	public String getSelectedCountry() {
+		Integer index = country.getSelectedIndex();
+		String countryToSelect = country.getValue(index);
+		return countryToSelect;
+	}
+
+  @UiHandler("btnCancel")
+  public void onCancel(ClickEvent e) {
+    presenter.onButtonCancelClick();
+  }
+
+	@UiHandler("btnSave")
+	public void onSave(ClickEvent e){
+		presenter.onButtonSaveClick();
 	}
 
 	@Override
@@ -158,12 +159,24 @@ public class OwnerUpdateView extends ViewImpl implements
 		}
 		name.setText(o.getLastName());
 		firstName.setText(o.getFirstName());
+		fee.setText(o.getFee().toString());
+		if (o.getUnit() != null) {
+      if (o.getUnit().equals("%")) {
+        unit.setSelectedIndex(0);
+      } else {
+        unit.setSelectedIndex(1);
+      }
+    }
+		bic.setText(o.getBic());
+		iban.setText(o.getIban());
 		email.setText(o.getEmail());
 		phoneNumber.setText(o.getPhoneNumber());
 		mobileNumber.setText(o.getMobilePhoneNumber());
+		fax.setText(o.getFax());
 		birthDayDateBox.setValue(o.getDateOfBirth());
 		DateTimeFormat dateFormat = DateTimeFormat.getShortDateFormat();
 		birthDayDateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
+		placeOfBirth.setText(o.getPlaceOfBirth());
 		addresse.setText(o.getStreet());
 		country.clear();
 		country.addItem(o.getCountry(), o.getCountry());
@@ -171,6 +184,9 @@ public class OwnerUpdateView extends ViewImpl implements
 		city.clear();
 		city.addItem(o.getCity(), o.getCity());
 		city.setSelectedIndex(0);
+		nationality.setText(o.getNationality());
+		job.setText(o.getJobTitle());
+		nationalRegister.setText(o.getNationalRegisterNumber());
 		for (int i = 0; i < maritalStatus.getItemCount(); i++) {
 			if (maritalStatus.getValue(i).equals(o.getMaritalStatus().name())) {
 				maritalStatus.setSelectedIndex(i);
@@ -189,12 +205,79 @@ public class OwnerUpdateView extends ViewImpl implements
 
 	}
 
+	@Override
+	public void setOwnerUpdateUiHandler(OwnerUpdateUiHandlers handler) {
+		this.presenter = handler;
+	}
+
+	@Override
+	public void showCityOther(Boolean show) {
+		if (show.equals(true)) {
+			$("#cityOther").show();
+		} else {
+			$("#cityOther").hide();
+		}
+	}
+
+	@Override
+	public void showCountryOther(Boolean show) {
+		if (show.equals(true)) {
+			$("#countryOther").show();
+		} else {
+			$("#countryOther").hide();
+		}
+	}
+
+	@Override
+	public Owner updateOwner(Owner o) {
+		o.setTitle(Title.valueOf(title.getValue(title.getSelectedIndex())));
+		o.setFirstName(firstName.getValue());
+		o.setLastName(name.getValue());
+		o.setFee(fee.getValue());
+		o.setUnit((unit.getSelectedIndex()==0)? "%" : "EUR");
+		o.setBic(bic.getValue());
+		o.setIban(iban.getValue());
+		o.setEmail(email.getValue());
+		o.setPhoneNumber(phoneNumber.getValue());
+		o.setMobilePhoneNumber(mobileNumber.getValue());
+		o.setFax(fax.getValue());
+		o.setDateOfBirth(birthDayDateBox.getValue());
+		o.setPlaceOfBirth(placeOfBirth.getValue());
+		o.setStreet(addresse.getValue());
+		o.setCity(city.getValue(city.getSelectedIndex()).equals("(...)") ? cityOther
+				.getValue() : city.getValue(city.getSelectedIndex()));
+		o.setCountry(country.getItemText(country.getSelectedIndex()).equals(
+				"(...)") ? countryOther.getValue() : country
+				.getItemText(country.getSelectedIndex()));
+		o.setJobTitle(job.getValue());
+		o.setNationality(nationality.getValue());
+		o.setNationalRegisterNumber(nationalRegister.getValue());
+		o.setMaritalStatus(MaritalStatus.fromStringToEnum(maritalStatus
+				.getValue(maritalStatus.getSelectedIndex())));
+		o.setMatrimonialRegime(MatrimonialRegime
+				.fromStringToEnum(matrimonialRegime.getValue(matrimonialRegime
+						.getSelectedIndex())));
+		return o;
+	}
+
 	private void init() {
 
 		title = UiHelper.createListBoxForEnum(Title.class, "Title_", false);
 		maritalStatus = UiHelper.createListBoxForEnum(MaritalStatus.class, "MaritalStatus_", false);
 		matrimonialRegime = UiHelper.createListBoxForEnum(MatrimonialRegime.class, "MatrimonialRegime_", false);
-
+		MultiWordSuggestOracle oracleNationality = new MultiWordSuggestOracle();
+		oracleNationality.add("Belge");
+		oracleNationality.add("Français");
+		nationality = new SuggestBox(oracleNationality);
+		MultiWordSuggestOracle oracleJob = new MultiWordSuggestOracle();
+		oracleJob.add("Enseignant");
+		oracleJob.add("Ingénieur");
+		oracleJob.add("Informaticien");
+		job = new SuggestBox(oracleJob);
+		unit = new ListBox();
+		unit.addItem("% LOYER");
+		unit.addItem("Somme forfaitaire (EUR)");
+		
 		city = new ListBox();
 		city.addChangeHandler(new ChangeHandler() {
 			public void onChange(ChangeEvent event) {
@@ -214,33 +297,5 @@ public class OwnerUpdateView extends ViewImpl implements
 				}
 			}
 		});
-	}
-
-	@Override
-	public void displayError(String error) {
-		Window.alert(error);
-	}
-
-	@Override
-	public void showCountryOther(Boolean show) {
-		if (show.equals(true)) {
-			$("#countryOther").show();
-		} else {
-			$("#countryOther").hide();
-		}
-	}
-
-	@Override
-	public void showCityOther(Boolean show) {
-		if (show.equals(true)) {
-			$("#cityOther").show();
-		} else {
-			$("#cityOther").hide();
-		}
-	}
-
-	@Override
-	public void setOwnerUpdateUiHandler(OwnerUpdateUiHandlers handler) {
-		this.presenter = handler;
 	}
 }
