@@ -10,7 +10,9 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
+import eu.comexis.napoleon.client.utils.UiHelper;
 import eu.comexis.napoleon.shared.model.Owner;
+import eu.comexis.napoleon.shared.model.Title;
 
 public class OwnerDetailsView extends ViewImpl implements
 		OwnerDetailsPresenter.MyView {
@@ -20,7 +22,8 @@ public class OwnerDetailsView extends ViewImpl implements
 
 	public interface Binder extends UiBinder<Widget, OwnerDetailsView> {
 	}
-
+	@UiField
+  Element title;
 	@UiField
 	Element name;
 	@UiField
@@ -37,7 +40,24 @@ public class OwnerDetailsView extends ViewImpl implements
 	Element addresse;
 	@UiField
 	Element maritalStatus;
-
+	@UiField
+  Element matrimonialRegime;
+	@UiField
+  Element bic;
+	@UiField
+  Element iban;
+	@UiField
+  Element fee;
+	@UiField
+  Element nationalRegister;
+	@UiField
+  Element nationality;
+	@UiField
+  Element job;
+	@UiField
+  Element fax;
+	@UiField
+  Element placeOfBirth;
 
 	@Inject
 	public OwnerDetailsView(final Binder binder) {
@@ -74,13 +94,26 @@ public class OwnerDetailsView extends ViewImpl implements
 
 	@Override
 	public void setOwner(Owner o) {
-		// TODO improve and continue
-
+	  title.setInnerText(UiHelper.translateEnum("Title_", o.getTitle()));
 		name.setInnerText(o.getLastName());
 		firstName.setInnerText(o.getFirstName());
+		if (o.getUnit() != null){
+  		if (o.getUnit().equals("%")){
+  		  fee.setInnerText(o.getFee() + " % LOYER");
+  		}else{
+  		  fee.setInnerText("SOMME FORFAITAIRE: " + o.getFee());
+  		}
+		}
+		iban.setInnerText(o.getIban());
+		bic.setInnerText(o.getBic());
 		email.setInnerText(o.getEmail());
 		phoneNumber.setInnerText(o.getPhoneNumber());
 		mobileNumber.setInnerText(o.getMobilePhoneNumber());
+		fax.setInnerText(o.getFax());
+		placeOfBirth.setInnerText(o.getPlaceOfBirth());
+		nationality.setInnerText(o.getNationality());
+		job.setInnerText(o.getJobTitle());
+		nationalRegister.setInnerText(o.getNationalRegisterNumber());
 		birthDay.setInnerText(o.getDateOfBirth() != null ? o.getDateOfBirth()
 				.toGMTString() : "");
 		addresse.setInnerText(o.getStreet() + " " + o.getCity() + " "
