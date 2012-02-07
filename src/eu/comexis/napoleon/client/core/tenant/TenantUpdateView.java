@@ -19,23 +19,20 @@ import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
+import eu.comexis.napoleon.client.utils.UiHelper;
 import eu.comexis.napoleon.shared.model.Country;
 import eu.comexis.napoleon.shared.model.MaritalStatus;
 import eu.comexis.napoleon.shared.model.MatrimonialRegime;
 import eu.comexis.napoleon.shared.model.Tenant;
 import eu.comexis.napoleon.shared.model.Title;
-import eu.comexis.napoleon.shared.model.utils.MaritalStatusTranslator;
-import eu.comexis.napoleon.shared.model.utils.MatrimonialRegimeTranslator;
-import eu.comexis.napoleon.shared.model.utils.TitleTranslator;
 
 public class TenantUpdateView extends ViewImpl implements TenantUpdatePresenter.MyView {
 
+  private final Widget widget;
+  private TenantUpdateUiHandlers presenter;
+
   public interface Binder extends UiBinder<Widget, TenantUpdateView> {
   }
-
-  private final Widget widget;
-
-  private TenantUpdateUiHandlers presenter;
 
   @UiField
   TextBox name;
@@ -82,11 +79,6 @@ public class TenantUpdateView extends ViewImpl implements TenantUpdatePresenter.
   }
 
   @Override
-  public void displayError(String error) {
-    Window.alert(error);
-  }
-
-  @Override
   public void fillCityList(List<String> cities) {
     String cityToSelect = city.getItemText(city.getSelectedIndex());
     city.clear();
@@ -100,6 +92,13 @@ public class TenantUpdateView extends ViewImpl implements TenantUpdatePresenter.
     }
     city.addItem("(...)");
     city.setItemSelected(index, true);
+  }
+
+  @Override
+  public String getSelectedCountry() {
+    Integer index = country.getSelectedIndex();
+    String countryToSelect = country.getValue(index);
+    return countryToSelect;
   }
 
   @Override
@@ -119,10 +118,24 @@ public class TenantUpdateView extends ViewImpl implements TenantUpdatePresenter.
   }
 
   @Override
-  public String getSelectedCountry() {
-    Integer index = country.getSelectedIndex();
-    String countryToSelect = country.getValue(index);
-    return countryToSelect;
+  public Tenant updateTenant(Tenant o) {
+    o.setTitle(Title.valueOf(title.getValue(title.getSelectedIndex())));
+    o.setFirstName(firstName.getValue());
+    o.setLastName(name.getValue());
+    o.setEmail(email.getValue());
+    o.setPhoneNumber(phoneNumber.getValue());
+    o.setMobilePhoneNumber(mobileNumber.getValue());
+    o.setDateOfBirth(birthDayDateBox.getValue());
+    o.setStreet(addresse.getValue());
+    o.setCity(city.getValue(city.getSelectedIndex()).equals("(...)") ? cityOther.getValue() : city
+        .getValue(city.getSelectedIndex()));
+    o.setCountry(country.getItemText(country.getSelectedIndex()).equals("(...)") ? countryOther
+        .getValue() : country.getItemText(country.getSelectedIndex()));
+    o.setMaritalStatus(MaritalStatus.fromStringToEnum(maritalStatus.getValue(maritalStatus
+        .getSelectedIndex())));
+    o.setMatrimonialRegime(MatrimonialRegime.fromStringToEnum(matrimonialRegime
+        .getValue(matrimonialRegime.getSelectedIndex())));
+    return o;
   }
 
   @Override
@@ -164,72 +177,12 @@ public class TenantUpdateView extends ViewImpl implements TenantUpdatePresenter.
 
   }
 
-  @Override
-  public void setTenantUpdateUiHandler(TenantUpdateUiHandlers handler) {
-    this.presenter = handler;
-  }
-
-  @Override
-  public void showCityOther(Boolean show) {
-    if (show.equals(true)) {
-      $("#cityOther").show();
-    } else {
-      $("#cityOther").hide();
-    }
-  }
-
-  @Override
-  public void showCountryOther(Boolean show) {
-    if (show.equals(true)) {
-      $("#countryOther").show();
-    } else {
-      $("#countryOther").hide();
-    }
-  }
-
-  @Override
-  public Tenant updateTenant(Tenant o) {
-    o.setTitle(Title.valueOf(title.getValue(title.getSelectedIndex())));
-    o.setFirstName(firstName.getValue());
-    o.setLastName(name.getValue());
-    o.setEmail(email.getValue());
-    o.setPhoneNumber(phoneNumber.getValue());
-    o.setMobilePhoneNumber(mobileNumber.getValue());
-    o.setDateOfBirth(birthDayDateBox.getValue());
-    o.setStreet(addresse.getValue());
-    o.setCity(city.getValue(city.getSelectedIndex()).equals("(...)") ? cityOther.getValue() : city
-        .getValue(city.getSelectedIndex()));
-    o.setCountry(country.getItemText(country.getSelectedIndex()).equals("(...)") ? countryOther
-        .getValue() : country.getItemText(country.getSelectedIndex()));
-    o.setMaritalStatus(MaritalStatus.fromStringToEnum(maritalStatus.getValue(maritalStatus
-        .getSelectedIndex())));
-    o.setMatrimonialRegime(MatrimonialRegime.fromStringToEnum(matrimonialRegime
-        .getValue(matrimonialRegime.getSelectedIndex())));
-    return o;
-  }
-
   private void init() {
-    title = new ListBox(false);
-    TitleTranslator translate = new TitleTranslator();
-    title.addItem(translate.fromEnumToString(Title.MISS), Title.MISS.name());
-    title.addItem(translate.fromEnumToString(Title.MRS), Title.MRS.name());
-    title.addItem(translate.fromEnumToString(Title.MR), Title.MR.name());
-    maritalStatus = new ListBox(false);
-    MaritalStatusTranslator translateMT = new MaritalStatusTranslator();
-    maritalStatus.addItem(translateMT.fromEnumToString(MaritalStatus.COHABITATION),
-        MaritalStatus.COHABITATION.name());
-    maritalStatus.addItem(translateMT.fromEnumToString(MaritalStatus.MARRIED),
-        MaritalStatus.MARRIED.name());
-    maritalStatus.addItem(translateMT.fromEnumToString(MaritalStatus.SINGLE), MaritalStatus.SINGLE
-        .name());
-    matrimonialRegime = new ListBox(false);
-    MatrimonialRegimeTranslator translateMR = new MatrimonialRegimeTranslator();
-    matrimonialRegime.addItem(translateMR.fromEnumToString(MatrimonialRegime.NONE),
-        MatrimonialRegime.NONE.name());
-    matrimonialRegime.addItem(translateMR.fromEnumToString(MatrimonialRegime.COMMUNITY),
-        MatrimonialRegime.COMMUNITY.name());
-    matrimonialRegime.addItem(translateMR.fromEnumToString(MatrimonialRegime.SEPARATION),
-        MatrimonialRegime.SEPARATION.name());
+    title = UiHelper.createListBoxForEnum(Title.class, "Title_", false);
+    maritalStatus = UiHelper.createListBoxForEnum(MaritalStatus.class, "MaritalStatus_", false);
+    matrimonialRegime =
+        UiHelper.createListBoxForEnum(MatrimonialRegime.class, "MatrimonialRegime_", false);
+
     city = new ListBox(false);
     city.addChangeHandler(new ChangeHandler() {
       public void onChange(ChangeEvent event) {
@@ -258,5 +211,33 @@ public class TenantUpdateView extends ViewImpl implements TenantUpdatePresenter.
         presenter.onButtonCancelClick();
       }
     });
+  }
+
+  @Override
+  public void displayError(String error) {
+    Window.alert(error);
+  }
+
+  @Override
+  public void showCountryOther(Boolean show) {
+    if (show.equals(true)) {
+      $("#countryOther").show();
+    } else {
+      $("#countryOther").hide();
+    }
+  }
+
+  @Override
+  public void showCityOther(Boolean show) {
+    if (show.equals(true)) {
+      $("#cityOther").show();
+    } else {
+      $("#cityOther").hide();
+    }
+  }
+
+  @Override
+  public void setTenantUpdateUiHandler(TenantUpdateUiHandlers handler) {
+    this.presenter = handler;
   }
 }

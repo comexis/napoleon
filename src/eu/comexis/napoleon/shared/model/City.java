@@ -7,8 +7,10 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Parent;
 
 public class City implements IsSerializable {
+
   @Id
   private String id;
+  
   @Parent
   private Key<Country> country;
   private String name;

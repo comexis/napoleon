@@ -22,15 +22,15 @@
 	</ui:style>
 	<g:HTMLPanel>
 		<div class="{style.main}">
-			<a class="{style.item}" href="#ownerlist">
+			<a class="{style.item}" href="#ownerList">
 				<div>Propriétaires</div>
 			</a>
 			<br/>
-			<a class="{style.item}" href="#tenantlist">
+			<a class="{style.item}" href="#tenantList">
 				<div>Locataires</div>
 			</a>
 			<br/>
-			<a class="{style.item}" href="#realEstatelist">
+			<a class="{style.item}" href="#realEstateList">
 				<div>Biens</div>
 			</a>
 		</div>

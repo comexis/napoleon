@@ -20,25 +20,25 @@ import com.gwtplatform.mvp.client.ViewImpl;
 import eu.comexis.napoleon.shared.model.Country;
 import eu.comexis.napoleon.shared.model.RealEstate;
 
-public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePresenter.MyView {
+public class RealEstateUpdateView extends ViewImpl implements
+  RealEstateUpdatePresenter.MyView {
 
-  public interface Binder extends UiBinder<Widget, RealEstateUpdateView> {
-  }
-
-  private final Widget widget;
-  private RealEstateUpdateUiHandlers presenter;
-
-  @UiField
-  TextBox reference;
-  @UiField
-  TextBox phoneNumber;
-  @UiField
-  TextBox mobileNumber;
-  @UiField
-  TextBox addresse;
-  @UiField(provided = true)
-  ListBox city;
-  @UiField
+	private final Widget widget;
+	private RealEstateUpdateUiHandlers presenter;
+	public interface Binder extends UiBinder<Widget, RealEstateUpdateView> {
+	}
+	
+	@UiField
+	TextBox reference;
+	@UiField
+	TextBox phoneNumber;
+	@UiField
+	TextBox mobileNumber;
+	@UiField
+	TextBox addresse;
+	@UiField(provided = true)
+	ListBox city;
+	@UiField
   TextBox cityOther;
   @UiField(provided = true)
   ListBox country;
