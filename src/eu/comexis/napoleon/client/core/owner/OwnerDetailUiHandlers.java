@@ -5,7 +5,7 @@ public interface OwnerDetailUiHandlers {
     public void setOwnerDetailUiHandler(OwnerDetailUiHandlers handler);
   }
 
-  void onButtonBackToDashBoardClick();
+  void onButtonBackToListClick();
 
   void onButtonUpdateClick();
 }

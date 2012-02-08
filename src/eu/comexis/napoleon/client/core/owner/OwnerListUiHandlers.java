@@ -20,6 +20,10 @@ public interface OwnerListUiHandlers {
     public void setOwnerListUiHandler(OwnerListUiHandlers handler);
   }
 
+  public void onButtonBackToDashBoardClick();
+
+  public void onButtonNewClick();
+
   /**
    * Method call when the user select
    * 

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.logging.client.LogConfiguration;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
@@ -135,29 +136,45 @@ public class OwnerUpdatePresenter extends
   @Override
   public void prepareFromRequest(PlaceRequest placeRequest) {
     super.prepareFromRequest(placeRequest);
-
     // In the next call, "view" is the default value,
     // returned if "action" is not found on the URL.
     id = placeRequest.getParameter(UUID_PARAMETER, null);
+    if (id != "new"){
+      if (id == null || id.length() == 0) {
+        if (LogConfiguration.loggingIsEnabled()) {
+          LOG.severe("invalid id is null or empty");
+        }
+        placeManager.revealErrorPlace(placeRequest.getNameToken());
+      }
+    }
   }
 
   @Override
   protected void onBind() {
     super.onBind();
     getView().setOwnerUpdateUiHandler(this);
+    init();
   }
 
   @Override
   protected void onReset() {
     super.onReset();
-
-    new GetOwnerCommand(id).dispatch(new GotOwner() {
-      @Override
-      public void got(Owner owner) {
-        OwnerUpdatePresenter.this.owner = owner;
-        getView().setOwner(owner);
-      }
-    });
+    if (id != "new"){ // call the server to get the requested owner
+      new GetOwnerCommand(id).dispatch(new GotOwner() {
+        @Override
+        public void got(Owner owner) {
+          OwnerUpdatePresenter.this.owner = owner;
+          getView().setOwner(owner);
+        }
+      });
+    }else{
+      Owner owner = new Owner();
+      OwnerUpdatePresenter.this.owner = owner;
+      getView().setOwner(owner);
+    }
+    
+  }
+  private void init(){
     new GetAllCountriesCommand().dispatch(new GotAllCountries() {
       @Override
       public void got(List<Country> countries) {
@@ -175,7 +192,6 @@ public class OwnerUpdatePresenter extends
       }
     });
   }
-
   @Override
   protected void revealInParent() {
     RevealContentEvent.fire(this, MainLayoutPresenter.MAIN_CONTENT, this);

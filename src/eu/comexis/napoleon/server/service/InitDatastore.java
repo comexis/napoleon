@@ -89,8 +89,7 @@ public class InitDatastore extends HttpServlet {
     o.setTitle(Title.MRS);
     o.setFirstName("Oufti");
     o.setLastName("Biloute");
-    o.setPostalCode("7800");
-    o.setCity("Ath");
+    o.setCity("7800 Ath");
     o.setStreet("Rue de la brasserie, 69");
     o.setPhoneNumber("064/659874");
     o.setMobilePhoneNumber("0497/063970");
@@ -105,8 +104,7 @@ public class InitDatastore extends HttpServlet {
     o.setTitle(Title.MR);
     o.setFirstName("Machin");
     o.setLastName("Brol");
-    o.setPostalCode("7000");
-    o.setCity("Mons");
+    o.setCity("7000 Mons");
     o.setStreet("Rue de la bazar, 1");
     o.setPhoneNumber("065/896574");
     o.setMobilePhoneNumber("0497/895476");
@@ -121,8 +119,7 @@ public class InitDatastore extends HttpServlet {
     o.setTitle(Title.MISS);
     o.setFirstName("Cindy");
     o.setLastName("Troforte");
-    o.setPostalCode("1000");
-    o.setCity("Bruxelles");
+    o.setCity("1000 Bruxelles");
     o.setStreet("Rue de la gaindaille, 5");
     o.setPhoneNumber("02/6545874");
     o.setMobilePhoneNumber("0497/089654");

@@ -53,15 +53,15 @@ public class RealEstateDao extends NapoleonDao<RealEstate> {
     return realEstates;
   }
 
-  @Override
-  public RealEstate update(RealEstate realEstate) {
+  public RealEstate update(RealEstate realEstate, String companyId) {
     String realEstateId = realEstate.getId();
     CountryDao countryData = new CountryDao();
-    Key<Company> companyKey = realEstate.getCompany();
+    Key<Company> companyKey = new Key<Company>(Company.class, companyId);
     if (realEstateId == null || realEstateId.length() == 0) {
       UUID uuid = UUID.randomUUID();
       System.out.println("Creating Uuid " + uuid.toString());
       realEstate.setId(uuid.toString());
+      realEstate.setCompany(companyKey);
     }
     // if country does not exist, create it.
     Country country = countryData.getByName(realEstate.getCountry(), companyKey);

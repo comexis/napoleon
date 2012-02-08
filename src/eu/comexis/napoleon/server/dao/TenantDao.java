@@ -18,16 +18,12 @@ public class TenantDao extends NapoleonDao<Tenant> {
     // TODO Auto-generated constructor stub
   }
 
-  public Tenant create(Key<Company> companyKey) {
+  public Tenant create(String companyId) {
+    Key<Company> companyKey = new Key<Company>(Company.class, companyId);
     Tenant tenant = new Tenant();
     System.out.println("Set company key " + companyKey.toString());
     tenant.setCompany(companyKey);
     return tenant;
-  }
-
-  public Tenant create(String companyId) {
-    Key<Company> companyKey = new Key<Company>(Company.class, companyId);
-    return create(companyKey);
   }
 
   /**
@@ -37,6 +33,8 @@ public class TenantDao extends NapoleonDao<Tenant> {
    * @return The list of tenants
    */
   public ArrayList<SimpleTenant> getListSimpleTenants(String companyId) {
+    LOG.info("Get list Tenants (" + clazz + ") for company " + companyId);
+    Key<Company> companyKey = new Key<Company>(Company.class, companyId);
     Iterator<Tenant> iterator = this.listAll(companyId).iterator();
     ArrayList<SimpleTenant> tenants = new ArrayList<SimpleTenant>();
     while (iterator.hasNext()) {
@@ -52,16 +50,16 @@ public class TenantDao extends NapoleonDao<Tenant> {
     }
     return tenants;
   }
-
-  @Override
-  public Tenant update(Tenant tenant) {
+  public Tenant update(Tenant tenant, String companyId) {
     String tenantId = tenant.getId();
+    LOG.info("Get key for Company ID: " + companyId);
+    Key<Company> companyKey = new Key<Company>(Company.class, companyId);
     CountryDao countryData = new CountryDao();
-    Key<Company> companyKey = tenant.getCompany();
     if (tenantId == null || tenantId.length() == 0) {
       UUID uuid = UUID.randomUUID();
       System.out.println("Creating Uuid " + uuid.toString());
       tenant.setId(uuid.toString());
+      tenant.setCompany(companyKey);
     }
     // if country does not exist, create it.
     Country country = countryData.getByName(tenant.getCountry(), companyKey);
@@ -74,6 +72,6 @@ public class TenantDao extends NapoleonDao<Tenant> {
     if (city == null) {
       city = countryData.addCity(country.getId(), tenant.getCity());
     }
-    return super.update(tenant);
+    return update(tenant);
   }
 }

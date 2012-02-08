@@ -74,10 +74,10 @@ public class OwnerDetailsView extends ViewImpl implements OwnerDetailsPresenter.
   public void onDeleteClicked(ClickEvent e) {
     Window.alert("Supprimer");
   }
-
-  @UiHandler("btnToDashBoard")
-  public void onGoHomeClicked(ClickEvent e) {
-    presenter.onButtonBackToDashBoardClick();
+  
+  @UiHandler("btnToList")
+  public void onGoToListClicked(ClickEvent e) {
+    presenter.onButtonBackToListClick();
   }
 
   @UiHandler("btnUpdate")

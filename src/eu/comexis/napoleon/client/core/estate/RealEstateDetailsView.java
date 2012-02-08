@@ -6,8 +6,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
@@ -42,9 +40,9 @@ public class RealEstateDetailsView extends ViewImpl implements RealEstateDetails
     Window.alert("Supprimer");
   }
 
-  @UiHandler("btnToDashBoard")
-  public void onGoHomeClicked(ClickEvent e) {
-    presenter.onButtonBackToDashBoardClick();
+  @UiHandler("btnToList")
+  public void onGoToListClicked(ClickEvent e) {
+    presenter.onButtonBackToListClick();
   }
 
   @UiHandler("btnUpdate")

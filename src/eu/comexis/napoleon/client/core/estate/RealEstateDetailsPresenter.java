@@ -49,8 +49,8 @@ public class RealEstateDetailsPresenter extends
   }
 
   @Override
-  public void onButtonBackToDashBoardClick() {
-    PlaceRequest myRequest = new PlaceRequest(NameTokens.dashboard);
+  public void onButtonBackToListClick() {
+    PlaceRequest myRequest = new PlaceRequest(NameTokens.realEstatelist);
     placeManager.revealPlace(myRequest);
   }
 

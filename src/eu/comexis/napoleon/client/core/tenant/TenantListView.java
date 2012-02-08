@@ -5,8 +5,10 @@ import java.util.List;
 
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
@@ -21,6 +23,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
+import eu.comexis.napoleon.client.widget.LoadingDataIndicator;
 import eu.comexis.napoleon.shared.model.simple.SimpleTenant;
 
 public class TenantListView extends ViewImpl implements TenantListPresenter.MyView {
@@ -61,7 +64,27 @@ public class TenantListView extends ViewImpl implements TenantListPresenter.MyVi
   }
 
   @Override
+  public void dataIsLoading() {
+    tenantTable.setVisibleRangeAndClearData(tenantTable.getVisibleRange(), true);
+  }
+
+  @UiHandler("btnToDashBoard")
+  public void onGoHomeClicked(ClickEvent e) {
+    presenter.onButtonBackToDashBoardClick();
+  }
+
+  @UiHandler("btnNew")
+  public void onNewClicked(ClickEvent e) {
+    presenter.onButtonNewClick();
+  }
+
+  @Override
   public void setData(List<SimpleTenant> tenants) {
+    // ok find better...
+    if (!dataProvider.getDataDisplays().contains(tenantTable)) {
+      dataProvider.addDataDisplay(tenantTable);
+    }
+    // tenantTable.setRowData(tenants);
     dataProvider.getList().clear();
     dataProvider.getList().addAll(tenants);
     dataProvider.refresh();
@@ -81,6 +104,9 @@ public class TenantListView extends ViewImpl implements TenantListPresenter.MyVi
     tenantTable = new CellTable<SimpleTenant>(40, KEY_PROVIDER);
 
     tenantTable.setWidth("100%");
+
+    // set the table in a loading state
+    tenantTable.setLoadingIndicator(new LoadingDataIndicator());
 
     // Create a Pager to control the table.
     SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
@@ -112,9 +138,6 @@ public class TenantListView extends ViewImpl implements TenantListPresenter.MyVi
 
     // Initialize the columns.
     initTableColumns(selectionModel, sortHandler);
-
-    // Connect the table to the data provider.
-    dataProvider.addDataDisplay(tenantTable);
 
   }
 

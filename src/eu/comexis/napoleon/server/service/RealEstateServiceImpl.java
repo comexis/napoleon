@@ -63,7 +63,7 @@ public class RealEstateServiceImpl extends RemoteServiceServlet implements RealE
     RealEstate realEstate = command.getRealEstate();
     String companyId = UserManager.INSTANCE.getCompanyId();
     RealEstateDao dao = new RealEstateDao();
-    realEstate = dao.update(realEstate);
+    realEstate = dao.update(realEstate,companyId);
     UpdateRealEstateResponse response = new UpdateRealEstateResponse();
     response.setRealEstate(realEstate);
     return response;

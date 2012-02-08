@@ -2,6 +2,9 @@ package eu.comexis.napoleon.server.service;
 
 import java.util.ArrayList;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import eu.comexis.napoleon.client.rpc.TenantService;
@@ -25,8 +28,11 @@ import eu.comexis.napoleon.shared.model.simple.SimpleTenant;
 @SuppressWarnings("serial")
 public class TenantServiceImpl extends RemoteServiceServlet implements TenantService {
 
+  private static Log LOG = LogFactory.getLog(TenantServiceImpl.class);
+
   @Override
   public GetAllTenantResponse execute(GetAllTenantCommand command) {
+
     String companyId = UserManager.INSTANCE.getCompanyId();
     TenantDao tenantData = new TenantDao();
     ArrayList<SimpleTenant> tenants = tenantData.getListSimpleTenants(companyId);
@@ -42,16 +48,12 @@ public class TenantServiceImpl extends RemoteServiceServlet implements TenantSer
     String id = command.getId();
     String companyId = UserManager.INSTANCE.getCompanyId();
     TenantDao dao = new TenantDao();
-    Tenant o;
     if (id == null || id.length() == 0) {
-      // TODO add logging
-
+      LOG.warn("Try to get an tenant without passing an id !! Return error 500");
       // will generate an error 500. Do put to many info
-      // throw new RuntimeException("Ooops something wrong happened");
-      o = dao.create(companyId);
-    } else {
-      o = dao.getById(id, companyId);
+      throw new RuntimeException("Ooops something wrong happened");
     }
+    Tenant o = dao.getById(id, companyId);
     GetTenantResponse response = new GetTenantResponse();
     response.setTenant(o);
 
@@ -63,7 +65,7 @@ public class TenantServiceImpl extends RemoteServiceServlet implements TenantSer
     Tenant tenant = command.getTenant();
     String companyId = UserManager.INSTANCE.getCompanyId();
     TenantDao dao = new TenantDao();
-    tenant = dao.update(tenant);
+    tenant = dao.update(tenant,companyId);
     UpdateTenantResponse response = new UpdateTenantResponse();
     response.setTenant(tenant);
     return response;

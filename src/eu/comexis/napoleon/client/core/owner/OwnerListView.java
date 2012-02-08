@@ -5,8 +5,10 @@ import java.util.List;
 
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
@@ -60,10 +62,20 @@ public class OwnerListView extends ViewImpl implements OwnerListPresenter.MyView
   public Widget asWidget() {
     return widget;
   }
-
+  
   @Override
   public void dataIsLoading() {
     ownerTable.setVisibleRangeAndClearData(ownerTable.getVisibleRange(), true);
+  }
+
+  @UiHandler("btnToDashBoard")
+  public void onGoHomeClicked(ClickEvent e) {
+    presenter.onButtonBackToDashBoardClick();
+  }
+  
+  @UiHandler("btnNew")
+  public void onNewClicked(ClickEvent e) {
+    presenter.onButtonNewClick();
   }
 
   @Override

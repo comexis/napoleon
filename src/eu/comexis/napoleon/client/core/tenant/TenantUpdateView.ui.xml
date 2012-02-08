@@ -8,6 +8,7 @@
 
 	<g:HTMLPanel>
 		<div>
+			<span>Civilité :</span>
 			<g:ListBox ui:field="title" />
 			<span>Nom :</span>
 			<g:TextBox ui:field="name" />
@@ -15,20 +16,10 @@
 			<g:TextBox ui:field="firstName" />
 		</div>
 		<div>
-			<span>Email :</span>
-			<g:TextBox ui:field="email" />
-		</div>
-		<div>
-			<span>Téléphone :</span>
-			<g:TextBox ui:field="phoneNumber" />
-		</div>
-		<div>
-			<span>GSM :</span>
-			<g:TextBox ui:field="mobileNumber" />
-		</div>
-		<div>
-			<span>Date de naissance :</span>
-			<dp:DateBox ui:field="birthDayDateBox" />
+			<span>IBAN :</span>
+			<g:TextBox ui:field="iban" />
+			<span>BIC :</span>
+			<g:TextBox ui:field="bic" />
 		</div>
 		<div>
 			<span>Adresse :</span>
@@ -58,6 +49,42 @@
 			</tr>
 		</table>
 		<div>
+			<span>Email :</span>
+			<g:TextBox ui:field="email" />
+		</div>
+		<div>
+			<span>Téléphone :</span>
+			<g:TextBox ui:field="phoneNumber" />
+		</div>
+		<div>
+			<span>GSM :</span>
+			<g:TextBox ui:field="mobileNumber" />
+		</div>
+		<div>
+			<span>FAX :</span>
+			<g:TextBox ui:field="fax" />
+		</div>
+		<div>
+			<span>Date de naissance :</span>
+			<dp:DateBox ui:field="birthDayDateBox" />
+		</div>
+		<div>
+			<span>Lieu de naissance :</span>
+			<g:TextBox ui:field="placeOfBirth" />
+		</div>
+		<div>
+			<span>Nationality :</span>
+			<g:SuggestBox ui:field="nationality" />
+		</div>
+		<div>
+			<span>Profession :</span>
+			<g:SuggestBox ui:field="job" />
+		</div>
+		<div>
+			<span>Registre national :</span>
+			<g:TextBox ui:field="nationalRegister" />
+		</div>
+		<div>
 			<span>Marital status :</span>
 			<g:ListBox ui:field="maritalStatus" />
 		</div>
@@ -67,7 +94,7 @@
 		</div>
 		<div>
 			<g:Button ui:field="btnSave">Sauver</g:Button>
-			<g:Button ui:field="btnCancel">Abandonner</g:Button>
+			<g:Button ui:field="btnCancel">Annuler</g:Button>
 		</div>
 	</g:HTMLPanel>
 </ui:UiBinder>

@@ -28,6 +28,8 @@
 				</td>
 			</tr>
 		</table>
+		<g:Button ui:field="btnNew">Nouveau bien immobilier</g:Button>
+		<g:Button ui:field="btnToDashBoard">Retour vers le dashboard</g:Button>
 	</g:HTMLPanel>
 
 
