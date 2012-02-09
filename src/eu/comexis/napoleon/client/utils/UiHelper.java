@@ -1,6 +1,7 @@
 package eu.comexis.napoleon.client.utils;
 
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.TextBox;
 
 import eu.comexis.napoleon.client.resources.Literals;
 
@@ -23,5 +24,13 @@ public class UiHelper {
   public static String translateEnum(String suffix, Enum<?> e){
       String literalKey = suffix +e.name();
       return Literals.INSTANCE.getString(literalKey);
+  }
+  public static void selectTextItemBoxByValue(ListBox tb,String value){
+    for (int i = 0; i < tb.getItemCount(); i++) {
+      if (tb.getValue(i).equals(value)) {
+        tb.setSelectedIndex(i);
+        break;
+      }
+    }
   }
 }

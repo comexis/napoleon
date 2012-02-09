@@ -1,5 +1,6 @@
 package eu.comexis.napoleon.client.core.owner;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -26,6 +27,7 @@ import eu.comexis.napoleon.shared.command.country.GetAllCitiesCommand;
 import eu.comexis.napoleon.shared.command.country.GetAllCountriesCommand;
 import eu.comexis.napoleon.shared.command.owner.GetOwnerCommand;
 import eu.comexis.napoleon.shared.command.owner.UpdateOwnerCommand;
+import eu.comexis.napoleon.shared.model.City;
 import eu.comexis.napoleon.shared.model.Country;
 import eu.comexis.napoleon.shared.model.Owner;
 
@@ -122,8 +124,12 @@ public class OwnerUpdatePresenter extends
       cmd.setName(selectedCountry);
       cmd.dispatch(new GotAllCities() {
         @Override
-        public void got(List<String> cities) {
-          getView().fillCityList(cities);
+        public void got(List<City> cities) {
+          List<String> lstCities = new ArrayList();
+          for(City c:cities){
+            lstCities.add(c.getName());
+          }
+          getView().fillCityList(lstCities);
         }
       });
       getView().showCountryOther(false);
@@ -183,10 +189,12 @@ public class OwnerUpdatePresenter extends
         GetAllCitiesCommand cmd = new GetAllCitiesCommand();
         cmd.setName(getView().getSelectedCountry());
         cmd.dispatch(new GotAllCities() {
-          @Override
-          public void got(List<String> cities) {
-            OwnerUpdatePresenter.this.allCities = cities;
-            getView().fillCityList(cities);
+          public void got(List<City> cities) {
+            List<String> lstCities = new ArrayList();
+            for(City c:cities){
+              lstCities.add(c.getName());
+            }
+            getView().fillCityList(lstCities);
           }
         });
       }

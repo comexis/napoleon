@@ -8,8 +8,12 @@ import com.googlecode.objectify.Key;
 
 import eu.comexis.napoleon.shared.model.City;
 import eu.comexis.napoleon.shared.model.Company;
+import eu.comexis.napoleon.shared.model.Condo;
 import eu.comexis.napoleon.shared.model.Country;
+import eu.comexis.napoleon.shared.model.Owner;
 import eu.comexis.napoleon.shared.model.RealEstate;
+import eu.comexis.napoleon.shared.model.Tenant;
+import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 import eu.comexis.napoleon.shared.model.simple.SimpleRealEstate;
 
 public class RealEstateDao extends NapoleonDao<RealEstate> {
@@ -24,11 +28,15 @@ public class RealEstateDao extends NapoleonDao<RealEstate> {
     realEstate.setCompany(companyKey);
     return realEstate;
   }
+  
+ 
 
   public RealEstate create(String companyId) {
     Key<Company> companyKey = new Key<Company>(Company.class, companyId);
     return create(companyKey);
   }
+  
+  
 
   /**
    * Retrieves the list of all realEstates stored in the database (with the minimum of data to be
@@ -52,11 +60,23 @@ public class RealEstateDao extends NapoleonDao<RealEstate> {
     }
     return realEstates;
   }
-
+  @Override
+  public RealEstate update(RealEstate realEstate) {
+    if (realEstate.getCompany() != null){
+      return update(realEstate,realEstate.getCompany());
+    }else{
+      // log error
+      LOG.fatal("Parent Company is not set, cannot save realEstate");
+      return null;
+    }
+  }
   public RealEstate update(RealEstate realEstate, String companyId) {
+    Key<Company> companyKey = new Key<Company>(Company.class, companyId);
+    return update(realEstate,companyKey);
+  }
+  public RealEstate update(RealEstate realEstate, Key<Company> companyKey) {
     String realEstateId = realEstate.getId();
     CountryDao countryData = new CountryDao();
-    Key<Company> companyKey = new Key<Company>(Company.class, companyId);
     if (realEstateId == null || realEstateId.length() == 0) {
       UUID uuid = UUID.randomUUID();
       System.out.println("Creating Uuid " + uuid.toString());
@@ -71,9 +91,60 @@ public class RealEstateDao extends NapoleonDao<RealEstate> {
       countryData.update(country);
     }
     City city = countryData.getCityByName(country.getId(), realEstate.getCity());
+    // if city does not exist, create it.
     if (city == null) {
       city = countryData.addCity(country.getId(), realEstate.getCity());
     }
+    if (!realEstate.getSquare().isEmpty()){
+      ArrayList<String> allSquares = city.getSquareList();
+      if (allSquares != null){
+        if (!allSquares.contains(realEstate.getSquare())){
+          allSquares.add(realEstate.getSquare());
+          city.setSquareList(allSquares);
+          countryData.UpdateCity(city);
+        }
+      }else{
+        allSquares = new ArrayList<String>();
+        allSquares.add(realEstate.getSquare());
+        city.setSquareList(allSquares);
+        countryData.UpdateCity(city);
+      }
+    }
     return super.update(realEstate);
+  }
+  public Condo getCondo(RealEstate realEstate){
+    Key<Condo> condoKey = realEstate.getCondo();
+    if (condoKey!=null){
+      Condo cdo = ofy().get(condoKey);
+      return cdo;
+    }
+    return null;
+  }
+  public void setCondo(RealEstate realEstate,Condo cdo){
+    Key<Condo> cdoKey = new Key<Condo>(cdo.getCompany(), Condo.class, cdo.getId());
+    realEstate.setCondo(cdoKey);
+  }
+  public void deleteCondo(RealEstate realEstate){
+    realEstate.setCondo(null);
+  }
+  public void setOwner(RealEstate realEstate,Owner owner){
+    Key<Owner> ownerKey = new Key<Owner>(owner.getCompany(),Owner.class, owner.getId());
+    realEstate.setOwner(ownerKey);
+  }
+  public void setOwner(RealEstate realEstate,String ownerId,String companyId){
+    Key<Company> companyKey = new Key<Company>(Company.class, companyId);
+    Key<Owner> ownerKey = new Key<Owner>(companyKey,Owner.class, ownerId);
+    realEstate.setOwner(ownerKey);
+  }
+  public SimpleOwner getOwner(RealEstate realEstate){
+    SimpleOwner o = new SimpleOwner();
+    Owner own = ofy().get(realEstate.getOwner());
+    if (own!= null){
+      o.setId(own.getId());
+      o.setName(own.getLastName());
+      o.setMobileNumber(own.getMobilePhoneNumber());
+      o.setPhoneNumber(own.getPhoneNumber());
+    }
+    return o;
   }
 }

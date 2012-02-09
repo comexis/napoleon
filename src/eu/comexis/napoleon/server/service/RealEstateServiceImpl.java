@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import eu.comexis.napoleon.client.rpc.RealEstateService;
+import eu.comexis.napoleon.server.dao.CondoDao;
 import eu.comexis.napoleon.server.dao.RealEstateDao;
 import eu.comexis.napoleon.server.manager.UserManager;
 import eu.comexis.napoleon.shared.command.estate.GetAllRealEstateCommand;
@@ -13,7 +14,9 @@ import eu.comexis.napoleon.shared.command.estate.GetRealEstateCommand;
 import eu.comexis.napoleon.shared.command.estate.GetRealEstateResponse;
 import eu.comexis.napoleon.shared.command.estate.UpdateRealEstateCommand;
 import eu.comexis.napoleon.shared.command.estate.UpdateRealEstateResponse;
+import eu.comexis.napoleon.shared.model.Condo;
 import eu.comexis.napoleon.shared.model.RealEstate;
+import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 import eu.comexis.napoleon.shared.model.simple.SimpleRealEstate;
 
 /**
@@ -42,28 +45,47 @@ public class RealEstateServiceImpl extends RemoteServiceServlet implements RealE
     String id = command.getId();
     String companyId = UserManager.INSTANCE.getCompanyId();
     RealEstateDao dao = new RealEstateDao();
-    RealEstate o;
+    RealEstate e;
+    Condo cdo = null;
+    SimpleOwner o = null;
     if (id == null || id.length() == 0) {
       // TODO add logging
 
       // will generate an error 500. Do put to many info
-      // throw new RuntimeException("Ooops something wrong happened");
-      o = dao.create(companyId);
+      throw new RuntimeException("Ooops something wrong happened");
     } else {
-      o = dao.getById(id, companyId);
+      e = dao.getById(id, companyId);
+      if (e != null){
+        cdo =  dao.getCondo(e);
+        o = dao.getOwner(e);
+      }
     }
     GetRealEstateResponse response = new GetRealEstateResponse();
-    response.setRealEstate(o);
-
+    response.setRealEstate(e);
+    response.setCondo(cdo);
+    response.setOwner(o);
     return response;
   }
 
   @Override
   public UpdateRealEstateResponse execute(UpdateRealEstateCommand command) {
     RealEstate realEstate = command.getRealEstate();
+    Condo cdo = command.getCondo();
+    String ownerId = command.getOwnerId();
     String companyId = UserManager.INSTANCE.getCompanyId();
+    if (cdo!=null){
+      CondoDao cdoDao = new CondoDao();
+      cdo = cdoDao.update(cdo);
+    }
     RealEstateDao dao = new RealEstateDao();
+    if (cdo!=null){
+      dao.setCondo(realEstate, cdo);
+    }else{
+      dao.deleteCondo(realEstate);
+    }
+    dao.setOwner(realEstate, ownerId,companyId);
     realEstate = dao.update(realEstate,companyId);
+    
     UpdateRealEstateResponse response = new UpdateRealEstateResponse();
     response.setRealEstate(realEstate);
     return response;

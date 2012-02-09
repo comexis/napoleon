@@ -12,13 +12,22 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
+import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
+import eu.comexis.napoleon.client.utils.UiHelper;
+import eu.comexis.napoleon.shared.model.Condo;
 import eu.comexis.napoleon.shared.model.Country;
 import eu.comexis.napoleon.shared.model.RealEstate;
+import eu.comexis.napoleon.shared.model.RealEstateState;
+import eu.comexis.napoleon.shared.model.Title;
+import eu.comexis.napoleon.shared.model.City;
+import eu.comexis.napoleon.shared.model.TypeOfRealEstate;
+import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 
 public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePresenter.MyView {
 
@@ -27,15 +36,12 @@ public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePr
 
   private final Widget widget;
   private RealEstateUpdateUiHandlers presenter;
+  private MultiWordSuggestOracle oracleSquare;
 
   @UiField
   TextBox reference;
   @UiField
-  TextBox phoneNumber;
-  @UiField
-  TextBox mobileNumber;
-  @UiField
-  TextBox addresse;
+  TextBox addressRealEstate;
   @UiField(provided = true)
   ListBox city;
   @UiField
@@ -44,6 +50,32 @@ public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePr
   ListBox country;
   @UiField
   TextBox countryOther;
+  @UiField
+  TextBox condo;
+  @UiField
+  TextBox association;
+  @UiField
+  TextBox address;
+  @UiField
+  TextBox phoneNumber;
+  @UiField
+  TextBox mobileNumber;
+  @UiField
+  TextBox email;
+  @UiField
+  TextBox number;
+  @UiField
+  TextBox box;
+  @UiField(provided = true)
+  SuggestBox square;
+  @UiField(provided = true)
+  ListBox type;
+  @UiField(provided = true)
+  ListBox state;
+  @UiField
+  TextBox dimension;
+  @UiField
+  ListBox ownerName;
 
   @Inject
   public RealEstateUpdateView(final Binder binder) {
@@ -62,10 +94,10 @@ public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePr
   }
 
   @Override
-  public void fillCityList(List<String> cities) {
+  public void fillCityList(List<City> cities) {
     city.clear();
-    for (String sCity : cities) {
-      city.addItem(sCity);
+    for (City oCity : cities) {
+      city.addItem(oCity.getName());
     }
     city.addItem("(...)");
     selectCityByName(cityOther.getText());
@@ -78,6 +110,23 @@ public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePr
       country.addItem(cnty.getName(), cnty.getId());
     }
     country.addItem("(...)", "(...)");
+  }
+
+  @Override
+  public void fillOwnerList(List<SimpleOwner> owners) {
+    ownerName.clear();
+    for (SimpleOwner o : owners) {
+      ownerName.addItem(o.getName(), o.getId());
+    }
+    ownerName.addItem("(...)", "(...)");
+  }
+
+  @Override
+  public void fillSquareList(List<String> squares) {
+    oracleSquare.clear();
+    for (String sSquare : squares) {
+      oracleSquare.add(sSquare);
+    }
   }
 
   @Override
@@ -98,13 +147,28 @@ public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePr
   }
 
   @Override
-  public void setRealEstate(RealEstate o) {
+  public void setRealEstate(RealEstate e, SimpleOwner o, Condo cdo) {
 
-    reference.setText(o.getReference());
-    addresse.setText(o.getStreet());
-    cityOther.setText(o.getCity());
+    this.reference.setText(e.getReference());
+    this.addressRealEstate.setText(e.getStreet());
+    this.cityOther.setText(e.getCity());
+    this.number.setText(e.getNumber());
+    this.box.setText(e.getBox());
+    this.square.setText(e.getSquare());
+    this.dimension.setText(e.getDimension());
+    UiHelper.selectTextItemBoxByValue(this.state, e.getState().name());
+    UiHelper.selectTextItemBoxByValue(this.type, e.getType().name());
+    UiHelper.selectTextItemBoxByValue(this.ownerName, o.getId());
+    if (cdo!=null){
+      this.condo.setText(cdo.getName());
+      this.association.setText(cdo.getHomeownerAssociation());
+      this.address.setText(cdo.getStreet());
+      this.email.setText(cdo.getEmail());
+      this.mobileNumber.setText(cdo.getMobilePhoneNumber());
+      this.phoneNumber.setText(cdo.getPhoneNumber());
+    }
     for (int i = 0; i < country.getItemCount(); i++) {
-      if (country.getItemText(i).equals(o.getCountry())) {
+      if (country.getItemText(i).equals(e.getCountry())) {
         country.setSelectedIndex(i);
         // load the corresponding cities
         presenter.onCountrySelect(country.getValue(i));
@@ -142,14 +206,40 @@ public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePr
   }
 
   @Override
-  public RealEstate updateRealEstate(RealEstate o) {
-    o.setReference(reference.getValue());
-    o.setStreet(addresse.getValue());
-    o.setCity(city.getValue(city.getSelectedIndex()).equals("(...)") ? cityOther.getValue() : city
+  public RealEstate updateRealEstate(RealEstate e) {
+    e.setReference(reference.getValue());
+    e.setStreet(addressRealEstate.getValue());
+    e.setNumber(number.getValue());
+    e.setBox(box.getValue());
+    e.setDimension(dimension.getValue());
+    e.setSquare(square.getValue());
+    e.setType(TypeOfRealEstate.valueOf(type.getValue(type.getSelectedIndex())));
+    e.setState(RealEstateState.valueOf(state.getValue(state.getSelectedIndex())));
+    e.setCity(city.getValue(city.getSelectedIndex()).equals("(...)") ? cityOther.getValue() : city
         .getValue(city.getSelectedIndex()));
-    o.setCountry(country.getItemText(country.getSelectedIndex()).equals("(...)") ? countryOther
+    e.setCountry(country.getItemText(country.getSelectedIndex()).equals("(...)") ? countryOther
         .getValue() : country.getItemText(country.getSelectedIndex()));
-    return o;
+    return e;
+  }
+  @Override
+  public String getOwnerId(){
+    return ownerName.getValue(ownerName.getSelectedIndex());
+  }
+  @Override
+  public Condo updateCondo(Condo cdo) {
+    if (!condo.getValue().isEmpty()){
+      if (cdo==null){
+        cdo = new Condo();
+      }
+      cdo.setName(condo.getValue());
+      cdo.setHomeownerAssociation(association.getValue());
+      cdo.setStreet(address.getValue());
+      cdo.setEmail(email.getValue());
+      cdo.setMobilePhoneNumber(mobileNumber.getValue());
+      cdo.setPhoneNumber(phoneNumber.getValue());
+      return cdo;
+    }
+    return null;
   }
 
   private void init() {
@@ -171,12 +261,17 @@ public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePr
         }
       }
     });
+    type = UiHelper.createListBoxForEnum(TypeOfRealEstate.class, "TypeOfRealEstate_", false);
+    state = UiHelper.createListBoxForEnum(RealEstateState.class, "RealEstateState_", false);
+    oracleSquare = new MultiWordSuggestOracle();
+    square = new SuggestBox(oracleSquare);
   }
 
   private void selectCityByName(String name) {
     for (int i = 0; i < city.getItemCount(); i++) {
       if (city.getItemText(i).equals(name)) {
         city.setSelectedIndex(i);
+        presenter.onCitySelect(name);
         break;
       }
     }

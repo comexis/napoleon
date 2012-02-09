@@ -111,7 +111,7 @@ public class NapoleonDao<T> extends DAOBase {
       LOG.info("Entity " + clazz + " has been updated");
       return ofy().get(entityKey);
     } catch (Exception e) {
-      LOG.fatal("Entity " + clazz + " cannot be updated: " + e.getMessage());
+      LOG.fatal("Entity " + clazz + " cannot be updated: ",e);
       return null;
     }
   }

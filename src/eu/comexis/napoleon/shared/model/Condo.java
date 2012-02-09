@@ -15,36 +15,45 @@ import com.googlecode.objectify.annotation.Parent;
 public class Condo implements IsSerializable {
 
   @Id
-  private Long id;
+  private String id;
+  private String name;
+  @Parent
+  private Key<Company> company;
+
   // Syndicat de copropriété.
   private String homeownerAssociation;
+
   // Copropriété
-  @Parent
-  private Key<RealEstate> realEstate;
   // adresse
   private String street;
+
   // municipalité
   private String city;
+
   // code postal
   private String postalCode;
+
   // pays
   private String country;
+
   // adresse e-mail
   private String email;
   // n° de téléphone
   private String phoneNumber;
   // n° de téléphone mobile (GSM)
   private String mobilePhoneNumber;
-
   /**
 	 * 
 	 */
   public Condo() {
     // empty constructor needed by GWT
   }
-
   public String getCity() {
     return city;
+  }
+
+  public Key<Company> getCompany() {
+    return company;
   }
 
   public String getCountry() {
@@ -59,12 +68,16 @@ public class Condo implements IsSerializable {
     return homeownerAssociation;
   }
 
-  public Long getId() {
+  public String getId() {
     return id;
   }
 
   public String getMobilePhoneNumber() {
     return mobilePhoneNumber;
+  }
+
+  public String getName() {
+    return name;
   }
 
   public String getPhoneNumber() {
@@ -83,6 +96,10 @@ public class Condo implements IsSerializable {
     city = value;
   }
 
+  public void setCompany(Key<Company> company) {
+    this.company = company;
+  }
+
   public void setCountry(String value) {
     country = value;
   }
@@ -95,8 +112,16 @@ public class Condo implements IsSerializable {
     homeownerAssociation = value;
   }
 
+  public void setId(String id) {
+    this.id = id;
+  }
+
   public void setMobilePhoneNumber(String value) {
     mobilePhoneNumber = value;
+  }
+
+  public void setName(String name) {
+    this.name = name;
   }
 
   public void setPhoneNumber(String value) {

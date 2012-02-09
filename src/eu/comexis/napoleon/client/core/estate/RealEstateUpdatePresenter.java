@@ -1,5 +1,6 @@
 package eu.comexis.napoleon.client.core.estate;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -19,14 +20,19 @@ import eu.comexis.napoleon.client.core.MainLayoutPresenter;
 import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.rpc.callback.GotAllCities;
 import eu.comexis.napoleon.client.rpc.callback.GotAllCountries;
+import eu.comexis.napoleon.client.rpc.callback.GotAllOwner;
 import eu.comexis.napoleon.client.rpc.callback.GotRealEstate;
 import eu.comexis.napoleon.client.rpc.callback.UpdatedRealEstate;
 import eu.comexis.napoleon.shared.command.country.GetAllCitiesCommand;
 import eu.comexis.napoleon.shared.command.country.GetAllCountriesCommand;
 import eu.comexis.napoleon.shared.command.estate.GetRealEstateCommand;
 import eu.comexis.napoleon.shared.command.estate.UpdateRealEstateCommand;
+import eu.comexis.napoleon.shared.command.owner.GetAllOwnerCommand;
 import eu.comexis.napoleon.client.core.estate.RealEstateUpdateUiHandlers.HasRealEstateUpdateUiHandler;
+import eu.comexis.napoleon.shared.model.City;
 import eu.comexis.napoleon.shared.model.Country;
+import eu.comexis.napoleon.shared.model.Condo;
+import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 import eu.comexis.napoleon.shared.model.RealEstate;
 
 public class RealEstateUpdatePresenter extends
@@ -40,19 +46,27 @@ public class RealEstateUpdatePresenter extends
   public interface MyView extends View, HasRealEstateUpdateUiHandler {
     public void displayError(String error);
 
-    public void fillCityList(List<String> cities);
+    public void fillCityList(List<City> cities);
 
     public void fillCountryList(List<Country> countries);
 
+    public void fillOwnerList(List<SimpleOwner> owners);
+
+    public void fillSquareList(List<String> squares);
+
     public String getSelectedCountry();
 
-    public void setRealEstate(RealEstate o);
+    public void setRealEstate(RealEstate e, SimpleOwner o, Condo cdo);
 
     public void showCityOther(Boolean show);
 
     public void showCountryOther(Boolean show);
 
     public RealEstate updateRealEstate(RealEstate o);
+    
+    public Condo updateCondo(Condo cdo);
+    
+    public String getOwnerId();
   }
 
   public static final String UUID_PARAMETER = "uuid";
@@ -62,7 +76,8 @@ public class RealEstateUpdatePresenter extends
   private PlaceManager placeManager;
   private String id;
   private RealEstate realEstate;
-  private List<String> allCities;
+  private Condo cdo;
+  private List<City> allCities;
   private List<Country> allCountries;
 
   @Inject
@@ -85,8 +100,13 @@ public class RealEstateUpdatePresenter extends
     // Try to save the realEstate
     // Get the realEstate to save
     realEstate = getView().updateRealEstate(realEstate);
+    cdo = getView().updateCondo(cdo);
     // Save it
-    new UpdateRealEstateCommand(realEstate).dispatch(new UpdatedRealEstate() {
+    UpdateRealEstateCommand cmd = new UpdateRealEstateCommand();
+    cmd.setRealEstate(realEstate);
+    cmd.setCondo(cdo);
+    cmd.setOwnerId(getView().getOwnerId());
+    cmd.dispatch(new UpdatedRealEstate() {
       @Override
       public void got(RealEstate realEstate) {
         if (realEstate != null) {
@@ -109,6 +129,14 @@ public class RealEstateUpdatePresenter extends
       getView().showCityOther(true);
     } else {
       getView().showCityOther(false);
+      for (City c : allCities) {
+        if (c.getName().equals(selectedCity) && c.getSquareList() != null) {
+          getView().fillSquareList(c.getSquareList());
+          break;
+        } else {
+          getView().fillSquareList(new ArrayList<String>());
+        }
+      }
     }
   }
 
@@ -121,8 +149,8 @@ public class RealEstateUpdatePresenter extends
       GetAllCitiesCommand cmd = new GetAllCitiesCommand();
       cmd.setName(selectedCountry);
       cmd.dispatch(new GotAllCities() {
-        @Override
-        public void got(List<String> cities) {
+        public void got(List<City> cities) {
+          RealEstateUpdatePresenter.this.allCities = cities;
           getView().fillCityList(cities);
         }
       });
@@ -163,15 +191,15 @@ public class RealEstateUpdatePresenter extends
     if (id != "new") { // call the server to get the requested owner
       new GetRealEstateCommand(id).dispatch(new GotRealEstate() {
         @Override
-        public void got(RealEstate realEstate) {
+        public void got(RealEstate realEstate, SimpleOwner owner, Condo cdo) {
           RealEstateUpdatePresenter.this.realEstate = realEstate;
-          getView().setRealEstate(realEstate);
+          getView().setRealEstate(realEstate, owner, cdo);
         }
       });
     } else {
       RealEstate realEstate = new RealEstate();
       RealEstateUpdatePresenter.this.realEstate = realEstate;
-      getView().setRealEstate(realEstate);
+      getView().setRealEstate(realEstate, null, null);
     }
   }
 
@@ -189,12 +217,16 @@ public class RealEstateUpdatePresenter extends
         GetAllCitiesCommand cmd = new GetAllCitiesCommand();
         cmd.setName(getView().getSelectedCountry());
         cmd.dispatch(new GotAllCities() {
-          @Override
-          public void got(List<String> cities) {
-            RealEstateUpdatePresenter.this.allCities = cities;
+          public void got(List<City> cities) {
             getView().fillCityList(cities);
           }
         });
+      }
+    });
+    new GetAllOwnerCommand().dispatch(new GotAllOwner() {
+      @Override
+      public void got(List<SimpleOwner> owners) {
+        getView().fillOwnerList(owners);
       }
     });
   }

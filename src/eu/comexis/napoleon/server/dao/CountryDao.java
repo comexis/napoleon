@@ -2,6 +2,7 @@ package eu.comexis.napoleon.server.dao;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.UUID;
 
 import com.googlecode.objectify.Key;
@@ -33,7 +34,9 @@ public class CountryDao extends NapoleonDao<Country> {
       return null;
     }
   }
-
+  public void UpdateCity(City c){
+    ofy().put(c);
+  }
   public Country create(Key<Company> companyKey) {
     Country country = new Country();
     country.setCompany(companyKey);
@@ -83,36 +86,22 @@ public class CountryDao extends NapoleonDao<Country> {
     }
     return countries;
   }
-  public ArrayList<String> getListCitiesByCountryName(String countryName,String companyId) {
+  public List<City> getListCitiesByCountryName(String countryName,String companyId) {
     Country cnty = getByName(countryName,companyId);
     Key<Country> countryKey = new Key<Country>(Country.class, cnty.getId());
     Query<City> q = ofy().query(City.class);
     q.ancestor(countryKey);
-    Iterator<City> iterator = q.list().iterator();
-    ArrayList<String> cities = new ArrayList<String>();
-    while (iterator.hasNext()) {
-      City c = iterator.next();
-      cities.add(c.getName());
-    }
-    return cities;
+    return q.list();
   }
-  public ArrayList<String> getListCities(String countryId) {
+  public List<City> getListCities(String countryId) {
     Key<Country> countryKey = new Key<Country>(Country.class, countryId);
     Query<City> q = ofy().query(City.class);
     q.ancestor(countryKey);
-    Iterator<City> iterator = q.list().iterator();
-    ArrayList<String> cities = new ArrayList<String>();
-    while (iterator.hasNext()) {
-      City c = iterator.next();
-      cities.add(c.getName());
-    }
-    return cities;
+    return q.list();
   }
-
   @Override
   public Country update(Country country) {
     String countryId = country.getId();
-
     if (countryId == null || countryId.length() == 0) {
       UUID uuid = UUID.randomUUID();
       country.setId(uuid.toString());

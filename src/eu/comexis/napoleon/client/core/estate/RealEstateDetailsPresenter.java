@@ -20,6 +20,8 @@ import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.rpc.callback.GotRealEstate;
 import eu.comexis.napoleon.shared.command.estate.GetRealEstateCommand;
 import eu.comexis.napoleon.shared.model.RealEstate;
+import eu.comexis.napoleon.shared.model.Condo;
+import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 
 public class RealEstateDetailsPresenter extends
     Presenter<RealEstateDetailsPresenter.MyView, RealEstateDetailsPresenter.MyProxy> implements
@@ -30,7 +32,7 @@ public class RealEstateDetailsPresenter extends
   public interface MyProxy extends ProxyPlace<RealEstateDetailsPresenter> {
   }
   public interface MyView extends View, HasRealEstateDetailUiHandlers {
-    public void setRealEstate(RealEstate o);
+    public void setRealEstate(RealEstate e,SimpleOwner o,Condo cdo);
   }
 
   public static final String UUID_PARAMETER = "uuid";
@@ -95,9 +97,9 @@ public class RealEstateDetailsPresenter extends
     new GetRealEstateCommand(id).dispatch(new GotRealEstate() {
 
       @Override
-      public void got(RealEstate realEstate) {
+      public void got(RealEstate realEstate,SimpleOwner owner,Condo cdo) {
         RealEstateDetailsPresenter.this.realEstate = realEstate;
-        getView().setRealEstate(realEstate);
+        getView().setRealEstate(realEstate,owner,cdo);
       }
     });
 

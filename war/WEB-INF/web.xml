@@ -99,6 +99,15 @@
   <servlet-mapping>
     <servlet-name>initDatastore</servlet-name>
     <url-pattern>/initDatastore</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>ExtractDatastoreAsXML</servlet-name>
+    <servlet-class>eu.comexis.napoleon.server.service.ExtractDatastoreAsXML</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ExtractDatastoreAsXML</servlet-name>
+    <url-pattern>/ExtractDatastoreAsXML</url-pattern>
   </servlet-mapping>	
 
 </web-app>

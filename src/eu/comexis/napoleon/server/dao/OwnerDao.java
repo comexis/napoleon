@@ -50,9 +50,22 @@ public class OwnerDao extends NapoleonDao<Owner> {
     }
     return owners;
   }
+  @Override
+  public Owner update(Owner owner) {
+    if (owner.getCompany() != null){
+      return update(owner,owner.getCompany());
+    }else{
+      // log error
+      LOG.fatal("Parent Company is not set, cannot save owner");
+      return null;
+    }
+  }
   public Owner update(Owner owner, String companyId) {
-    String ownerId = owner.getId();
     Key<Company> companyKey = new Key<Company>(Company.class, companyId);
+    return update(owner,companyKey);
+  }
+  public Owner update(Owner owner, Key<Company> companyKey) {
+    String ownerId = owner.getId();
     CountryDao countryData = new CountryDao();
     if (ownerId == null || ownerId.length() == 0) {
       UUID uuid = UUID.randomUUID();
@@ -71,6 +84,6 @@ public class OwnerDao extends NapoleonDao<Owner> {
     if (city == null) {
       city = countryData.addCity(country.getId(), owner.getCity());
     }
-    return update(owner);
+    return super.update(owner);
   }
 }

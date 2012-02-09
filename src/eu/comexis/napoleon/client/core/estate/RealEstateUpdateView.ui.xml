@@ -10,18 +10,30 @@
 		<div>
 			<span>Référence :</span>
 			<g:TextBox ui:field="reference" />
+			<span>Copropriété :</span>
+			<g:TextBox ui:field="condo" />
+		</div>
+		<div>
+			<span>Syndicat :</span>
+			<g:TextBox ui:field="association" />
+			<span>Adresse :</span>
+			<g:TextBox ui:field="address" />
 		</div>
 		<div>
 			<span>Téléphone :</span>
 			<g:TextBox ui:field="phoneNumber" />
-		</div>
-		<div>
 			<span>GSM :</span>
 			<g:TextBox ui:field="mobileNumber" />
+			<span>Mail :</span>
+			<g:TextBox ui:field="email" />
 		</div>
 		<div>
-			<span>Adresse :</span>
-			<g:TextBox ui:field="addresse" />
+			<span>Adresse du bien:</span>
+			<g:TextBox ui:field="addressRealEstate" />
+			<span>N°:</span>
+			<g:TextBox ui:field="number" />
+			<span>Boite:</span>
+			<g:TextBox ui:field="box" />
 		</div>
 
 		<table>
@@ -46,6 +58,21 @@
 				</td>
 			</tr>
 		</table>
+		<div>
+			<span>Quartier:</span>
+			<g:SuggestBox ui:field="square" />
+			<span>Type de bien:</span>
+			<g:ListBox ui:field="type" />
+			<span>Etat:</span>
+			<g:ListBox ui:field="state" />
+			<span>Superficie:</span>
+			<g:TextBox ui:field="dimension" />
+			<span>m²</span>
+		</div>
+		<div>
+			<span>Propriétaire:</span>
+			<g:ListBox ui:field="ownerName" />
+		</div>
 		<div>
 			<g:Button ui:field="btnSave">Sauver</g:Button>
 			<g:Button ui:field="btnCancel">Annuler</g:Button>

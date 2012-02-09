@@ -9,6 +9,7 @@ import com.googlecode.objectify.Key;
 import eu.comexis.napoleon.shared.model.City;
 import eu.comexis.napoleon.shared.model.Company;
 import eu.comexis.napoleon.shared.model.Country;
+import eu.comexis.napoleon.shared.model.Owner;
 import eu.comexis.napoleon.shared.model.Tenant;
 import eu.comexis.napoleon.shared.model.simple.SimpleTenant;
 
@@ -50,10 +51,22 @@ public class TenantDao extends NapoleonDao<Tenant> {
     }
     return tenants;
   }
+  @Override
+  public Tenant update(Tenant tenant) {
+    if (tenant.getCompany() != null){
+      return update(tenant,tenant.getCompany());
+    }else{
+      // log error
+      LOG.fatal("Parent Company is not set, cannot save tenant");
+      return null;
+    }
+  }
   public Tenant update(Tenant tenant, String companyId) {
-    String tenantId = tenant.getId();
-    LOG.info("Get key for Company ID: " + companyId);
     Key<Company> companyKey = new Key<Company>(Company.class, companyId);
+    return update(tenant,companyKey);
+  }
+  public Tenant update(Tenant tenant, Key<Company> companyKey) {
+    String tenantId = tenant.getId();
     CountryDao countryData = new CountryDao();
     if (tenantId == null || tenantId.length() == 0) {
       UUID uuid = UUID.randomUUID();
@@ -72,6 +85,6 @@ public class TenantDao extends NapoleonDao<Tenant> {
     if (city == null) {
       city = countryData.addCity(country.getId(), tenant.getCity());
     }
-    return update(tenant);
+    return super.update(tenant);
   }
 }
