@@ -4,14 +4,16 @@ import javax.persistence.Id;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.annotation.Indexed;
 import com.googlecode.objectify.annotation.Parent;
-
+import com.googlecode.objectify.annotation.Unindexed;
+@Unindexed
 public class Country implements IsSerializable {
   @Id
   private String id;
   @Parent
   private Key<Company> company;
-
+  @Indexed
   private String name;
 
   public Country() {

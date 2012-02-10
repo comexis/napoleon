@@ -4,11 +4,14 @@ import javax.persistence.Id;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.annotation.Indexed;
 import com.googlecode.objectify.annotation.Parent;
+import com.googlecode.objectify.annotation.Unindexed;
 
 /**
  * @author xavier Bien immobilier
  */
+@Unindexed
 public class RealEstate implements IsSerializable {
 
   @Id
@@ -34,9 +37,9 @@ public class RealEstate implements IsSerializable {
   private RealEstateState state;
 
   private TypeOfRealEstate type;
-
+  @Indexed
   private Key<Condo> condo;
-
+  @Indexed
   private Key<Owner> owner;
 
   public RealEstate() {

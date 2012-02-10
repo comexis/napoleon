@@ -18,10 +18,12 @@ import eu.comexis.napoleon.server.dao.TenantDao;
 import eu.comexis.napoleon.shared.model.ApplicationUser;
 import eu.comexis.napoleon.shared.model.City;
 import eu.comexis.napoleon.shared.model.Company;
+import eu.comexis.napoleon.shared.model.Condo;
 import eu.comexis.napoleon.shared.model.Country;
 import eu.comexis.napoleon.shared.model.Owner;
 import eu.comexis.napoleon.shared.model.RealEstate;
 import eu.comexis.napoleon.shared.model.Tenant;
+import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 
 public class ExtractDatastoreAsXML extends HttpServlet {
 
@@ -33,16 +35,21 @@ public class ExtractDatastoreAsXML extends HttpServlet {
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException,
       IOException {
     resp.setContentType("text/xml");
-    String companyId = req.getParameter("uuid");
-    printResults(companyId, resp);
+    CompanyDao companyData = new CompanyDao();
+    PrintWriter out = resp.getWriter();
+    out.println("<Datastore>");
+    for (Company c : companyData.listAll()){
+      printResults(c, resp);
+    }
+    out.println("</Datastore>");
+    
   }
-  private void printResults(String companyId, HttpServletResponse response) throws IOException {
+  private void printResults(Company c, HttpServletResponse response) throws IOException {
 
     PrintWriter out = response.getWriter();
     
     // print company
-    CompanyDao companyData = new CompanyDao();
-    Company c = companyData.getById(companyId);
+    String companyId = c.getId();
     out.println("<Napoleon client=\"" + c.getName() + "\">");
     out.println("<Company id='"+ c.getId() + "'>");
     out.println("<Name>"+ c.getName() + "</Name>");
@@ -96,6 +103,28 @@ public class ExtractDatastoreAsXML extends HttpServlet {
     for (RealEstate e : estateDao.listAll(companyId)) {
       out.println("<RealEstate id='"+ e.getId() + "'>");
       out.println("<Name>"+ e.getReference() + "</Name>");
+      out.println("<Street>" + e.getStreet() + "</Street>");
+      out.println("<Country>"+ e.getCountry() + "</Country>");
+      out.println("<City>"+ e.getCity() + "</City>");
+      out.println("<Square>" + e.getSquare() + "</Square>");
+      out.println("<State>" + e.getState().name() + "</State>");
+      out.println("<Type>" + e.getType().name() + "</Type>");
+      out.println("<Dim>" + e.getDimension() + "</Dim>");
+      SimpleOwner o = estateDao.getOwner(e);
+      if (o !=null){
+        out.println("<Owner>" + o.getName() + "</Owner>");
+      }
+      Condo cdo = estateDao.getCondo(e);
+      if (cdo!=null){
+        out.println("<Condominium>");
+        out.println("<Name>" + cdo.getName() + "</Name>");
+        out.println("<HomeownerAssociation>" + cdo.getHomeownerAssociation() + "</HomeownerAssociation>");
+        out.println("<Address>" + cdo.getStreet() + "</Address>");
+        out.println("<Email>" + cdo.getEmail() + "</Email>");
+        out.println("<Tel>" + cdo.getPhoneNumber() + "</Tel>");
+        out.println("<GSM>" + cdo.getMobilePhoneNumber() + "</GSM>");
+        out.println("</Condominium>");
+      }
       out.println("</RealEstate>");
     }
     out.println("</RealEstates>");

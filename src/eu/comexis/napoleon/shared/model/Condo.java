@@ -8,10 +8,12 @@ import javax.persistence.Id;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Parent;
+import com.googlecode.objectify.annotation.Unindexed;
 
 /**
  * @author xavier Coopropriété (Condominium)
  */
+@Unindexed
 public class Condo implements IsSerializable {
 
   @Id

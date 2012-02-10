@@ -148,17 +148,33 @@ public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePr
 
   @Override
   public void setRealEstate(RealEstate e, SimpleOwner o, Condo cdo) {
-
-    this.reference.setText(e.getReference());
-    this.addressRealEstate.setText(e.getStreet());
-    this.cityOther.setText(e.getCity());
-    this.number.setText(e.getNumber());
-    this.box.setText(e.getBox());
-    this.square.setText(e.getSquare());
-    this.dimension.setText(e.getDimension());
-    UiHelper.selectTextItemBoxByValue(this.state, e.getState().name());
-    UiHelper.selectTextItemBoxByValue(this.type, e.getType().name());
-    UiHelper.selectTextItemBoxByValue(this.ownerName, o.getId());
+    //cleanup
+    this.reference.setText("");
+    this.addressRealEstate.setText("");
+    this.cityOther.setText("");
+    this.number.setText("");
+    this.box.setText("");
+    this.square.setText("");
+    this.dimension.setText("");
+    this.condo.setText("");
+    this.association.setText("");
+    this.address.setText("");
+    this.email.setText("");
+    this.mobileNumber.setText("");
+    this.phoneNumber.setText("");
+    UiHelper.selectTextItemBoxByValue(this.ownerName, "(...)");
+    if (e!=null){
+      this.reference.setText(e.getReference());
+      this.addressRealEstate.setText(e.getStreet());
+      this.cityOther.setText(e.getCity());
+      this.number.setText(e.getNumber());
+      this.box.setText(e.getBox());
+      this.square.setText(e.getSquare());
+      this.dimension.setText(e.getDimension());
+      UiHelper.selectTextItemBoxByValue(this.state, e.getState().name());
+      UiHelper.selectTextItemBoxByValue(this.type, e.getType().name());
+      UiHelper.selectTextItemBoxByValue(this.ownerName, o.getId());
+    }
     if (cdo!=null){
       this.condo.setText(cdo.getName());
       this.association.setText(cdo.getHomeownerAssociation());

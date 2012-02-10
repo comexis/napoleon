@@ -86,4 +86,11 @@ public class OwnerDao extends NapoleonDao<Owner> {
     }
     return super.update(owner);
   }
+  @Override
+  public Owner getById(String ownerId,String companyId){
+    Owner o = super.getById(ownerId, companyId);
+    RealEstateDao eDao = new RealEstateDao();
+    o.setEstates(eDao.getListSimpleRealEstatesForOwner(companyId, ownerId));
+    return o;
+  }
 }

@@ -79,6 +79,10 @@
 			<span ui:field="matrimonialRegime" />
 		</div>
 		<div>
+			<span>Biens immobiliers :</span>
+			<span ui:field="estates" />
+		</div>
+		<div>
 			<g:Button ui:field="btnUpdate">Editer</g:Button>
 			<g:Button ui:field="btnDelete">Effacer</g:Button>
 			<g:Button ui:field="btnToList">Retour vers la liste</g:Button>

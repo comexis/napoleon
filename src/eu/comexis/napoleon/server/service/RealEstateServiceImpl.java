@@ -6,6 +6,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import eu.comexis.napoleon.client.rpc.RealEstateService;
 import eu.comexis.napoleon.server.dao.CondoDao;
+import eu.comexis.napoleon.server.dao.NapoleonDao;
 import eu.comexis.napoleon.server.dao.RealEstateDao;
 import eu.comexis.napoleon.server.manager.UserManager;
 import eu.comexis.napoleon.shared.command.estate.GetAllRealEstateCommand;
@@ -18,6 +19,8 @@ import eu.comexis.napoleon.shared.model.Condo;
 import eu.comexis.napoleon.shared.model.RealEstate;
 import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 import eu.comexis.napoleon.shared.model.simple.SimpleRealEstate;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Implementation of the service on server side.
@@ -27,7 +30,7 @@ import eu.comexis.napoleon.shared.model.simple.SimpleRealEstate;
  */
 @SuppressWarnings("serial")
 public class RealEstateServiceImpl extends RemoteServiceServlet implements RealEstateService {
-
+  public static Log LOG = LogFactory.getLog(RealEstateServiceImpl.class);
   @Override
   public GetAllRealEstateResponse execute(GetAllRealEstateCommand command) {
     String companyId = UserManager.INSTANCE.getCompanyId();
@@ -75,12 +78,13 @@ public class RealEstateServiceImpl extends RemoteServiceServlet implements RealE
     String companyId = UserManager.INSTANCE.getCompanyId();
     if (cdo!=null){
       CondoDao cdoDao = new CondoDao();
-      cdo = cdoDao.update(cdo);
+      cdo = cdoDao.update(cdo,companyId);
     }
     RealEstateDao dao = new RealEstateDao();
     if (cdo!=null){
       dao.setCondo(realEstate, cdo);
     }else{
+      LOG.info("Delete the Condominium for " + realEstate.getReference());
       dao.deleteCondo(realEstate);
     }
     dao.setOwner(realEstate, ownerId,companyId);

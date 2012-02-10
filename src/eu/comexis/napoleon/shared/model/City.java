@@ -6,8 +6,10 @@ import javax.persistence.Id;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.annotation.Indexed;
 import com.googlecode.objectify.annotation.Parent;
-
+import com.googlecode.objectify.annotation.Unindexed;
+@Unindexed
 public class City implements IsSerializable {
 
   @Id
@@ -15,6 +17,7 @@ public class City implements IsSerializable {
 
   @Parent
   private Key<Country> country;
+  @Indexed
   private String name;
   private ArrayList<String> SquareList;
 

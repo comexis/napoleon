@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.UUID;
 
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.Query;
 
 import eu.comexis.napoleon.shared.model.City;
 import eu.comexis.napoleon.shared.model.Company;
@@ -146,5 +147,25 @@ public class RealEstateDao extends NapoleonDao<RealEstate> {
       o.setPhoneNumber(own.getPhoneNumber());
     }
     return o;
+  }
+  public ArrayList<SimpleRealEstate> getListSimpleRealEstatesForOwner(String companyId,String ownerId) {
+    try {
+      Key<Company> companyKey = new Key<Company>(Company.class, companyId);
+      Key<Owner> ownerKey = new Key<Owner>(companyKey,Owner.class, ownerId);
+      Query<RealEstate> q = ofy().query(RealEstate.class);
+      q.ancestor(companyKey);
+      ArrayList<SimpleRealEstate> realEstates = new ArrayList<SimpleRealEstate>();
+      for(RealEstate e:q.filter("owner", ownerKey).list()){
+        SimpleRealEstate se = new SimpleRealEstate();
+        se.setId(e.getId());
+        se.setReference(e.getReference());
+        se.setCity(e.getCity());
+        se.setAddress(e.getStreet());
+        realEstates.add(se);
+      }
+      return realEstates;
+    } catch (Exception e) {
+      return null;
+    }
   }
 }
