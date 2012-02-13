@@ -23,6 +23,7 @@ import com.gwtplatform.mvp.client.ViewImpl;
 
 import eu.comexis.napoleon.client.utils.UiHelper;
 import eu.comexis.napoleon.shared.model.Country;
+import eu.comexis.napoleon.shared.model.FeeUnit;
 import eu.comexis.napoleon.shared.model.MaritalStatus;
 import eu.comexis.napoleon.shared.model.MatrimonialRegime;
 import eu.comexis.napoleon.shared.model.Owner;
@@ -234,7 +235,7 @@ public class OwnerUpdateView extends ViewImpl implements
 		o.setFirstName(firstName.getValue());
 		o.setLastName(name.getValue());
 		o.setFee(fee.getValue());
-		o.setUnit((unit.getSelectedIndex()==0)? "%" : "EUR");
+		o.setUnit(FeeUnit.valueOf(unit.getValue(unit.getSelectedIndex())));
 		o.setBic(bic.getValue());
 		o.setIban(iban.getValue());
 		o.setEmail(email.getValue());
@@ -274,9 +275,7 @@ public class OwnerUpdateView extends ViewImpl implements
 		oracleJob.add("Ingénieur");
 		oracleJob.add("Informaticien");
 		job = new SuggestBox(oracleJob);
-		unit = new ListBox();
-		unit.addItem("% LOYER");
-		unit.addItem("Somme forfaitaire (EUR)");
+		unit = UiHelper.createListBoxForEnum(FeeUnit.class, "FeeUnit_", false);
 		
 		city = new ListBox();
 		city.addChangeHandler(new ChangeHandler() {

@@ -17,7 +17,7 @@ public class Owner extends Party implements IsSerializable {
   public static final BigDecimal CONVERSION_FACTOR = new BigDecimal(100);
 
   private Long fee;
-  private String unit;
+  private FeeUnit unit;
 
   public Owner() {
     super();
@@ -31,7 +31,7 @@ public class Owner extends Party implements IsSerializable {
     }
   }
 
-  public String getUnit() {
+  public FeeUnit getUnit() {
     return unit;
   }
 
@@ -44,7 +44,7 @@ public class Owner extends Party implements IsSerializable {
     this.setFee(bdFee);
   }
 
-  public void setUnit(String unit) {
+  public void setUnit(FeeUnit unit) {
     this.unit = unit;
   }
 }

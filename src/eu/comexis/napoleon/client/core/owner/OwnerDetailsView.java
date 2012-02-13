@@ -12,7 +12,6 @@ import com.gwtplatform.mvp.client.ViewImpl;
 
 import eu.comexis.napoleon.client.utils.UiHelper;
 import eu.comexis.napoleon.shared.model.Owner;
-import eu.comexis.napoleon.shared.model.Title;
 
 public class OwnerDetailsView extends ViewImpl implements OwnerDetailsPresenter.MyView {
 
@@ -22,12 +21,9 @@ public class OwnerDetailsView extends ViewImpl implements OwnerDetailsPresenter.
   private final Widget widget;
 
   private OwnerDetailUiHandlers presenter;
-  @UiField
-  Element title;
+  
   @UiField
   Element name;
-  @UiField
-  Element firstName;
   @UiField
   Element email;
   @UiField
@@ -87,16 +83,9 @@ public class OwnerDetailsView extends ViewImpl implements OwnerDetailsPresenter.
 
   @Override
   public void setOwner(Owner o) {
-    title.setInnerText(UiHelper.translateEnum("Title_", o.getTitle()));
-    name.setInnerText(o.getLastName());
-    firstName.setInnerText(o.getFirstName());
-    if (o.getUnit() != null) {
-      if (o.getUnit().equals("%")) {
-        fee.setInnerText(o.getFee() + " % LOYER");
-      } else {
-        fee.setInnerText("SOMME FORFAITAIRE: " + o.getFee());
-      }
-    }
+    displayName(o);
+    displayFee(o);
+
     iban.setInnerText(o.getIban());
     bic.setInnerText(o.getBic());
     email.setInnerText(o.getEmail());
@@ -114,6 +103,19 @@ public class OwnerDetailsView extends ViewImpl implements OwnerDetailsPresenter.
 
     // TODO Auto-generated method stub
 
+  }
+
+  private void displayFee(Owner o) {
+    fee.setInnerText(o.getFee() + " " + UiHelper.translateEnum("FeeUnit_", o.getUnit()));
+    
+  }
+
+  private void displayName(Owner o) {
+    StringBuilder nameBuilder = new StringBuilder();
+    nameBuilder.append(UiHelper.translateEnum("Title_", o.getTitle(), "_short")).append(" ");
+    nameBuilder.append(o.getLastName()).append(" ");
+    nameBuilder.append(o.getFirstName());
+    name.setInnerText(nameBuilder.toString());
   }
 
   @Override

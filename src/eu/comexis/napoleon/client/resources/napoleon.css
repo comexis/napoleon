@@ -12,3 +12,25 @@
 	background-position: 0 0;
 	padding-top: 5px
 }
+
+.detailRow{
+	clear: both;
+}
+
+.detailCellValue, .detailCellLabel{
+	float: left;
+	margin: 5px;
+}
+
+.detailCellLabel{
+	font-weight: bold;
+}
+  
+.detailCellValue{
+	min-width: 200px;
+}
+
+.detailTable{
+	width: 100%;
+	
+}

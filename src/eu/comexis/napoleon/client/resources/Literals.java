@@ -50,6 +50,12 @@ public interface Literals extends ConstantsWithLookup {
   
   @DefaultStringValue("Mlle")
   public String Title_MISS_short();
+  
+  @DefaultStringValue("€")
+  public String FeeUnit_LUMP_SUM();
+  
+  @DefaultStringValue("% du loyer")
+  public String FeeUnit_RENT_PERCENTAGE();
 
 
 }

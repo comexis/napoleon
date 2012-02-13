@@ -10,18 +10,25 @@ public class UiHelper {
   private UiHelper(){}
   
   
-  public static ListBox createListBoxForEnum(Class<? extends Enum<?>> enumClass, String suffix, boolean mutiple){
+  public static ListBox createListBoxForEnum(Class<? extends Enum<?>> enumClass, String prefix, boolean mutiple){
     ListBox box = new ListBox(mutiple);
     
     for (Enum<?> e : enumClass.getEnumConstants()){
-      String literalKey = suffix +e.name();
-      box.addItem(Literals.INSTANCE.getString(literalKey), e.name());
+      box.addItem(translateEnum(prefix, e), e.name());
     }
     
     return box;
   }
-  public static String translateEnum(String suffix, Enum<?> e){
-      String literalKey = suffix +e.name();
-      return Literals.INSTANCE.getString(literalKey);
+  
+  public static String translateEnum(String prefix, Enum<?> e){
+      if (e == null){
+        return "";
+      }
+      return translateEnum(prefix, e, "");
   }
+  
+  public static String translateEnum(String prefix, Enum<?> e, String suffix){
+    String literalKey = new StringBuilder(prefix).append(e.name()).append(suffix).toString(); 
+    return Literals.INSTANCE.getString(literalKey);
+}
 }
