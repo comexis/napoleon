@@ -7,6 +7,10 @@
 
 	<g:HTMLPanel>
 		<div>
+			<span>Civilité :</span>
+			<span ui:field="title" />
+		</div>
+		<div>
 			<span>Nom :</span>
 			<span ui:field="name" />
 		</div>
@@ -15,8 +19,20 @@
 			<span ui:field="firstName" />
 		</div>
 		<div>
-			<span>Email :</span>
-			<span ui:field="email" />
+			<span>Honoraires :</span>
+			<span ui:field="fee" />
+		</div>
+		<div>
+			<span>BIC :</span>
+			<span ui:field="bic" />
+		</div>
+		<div>
+			<span>IBAN :</span>
+			<span ui:field="iban" />
+		</div>
+		<div>
+			<span>Adresse :</span>
+			<span ui:field="addresse" />
 		</div>
 		<div>
 			<span>Téléphone :</span>
@@ -27,21 +43,45 @@
 			<span ui:field="mobileNumber" />
 		</div>
 		<div>
+			<span>Fax :</span>
+			<span ui:field="fax" />
+		</div>
+		<div>
+			<span>Email :</span>
+			<span ui:field="email" />
+		</div>
+		<div>
 			<span>Date de naissance :</span>
 			<span ui:field="birthDay" />
 		</div>
 		<div>
-			<span>Adresse :</span>
-			<span ui:field="addresse" />
+			<span>Lieu de naissance :</span>
+			<span ui:field="placeOfBirth" />
+		</div>
+		<div>
+			<span>Nationalité :</span>
+			<span ui:field="nationality" />
+		</div>
+		<div>
+			<span>Profession :</span>
+			<span ui:field="job" />
+		</div>
+		<div>
+			<span>Registre national :</span>
+			<span ui:field="nationalRegister" />
 		</div>
 		<div>
 			<span>Marital status :</span>
 			<span ui:field="maritalStatus" />
 		</div>
 		<div>
+			<span>Régime matrimonial :</span>
+			<span ui:field="matrimonialRegime" />
+		</div>
+		<div>
 			<g:Button ui:field="btnUpdate">Editer</g:Button>
 			<g:Button ui:field="btnDelete">Effacer</g:Button>
-			<g:Button ui:field="btnToDashBoard">Retour vers le dashboard</g:Button>
+			<g:Button ui:field="btnToList">Retour vers la liste</g:Button>
 		</div>
 	</g:HTMLPanel>
 </ui:UiBinder>

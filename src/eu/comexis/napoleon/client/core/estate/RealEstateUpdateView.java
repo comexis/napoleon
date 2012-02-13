@@ -11,168 +11,285 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
+import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
+import eu.comexis.napoleon.client.utils.UiHelper;
+import eu.comexis.napoleon.shared.model.Condo;
 import eu.comexis.napoleon.shared.model.Country;
 import eu.comexis.napoleon.shared.model.RealEstate;
+import eu.comexis.napoleon.shared.model.RealEstateState;
+import eu.comexis.napoleon.shared.model.Title;
+import eu.comexis.napoleon.shared.model.City;
+import eu.comexis.napoleon.shared.model.TypeOfRealEstate;
+import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 
-public class RealEstateUpdateView extends ViewImpl implements
-  RealEstateUpdatePresenter.MyView {
+public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePresenter.MyView {
 
-	private final Widget widget;
-	private RealEstateUpdateUiHandlers presenter;
-	public interface Binder extends UiBinder<Widget, RealEstateUpdateView> {
-	}
+  public interface Binder extends UiBinder<Widget, RealEstateUpdateView> {
+  }
 
-	@UiField
-	TextBox reference;
-	@UiField
-	TextBox phoneNumber;
-	@UiField
-	TextBox mobileNumber;
-	@UiField
-	TextBox addresse;
-	@UiField(provided = true)
-	ListBox city;
-	@UiField
+  private final Widget widget;
+  private RealEstateUpdateUiHandlers presenter;
+  private MultiWordSuggestOracle oracleSquare;
+
+  @UiField
+  TextBox reference;
+  @UiField
+  TextBox addressRealEstate;
+  @UiField(provided = true)
+  ListBox city;
+  @UiField
   TextBox cityOther;
-	@UiField(provided = true)
+  @UiField(provided = true)
   ListBox country;
-	@UiField
+  @UiField
   TextBox countryOther;
-	@UiHandler("btnSave")
-  public void onSave(ClickEvent e){
-    presenter.onButtonSaveClick();
+  @UiField
+  TextBox condo;
+  @UiField
+  TextBox association;
+  @UiField
+  TextBox address;
+  @UiField
+  TextBox phoneNumber;
+  @UiField
+  TextBox mobileNumber;
+  @UiField
+  TextBox email;
+  @UiField
+  TextBox number;
+  @UiField
+  TextBox box;
+  @UiField(provided = true)
+  SuggestBox square;
+  @UiField(provided = true)
+  ListBox type;
+  @UiField(provided = true)
+  ListBox state;
+  @UiField
+  TextBox dimension;
+  @UiField
+  ListBox ownerName;
+
+  @Inject
+  public RealEstateUpdateView(final Binder binder) {
+    init();
+    widget = binder.createAndBindUi(this);
   }
 
-  @UiHandler("btnCancel")
-  public void onCancel(ClickEvent e){
-    presenter.onButtonCancelClick();
-  }
-
-	@Inject
-	public RealEstateUpdateView(final Binder binder) {
-	  init();
-		widget = binder.createAndBindUi(this);
-	}
-
-	@Override
-	public Widget asWidget() {
-		return widget;
-	}
   @Override
-  public void fillCityList(List<String> cities) {
-    String cityToSelect = city.getItemText(city.getSelectedIndex());
+  public Widget asWidget() {
+    return widget;
+  }
+
+  @Override
+  public void displayError(String error) {
+    Window.alert(error);
+  }
+
+  @Override
+  public void fillCityList(List<City> cities) {
     city.clear();
-    Integer index = 0;
-    for(int i=0; i < cities.size();i++){
-      String sCity = cities.get(i);
-      city.addItem(cities.get(i));
-      if (cityToSelect!=null && sCity.equals(cityToSelect)){
-        index = i;
-      }
+    for (City oCity : cities) {
+      city.addItem(oCity.getName());
     }
     city.addItem("(...)");
-    city.setItemSelected(index, true);
+    selectCityByName(cityOther.getText());
   }
+
   @Override
-  public String getSelectedCountry(){
+  public void fillCountryList(List<Country> countries) {
+    country.clear();
+    for (Country cnty : countries) {
+      country.addItem(cnty.getName(), cnty.getId());
+    }
+    country.addItem("(...)", "(...)");
+  }
+
+  @Override
+  public void fillOwnerList(List<SimpleOwner> owners) {
+    ownerName.clear();
+    for (SimpleOwner o : owners) {
+      ownerName.addItem(o.getName(), o.getId());
+    }
+    ownerName.addItem("(...)", "(...)");
+  }
+
+  @Override
+  public void fillSquareList(List<String> squares) {
+    oracleSquare.clear();
+    for (String sSquare : squares) {
+      oracleSquare.add(sSquare);
+    }
+  }
+
+  @Override
+  public String getSelectedCountry() {
     Integer index = country.getSelectedIndex();
     String countryToSelect = country.getValue(index);
     return countryToSelect;
   }
+
+  @UiHandler("btnCancel")
+  public void onCancel(ClickEvent e) {
+    presenter.onButtonCancelClick();
+  }
+
+  @UiHandler("btnSave")
+  public void onSave(ClickEvent e) {
+    presenter.onButtonSaveClick();
+  }
+
   @Override
-  public void fillCountryList(List<Country> countries) {
-    String countryToSelect = country.getValue(country.getSelectedIndex());
-    country.clear();
-    Integer index = 0;
-    for(int i=0; i < countries.size();i++){
-      String sCountry = countries.get(i).getName();
-      country.addItem(countries.get(i).getName(),countries.get(i).getId());
-      if (countryToSelect!=null && sCountry.equals(countryToSelect)){
-        index = i;
+  public void setRealEstate(RealEstate e, SimpleOwner o, Condo cdo) {
+    //cleanup
+    this.reference.setText("");
+    this.addressRealEstate.setText("");
+    this.cityOther.setText("");
+    this.number.setText("");
+    this.box.setText("");
+    this.square.setText("");
+    this.dimension.setText("");
+    this.condo.setText("");
+    this.association.setText("");
+    this.address.setText("");
+    this.email.setText("");
+    this.mobileNumber.setText("");
+    this.phoneNumber.setText("");
+    UiHelper.selectTextItemBoxByValue(this.ownerName, "(...)");
+    if (e!=null){
+      this.reference.setText(e.getReference());
+      this.addressRealEstate.setText(e.getStreet());
+      this.cityOther.setText(e.getCity());
+      this.number.setText(e.getNumber());
+      this.box.setText(e.getBox());
+      this.square.setText(e.getSquare());
+      this.dimension.setText(e.getDimension());
+      UiHelper.selectTextItemBoxByValue(this.state, e.getState().name());
+      UiHelper.selectTextItemBoxByValue(this.type, e.getType().name());
+      UiHelper.selectTextItemBoxByValue(this.ownerName, o.getId());
+    }
+    if (cdo!=null){
+      this.condo.setText(cdo.getName());
+      this.association.setText(cdo.getHomeownerAssociation());
+      this.address.setText(cdo.getStreet());
+      this.email.setText(cdo.getEmail());
+      this.mobileNumber.setText(cdo.getMobilePhoneNumber());
+      this.phoneNumber.setText(cdo.getPhoneNumber());
+    }
+    for (int i = 0; i < country.getItemCount(); i++) {
+      if (country.getItemText(i).equals(e.getCountry())) {
+        country.setSelectedIndex(i);
+        // load the corresponding cities
+        presenter.onCountrySelect(country.getValue(i));
+        break;
       }
     }
-    country.addItem("(...)","(...)");
-    country.setItemSelected(index, true);
-  }
-  @Override
-  public RealEstate updateRealEstate(RealEstate o) {
-    o.setReference(reference.getValue());
-    o.setStreet(addresse.getValue());
-    o.setCity(city.getValue(city.getSelectedIndex()).equals("(...)") ? cityOther.getValue():city.getValue(city.getSelectedIndex()));
-    o.setCountry(country.getItemText(country.getSelectedIndex()).equals("(...)") ? countryOther.getValue():country.getItemText(country.getSelectedIndex()));
-    return o;
-  }
-	@Override
-	public void setRealEstate(RealEstate o) {
-
-  	reference.setText(o.getReference());
-  	addresse.setText(o.getStreet());
-  	country.clear();
-  	country.addItem(o.getCountry(),o.getCountry());
-  	country.setSelectedIndex(0);
-  	city.clear();
-  	city.addItem(o.getCity(),o.getCity());
-  	city.setSelectedIndex(0);
-  	$("#countryOther").hide();
+    $("#countryOther").hide();
     $("#cityOther").hide();
 
-		// TODO Auto-generated method stub
+    // TODO Auto-generated method stub
 
-	}
-	private void init() {
-	  city = new ListBox(false);
-	  city.addChangeHandler(new ChangeHandler()
-	  {
-	    public void onChange(ChangeEvent event)
-	    {
-	      int selectedIndex = city.getSelectedIndex();
-	      if (selectedIndex > -1){
-	        presenter.onCitySelect(city.getValue(selectedIndex));
-	      }
-	    }
-	  });
-	  country = new ListBox();
-	  country.addChangeHandler(new ChangeHandler()
-    {
-      public void onChange(ChangeEvent event)
-      {
+  }
+
+  @Override
+  public void setRealEstateUpdateUiHandler(RealEstateUpdateUiHandlers handler) {
+    this.presenter = handler;
+  }
+
+  @Override
+  public void showCityOther(Boolean show) {
+    if (show.equals(true)) {
+      $("#cityOther").show();
+    } else {
+      $("#cityOther").hide();
+    }
+  }
+
+  @Override
+  public void showCountryOther(Boolean show) {
+    if (show.equals(true)) {
+      $("#countryOther").show();
+    } else {
+      $("#countryOther").hide();
+    }
+  }
+
+  @Override
+  public RealEstate updateRealEstate(RealEstate e) {
+    e.setReference(reference.getValue());
+    e.setStreet(addressRealEstate.getValue());
+    e.setNumber(number.getValue());
+    e.setBox(box.getValue());
+    e.setDimension(dimension.getValue());
+    e.setSquare(square.getValue());
+    e.setType(TypeOfRealEstate.valueOf(type.getValue(type.getSelectedIndex())));
+    e.setState(RealEstateState.valueOf(state.getValue(state.getSelectedIndex())));
+    e.setCity(city.getValue(city.getSelectedIndex()).equals("(...)") ? cityOther.getValue() : city
+        .getValue(city.getSelectedIndex()));
+    e.setCountry(country.getItemText(country.getSelectedIndex()).equals("(...)") ? countryOther
+        .getValue() : country.getItemText(country.getSelectedIndex()));
+    return e;
+  }
+  @Override
+  public String getOwnerId(){
+    return ownerName.getValue(ownerName.getSelectedIndex());
+  }
+  @Override
+  public Condo updateCondo(Condo cdo) {
+    if (!condo.getValue().isEmpty()){
+      if (cdo==null){
+        cdo = new Condo();
+      }
+      cdo.setName(condo.getValue());
+      cdo.setHomeownerAssociation(association.getValue());
+      cdo.setStreet(address.getValue());
+      cdo.setEmail(email.getValue());
+      cdo.setMobilePhoneNumber(mobileNumber.getValue());
+      cdo.setPhoneNumber(phoneNumber.getValue());
+      return cdo;
+    }
+    return null;
+  }
+
+  private void init() {
+    city = new ListBox(false);
+    city.addChangeHandler(new ChangeHandler() {
+      public void onChange(ChangeEvent event) {
+        int selectedIndex = city.getSelectedIndex();
+        if (selectedIndex > -1) {
+          presenter.onCitySelect(city.getValue(selectedIndex));
+        }
+      }
+    });
+    country = new ListBox();
+    country.addChangeHandler(new ChangeHandler() {
+      public void onChange(ChangeEvent event) {
         int selectedIndex = country.getSelectedIndex();
-        if (selectedIndex > -1){
+        if (selectedIndex > -1) {
           presenter.onCountrySelect(country.getValue(selectedIndex));
         }
       }
     });
-	}
-	@Override
-	public void displayError(String error){
-	  Window.alert(error);
-	}
-	@Override
-	public void showCountryOther(Boolean show){
-	  if (show.equals(true)){
-	    $("#countryOther").show();
-	  }else{
-	    $("#countryOther").hide();
-	  }
-	}
-	@Override
-  public void showCityOther(Boolean show){
-    if (show.equals(true)){
-      $("#cityOther").show();
-    }else{
-      $("#cityOther").hide();
-    }
+    type = UiHelper.createListBoxForEnum(TypeOfRealEstate.class, "TypeOfRealEstate_", false);
+    state = UiHelper.createListBoxForEnum(RealEstateState.class, "RealEstateState_", false);
+    oracleSquare = new MultiWordSuggestOracle();
+    square = new SuggestBox(oracleSquare);
   }
-	@Override
-  public void setRealEstateUpdateUiHandler(RealEstateUpdateUiHandlers handler) {
-    this.presenter = handler;
+
+  private void selectCityByName(String name) {
+    for (int i = 0; i < city.getItemCount(); i++) {
+      if (city.getItemText(i).equals(name)) {
+        city.setSelectedIndex(i);
+        presenter.onCitySelect(name);
+        break;
+      }
+    }
   }
 }

@@ -1,9 +1,11 @@
 package eu.comexis.napoleon.client.core.tenant;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.logging.client.LogConfiguration;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
@@ -25,6 +27,7 @@ import eu.comexis.napoleon.shared.command.country.GetAllCitiesCommand;
 import eu.comexis.napoleon.shared.command.country.GetAllCountriesCommand;
 import eu.comexis.napoleon.shared.command.tenant.GetTenantCommand;
 import eu.comexis.napoleon.shared.command.tenant.UpdateTenantCommand;
+import eu.comexis.napoleon.shared.model.City;
 import eu.comexis.napoleon.shared.model.Country;
 import eu.comexis.napoleon.shared.model.Tenant;
 
@@ -120,9 +123,12 @@ public class TenantUpdatePresenter extends
       GetAllCitiesCommand cmd = new GetAllCitiesCommand();
       cmd.setName(selectedCountry);
       cmd.dispatch(new GotAllCities() {
-        @Override
-        public void got(List<String> cities) {
-          getView().fillCityList(cities);
+        public void got(List<City> cities) {
+          List<String> lstCities = new ArrayList();
+          for(City c:cities){
+            lstCities.add(c.getName());
+          }
+          getView().fillCityList(lstCities);
         }
       });
       getView().showCountryOther(false);
@@ -135,29 +141,51 @@ public class TenantUpdatePresenter extends
   @Override
   public void prepareFromRequest(PlaceRequest placeRequest) {
     super.prepareFromRequest(placeRequest);
-
     // In the next call, "view" is the default value,
     // returned if "action" is not found on the URL.
     id = placeRequest.getParameter(UUID_PARAMETER, null);
+    if (id != "new") {
+      if (id == null || id.length() == 0) {
+        if (LogConfiguration.loggingIsEnabled()) {
+          LOG.severe("invalid id is null or empty");
+        }
+        placeManager.revealErrorPlace(placeRequest.getNameToken());
+      }
+    }
   }
 
   @Override
   protected void onBind() {
     super.onBind();
     getView().setTenantUpdateUiHandler(this);
+    init();
   }
 
   @Override
   protected void onReset() {
     super.onReset();
+    if (id != "new") { // call the server to get the requested tenant
+      new GetTenantCommand(id).dispatch(new GotTenant() {
+        @Override
+        public void got(Tenant tenant) {
+          TenantUpdatePresenter.this.tenant = tenant;
+          getView().setTenant(tenant);
+        }
+      });
+    } else {
+      Tenant tenant = new Tenant();
+      TenantUpdatePresenter.this.tenant = tenant;
+      getView().setTenant(tenant);
+    }
 
-    new GetTenantCommand(id).dispatch(new GotTenant() {
-      @Override
-      public void got(Tenant tenant) {
-        TenantUpdatePresenter.this.tenant = tenant;
-        getView().setTenant(tenant);
-      }
-    });
+  }
+
+  @Override
+  protected void revealInParent() {
+    RevealContentEvent.fire(this, MainLayoutPresenter.MAIN_CONTENT, this);
+  }
+
+  private void init() {
     new GetAllCountriesCommand().dispatch(new GotAllCountries() {
       @Override
       public void got(List<Country> countries) {
@@ -166,18 +194,15 @@ public class TenantUpdatePresenter extends
         GetAllCitiesCommand cmd = new GetAllCitiesCommand();
         cmd.setName(getView().getSelectedCountry());
         cmd.dispatch(new GotAllCities() {
-          @Override
-          public void got(List<String> cities) {
-            TenantUpdatePresenter.this.allCities = cities;
-            getView().fillCityList(cities);
+          public void got(List<City> cities) {
+            List<String> lstCities = new ArrayList();
+            for(City c:cities){
+              lstCities.add(c.getName());
+            }
+            getView().fillCityList(lstCities);
           }
         });
       }
     });
-  }
-
-  @Override
-  protected void revealInParent() {
-    RevealContentEvent.fire(this, MainLayoutPresenter.MAIN_CONTENT, this);
   }
 }

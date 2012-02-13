@@ -3,12 +3,15 @@ package eu.comexis.napoleon.shared.model;
 import javax.persistence.Id;
 
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.annotation.Indexed;
 import com.googlecode.objectify.annotation.Parent;
-
+import com.googlecode.objectify.annotation.Unindexed;
+@Unindexed
 public class ApplicationUser {
 
   @Id
   private String id;
+  @Indexed
   private String email;
   private String firstName;
   private String lastName;

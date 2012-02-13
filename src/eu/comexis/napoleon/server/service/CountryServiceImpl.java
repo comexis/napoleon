@@ -1,6 +1,7 @@
 package eu.comexis.napoleon.server.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -11,6 +12,7 @@ import eu.comexis.napoleon.shared.command.country.GetAllCitiesCommand;
 import eu.comexis.napoleon.shared.command.country.GetAllCitiesResponse;
 import eu.comexis.napoleon.shared.command.country.GetAllCountriesCommand;
 import eu.comexis.napoleon.shared.command.country.GetAllCountriesResponse;
+import eu.comexis.napoleon.shared.model.City;
 import eu.comexis.napoleon.shared.model.Country;
 
 @SuppressWarnings("serial")
@@ -24,7 +26,7 @@ public class CountryServiceImpl extends RemoteServiceServlet implements CountryS
   public GetAllCitiesResponse execute(GetAllCitiesCommand command) {
     String companyId = UserManager.INSTANCE.getCompanyId();
     CountryDao countryData = new CountryDao();
-    ArrayList<String> cities = countryData.getListCities(command.getName());
+    List<City> cities = countryData.getListCities(command.getName());
 
     GetAllCitiesResponse response = new GetAllCitiesResponse();
     response.setCities(cities);

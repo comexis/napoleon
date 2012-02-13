@@ -49,8 +49,8 @@ public class OwnerDetailsPresenter extends
   }
 
   @Override
-  public void onButtonBackToDashBoardClick() {
-    PlaceRequest myRequest = new PlaceRequest(NameTokens.dashboard);
+  public void onButtonBackToListClick() {
+    PlaceRequest myRequest = new PlaceRequest(NameTokens.ownerlist);
     placeManager.revealPlace(myRequest);
   }
 
@@ -91,7 +91,6 @@ public class OwnerDetailsPresenter extends
   @Override
   protected void onReset() {
     super.onReset();
-
     new GetOwnerCommand(id).dispatch(new GotOwner() {
 
       @Override
@@ -100,7 +99,6 @@ public class OwnerDetailsPresenter extends
         getView().setOwner(owner);
       }
     });
-
   }
 
   @Override

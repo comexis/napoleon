@@ -9,6 +9,7 @@ import com.googlecode.objectify.Key;
 import eu.comexis.napoleon.shared.model.City;
 import eu.comexis.napoleon.shared.model.Company;
 import eu.comexis.napoleon.shared.model.Country;
+import eu.comexis.napoleon.shared.model.Owner;
 import eu.comexis.napoleon.shared.model.Tenant;
 import eu.comexis.napoleon.shared.model.simple.SimpleTenant;
 
@@ -18,16 +19,12 @@ public class TenantDao extends NapoleonDao<Tenant> {
     // TODO Auto-generated constructor stub
   }
 
-  public Tenant create(Key<Company> companyKey) {
+  public Tenant create(String companyId) {
+    Key<Company> companyKey = new Key<Company>(Company.class, companyId);
     Tenant tenant = new Tenant();
     System.out.println("Set company key " + companyKey.toString());
     tenant.setCompany(companyKey);
     return tenant;
-  }
-
-  public Tenant create(String companyId) {
-    Key<Company> companyKey = new Key<Company>(Company.class, companyId);
-    return create(companyKey);
   }
 
   /**
@@ -37,6 +34,8 @@ public class TenantDao extends NapoleonDao<Tenant> {
    * @return The list of tenants
    */
   public ArrayList<SimpleTenant> getListSimpleTenants(String companyId) {
+    LOG.info("Get list Tenants (" + clazz + ") for company " + companyId);
+    Key<Company> companyKey = new Key<Company>(Company.class, companyId);
     Iterator<Tenant> iterator = this.listAll(companyId).iterator();
     ArrayList<SimpleTenant> tenants = new ArrayList<SimpleTenant>();
     while (iterator.hasNext()) {
@@ -52,16 +51,28 @@ public class TenantDao extends NapoleonDao<Tenant> {
     }
     return tenants;
   }
-
   @Override
   public Tenant update(Tenant tenant) {
+    if (tenant.getCompany() != null){
+      return update(tenant,tenant.getCompany());
+    }else{
+      // log error
+      LOG.fatal("Parent Company is not set, cannot save tenant");
+      return null;
+    }
+  }
+  public Tenant update(Tenant tenant, String companyId) {
+    Key<Company> companyKey = new Key<Company>(Company.class, companyId);
+    return update(tenant,companyKey);
+  }
+  public Tenant update(Tenant tenant, Key<Company> companyKey) {
     String tenantId = tenant.getId();
     CountryDao countryData = new CountryDao();
-    Key<Company> companyKey = tenant.getCompany();
     if (tenantId == null || tenantId.length() == 0) {
       UUID uuid = UUID.randomUUID();
       System.out.println("Creating Uuid " + uuid.toString());
       tenant.setId(uuid.toString());
+      tenant.setCompany(companyKey);
     }
     // if country does not exist, create it.
     Country country = countryData.getByName(tenant.getCountry(), companyKey);

@@ -48,13 +48,10 @@ public class OwnerServiceImpl extends RemoteServiceServlet implements OwnerServi
     String id = command.getId();
     String companyId = UserManager.INSTANCE.getCompanyId();
     OwnerDao dao = new OwnerDao();
-    if (id != "new" && (id == null || id.length() == 0)) {
+    if (id == null || id.length() == 0) {
       LOG.warn("Try to get an owner without passing an id !! Return error 500");
       // will generate an error 500. Do put to many info
       throw new RuntimeException("Ooops something wrong happened");
-    }
-    if (id == "new") {
-      Owner o = dao.create(companyId);
     }
     Owner o = dao.getById(id, companyId);
     GetOwnerResponse response = new GetOwnerResponse();
@@ -68,7 +65,7 @@ public class OwnerServiceImpl extends RemoteServiceServlet implements OwnerServi
     Owner owner = command.getOwner();
     String companyId = UserManager.INSTANCE.getCompanyId();
     OwnerDao dao = new OwnerDao();
-    owner = dao.update(owner);
+    owner = dao.update(owner,companyId);
     UpdateOwnerResponse response = new UpdateOwnerResponse();
     response.setOwner(owner);
     return response;

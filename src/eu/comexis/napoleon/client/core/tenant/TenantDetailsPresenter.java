@@ -49,8 +49,8 @@ public class TenantDetailsPresenter extends
   }
 
   @Override
-  public void onButtonBackToDashBoardClick() {
-    PlaceRequest myRequest = new PlaceRequest(NameTokens.dashboard);
+  public void onButtonBackToListClick() {
+    PlaceRequest myRequest = new PlaceRequest(NameTokens.tenantlist);
     placeManager.revealPlace(myRequest);
   }
 
@@ -91,7 +91,6 @@ public class TenantDetailsPresenter extends
   @Override
   protected void onReset() {
     super.onReset();
-
     new GetTenantCommand(id).dispatch(new GotTenant() {
 
       @Override
@@ -100,7 +99,6 @@ public class TenantDetailsPresenter extends
         getView().setTenant(tenant);
       }
     });
-
   }
 
   @Override

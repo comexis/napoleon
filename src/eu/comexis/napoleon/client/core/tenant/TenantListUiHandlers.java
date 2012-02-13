@@ -20,6 +20,10 @@ public interface TenantListUiHandlers {
     public void setTenantListUiHandler(TenantListUiHandlers handler);
   }
 
+  public void onButtonBackToDashBoardClick();
+
+  public void onButtonNewClick();
+
   /**
    * Method call when the user select
    * 

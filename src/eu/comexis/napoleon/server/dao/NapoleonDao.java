@@ -104,7 +104,6 @@ public class NapoleonDao<T> extends DAOBase {
     Key<Company> companyKey = new Key<Company>(Company.class, companyId);
     return listAll(companyKey);
   }
-
   public T update(T entity) {
     LOG.info("Update Entity " + clazz);
     try {
@@ -112,9 +111,8 @@ public class NapoleonDao<T> extends DAOBase {
       LOG.info("Entity " + clazz + " has been updated");
       return ofy().get(entityKey);
     } catch (Exception e) {
-      LOG.fatal("Entity " + clazz + " cannot be updated: " + e.getMessage());
+      LOG.fatal("Entity " + clazz + " cannot be updated: ",e);
       return null;
     }
   }
-
 }

@@ -2,10 +2,14 @@ package eu.comexis.napoleon.shared.model;
 
 import javax.persistence.Id;
 
+import com.googlecode.objectify.annotation.Indexed;
+import com.googlecode.objectify.annotation.Unindexed;
+@Unindexed
 public class Company {
 
   @Id
   private String id;
+  @Indexed
   private String name;
   private String address;
   private String email;

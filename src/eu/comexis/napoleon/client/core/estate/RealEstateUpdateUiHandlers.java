@@ -9,7 +9,7 @@ public interface RealEstateUpdateUiHandlers {
 
   public void onButtonSaveClick();
 
-  public void onCountrySelect(String selectedText);
-  
   public void onCitySelect(String selectedCity);
+
+  public void onCountrySelect(String selectedText);
 }

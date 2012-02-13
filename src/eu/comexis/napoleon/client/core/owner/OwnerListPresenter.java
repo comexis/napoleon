@@ -50,6 +50,19 @@ public class OwnerListPresenter extends
   }
 
   @Override
+  public void onButtonBackToDashBoardClick() {
+    PlaceRequest myRequest = new PlaceRequest(NameTokens.dashboard);
+    placeManager.revealPlace(myRequest);
+  }
+
+  @Override
+  public void onButtonNewClick() {
+    PlaceRequest myRequest = new PlaceRequest(NameTokens.updateOwner);
+    myRequest = myRequest.with(UUID_PARAMETER, "new");
+    placeManager.revealPlace(myRequest);
+  }
+
+  @Override
   public void onSelect(SimpleOwner selectedOwner) {
     PlaceRequest myRequest = new PlaceRequest(NameTokens.owner);
     // add the id of the owner to load

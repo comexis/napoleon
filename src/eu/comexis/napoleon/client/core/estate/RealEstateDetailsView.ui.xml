@@ -11,13 +11,77 @@
 			<span ui:field="reference" />
 		</div>
 		<div>
+			<span>Copropriété :</span>
+			<span ui:field="condo" />
+		</div>
+		<div>
+			<span>Syndicat :</span>
+			<span ui:field="association" />
+		</div>
+		<div>
 			<span>Adresse :</span>
 			<span ui:field="addresse" />
 		</div>
 		<div>
+			<span>Téléphone :</span>
+			<span ui:field="tel" />
+		</div>
+		<div>
+			<span>GSM :</span>
+			<span ui:field="gsm" />
+		</div>
+		<div>
+			<span>Mail :</span>
+			<span ui:field="email" />
+		</div>
+		<div>
+			<span>Adresse du bien:</span>
+			<span ui:field="addresseRealEstate" />
+		</div>
+		<div>
+			<span>N°:</span>
+			<span ui:field="number" />
+		</div>
+		<div>
+			<span>Boite:</span>
+			<span ui:field="box" />
+		</div>
+		<div>
+			<span>Quartier:</span>
+			<span ui:field="square" />
+		</div>
+		<div>
+			<span>Type de bien:</span>
+			<span ui:field="type" />
+		</div>
+		<div>
+			<span>Etat:</span>
+			<span ui:field="state" />
+		</div>
+		<div>
+			<span>Superficie:</span>
+			<span ui:field="dimension" />
+		</div>
+		<div>
+			<span>Propriétaire:</span>
+			<span ui:field="ownerName" />
+		</div>
+		<div>
+			<span>Téléphone:</span>
+			<span ui:field="ownerTel" />
+		</div>
+		<div>
+			<span>GSM:</span>
+			<span ui:field="ownerGSM" />
+		</div>
+		<div>
+			<span>Mail:</span>
+			<span ui:field="ownerEmail" />
+		</div>
+		<div>
 			<g:Button ui:field="btnUpdate">Editer</g:Button>
 			<g:Button ui:field="btnDelete">Effacer</g:Button>
-			<g:Button ui:field="btnToDashBoard">Retour vers le dashboard</g:Button>
+			<g:Button ui:field="btnToList">Retour vers la liste</g:Button>
 		</div>
 	</g:HTMLPanel>
 </ui:UiBinder>

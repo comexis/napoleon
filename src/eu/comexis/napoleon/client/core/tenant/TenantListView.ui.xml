@@ -28,6 +28,10 @@
 				</td>
 			</tr>
 		</table>
+		<div>
+			<g:Button ui:field="btnNew">Nouveau locataire</g:Button>
+			<g:Button ui:field="btnToDashBoard">Retour vers le dashboard</g:Button>
+		</div>
 	</g:HTMLPanel>
 
 

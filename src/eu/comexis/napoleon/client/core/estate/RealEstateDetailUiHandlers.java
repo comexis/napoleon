@@ -5,7 +5,7 @@ public interface RealEstateDetailUiHandlers {
     public void setRealEstateDetailUiHandler(RealEstateDetailUiHandlers handler);
   }
 
-  void onButtonBackToDashBoardClick();
+  void onButtonBackToListClick();
 
   void onButtonUpdateClick();
 }

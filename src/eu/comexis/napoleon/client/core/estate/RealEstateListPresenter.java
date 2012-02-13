@@ -47,6 +47,19 @@ public class RealEstateListPresenter extends
   }
 
   @Override
+  public void onButtonBackToDashBoardClick() {
+    PlaceRequest myRequest = new PlaceRequest(NameTokens.dashboard);
+    placeManager.revealPlace(myRequest);
+  }
+
+  @Override
+  public void onButtonNewClick() {
+    PlaceRequest myRequest = new PlaceRequest(NameTokens.updateRealEstate);
+    myRequest = myRequest.with(UUID_PARAMETER, "new");
+    placeManager.revealPlace(myRequest);
+  }
+
+  @Override
   public void onSelect(SimpleRealEstate selectedRealEstate) {
     PlaceRequest myRequest = new PlaceRequest(NameTokens.realEstate);
     // add the id of the realEstate to load

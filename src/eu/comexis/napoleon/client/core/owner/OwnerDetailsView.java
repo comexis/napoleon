@@ -1,5 +1,7 @@
 package eu.comexis.napoleon.client.core.owner;
 
+import java.util.List;
+
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -12,6 +14,8 @@ import com.gwtplatform.mvp.client.ViewImpl;
 
 import eu.comexis.napoleon.client.utils.UiHelper;
 import eu.comexis.napoleon.shared.model.Owner;
+import eu.comexis.napoleon.shared.model.simple.SimpleRealEstate;
+
 
 public class OwnerDetailsView extends ViewImpl implements OwnerDetailsPresenter.MyView {
 
@@ -54,6 +58,8 @@ public class OwnerDetailsView extends ViewImpl implements OwnerDetailsPresenter.
   Element fax;
   @UiField
   Element placeOfBirth;
+  @UiField
+  Element estates;
 
   @Inject
   public OwnerDetailsView(final Binder binder) {
@@ -70,10 +76,10 @@ public class OwnerDetailsView extends ViewImpl implements OwnerDetailsPresenter.
   public void onDeleteClicked(ClickEvent e) {
     Window.alert("Supprimer");
   }
-
-  @UiHandler("btnToDashBoard")
-  public void onGoHomeClicked(ClickEvent e) {
-    presenter.onButtonBackToDashBoardClick();
+  
+  @UiHandler("btnToList")
+  public void onGoToListClicked(ClickEvent e) {
+    presenter.onButtonBackToListClick();
   }
 
   @UiHandler("btnUpdate")
@@ -98,8 +104,16 @@ public class OwnerDetailsView extends ViewImpl implements OwnerDetailsPresenter.
     nationalRegister.setInnerText(o.getNationalRegisterNumber());
     birthDay.setInnerText(o.getDateOfBirth() != null ? o.getDateOfBirth().toGMTString() : "");
     addresse.setInnerText(o.getStreet() + " " + o.getCity() + " " + o.getCountry());
-    maritalStatus.setInnerText(o.getMaritalStatus() != null ? o.getMaritalStatus().name()
-        .toLowerCase() : "");
+    maritalStatus.setInnerText(o.getMaritalStatus() != null ? UiHelper.translateEnum("MaritalStatus_", o.getMaritalStatus()): "");
+    matrimonialRegime.setInnerText(o.getMatrimonialRegime() != null ? UiHelper.translateEnum("MatrimonialRegime_", o.getMatrimonialRegime()): "");
+    List<SimpleRealEstate> realEstates = o.getEstates();
+    String sLstEstates = "<br/>";
+    if (realEstates!=null){
+      for(SimpleRealEstate e:realEstates){
+        sLstEstates += e.getReference() + " " + e.getAddress() + " " + e.getCity() + "<br/>";
+      }
+      estates.setInnerHTML(sLstEstates);
+    }
 
     // TODO Auto-generated method stub
 

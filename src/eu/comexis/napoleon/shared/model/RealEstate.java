@@ -4,11 +4,14 @@ import javax.persistence.Id;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.annotation.Indexed;
 import com.googlecode.objectify.annotation.Parent;
+import com.googlecode.objectify.annotation.Unindexed;
 
 /**
  * @author xavier Bien immobilier
  */
+@Unindexed
 public class RealEstate implements IsSerializable {
 
   @Id
@@ -17,7 +20,7 @@ public class RealEstate implements IsSerializable {
   private Key<Company> company;
   private String box;
 
-  private Long number;
+  private String number;
 
   private String city;
 
@@ -34,8 +37,10 @@ public class RealEstate implements IsSerializable {
   private RealEstateState state;
 
   private TypeOfRealEstate type;
-
-  private Condo condo;
+  @Indexed
+  private Key<Condo> condo;
+  @Indexed
+  private Key<Owner> owner;
 
   public RealEstate() {
   }
@@ -52,7 +57,7 @@ public class RealEstate implements IsSerializable {
     return company;
   }
 
-  public Condo getCondo() {
+  public Key<Condo> getCondo() {
     return condo;
   }
 
@@ -68,8 +73,12 @@ public class RealEstate implements IsSerializable {
     return id;
   }
 
-  public Long getNumber() {
+  public String getNumber() {
     return number;
+  }
+
+  public Key<Owner> getOwner() {
+    return owner;
   }
 
   public String getReference() {
@@ -104,7 +113,7 @@ public class RealEstate implements IsSerializable {
     this.company = company;
   }
 
-  public void setCondo(Condo condo) {
+  public void setCondo(Key<Condo> condo) {
     this.condo = condo;
   }
 
@@ -120,8 +129,12 @@ public class RealEstate implements IsSerializable {
     this.id = id;
   }
 
-  public void setNumber(Long number) {
+  public void setNumber(String number) {
     this.number = number;
+  }
+
+  public void setOwner(Key<Owner> owner) {
+    this.owner = owner;
   }
 
   public void setReference(String reference) {

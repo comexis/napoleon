@@ -32,10 +32,13 @@ public class TenantListPresenter extends
   }
 
   public interface MyView extends View, HasTenantListUiHandlers {
+    public void dataIsLoading();
+
     public void setData(List<SimpleTenant> tenants);
   }
 
   private PlaceManager placeManager;
+  private boolean dataLoaded;
 
   @Inject
   public TenantListPresenter(final EventBus eventBus, final MyView view, final MyProxy proxy,
@@ -43,7 +46,21 @@ public class TenantListPresenter extends
     super(eventBus, view, proxy);
 
     this.placeManager = placeManager;
+    dataLoaded = false;
 
+  }
+
+  @Override
+  public void onButtonBackToDashBoardClick() {
+    PlaceRequest myRequest = new PlaceRequest(NameTokens.dashboard);
+    placeManager.revealPlace(myRequest);
+  }
+
+  @Override
+  public void onButtonNewClick() {
+    PlaceRequest myRequest = new PlaceRequest(NameTokens.updateTenant);
+    myRequest = myRequest.with(UUID_PARAMETER, "new");
+    placeManager.revealPlace(myRequest);
   }
 
   @Override
@@ -65,10 +82,17 @@ public class TenantListPresenter extends
   protected void onReset() {
     super.onReset();
 
+    if (dataLoaded) {
+      return;
+    }
+
+    getView().dataIsLoading();
+
     new GetAllTenantCommand().dispatch(new GotAllTenant() {
       @Override
       public void got(List<SimpleTenant> tenants) {
         getView().setData(tenants);
+        dataLoaded = true;
 
       }
     });

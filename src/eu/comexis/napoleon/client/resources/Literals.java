@@ -31,23 +31,22 @@ public interface Literals extends ConstantsWithLookup {
 
   @DefaultStringValue("Séparation des biens")
   public String MatrimonialRegime_SEPARATION();
-  
-  
+
   @DefaultStringValue("Monsieur")
   public String Title_MR();
-  
+
   @DefaultStringValue("Madame")
   public String Title_MRS();
-  
+
   @DefaultStringValue("Mademoiselle")
   public String Title_MISS();
-  
+
   @DefaultStringValue("M")
   public String Title_MR_short();
-  
+
   @DefaultStringValue("Mme")
   public String Title_MRS_short();
-  
+
   @DefaultStringValue("Mlle")
   public String Title_MISS_short();
   
@@ -57,5 +56,50 @@ public interface Literals extends ConstantsWithLookup {
   @DefaultStringValue("% du loyer")
   public String FeeUnit_RENT_PERCENTAGE();
 
+  // RealEstateState Enum
+  @DefaultStringValue("Excellent")
+  public String RealEstateState_EXCELLENT();
 
+  @DefaultStringValue("Bon")
+  public String RealEstateState_GOOD();
+
+  @DefaultStringValue("Neuf")
+  public String RealEstateState_NEW();
+
+  @DefaultStringValue("A rafraichir")
+  public String RealEstateState_REFRESH();
+
+  @DefaultStringValue("A rénover")
+  public String RealEstateState_RENEW();
+
+  @DefaultStringValue("Renové")
+  public String RealEstateState_RENEWED();
+
+  // TypeOfRealEstate Enum
+  @DefaultStringValue("Appartement 1 ch.")
+  public String TypeOfRealEstate_A1();
+
+  @DefaultStringValue("Appartement 2 ch.")
+  public String TypeOfRealEstate_A2();
+
+  @DefaultStringValue("Appartement 3 ch.")
+  public String TypeOfRealEstate_A3();
+
+  @DefaultStringValue("Atelier")
+  public String TypeOfRealEstate_ATELIER();
+
+  @DefaultStringValue("Commerce")
+  public String TypeOfRealEstate_COMMERCE();
+
+  @DefaultStringValue("Flat")
+  public String TypeOfRealEstate_FLAT();
+
+  @DefaultStringValue("Kot")
+  public String TypeOfRealEstate_KOT();
+
+  @DefaultStringValue("Bureaux")
+  public String TypeOfRealEstate_OFFICE();
+
+  @DefaultStringValue("Villa")
+  public String TypeOfRealEstate_VILLA();
 }

@@ -5,7 +5,7 @@ public interface TenantDetailUiHandlers {
     public void setTenantDetailUiHandler(TenantDetailUiHandlers handler);
   }
 
-  void onButtonBackToDashBoardClick();
+  void onButtonBackToListClick();
 
   void onButtonUpdateClick();
 }
