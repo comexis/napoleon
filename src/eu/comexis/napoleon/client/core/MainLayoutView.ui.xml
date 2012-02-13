@@ -48,7 +48,7 @@
 					</div>
 
 					<div class='{style.linksDiv}'>
-						<a ui:field='signOutLink'>Sign Out</a>
+						<a ui:field='signOutLink'>Se déconnecter</a>
 					</div>
 				</div>
 			</g:HTMLPanel>
