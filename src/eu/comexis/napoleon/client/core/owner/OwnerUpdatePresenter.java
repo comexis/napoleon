@@ -60,12 +60,14 @@ public class OwnerUpdatePresenter extends
   private PlaceManager placeManager;
   private String id;
   private Owner owner;
+ 
 
   @Inject
   public OwnerUpdatePresenter(final EventBus eventBus, final MyView view, final MyProxy proxy,
       final PlaceManager placeManager) {
     super(eventBus, view, proxy);
     this.placeManager = placeManager;
+
   }
 
   @Override
@@ -102,15 +104,19 @@ public class OwnerUpdatePresenter extends
   @Override
   public void onCountrySelect(String selectedCountry) {
 
+    if (selectedCountry == null || selectedCountry.length() == 0){
+      return;
+    }
+    
     // get all the already encoded cities for the given country
     GetAllCitiesCommand cmd = new GetAllCitiesCommand();
     cmd.setName(selectedCountry);
     cmd.dispatch(new GotAllCities() {
       @Override
       public void got(List<City> cities) {
-        List<String> lstCities = new ArrayList();
+        List<String> lstCities = new ArrayList<String>();
         for (City c : cities) {
-          lstCities.add(c.getName());
+          lstCities.add(c.toString());
         }
         getView().fillCityList(lstCities);
       }
@@ -168,19 +174,11 @@ public class OwnerUpdatePresenter extends
       @Override
       public void got(List<Country> countries) {
         getView().fillCountryList(countries);
-        GetAllCitiesCommand cmd = new GetAllCitiesCommand();
-        cmd.setName(getView().getSelectedCountry());
-        cmd.dispatch(new GotAllCities() {
-          public void got(List<City> cities) {
-            List<String> lstCities = new ArrayList<String>();
-            for (City c : cities) {
-              lstCities.add(c.getName());
-            }
-            getView().fillCityList(lstCities);
-          }
-        });
+        
       }
     });
+    
+    onCountrySelect(getView().getSelectedCountry());
   }
 
   @Override

@@ -162,6 +162,7 @@ public class OwnerUpdateView extends ViewImpl implements OwnerUpdatePresenter.My
     
     placeOfBirth.setText(o.getPlaceOfBirth());
     addresse.setText(o.getStreet());
+    postalCode.setText(o.getPostalCode());
     city.setValue(o.getCity());
     nationality.setText(o.getNationality());
     job.setText(o.getJobTitle());
@@ -194,6 +195,7 @@ public class OwnerUpdateView extends ViewImpl implements OwnerUpdatePresenter.My
     o.setDateOfBirth(birthDayDateBox.getValue());
     o.setPlaceOfBirth(placeOfBirth.getValue());
     o.setStreet(addresse.getValue());
+    o.setPostalCode(postalCode.getValue());
     o.setCity(city.getValue());
     o.setCountry(country.getValue());
     o.setJobTitle(job.getValue());
