@@ -58,7 +58,7 @@ public class MainLayoutPresenter extends
     ApplicationUser loggedInUser = ApplicationHelper.INSTANCE.getLoggedUser();
     Company loggedCompany = ApplicationHelper.INSTANCE.getLoggedCompany();
 
-    view.setLogo(loggedCompany.getName());
+    view.setLogo(loggedCompany.getLogo());
     view.setUserName(loggedInUser.getFirstName() + " " + loggedInUser.getLastName());
     view.setLogoutUrl(ApplicationHelper.INSTANCE.getLogoutUrl());
 

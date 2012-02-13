@@ -44,7 +44,8 @@ Company client = UserManager.INSTANCE.getConnectedCompany();
 	
 	<script type="text/javascript">
 	      var __GLOBALS = [<%=JSONHelper.toJSONArray(user)%>,
-	                       "<%= userService.createLogoutURL("/index.jsp") %>"];
+	                       "<%= userService.createLogoutURL("/index.jsp") %>",
+	                       "resources/logo-aiglon.jpg"];
 	      
 	</script>
 </head>

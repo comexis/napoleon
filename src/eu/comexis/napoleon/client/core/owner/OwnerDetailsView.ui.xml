@@ -51,6 +51,13 @@
 				<span ui:field="addresse" />
 			</div>
 
+			<div class="{res.css.detailCellLabel}">
+				<span>Email :</span>
+			</div>
+			<div class="{res.css.detailCellValue}">
+				<span ui:field="email" />
+			</div>
+
 		</div>
 
 		<div class="{res.css.detailRow}">
@@ -75,12 +82,7 @@
 				<span ui:field="fax" />
 			</div>
 
-			<div class="{res.css.detailCellLabel}">
-				<span>Email :</span>
-			</div>
-			<div class="{res.css.detailCellValue}">
-				<span ui:field="email" />
-			</div>
+
 
 		</div>
 

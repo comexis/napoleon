@@ -6,8 +6,9 @@
 			position: absolute;
 			top: 5px;
 			left: 5px;
-			font-size: 2em;
-			text-shadow: rgba(65, 65, 65, 0.5) 2px 2px 2px;
+			height: 4.5em;
+			/*font-size: 2em;
+			text-shadow: rgba(65, 65, 65, 0.5) 2px 2px 2px;*/
 		}
 		
 		.statusDiv {
@@ -34,9 +35,9 @@
 	</ui:style>
 
 	<g:DockLayoutPanel unit='EM'>
-		<g:north size='4'>
+		<g:north size='5'>
 			<g:HTMLPanel styleName='{style.top}'>
-				<div ui:field="logoElement" class='{style.logo}'></div>
+				<img ui:field="logoElement" class='{style.logo}'></img>
 
 				<div class="{style.statusDiv}">
 					<div>

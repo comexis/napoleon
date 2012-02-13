@@ -29,6 +29,7 @@ public class JSONHelper {
     json.put(c.getName());
     json.put(c.getTelephone());
     json.put(c.getUrl());
+    json.put(c.getLogo());
 
     return json;
   }

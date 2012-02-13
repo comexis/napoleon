@@ -65,6 +65,7 @@ public enum ApplicationHelper {
     company.setName(clientArray.getString(i++));
     company.setTelephone(clientArray.getString(i++));
     company.setUrl(clientArray.getString(i++));
+    company.setLogo(clientArray.getString(i++));
 
     logoutUrl = getLogoutUrlFromJs();
 

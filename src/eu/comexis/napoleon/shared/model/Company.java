@@ -16,6 +16,8 @@ public class Company {
   private String url;
   private String telephone;
   private String fax;
+  //this field contains encoded logo picture
+  private String logo;
 
   public Company() {
   }
@@ -74,5 +76,13 @@ public class Company {
 
   public void setUrl(String url) {
     this.url = url;
+  }
+  
+  public String getLogo() {
+    return logo;
+  }
+  
+  public void setLogo(String logo) {
+    this.logo = logo;
   }
 }

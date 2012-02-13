@@ -1,7 +1,9 @@
 package eu.comexis.napoleon.client.core;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.AnchorElement;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Panel;
@@ -20,7 +22,7 @@ public class MainLayoutView extends ViewImpl implements MainLayoutPresenter.MyVi
   Element userNameElement;
 
   @UiField
-  Element logoElement;
+  ImageElement logoElement;
 
   @UiField
   AnchorElement signOutLink;
@@ -56,7 +58,8 @@ public class MainLayoutView extends ViewImpl implements MainLayoutPresenter.MyVi
 
   @Override
   public void setLogo(String logo) {
-    logoElement.setInnerText(logo);
+    GWT.log("set logo "+ logo);
+    logoElement.setSrc(logo);
 
   }
 
