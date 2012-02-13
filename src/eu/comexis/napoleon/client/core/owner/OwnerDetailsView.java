@@ -1,5 +1,6 @@
 package eu.comexis.napoleon.client.core.owner;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.google.gwt.dom.client.Element;
@@ -106,6 +107,8 @@ public class OwnerDetailsView extends ViewImpl implements OwnerDetailsPresenter.
     addresse.setInnerText(o.getStreet() + " " + o.getCity() + " " + o.getCountry());
     maritalStatus.setInnerText(o.getMaritalStatus() != null ? UiHelper.translateEnum("MaritalStatus_", o.getMaritalStatus()): "");
     matrimonialRegime.setInnerText(o.getMatrimonialRegime() != null ? UiHelper.translateEnum("MatrimonialRegime_", o.getMatrimonialRegime()): "");
+    
+    // TODO use templates for that !!!!!!
     List<SimpleRealEstate> realEstates = o.getEstates();
     String sLstEstates = "<br/>";
     if (realEstates!=null){
@@ -115,12 +118,15 @@ public class OwnerDetailsView extends ViewImpl implements OwnerDetailsPresenter.
       estates.setInnerHTML(sLstEstates);
     }
 
-    // TODO Auto-generated method stub
-
   }
 
   private void displayFee(Owner o) {
-    fee.setInnerText(o.getFee() + " " + UiHelper.translateEnum("FeeUnit_", o.getUnit()));
+    BigDecimal _fee = o.getFee();
+    
+    if (_fee != null){
+      fee.setInnerText(o.getFee() + " " + UiHelper.translateEnum("FeeUnit_", o.getUnit()));
+    }
+   
     
   }
 
