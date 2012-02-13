@@ -1,5 +1,6 @@
 package eu.comexis.napoleon.client.core.owner;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -80,6 +81,8 @@ public class OwnerUpdateView extends ViewImpl implements OwnerUpdatePresenter.My
   SuggestBox job;
   @UiField
   TextBox nationalRegister;
+  @UiField
+  TextBox postalCode;
 
   @Inject
   public OwnerUpdateView(final Binder binder) {
@@ -137,24 +140,15 @@ public class OwnerUpdateView extends ViewImpl implements OwnerUpdatePresenter.My
       LOG.info("set owner " + o.getId());
     }
 
-    if (o.getTitle() != null) {
-      for (int i = 0; i < title.getItemCount(); i++) {
-        if (title.getValue(i).equals(o.getTitle().name())) {
-          title.setSelectedIndex(i);
-        }
-      }
-    }
+    UiHelper.selectTextItemBoxByValue(title, o.getTitle());
 
     name.setText(o.getLastName());
     firstName.setText(o.getFirstName());
-    fee.setText(o.getFee().toString());
-    if (o.getUnit() != null) {
-      if (o.getUnit().equals("%")) {
-        unit.setSelectedIndex(0);
-      } else {
-        unit.setSelectedIndex(1);
-      }
-    }
+    
+    BigDecimal _fee = o.getFee();
+    fee.setText((_fee != null ? _fee.toString() : ""));
+    UiHelper.selectTextItemBoxByValue(unit, o.getUnit());
+
     bic.setText(o.getBic());
     iban.setText(o.getIban());
     email.setText(o.getEmail());
@@ -162,29 +156,20 @@ public class OwnerUpdateView extends ViewImpl implements OwnerUpdatePresenter.My
     mobileNumber.setText(o.getMobilePhoneNumber());
     fax.setText(o.getFax());
     birthDayDateBox.setValue(o.getDateOfBirth());
+    
     DateTimeFormat dateFormat = DateTimeFormat.getShortDateFormat();
     birthDayDateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
+    
     placeOfBirth.setText(o.getPlaceOfBirth());
     addresse.setText(o.getStreet());
     city.setValue(o.getCity());
     nationality.setText(o.getNationality());
     job.setText(o.getJobTitle());
     nationalRegister.setText(o.getNationalRegisterNumber());
-    if (o.getMaritalStatus() != null) {
-      for (int i = 0; i < maritalStatus.getItemCount(); i++) {
-        if (maritalStatus.getValue(i).equals(o.getMaritalStatus().name())) {
-          maritalStatus.setSelectedIndex(i);
-        }
-      }
-    }
-    if (o.getMatrimonialRegime() != null) {
-      for (int i = 0; i < matrimonialRegime.getItemCount(); i++) {
-        if (matrimonialRegime.getValue(i).equals(o.getMatrimonialRegime().name())) {
-          matrimonialRegime.setSelectedIndex(i);
-        }
-      }
-    }
-
+    
+    UiHelper.selectTextItemBoxByValue(maritalStatus, o.getMaritalStatus());
+    UiHelper.selectTextItemBoxByValue(matrimonialRegime, o.getMatrimonialRegime());
+ 
   }
 
   @Override

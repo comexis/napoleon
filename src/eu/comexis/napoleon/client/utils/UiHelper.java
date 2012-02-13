@@ -41,5 +41,11 @@ public class UiHelper {
       }
     }
   }
+  
+  public static void selectTextItemBoxByValue(ListBox tb, Enum<?> value) {
+    if (value != null){
+      selectTextItemBoxByValue(tb, value.name());
+    }
+  }
 
 }
