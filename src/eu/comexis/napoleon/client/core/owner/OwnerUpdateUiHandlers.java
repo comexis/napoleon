@@ -9,7 +9,5 @@ public interface OwnerUpdateUiHandlers {
 
   public void onButtonSaveClick();
 
-  public void onCitySelect(String selectedText);
-
   public void onCountrySelect(String selectedText);
 }

@@ -50,10 +50,6 @@ public class OwnerUpdatePresenter extends
 
     public void setOwner(Owner o);
 
-    public void showCityOther(Boolean show);
-
-    public void showCountryOther(Boolean show);
-
     public Owner updateOwner(Owner o);
   }
 
@@ -64,8 +60,6 @@ public class OwnerUpdatePresenter extends
   private PlaceManager placeManager;
   private String id;
   private Owner owner;
-  private List<String> allCities;
-  private List<Country> allCountries;
 
   @Inject
   public OwnerUpdatePresenter(final EventBus eventBus, final MyView view, final MyProxy proxy,
@@ -106,34 +100,22 @@ public class OwnerUpdatePresenter extends
   }
 
   @Override
-  public void onCitySelect(String selectedCity) {
-    if (selectedCity.equals("(...)")) {
-      getView().showCityOther(true);
-    } else {
-      getView().showCityOther(false);
-    }
-  }
-
-  @Override
   public void onCountrySelect(String selectedCountry) {
-    if (selectedCountry.equals("(...)")) {
-      getView().showCountryOther(true);
-    } else {
-      // get all the already encoded cities for the given country
-      GetAllCitiesCommand cmd = new GetAllCitiesCommand();
-      cmd.setName(selectedCountry);
-      cmd.dispatch(new GotAllCities() {
-        @Override
-        public void got(List<City> cities) {
-          List<String> lstCities = new ArrayList();
-          for(City c:cities){
-            lstCities.add(c.getName());
-          }
-          getView().fillCityList(lstCities);
+
+    // get all the already encoded cities for the given country
+    GetAllCitiesCommand cmd = new GetAllCitiesCommand();
+    cmd.setName(selectedCountry);
+    cmd.dispatch(new GotAllCities() {
+      @Override
+      public void got(List<City> cities) {
+        List<String> lstCities = new ArrayList();
+        for (City c : cities) {
+          lstCities.add(c.getName());
         }
-      });
-      getView().showCountryOther(false);
-    }
+        getView().fillCityList(lstCities);
+      }
+    });
+
   }
 
   /**
@@ -145,7 +127,7 @@ public class OwnerUpdatePresenter extends
     // In the next call, "view" is the default value,
     // returned if "action" is not found on the URL.
     id = placeRequest.getParameter(UUID_PARAMETER, null);
-    if (id != "new"){
+    if (id != "new") {
       if (id == null || id.length() == 0) {
         if (LogConfiguration.loggingIsEnabled()) {
           LOG.severe("invalid id is null or empty");
@@ -165,7 +147,7 @@ public class OwnerUpdatePresenter extends
   @Override
   protected void onReset() {
     super.onReset();
-    if (id != "new"){ // call the server to get the requested owner
+    if (id != "new") { // call the server to get the requested owner
       new GetOwnerCommand(id).dispatch(new GotOwner() {
         @Override
         public void got(Owner owner) {
@@ -173,25 +155,25 @@ public class OwnerUpdatePresenter extends
           getView().setOwner(owner);
         }
       });
-    }else{
+    } else {
       Owner owner = new Owner();
       OwnerUpdatePresenter.this.owner = owner;
       getView().setOwner(owner);
     }
-    
+
   }
-  private void init(){
+
+  private void init() {
     new GetAllCountriesCommand().dispatch(new GotAllCountries() {
       @Override
       public void got(List<Country> countries) {
-        OwnerUpdatePresenter.this.allCountries = countries;
         getView().fillCountryList(countries);
         GetAllCitiesCommand cmd = new GetAllCitiesCommand();
         cmd.setName(getView().getSelectedCountry());
         cmd.dispatch(new GotAllCities() {
           public void got(List<City> cities) {
-            List<String> lstCities = new ArrayList();
-            for(City c:cities){
+            List<String> lstCities = new ArrayList<String>();
+            for (City c : cities) {
               lstCities.add(c.getName());
             }
             getView().fillCityList(lstCities);
@@ -200,6 +182,7 @@ public class OwnerUpdatePresenter extends
       }
     });
   }
+
   @Override
   protected void revealInParent() {
     RevealContentEvent.fire(this, MainLayoutPresenter.MAIN_CONTENT, this);

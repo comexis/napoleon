@@ -17,17 +17,45 @@
 	clear: both;
 }
 
-.detailCellValue, .detailCellLabel{
+.separationRow{
+	padding-top: 20px;
+}
+
+.detailCellValue, .detailCellLabel, .detailCellInputText, .detailCellInputList,.detailCellInputLabel{
+	display: block;
 	float: left;
 	margin: 5px;
 }
 
-.detailCellLabel{
+.detailCellInputLabel, .detailCellLabel{
 	font-weight: bold;
+}
+
+.detailCellLabel{
+	width: 150px;
+}
+
+.detailCellInputLabel{
+	padding-top: 5px;
 }
   
 .detailCellValue{
 	min-width: 200px;
+}
+
+
+.detailCellInputText, .detailCellInputList {
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	border: 1px solid black;
+	color: black;
+}
+
+.detailCellInputText {
+	width: 200px;
+	padding: 5px 10px;
+	
 }
 
 .detailTable{

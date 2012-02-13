@@ -13,6 +13,14 @@ public interface Css extends CssResource {
   public String detailCellValue();
 
   public String detailCellLabel();
+  
+  public String detailCellInputText();
+  
+  public String detailCellInputList();
+  
+  public String detailCellInputLabel();
 
   public String detailTable();
+  
+  public String separationRow();
 }

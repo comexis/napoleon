@@ -52,12 +52,15 @@ public class Owner extends Party implements IsSerializable {
   }
 
   public void setFee(BigDecimal fee) {
-    this.fee = fee.multiply(CONVERSION_FACTOR).longValueExact();
+    if (fee != null){
+      this.fee = fee.multiply(CONVERSION_FACTOR).longValueExact();
+    }else {
+      this.fee = 0L;
+    }
   }
 
   public void setFee(String fee) {
-    BigDecimal bdFee = new BigDecimal(fee);
-    this.setFee(bdFee);
+    this.setFee(fee != null ? new BigDecimal(fee) : null);
   }
 
   public void setUnit(FeeUnit unit) {

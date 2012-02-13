@@ -9,147 +9,71 @@
 
 	<g:HTMLPanel styleName="{res.css.detailTable}">
 
+		<div class="{res.css.detailRow}">
+			<span class="{res.css.detailCellLabel}">Nom :</span>
+			<span ui:field="name" class="{res.css.detailCellValue}" />
+		</div>
+
+		<div class="{res.css.detailRow} {res.css.separationRow}">
+			<span class="{res.css.detailCellLabel}">Honoraires :</span>
+			<span ui:field="fee" class="{res.css.detailCellValue}" />
+		</div>
 
 		<div class="{res.css.detailRow}">
-			<div class="{res.css.detailCellLabel}">
-				<span>Nom :</span>
-			</div>
-			<div class="{res.css.detailCellValue}">
-				<span ui:field="name" />
-			</div>
+			<span class="{res.css.detailCellLabel}">IBAN :</span>
+			<span ui:field="iban" class="{res.css.detailCellValue}" />
+			<span class="{res.css.detailCellLabel}">BIC :</span>
+			<span ui:field="bic" class="{res.css.detailCellValue}" />
+
+		</div>
+
+		<div class="{res.css.detailRow} {res.css.separationRow}">
+			<span class="{res.css.detailCellLabel}">Adresse :</span>
+			<span ui:field="addresse" class="{res.css.detailCellValue}" />
+		</div>
+		<div class="{res.css.detailRow}">
+			<span class="{res.css.detailCellLabel}">Téléphone :</span>
+			<span ui:field="phoneNumber" class="{res.css.detailCellValue}" />
+			<span class="{res.css.detailCellLabel}">GSM :</span>
+			<span ui:field="mobileNumber" class="{res.css.detailCellValue}" />
+			<span class="{res.css.detailCellLabel}">Fax :</span>
+			<span ui:field="fax" class="{res.css.detailCellValue}" />
+		</div>
+		<div class="{res.css.detailRow}">
+			<span class="{res.css.detailCellLabel}">Email :</span>
+			<span ui:field="email" class="{res.css.detailCellValue}" />
+		</div>
+
+		<div class="{res.css.detailRow} {res.css.separationRow}">
+
+			<span class="{res.css.detailCellLabel}">Date de naissance :</span>
+			<span ui:field="birthDay" class="{res.css.detailCellValue}" />
+			<span class="{res.css.detailCellLabel}">Lieu de naissance</span>
+			<span ui:field="placeOfBirth" class="{res.css.detailCellValue}" />
 
 		</div>
 
 		<div class="{res.css.detailRow}">
-			<div class="{res.css.detailCellLabel}">
-				<span>Honoraires :</span>
-			</div>
-			<div class="{res.css.detailCellValue}">
-				<span ui:field="fee" />
-			</div>
 
-			<div class="{res.css.detailCellLabel}">
-				<span>IBAN :</span>
-			</div>
-			<div class="{res.css.detailCellValue}">
-				<span ui:field="iban" />
-			</div>
-
-			<div class="{res.css.detailCellLabel}">
-				<span>BIC :</span>
-			</div>
-			<div class="{res.css.detailCellValue}">
-				<span ui:field="bic" />
-			</div>
-		</div>
-
-		<div class="{res.css.detailRow}">
-			<div class="{res.css.detailCellLabel}">
-				<span>Adresse :</span>
-			</div>
-			<div class="{res.css.detailCellValue}">
-				<span ui:field="addresse" />
-			</div>
-
-			<div class="{res.css.detailCellLabel}">
-				<span>Email :</span>
-			</div>
-			<div class="{res.css.detailCellValue}">
-				<span ui:field="email" />
-			</div>
+			<span class="{res.css.detailCellLabel}">Nationalité :</span>
+			<span ui:field="nationality" class="{res.css.detailCellValue}" />
+			<span class="{res.css.detailCellLabel}">Profession :</span>
+			<span ui:field="job" class="{res.css.detailCellValue}" />
 
 		</div>
 
 		<div class="{res.css.detailRow}">
-			<div class="{res.css.detailCellLabel}">
-				<span>Téléphone :</span>
-			</div>
-			<div class="{res.css.detailCellValue}">
-				<span ui:field="phoneNumber" />
-			</div>
-
-			<div class="{res.css.detailCellLabel}">
-				<span>GSM :</span>
-			</div>
-			<div class="{res.css.detailCellValue}">
-				<span ui:field="mobileNumber" />
-			</div>
-
-			<div class="{res.css.detailCellLabel}">
-				<span>Fax :</span>
-			</div>
-			<div class="{res.css.detailCellValue}">
-				<span ui:field="fax" />
-			</div>
-
-
-
+			<span class="{res.css.detailCellLabel}">Registre national :</span>
+			<span ui:field="nationalRegister" class="{res.css.detailCellValue}" />
+			<span class="{res.css.detailCellLabel}">Situation de famille :</span>
+			<span ui:field="maritalStatus" class="{res.css.detailCellValue}" />
+			<span class="{res.css.detailCellLabel}">Régime matrimonial :</span>
+			<span ui:field="matrimonialRegime" class="{res.css.detailCellValue}" />
 		</div>
 
-		<div class="{res.css.detailRow}">
-			<div class="{res.css.detailCellLabel}">
-				<span>Date de naissance :</span>
-			</div>
-			<div class="{res.css.detailCellValue}">
-				<span ui:field="birthDay" />
-			</div>
-
-			<div class="{res.css.detailCellLabel}">
-				<span>Lieu de naissance</span>
-			</div>
-			<div class="{res.css.detailCellValue}">
-				<span ui:field="placeOfBirth" />
-			</div>
-
-
-		</div>
-
-		<div class="{res.css.detailRow}">
-			<div class="{res.css.detailCellLabel}">
-				<span>Nationalité :</span>
-			</div>
-			<div class="{res.css.detailCellValue}">
-				<span ui:field="nationality" />
-			</div>
-
-			<div class="{res.css.detailCellLabel}">
-				<span>Profession :</span>
-			</div>
-			<div class="{res.css.detailCellValue}">
-				<span ui:field="job" />
-			</div>
-		</div>
-
-		<div class="{res.css.detailRow}">
-			<div class="{res.css.detailCellLabel}">
-				<span>Registre national :</span>
-			</div>
-			<div class="{res.css.detailCellValue}">
-				<span ui:field="nationalRegister" />
-			</div>
-
-			<div class="{res.css.detailCellLabel}">
-				<span>Situation de famille :</span>
-			</div>
-			<div class="{res.css.detailCellValue}">
-				<span ui:field="maritalStatus" />
-			</div>
-
-			<div class="{res.css.detailCellLabel}">
-				<span>Régime matrimonial :</span>
-			</div>
-			<div class="{res.css.detailCellValue}">
-				<span ui:field="matrimonialRegime" />
-			</div>
-		</div>
-
-		<div class="{res.css.detailRow}">
-			<div class="{res.css.detailCellLabel}">
-				<span>Biens immobiliers :</span>
-			</div>
-			<div class="{res.css.detailCellValue}">
-				<span ui:field="estates" />
-			</div>
+		<div class="{res.css.detailRow} {res.css.separationRow}">
+			<span class="{res.css.detailCellLabel}">Biens immobiliers :</span>
+			<span ui:field="estates" class="{res.css.detailCellValue}" />
 		</div>
 
 
