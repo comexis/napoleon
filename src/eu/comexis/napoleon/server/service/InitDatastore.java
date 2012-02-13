@@ -93,7 +93,8 @@ public class InitDatastore extends HttpServlet {
     o.setTitle(Title.MRS);
     o.setFirstName("Oufti");
     o.setLastName("Biloute");
-    o.setCity("7800 Ath");
+    o.setCity("Ath");
+    o.setPostalCode("7800");
     o.setStreet("Rue de la brasserie, 69");
     o.setPhoneNumber("064/659874");
     o.setMobilePhoneNumber("0497/063970");
@@ -108,7 +109,8 @@ public class InitDatastore extends HttpServlet {
     o.setTitle(Title.MR);
     o.setFirstName("Machin");
     o.setLastName("Brol");
-    o.setCity("7000 Mons");
+    o.setPostalCode("7000");
+    o.setCity("Mons");
     o.setStreet("Rue de la bazar, 1");
     o.setPhoneNumber("065/896574");
     o.setMobilePhoneNumber("0497/895476");
@@ -123,7 +125,8 @@ public class InitDatastore extends HttpServlet {
     o.setTitle(Title.MISS);
     o.setFirstName("Cindy");
     o.setLastName("Troforte");
-    o.setCity("1000 Bruxelles");
+    o.setCity("Bruxelles");
+    o.setPostalCode("1000");
     o.setStreet("Rue de la gaindaille, 5");
     o.setPhoneNumber("02/6545874");
     o.setMobilePhoneNumber("0497/089654");
@@ -141,19 +144,22 @@ public class InitDatastore extends HttpServlet {
     cdo.setName("Résidence les Chopinnettes");
     cdo.setHomeownerAssociation("Lé valeureu d'joueu d'côte");
     cdo.setCountry("Belgique");
-    cdo.setCity("7000 Mons");
+    cdo.setCity("Mons");
+    cdo.setPostalCode("7000");
     cdo.setStreet("Rue du get à pinte, 33");
     cdo.setPhoneNumber("065 256489");
     cdo.setMobilePhoneNumber("0477 258945");
     cdo.setEmail("chopinette@gmail.com");
     cdo = cdoData.update(cdo);
     System.out.println("Copropriété: " + cdo.getId());
+    
     OwnerDao ownerData = new OwnerDao();
     Owner o = ownerData.create(companyId);
     o.setTitle(Title.MRS);
     o.setFirstName("Jean");
     o.setLastName("de Florette");
-    o.setCity("7800 Ath");
+    o.setCity("Ath");
+    o.setPostalCode("7800");
     o.setStreet("Rue de la gouyasse, 1");
     o.setPhoneNumber("064/659874");
     o.setMobilePhoneNumber("0497/063970");
@@ -162,11 +168,13 @@ public class InitDatastore extends HttpServlet {
     o.setDateOfBirth(new Date());
     o.setMaritalStatus(MaritalStatus.MARRIED);
     o = ownerData.update(o);
+    
     RealEstateDao estateData = new RealEstateDao();
     RealEstate e = estateData.create(companyId);
     e.setReference("Résidence les Chopinnettes - appartement 1");
     e.setStreet("Rue des branleurs, 68");
     e.setCity("1348 Louvain-la-Neuve");
+    e.setPostalCode("1348");
     e.setCountry("Belgique");
     e.setNumber("101 bis");
     e.setSquare("Le guet à pintes");
@@ -184,7 +192,8 @@ public class InitDatastore extends HttpServlet {
     t.setFirstName("Sophie");
     t.setLastName("Delamontagne");
     t.setTitle(Title.MISS);
-    t.setCity("38000 Grenoble");
+    t.setCity("Grenoble");
+    t.setPostalCode("38000");
     t.setStreet("Rue de 3 pucelles, 69");
     t.setPhoneNumber("+33 4 69 69 69 69");
     t.setMobilePhoneNumber("+33 5 69 69 69 69");
@@ -198,7 +207,8 @@ public class InitDatastore extends HttpServlet {
     t.setFirstName("Martine");
     t.setLastName("Auclubmed");
     t.setTitle(Title.MISS);
-    t.setCity("13008 Marseille");
+    t.setCity("Marseille");
+    t.setPostalCode("13008");
     t.setStreet("Rue de la bouillabaise, 69");
     t.setPhoneNumber("+33 9 69 69 69 69");
     t.setMobilePhoneNumber("+33 7 69 69 69 69");

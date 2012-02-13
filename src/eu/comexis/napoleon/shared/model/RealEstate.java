@@ -41,6 +41,7 @@ public class RealEstate implements IsSerializable {
   private Key<Condo> condo;
   @Indexed
   private Key<Owner> owner;
+  private String postalCode;
 
   public RealEstate() {
   }
@@ -156,5 +157,15 @@ public class RealEstate implements IsSerializable {
   public void setType(TypeOfRealEstate type) {
     this.type = type;
   }
+
+  public void setPostalCode(String string) {
+   this.postalCode = string;
+  }
+  
+  public String getPostalCode() {
+    return postalCode;
+  }
+  
+  
 
 }

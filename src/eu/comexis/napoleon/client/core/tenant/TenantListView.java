@@ -1,6 +1,5 @@
 package eu.comexis.napoleon.client.core.tenant;
 
-import java.util.Comparator;
 import java.util.List;
 
 import com.google.gwt.cell.client.TextCell;
@@ -23,6 +22,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
+import eu.comexis.napoleon.client.utils.SimpleTextComparator;
 import eu.comexis.napoleon.client.widget.LoadingDataIndicator;
 import eu.comexis.napoleon.shared.model.simple.SimpleTenant;
 
@@ -144,20 +144,6 @@ public class TenantListView extends ViewImpl implements TenantListPresenter.MyVi
   private void initTableColumns(SingleSelectionModel<SimpleTenant> selectionModel,
       ListHandler<SimpleTenant> sortHandler) {
 
-    // Client id
-    /*
-     * Column<SimpleTenant, String> clientIdColumn = new Column<SimpleTenant, String>( new
-     * TextCell()) {
-     * 
-     * @Override public String getValue(SimpleTenant object) { return object.getClientId(); } };
-     * 
-     * clientIdColumn.setSortable(true); sortHandler.setComparator(clientIdColumn, new
-     * Comparator<SimpleTenant>() { public int compare(SimpleTenant o1, SimpleTenant o2) { return
-     * o1.getClientId().compareTo(o2.getClientId()); } });
-     * 
-     * tenantTable.addColumn(clientIdColumn, "ID");
-     */
-
     // Name.
     Column<SimpleTenant, String> nameColumn = new Column<SimpleTenant, String>(new TextCell()) {
       @Override
@@ -167,9 +153,9 @@ public class TenantListView extends ViewImpl implements TenantListPresenter.MyVi
     };
 
     nameColumn.setSortable(true);
-    sortHandler.setComparator(nameColumn, new Comparator<SimpleTenant>() {
+    sortHandler.setComparator(nameColumn, new SimpleTextComparator<SimpleTenant>() {
       public int compare(SimpleTenant o1, SimpleTenant o2) {
-        return o1.getName().compareTo(o2.getName());
+        return compare(o1.getName(), o2.getName());
       }
     });
 
@@ -184,9 +170,9 @@ public class TenantListView extends ViewImpl implements TenantListPresenter.MyVi
     };
 
     addressColumn.setSortable(true);
-    sortHandler.setComparator(addressColumn, new Comparator<SimpleTenant>() {
+    sortHandler.setComparator(addressColumn, new SimpleTextComparator<SimpleTenant>() {
       public int compare(SimpleTenant o1, SimpleTenant o2) {
-        return o1.getAddress().compareTo(o2.getAddress());
+        return compare(o1.getAddress(), o2.getAddress());
       }
     });
 
@@ -202,9 +188,9 @@ public class TenantListView extends ViewImpl implements TenantListPresenter.MyVi
 
     cpColumn.setSortable(true);
 
-    sortHandler.setComparator(cpColumn, new Comparator<SimpleTenant>() {
+    sortHandler.setComparator(cpColumn, new SimpleTextComparator<SimpleTenant>() {
       public int compare(SimpleTenant o1, SimpleTenant o2) {
-        return o1.getPostalCode().compareTo(o2.getPostalCode());
+        return compare(o1.getPostalCode(), o2.getPostalCode());
       }
     });
     tenantTable.addColumn(cpColumn, "Code Postal");
@@ -219,9 +205,9 @@ public class TenantListView extends ViewImpl implements TenantListPresenter.MyVi
     };
 
     cityColumn.setSortable(true);
-    sortHandler.setComparator(cityColumn, new Comparator<SimpleTenant>() {
+    sortHandler.setComparator(cityColumn, new SimpleTextComparator<SimpleTenant>() {
       public int compare(SimpleTenant o1, SimpleTenant o2) {
-        return o1.getCity().compareTo(o2.getCity());
+        return compare(o1.getCity(), o2.getCity());
       }
     });
     tenantTable.addColumn(cityColumn, "Localité");
@@ -235,9 +221,9 @@ public class TenantListView extends ViewImpl implements TenantListPresenter.MyVi
     };
 
     telColumn.setSortable(true);
-    sortHandler.setComparator(telColumn, new Comparator<SimpleTenant>() {
+    sortHandler.setComparator(telColumn, new SimpleTextComparator<SimpleTenant>() {
       public int compare(SimpleTenant o1, SimpleTenant o2) {
-        return o1.getPhoneNumber().compareTo(o2.getPhoneNumber());
+        return compare(o1.getPhoneNumber(), o2.getPhoneNumber());
       }
     });
     tenantTable.addColumn(telColumn, "Téléphone");
@@ -251,9 +237,9 @@ public class TenantListView extends ViewImpl implements TenantListPresenter.MyVi
     };
 
     mobileColumn.setSortable(true);
-    sortHandler.setComparator(mobileColumn, new Comparator<SimpleTenant>() {
+    sortHandler.setComparator(mobileColumn, new SimpleTextComparator<SimpleTenant>() {
       public int compare(SimpleTenant o1, SimpleTenant o2) {
-        return o1.getMobileNumber().compareTo(o2.getMobileNumber());
+        return compare(o1.getMobileNumber(), o2.getMobileNumber());
       }
     });
     tenantTable.addColumn(mobileColumn, "Mobile");

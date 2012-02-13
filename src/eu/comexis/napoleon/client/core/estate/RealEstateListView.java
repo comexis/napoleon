@@ -1,6 +1,5 @@
 package eu.comexis.napoleon.client.core.estate;
 
-import java.util.Comparator;
 import java.util.List;
 
 import com.google.gwt.cell.client.TextCell;
@@ -23,6 +22,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
+import eu.comexis.napoleon.client.utils.SimpleTextComparator;
 import eu.comexis.napoleon.shared.model.simple.SimpleRealEstate;
 
 public class RealEstateListView extends ViewImpl implements RealEstateListPresenter.MyView {
@@ -135,20 +135,6 @@ public class RealEstateListView extends ViewImpl implements RealEstateListPresen
   private void initTableColumns(SingleSelectionModel<SimpleRealEstate> selectionModel,
       ListHandler<SimpleRealEstate> sortHandler) {
 
-    // Client id
-    /*
-     * Column<SimpleRealEstate, String> clientIdColumn = new Column<SimpleRealEstate, String>( new
-     * TextCell()) {
-     * 
-     * @Override public String getValue(SimpleRealEstate object) { return object.getClientId(); } };
-     * 
-     * clientIdColumn.setSortable(true); sortHandler.setComparator(clientIdColumn, new
-     * Comparator<SimpleRealEstate>() { public int compare(SimpleRealEstate o1, SimpleRealEstate o2)
-     * { return o1.getClientId().compareTo(o2.getClientId()); } });
-     * 
-     * realEstateTable.addColumn(clientIdColumn, "ID");
-     */
-
     // Name.
     Column<SimpleRealEstate, String> referenceColumn =
         new Column<SimpleRealEstate, String>(new TextCell()) {
@@ -159,9 +145,9 @@ public class RealEstateListView extends ViewImpl implements RealEstateListPresen
         };
 
     referenceColumn.setSortable(true);
-    sortHandler.setComparator(referenceColumn, new Comparator<SimpleRealEstate>() {
+    sortHandler.setComparator(referenceColumn, new SimpleTextComparator<SimpleRealEstate>() {
       public int compare(SimpleRealEstate o1, SimpleRealEstate o2) {
-        return o1.getReference().compareTo(o2.getReference());
+        return compare(o1.getReference(), o2.getReference());
       }
     });
 
@@ -177,9 +163,9 @@ public class RealEstateListView extends ViewImpl implements RealEstateListPresen
         };
 
     addressColumn.setSortable(true);
-    sortHandler.setComparator(addressColumn, new Comparator<SimpleRealEstate>() {
+    sortHandler.setComparator(addressColumn, new SimpleTextComparator<SimpleRealEstate>() {
       public int compare(SimpleRealEstate o1, SimpleRealEstate o2) {
-        return o1.getAddress().compareTo(o2.getAddress());
+        return compare(o1.getAddress(), o2.getAddress());
       }
     });
 
@@ -195,9 +181,9 @@ public class RealEstateListView extends ViewImpl implements RealEstateListPresen
         };
 
     cityColumn.setSortable(true);
-    sortHandler.setComparator(cityColumn, new Comparator<SimpleRealEstate>() {
+    sortHandler.setComparator(cityColumn, new SimpleTextComparator<SimpleRealEstate>() {
       public int compare(SimpleRealEstate o1, SimpleRealEstate o2) {
-        return o1.getCity().compareTo(o2.getCity());
+        return compare(o1.getCity(), o2.getCity());
       }
     });
     realEstateTable.addColumn(cityColumn, "Localité");
@@ -212,9 +198,9 @@ public class RealEstateListView extends ViewImpl implements RealEstateListPresen
         };
 
     telColumn.setSortable(true);
-    sortHandler.setComparator(telColumn, new Comparator<SimpleRealEstate>() {
+    sortHandler.setComparator(telColumn, new SimpleTextComparator<SimpleRealEstate>() {
       public int compare(SimpleRealEstate o1, SimpleRealEstate o2) {
-        return o1.getPhoneNumber().compareTo(o2.getPhoneNumber());
+        return compare(o1.getPhoneNumber(), o2.getPhoneNumber());
       }
     });
     realEstateTable.addColumn(telColumn, "Téléphone");
@@ -229,9 +215,9 @@ public class RealEstateListView extends ViewImpl implements RealEstateListPresen
         };
 
     mobileColumn.setSortable(true);
-    sortHandler.setComparator(mobileColumn, new Comparator<SimpleRealEstate>() {
+    sortHandler.setComparator(mobileColumn, new SimpleTextComparator<SimpleRealEstate>() {
       public int compare(SimpleRealEstate o1, SimpleRealEstate o2) {
-        return o1.getMobile().compareTo(o2.getMobile());
+        return compare(o1.getMobile(), o2.getMobile());
       }
     });
     realEstateTable.addColumn(mobileColumn, "Mobile");

@@ -40,7 +40,6 @@ public abstract class Party implements IsSerializable {
   private MatrimonialRegime matrimonialRegime;
   private String mobilePhoneNumber;
   private String nationality;
-
   private String nationalRegisterNumber;
   private String phoneNumber;
   private String placeOfBirth;

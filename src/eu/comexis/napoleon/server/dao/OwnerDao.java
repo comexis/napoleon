@@ -43,6 +43,7 @@ public class OwnerDao extends NapoleonDao<Owner> {
       o.setId(owner.getId());
       o.setName(owner.getLastName());
       o.setCity(owner.getCity());
+      o.setPostalCode(owner.getPostalCode());
       o.setAddress(owner.getStreet());
       o.setMobileNumber(owner.getMobilePhoneNumber());
       o.setPhoneNumber(owner.getPhoneNumber());

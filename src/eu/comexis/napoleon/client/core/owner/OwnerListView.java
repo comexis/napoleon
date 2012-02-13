@@ -1,6 +1,5 @@
 package eu.comexis.napoleon.client.core.owner;
 
-import java.util.Comparator;
 import java.util.List;
 
 import com.google.gwt.cell.client.TextCell;
@@ -23,6 +22,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
+import eu.comexis.napoleon.client.utils.SimpleTextComparator;
 import eu.comexis.napoleon.client.widget.LoadingDataIndicator;
 import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 
@@ -144,20 +144,6 @@ public class OwnerListView extends ViewImpl implements OwnerListPresenter.MyView
   private void initTableColumns(SingleSelectionModel<SimpleOwner> selectionModel,
       ListHandler<SimpleOwner> sortHandler) {
 
-    // Client id
-    /*
-     * Column<SimpleOwner, String> clientIdColumn = new Column<SimpleOwner, String>( new TextCell())
-     * {
-     * 
-     * @Override public String getValue(SimpleOwner object) { return object.getClientId(); } };
-     * 
-     * clientIdColumn.setSortable(true); sortHandler.setComparator(clientIdColumn, new
-     * Comparator<SimpleOwner>() { public int compare(SimpleOwner o1, SimpleOwner o2) { return
-     * o1.getClientId().compareTo(o2.getClientId()); } });
-     * 
-     * ownerTable.addColumn(clientIdColumn, "ID");
-     */
-
     // Name.
     Column<SimpleOwner, String> nameColumn = new Column<SimpleOwner, String>(new TextCell()) {
       @Override
@@ -167,9 +153,9 @@ public class OwnerListView extends ViewImpl implements OwnerListPresenter.MyView
     };
 
     nameColumn.setSortable(true);
-    sortHandler.setComparator(nameColumn, new Comparator<SimpleOwner>() {
+    sortHandler.setComparator(nameColumn, new SimpleTextComparator<SimpleOwner>() {
       public int compare(SimpleOwner o1, SimpleOwner o2) {
-        return o1.getName().compareTo(o2.getName());
+        return compare(o1.getName(), o2.getName());
       }
     });
 
@@ -184,9 +170,9 @@ public class OwnerListView extends ViewImpl implements OwnerListPresenter.MyView
     };
 
     addressColumn.setSortable(true);
-    sortHandler.setComparator(addressColumn, new Comparator<SimpleOwner>() {
+    sortHandler.setComparator(addressColumn, new SimpleTextComparator<SimpleOwner>() {
       public int compare(SimpleOwner o1, SimpleOwner o2) {
-        return o1.getAddress().compareTo(o2.getAddress());
+        return compare(o1.getAddress(), o2.getAddress());
       }
     });
 
@@ -202,9 +188,9 @@ public class OwnerListView extends ViewImpl implements OwnerListPresenter.MyView
 
     cpColumn.setSortable(true);
 
-    sortHandler.setComparator(cpColumn, new Comparator<SimpleOwner>() {
+    sortHandler.setComparator(cpColumn, new SimpleTextComparator<SimpleOwner>() {
       public int compare(SimpleOwner o1, SimpleOwner o2) {
-        return o1.getPostalCode().compareTo(o2.getPostalCode());
+        return compare(o1.getPostalCode(), o2.getPostalCode());
       }
     });
     ownerTable.addColumn(cpColumn, "Code Postal");
@@ -219,9 +205,9 @@ public class OwnerListView extends ViewImpl implements OwnerListPresenter.MyView
     };
 
     cityColumn.setSortable(true);
-    sortHandler.setComparator(cityColumn, new Comparator<SimpleOwner>() {
+    sortHandler.setComparator(cityColumn, new SimpleTextComparator<SimpleOwner>() {
       public int compare(SimpleOwner o1, SimpleOwner o2) {
-        return o1.getCity().compareTo(o2.getCity());
+        return compare(o1.getCity(), o2.getCity());
       }
     });
     ownerTable.addColumn(cityColumn, "Localité");
@@ -235,9 +221,9 @@ public class OwnerListView extends ViewImpl implements OwnerListPresenter.MyView
     };
 
     telColumn.setSortable(true);
-    sortHandler.setComparator(telColumn, new Comparator<SimpleOwner>() {
+    sortHandler.setComparator(telColumn, new SimpleTextComparator<SimpleOwner>() {
       public int compare(SimpleOwner o1, SimpleOwner o2) {
-        return o1.getPhoneNumber().compareTo(o2.getPhoneNumber());
+        return compare(o1.getPhoneNumber(), o2.getPhoneNumber());
       }
     });
     ownerTable.addColumn(telColumn, "Téléphone");
@@ -251,9 +237,9 @@ public class OwnerListView extends ViewImpl implements OwnerListPresenter.MyView
     };
 
     mobileColumn.setSortable(true);
-    sortHandler.setComparator(mobileColumn, new Comparator<SimpleOwner>() {
+    sortHandler.setComparator(mobileColumn, new SimpleTextComparator<SimpleOwner>() {
       public int compare(SimpleOwner o1, SimpleOwner o2) {
-        return o1.getMobileNumber().compareTo(o2.getMobileNumber());
+        return compare(o1.getMobileNumber(), o2.getMobileNumber());
       }
     });
     ownerTable.addColumn(mobileColumn, "Mobile");
