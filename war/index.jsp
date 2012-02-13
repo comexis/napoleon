@@ -44,15 +44,38 @@ Company client = UserManager.INSTANCE.getConnectedCompany();
 	
 	<script type="text/javascript">
 	      var __GLOBALS = [<%=JSONHelper.toJSONArray(user)%>,
-	                       "<%= userService.createLogoutURL("/index.jsp") %>",
-	                       "resources/logo-aiglon.jpg"];
+	                       "<%= userService.createLogoutURL("/index.jsp") %>"];
 	      
 	</script>
+	
+	<style type="text/css">
+		#loading {
+			width: 100%;
+			margin-top:50px;
+		}
+		
+		#loading > div {
+			background-image: url(resources/loading.gif);
+			background-repeat: no-repeat;
+			width: 250px;
+			height: 40px;
+			margin-left: auto;
+			margin-right: auto;
+			padding-left: 60px;
+			background-position: 10px 10px;
+			padding-top: 15px;
+			border: solid 1px black;
+		}
+		
+		#loading > div {
+		
+		}
+	</style>
 </head>
 
 <body>
 
-	<div id="loading">Application is loading...</div>
+	<div id="loading"><div>Lancement de l'application...</div></div>
 	<iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1'
 		style="position: absolute; width: 0; height: 0; border: 0"></iframe>
 
