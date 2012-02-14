@@ -25,7 +25,7 @@ public class RealEstateDetailsView extends ViewImpl implements RealEstateDetails
   @UiField
   Element reference;
   @UiField
-  Element addresse;
+  Element address;
   @UiField
   Element condo;
   @UiField
@@ -99,7 +99,7 @@ public class RealEstateDetailsView extends ViewImpl implements RealEstateDetails
     if (cdo!=null){
       condo.setInnerText(cdo.getName());
       association.setInnerText(cdo.getHomeownerAssociation());
-      addresse.setInnerText(cdo.getStreet() + " " + cdo.getCity() + " " + cdo.getCountry());
+      address.setInnerText(cdo.getStreet() + " " + cdo.getCity() + " " + cdo.getCountry());
       tel.setInnerText(cdo.getPhoneNumber());
       gsm.setInnerText(cdo.getMobilePhoneNumber());
       email.setInnerText(cdo.getEmail());

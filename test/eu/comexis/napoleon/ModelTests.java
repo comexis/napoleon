@@ -103,7 +103,7 @@ public class ModelTests {
 
     oProprio2.setFirstName("Biloute");
     oProprio2.setFee(new BigDecimal(650.00));
-    oProprio2.setUnit("EUR");
+    //oProprio2.setUnit("EUR");
     ofy.put(oProprio2);
     oProprio2 = null;
     Owner oProprio3 = ofy.query(Owner.class).filter("firstName", "Gouyasse").get();
@@ -145,7 +145,7 @@ public class ModelTests {
     oProprio.setEmail("legrand.gouyasse@ducasse.org");
     oProprio.setStreet("Rue de la brasserie, 69");
     oProprio.setFee(new BigDecimal(10.25));
-    oProprio.setUnit("%");
+    //oProprio.setUnit("%");
     oProprio.setBankAccountNumber("069-0696969-69");
     oProprio.setIBAN("BE69 0690 6969 6969");
     oProprio.setBIC("GKCCBEBB");

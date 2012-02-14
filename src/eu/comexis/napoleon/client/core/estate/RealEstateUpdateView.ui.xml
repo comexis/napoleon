@@ -6,73 +6,89 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
-	<g:HTMLPanel>
-		<div>
-			<span>Référence :</span>
-			<g:TextBox ui:field="reference" />
-			<span>Copropriété :</span>
-			<g:TextBox ui:field="condo" />
+	<ui:with field='res' type='eu.comexis.napoleon.client.resources.Resources' />
+
+	<g:HTMLPanel styleName="{res.css.detailTable}">
+
+		<div class="{res.css.detailRow}">
+			<span class="{res.css.detailCellInputLabel}">Référence :</span>
+			<g:TextBox ui:field="reference" styleName="{res.css.detailCellInputText}" />
+			<span class="{res.css.detailCellInputLabel}">Copropriété :</span>
+			<g:TextBox ui:field="condo" styleName="{res.css.detailCellInputText}" />
 		</div>
-		<div>
-			<span>Syndicat :</span>
-			<g:TextBox ui:field="association" />
-			<span>Adresse :</span>
-			<g:TextBox ui:field="address" />
+		
+		<div class="{res.css.detailRow}">
+			<span class="{res.css.detailCellInputLabel}">Syndicat :</span>
+			<g:TextBox ui:field="association" styleName="{res.css.detailCellInputText}" />
+			<span class="{res.css.detailCellInputLabel}">Adresse :</span>
+			<g:TextBox ui:field="address" styleName="{res.css.detailCellInputText}" />
 		</div>
-		<div>
-			<span>Téléphone :</span>
-			<g:TextBox ui:field="phoneNumber" />
-			<span>GSM :</span>
-			<g:TextBox ui:field="mobileNumber" />
-			<span>Mail :</span>
-			<g:TextBox ui:field="email" />
+		
+		<div class="{res.css.detailRow}">
+			<span class="{res.css.detailCellInputLabel}">Téléphone :</span>
+			<g:TextBox ui:field="phoneNumber" styleName="{res.css.detailCellInputText}" />
+			<span class="{res.css.detailCellInputLabel}">GSM :</span>
+			<g:TextBox ui:field="mobileNumber" styleName="{res.css.detailCellInputText}" />
+			<span class="{res.css.detailCellInputLabel}">Mail :</span>
+			<g:TextBox ui:field="email" styleName="{res.css.detailCellInputText}" />
 		</div>
-		<div>
-			<span>Adresse du bien:</span>
-			<g:TextBox ui:field="addressRealEstate" />
-			<span>N°:</span>
-			<g:TextBox ui:field="number" />
-			<span>Boite:</span>
-			<g:TextBox ui:field="box" />
+		
+		<div class="{res.css.detailRow}">
+			<span class="{res.css.detailCellInputLabel}">Adresse du bien :</span>
+			<g:TextBox ui:field="addressRealEstate" styleName="{res.css.detailCellInputText}" />
+			<span class="{res.css.detailCellInputLabel}">N°:</span>
+			<g:TextBox ui:field="number" styleName="{res.css.detailCellInputText}" />
+			<span class="{res.css.detailCellInputLabel}">Boite :</span>
+			<g:TextBox ui:field="box" styleName="{res.css.detailCellInputText}" />
 		</div>
 
-		<table>
-			<tr id="country">
-				<td>
-					<span>Pays :</span>
-					<g:ListBox ui:field="country" />
-				</td>
-				<td id="countryOther">
-					<span>autre :</span>
-					<g:TextBox ui:field="countryOther" />
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<span>Municipalité :</span>
-					<g:ListBox ui:field="city" />
-				</td>
-				<td id="cityOther">
-					<span>Autre municipalité :</span>
-					<g:TextBox ui:field="cityOther" />
-				</td>
-			</tr>
-		</table>
-		<div>
-			<span>Quartier:</span>
-			<g:SuggestBox ui:field="square" />
-			<span>Type de bien:</span>
-			<g:ListBox ui:field="type" />
-			<span>Etat:</span>
-			<g:ListBox ui:field="state" />
-			<span>Superficie:</span>
-			<g:TextBox ui:field="dimension" />
-			<span>m²</span>
+		<div class="{res.css.detailRow}">
+			<table>
+				<tr id="country">
+					<td>
+						<span class="{res.css.detailCellInputLabel}" style="width:80px">Pays :</span>
+						<g:ListBox ui:field="country" styleName="{res.css.detailCellInputList}" />
+					</td>
+					<td id="countryOther">
+						<span class="{res.css.detailCellInputLabel}" style="width:80px">autre :</span>
+						<g:TextBox ui:field="countryOther" styleName="{res.css.detailCellInputText}"
+							width="100px" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<span class="{res.css.detailCellInputLabel}" style="width:80px">Localité :</span>
+						<g:ListBox ui:field="city" styleName="{res.css.detailCellInputList}" />
+					</td>
+					<td id="cityOther">
+						<span class="{res.css.detailCellInputLabel}" style="width:80px">autre :</span>
+						<g:TextBox ui:field="cityOther" styleName="{res.css.detailCellInputText}"
+							width="100px" />
+					</td>
+				</tr>
+			</table>
 		</div>
-		<div>
-			<span>Propriétaire:</span>
-			<g:ListBox ui:field="ownerName" />
+		
+		<div class="{res.css.detailRow}">
+			<span class="{res.css.detailCellInputLabel}">Quartier :</span>
+			<g:SuggestBox ui:field="square" styleName="{res.css.detailCellInputText}" />
+			<span class="{res.css.detailCellInputLabel}">Type de bien :</span>
+			<g:ListBox ui:field="type" styleName="{res.css.detailCellInputList}" />
+			<span class="{res.css.detailCellInputLabel}">Etat :</span>
+			<g:ListBox ui:field="state" styleName="{res.css.detailCellInputList}" />
+			<span class="{res.css.detailCellInputLabel}">Superficie :</span>
+			<g:TextBox ui:field="dimension" styleName="{res.css.detailCellInputText}" />
 		</div>
+		
+		<div class="{res.css.detailRow}">
+			<span class="{res.css.detailCellInputLabel}">Propriétaire :</span>
+			<g:ListBox ui:field="ownerName" styleName="{res.css.detailCellInputList}" />
+		</div>
+		
+		<div class="{res.css.separationRow}" style="clear: both;">
+
+		</div>
+		
 		<div>
 			<g:Button ui:field="btnSave">Sauver</g:Button>
 			<g:Button ui:field="btnCancel">Annuler</g:Button>

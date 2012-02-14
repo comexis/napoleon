@@ -39,11 +39,11 @@ public class InitDatastore extends HttpServlet {
 
     createApplicationUsers(companyId);
 
-    createOwners(companyId);
+    //createOwners(companyId);
 
-    createTenantDao(companyId);
+    //createTenantDao(companyId);
 
-    createRealEstate(companyId);
+    //createRealEstate(companyId);
 
     printResults(companyId, resp);
 
@@ -65,6 +65,13 @@ public class InitDatastore extends HttpServlet {
     u.setLastName("Dramaix");
     u.setEmail("julien.dramaix@gmail.com");
     userData.update(u);
+    
+    // create user napoleon.user1@gmail.com
+    u = userData.create(companyId);
+    u.setFirstName("user1");
+    u.setLastName("napoleon");
+    u.setEmail("napoleon.user1@gmail.com");
+    userData.update(u); 
 
   }
 

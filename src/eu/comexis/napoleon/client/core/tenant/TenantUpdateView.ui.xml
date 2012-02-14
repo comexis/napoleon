@@ -6,95 +6,111 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
-	<g:HTMLPanel>
-		<div>
-			<span>Civilité :</span>
-			<g:ListBox ui:field="title" />
-			<span>Nom :</span>
-			<g:TextBox ui:field="name" />
-			<span>Prénom :</span>
-			<g:TextBox ui:field="firstName" />
+	<ui:with field='res' type='eu.comexis.napoleon.client.resources.Resources' />
+
+	<g:HTMLPanel styleName="{res.css.detailTable}">
+
+		<div class="{res.css.detailRow}">
+			<span class="{res.css.detailCellInputLabel}">Civilité :</span>
+			<g:ListBox ui:field="title" styleName="{res.css.detailCellInputList}" />
+			<span class="{res.css.detailCellInputLabel}">Nom :</span>
+			<g:TextBox ui:field="name" styleName="{res.css.detailCellInputText}" />
+			<span class="{res.css.detailCellInputLabel}">Prénom :</span>
+			<g:TextBox ui:field="firstName" styleName="{res.css.detailCellInputText}" />
 		</div>
-		<div>
-			<span>IBAN :</span>
-			<g:TextBox ui:field="iban" />
-			<span>BIC :</span>
-			<g:TextBox ui:field="bic" />
+
+		<div class="{res.css.detailRow}">
+			<span class="{res.css.detailCellInputLabel}" style="width:100px">IBAN :</span>
+			<g:TextBox ui:field="iban" styleName="{res.css.detailCellInputText}" />
+			<span class="{res.css.detailCellInputLabel}">BIC :</span>
+			<g:TextBox ui:field="bic" styleName="{res.css.detailCellInputText}" />
 		</div>
-		<div>
-			<span>Adresse :</span>
-			<g:TextBox ui:field="addresse" />
+
+		<div class="{res.css.detailRow} {res.css.separationRow}">
+			<span class="{res.css.detailCellInputLabel}" style="width:80px">Adresse :</span>
+			<g:TextBox ui:field="addresse" styleName="{res.css.detailCellInputText}"
+				width="600px" />
+		</div>
+
+		<div class="{res.css.detailRow}">
+			<table>
+				<tr id="country">
+					<td>
+						<span class="{res.css.detailCellInputLabel}" style="width:80px">Pays :</span>
+						<g:ListBox ui:field="country" styleName="{res.css.detailCellInputList}" />
+					</td>
+					<td id="countryOther">
+						<span class="{res.css.detailCellInputLabel}" style="width:80px">autre :</span>
+						<g:TextBox ui:field="countryOther" styleName="{res.css.detailCellInputText}"
+							width="100px" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<span class="{res.css.detailCellInputLabel}" style="width:80px">Localité :</span>
+						<g:ListBox ui:field="city" styleName="{res.css.detailCellInputList}" />
+					</td>
+					<td id="cityOther">
+						<span class="{res.css.detailCellInputLabel}" style="width:80px">autre :</span>
+						<g:TextBox ui:field="cityOther" styleName="{res.css.detailCellInputText}"
+							width="100px" />
+					</td>
+				</tr>
+			</table>
 		</div>
 		
-		<table>
-			<tr id="country">
-				<td>
-					<span>Pays :</span>
-					<g:ListBox ui:field="country" />
-				</td>
-				<td id="countryOther">
-					<span>autre :</span>
-					<g:TextBox ui:field="countryOther" />
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<span>Municipalité :</span>
-					<g:ListBox ui:field="city" />
-				</td>
-				<td id="cityOther">
-					<span>Autre municipalité :</span>
-					<g:TextBox ui:field="cityOther" />
-				</td>
-			</tr>
-		</table>
-		<div>
-			<span>Email :</span>
-			<g:TextBox ui:field="email" />
+		<div class="{res.css.detailRow} {res.css.separationRow}">
+			<span class="{res.css.detailCellInputLabel}" style="width:80px">Téléphone :</span>
+			<g:TextBox ui:field="phoneNumber" styleName="{res.css.detailCellInputText}" />
+			<span class="{res.css.detailCellInputLabel}">GSM :</span>
+			<g:TextBox ui:field="mobileNumber" styleName="{res.css.detailCellInputText}" />
+			<span class="{res.css.detailCellInputLabel}">FAX :</span>
+			<g:TextBox ui:field="fax" styleName="{res.css.detailCellInputText}" />
 		</div>
-		<div>
-			<span>Téléphone :</span>
-			<g:TextBox ui:field="phoneNumber" />
+		
+		<div class="{res.css.detailRow}">
+			<span class="{res.css.detailCellInputLabel}" style="width:80px">Email :</span>
+			<g:TextBox ui:field="email" styleName="{res.css.detailCellInputText}" />
 		</div>
-		<div>
-			<span>GSM :</span>
-			<g:TextBox ui:field="mobileNumber" />
+
+		<div class="{res.css.detailRow} {res.css.separationRow}">
+			<span class="{res.css.detailCellInputLabel}" style="width:140px">Date de
+				naissance :</span>
+			<dp:DateBox ui:field="birthDayDateBox" styleName="{res.css.detailCellInputText}" />
+			<span class="{res.css.detailCellInputLabel}" style="width:140px">Lieu de
+				naissance :</span>
+			<g:TextBox ui:field="placeOfBirth" styleName="{res.css.detailCellInputText}" />
 		</div>
-		<div>
-			<span>FAX :</span>
-			<g:TextBox ui:field="fax" />
+		
+		<div class="{res.css.detailRow}">
+			<span class="{res.css.detailCellInputLabel}" style="width:140px">Nationalité :</span>
+			<g:SuggestBox ui:field="nationality" styleName="{res.css.detailCellInputText}" />
+			<span class="{res.css.detailCellInputLabel}" style="width:140px">Profession :</span>
+			<g:SuggestBox ui:field="job" styleName="{res.css.detailCellInputText}" />
 		</div>
-		<div>
-			<span>Date de naissance :</span>
-			<dp:DateBox ui:field="birthDayDateBox" />
+		
+		<div class="{res.css.detailRow}">
+			<span class="{res.css.detailCellInputLabel}" style="width:140px">Registre
+				national :</span>
+			<g:TextBox ui:field="nationalRegister" styleName="{res.css.detailCellInputText}" />
 		</div>
-		<div>
-			<span>Lieu de naissance :</span>
-			<g:TextBox ui:field="placeOfBirth" />
+		
+		<div class="{res.css.detailRow}">
+			<span class="{res.css.detailCellInputLabel}" style="width:140px">Marital
+				status :</span>
+			<g:ListBox ui:field="maritalStatus" styleName="{res.css.detailCellInputList}" />
+			<span class="{res.css.detailCellInputLabel}">Régime matrimonial :</span>
+			<g:ListBox ui:field="matrimonialRegime" styleName="{res.css.detailCellInputList}" />
 		</div>
-		<div>
-			<span>Nationality :</span>
-			<g:SuggestBox ui:field="nationality" />
+		
+		<div class="{res.css.separationRow}" style="clear: both;">
+
 		</div>
-		<div>
-			<span>Profession :</span>
-			<g:SuggestBox ui:field="job" />
-		</div>
-		<div>
-			<span>Registre national :</span>
-			<g:TextBox ui:field="nationalRegister" />
-		</div>
-		<div>
-			<span>Marital status :</span>
-			<g:ListBox ui:field="maritalStatus" />
-		</div>
-		<div id="matrimonialRegime">
-			<span>Régime matrimonial :</span>
-			<g:ListBox ui:field="matrimonialRegime" />
-		</div>
+		
 		<div>
 			<g:Button ui:field="btnSave">Sauver</g:Button>
 			<g:Button ui:field="btnCancel">Annuler</g:Button>
 		</div>
+		
 	</g:HTMLPanel>
 </ui:UiBinder>

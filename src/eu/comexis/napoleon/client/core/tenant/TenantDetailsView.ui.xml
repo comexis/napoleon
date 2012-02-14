@@ -4,79 +4,73 @@
 	xmlns:g='urn:import:com.google.gwt.user.client.ui' ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
+	
+	<ui:with field='res' type='eu.comexis.napoleon.client.resources.Resources' />
+	
+	<g:HTMLPanel styleName="{res.css.detailTable}">
+	
+		<div class="{res.css.detailRow}">
+			<span class="{res.css.detailCellLabel}">Civilité :</span>
+			<span ui:field="title" class="{res.css.detailCellValue}"/>
+			<span class="{res.css.detailCellLabel}">Nom :</span>
+			<span ui:field="name" class="{res.css.detailCellValue}" />
+			<span class="{res.css.detailCellLabel}">Prénom :</span>
+			<span ui:field="firstName" class="{res.css.detailCellValue}"/>
+		</div>
+		
+		<div class="{res.css.detailRow}">
+			<span class="{res.css.detailCellLabel}">IBAN :</span>
+			<span ui:field="iban" class="{res.css.detailCellValue}" />
+			<span class="{res.css.detailCellLabel}">BIC :</span>
+			<span ui:field="bic" class="{res.css.detailCellValue}" />
+		</div>
+		
+		<div class="{res.css.detailRow} {res.css.separationRow}">
+			<span class="{res.css.detailCellLabel}">Adresse :</span>
+			<span ui:field="addresse" class="{res.css.detailCellValue}" />
+		</div>
+		<div class="{res.css.detailRow}">
+			<span class="{res.css.detailCellLabel}">Téléphone :</span>
+			<span ui:field="phoneNumber" class="{res.css.detailCellValue}" />
+			<span class="{res.css.detailCellLabel}">GSM :</span>
+			<span ui:field="mobileNumber" class="{res.css.detailCellValue}" />
+			<span class="{res.css.detailCellLabel}">Fax :</span>
+			<span ui:field="fax" class="{res.css.detailCellValue}" />
+		</div>
+		<div class="{res.css.detailRow}">
+			<span class="{res.css.detailCellLabel}">Email :</span>
+			<span ui:field="email" class="{res.css.detailCellValue}" />
+		</div>
+		
+		<div class="{res.css.detailRow} {res.css.separationRow}">
 
-	<g:HTMLPanel>
-		<div>
-			<span>Civilité :</span>
-			<span ui:field="title" />
+			<span class="{res.css.detailCellLabel}">Date de naissance :</span>
+			<span ui:field="birthDay" class="{res.css.detailCellValue}" />
+			<span class="{res.css.detailCellLabel}">Lieu de naissance</span>
+			<span ui:field="placeOfBirth" class="{res.css.detailCellValue}" />
+
 		</div>
-		<div>
-			<span>Nom :</span>
-			<span ui:field="name" />
+
+		<div class="{res.css.detailRow}">
+
+			<span class="{res.css.detailCellLabel}">Nationalité :</span>
+			<span ui:field="nationality" class="{res.css.detailCellValue}" />
+			<span class="{res.css.detailCellLabel}">Profession :</span>
+			<span ui:field="job" class="{res.css.detailCellValue}" />
+
 		</div>
-		<div>
-			<span>Prénom :</span>
-			<span ui:field="firstName" />
+
+		<div class="{res.css.detailRow}">
+			<span class="{res.css.detailCellLabel}">Registre national :</span>
+			<span ui:field="nationalRegister" class="{res.css.detailCellValue}" />
+			<span class="{res.css.detailCellLabel}">Situation de famille :</span>
+			<span ui:field="maritalStatus" class="{res.css.detailCellValue}" />
+			<span class="{res.css.detailCellLabel}">Régime matrimonial :</span>
+			<span ui:field="matrimonialRegime" class="{res.css.detailCellValue}" />
 		</div>
-		<div>
-			<span>Honoraires :</span>
-			<span ui:field="fee" />
-		</div>
-		<div>
-			<span>BIC :</span>
-			<span ui:field="bic" />
-		</div>
-		<div>
-			<span>IBAN :</span>
-			<span ui:field="iban" />
-		</div>
-		<div>
-			<span>Adresse :</span>
-			<span ui:field="addresse" />
-		</div>
-		<div>
-			<span>Téléphone :</span>
-			<span ui:field="phoneNumber" />
-		</div>
-		<div>
-			<span>GSM :</span>
-			<span ui:field="mobileNumber" />
-		</div>
-		<div>
-			<span>Fax :</span>
-			<span ui:field="fax" />
-		</div>
-		<div>
-			<span>Email :</span>
-			<span ui:field="email" />
-		</div>
-		<div>
-			<span>Date de naissance :</span>
-			<span ui:field="birthDay" />
-		</div>
-		<div>
-			<span>Lieu de naissance :</span>
-			<span ui:field="placeOfBirth" />
-		</div>
-		<div>
-			<span>Nationalité :</span>
-			<span ui:field="nationality" />
-		</div>
-		<div>
-			<span>Profession :</span>
-			<span ui:field="job" />
-		</div>
-		<div>
-			<span>Registre national :</span>
-			<span ui:field="nationalRegister" />
-		</div>
-		<div>
-			<span>Marital status :</span>
-			<span ui:field="maritalStatus" />
-		</div>
-		<div>
-			<span>Régime matrimonial :</span>
-			<span ui:field="matrimonialRegime" />
+		
+		<div style="clear: both;">
+
 		</div>
 		<div>
 			<g:Button ui:field="btnUpdate">Editer</g:Button>

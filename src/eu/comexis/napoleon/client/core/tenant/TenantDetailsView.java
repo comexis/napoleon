@@ -46,8 +46,6 @@ public class TenantDetailsView extends ViewImpl implements TenantDetailsPresente
   @UiField
   Element iban;
   @UiField
-  Element fee;
-  @UiField
   Element nationalRegister;
   @UiField
   Element nationality;
@@ -101,8 +99,8 @@ public class TenantDetailsView extends ViewImpl implements TenantDetailsPresente
     nationalRegister.setInnerText(o.getNationalRegisterNumber());
     birthDay.setInnerText(o.getDateOfBirth() != null ? o.getDateOfBirth().toGMTString() : "");
     addresse.setInnerText(o.getStreet() + " " + o.getCity() + " " + o.getCountry());
-    maritalStatus.setInnerText(o.getMaritalStatus() != null ? o.getMaritalStatus().name()
-        .toLowerCase() : "");
+    maritalStatus.setInnerText(o.getMaritalStatus() != null ? UiHelper.translateEnum("MaritalStatus_", o.getMaritalStatus()): "");
+    matrimonialRegime.setInnerText(o.getMatrimonialRegime() != null ? UiHelper.translateEnum("MatrimonialRegime_", o.getMatrimonialRegime()): "");
 
     // TODO Auto-generated method stub
 
