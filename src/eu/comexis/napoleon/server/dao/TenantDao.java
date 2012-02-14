@@ -81,9 +81,9 @@ public class TenantDao extends NapoleonDao<Tenant> {
       country.setName(tenant.getCountry());
       countryData.update(country);
     }
-    City city = countryData.getCityByName(country.getId(), tenant.getCity());
+    City city = countryData.getCityByFullName(country.getId(), tenant.getCity(),tenant.getPostalCode());
     if (city == null) {
-      city = countryData.addCity(country.getId(), tenant.getCity());
+      city = countryData.addCity(country.getId(), tenant.getCity(),tenant.getPostalCode());
     }
     return super.update(tenant);
   }

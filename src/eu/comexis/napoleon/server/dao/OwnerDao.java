@@ -81,9 +81,9 @@ public class OwnerDao extends NapoleonDao<Owner> {
       country.setName(owner.getCountry());
       countryData.update(country);
     }
-    City city = countryData.getCityByName(country.getId(), owner.getCity());
+    City city = countryData.getCityByFullName(country.getId(), owner.getCity(),owner.getPostalCode());
     if (city == null) {
-      city = countryData.addCity(country.getId(), owner.getCity());
+      city = countryData.addCity(country.getId(), owner.getCity(),owner.getPostalCode());
     }
     return super.update(owner);
   }

@@ -19,13 +19,14 @@ public class CountryDao extends NapoleonDao<Country> {
     // TODO Auto-generated constructor stub
   }
 
-  public City addCity(String countryId, String cityName) {
+  public City addCity(String countryId, String cityName, String postalCode) {
     try {
       City city = new City();
       Key<Country> countryKey = new Key<Country>(Country.class, countryId);
       UUID uuid = UUID.randomUUID();
       city.setId(uuid.toString());
       city.setCountry(countryKey);
+      city.setPostalCode(postalCode);
       city.setName(cityName);
       ofy().put(city);
       return city;
@@ -63,7 +64,18 @@ public class CountryDao extends NapoleonDao<Country> {
     Key<Company> companyKey = new Key<Company>(Company.class, companyId);
     return getByName(name, companyKey);
   }
-
+  public City getCityByFullName(String countryId, String name,String postalCode) {
+    try {
+      Key<Country> countryKey = new Key<Country>(Country.class, countryId);
+      Query<City> q = ofy().query(City.class);
+      q.ancestor(countryKey);
+      q.filter("postalCode", postalCode).filter("name", name);
+      City c = q.get();
+      return c;
+    } catch (Exception e) {
+      return null;
+    }
+  }
   public City getCityByName(String countryId, String name) {
     try {
       Key<Country> countryKey = new Key<Country>(Country.class, countryId);

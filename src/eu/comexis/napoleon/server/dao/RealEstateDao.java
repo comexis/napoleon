@@ -91,10 +91,10 @@ public class RealEstateDao extends NapoleonDao<RealEstate> {
       country.setName(realEstate.getCountry());
       countryData.update(country);
     }
-    City city = countryData.getCityByName(country.getId(), realEstate.getCity());
+    City city = countryData.getCityByFullName(country.getId(), realEstate.getCity(),realEstate.getPostalCode());
     // if city does not exist, create it.
     if (city == null) {
-      city = countryData.addCity(country.getId(), realEstate.getCity());
+      city = countryData.addCity(country.getId(), realEstate.getCity(),realEstate.getPostalCode());
     }
     if (!realEstate.getSquare().isEmpty()){
       ArrayList<String> allSquares = city.getSquareList();

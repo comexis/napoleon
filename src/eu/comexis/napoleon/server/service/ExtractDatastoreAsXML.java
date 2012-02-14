@@ -81,6 +81,10 @@ public class ExtractDatastoreAsXML extends HttpServlet {
       out.println("<Telephone>"+ o.getPhoneNumber() + "</Telephone>");
       out.println("<Fax>"+ o.getFax() + "</Fax>");
       out.println("<Email>"+ o.getEmail() + "</Email>");
+      out.println("<Street>" + o.getStreet() + "</Street>");
+      out.println("<Country>"+ o.getCountry() + "</Country>");
+      out.println("<PostalCode>"+ o.getPostalCode() + "</PostalCode>");
+      out.println("<City>"+ o.getCity() + "</City>");
       out.println("</Owner>");
     }
     out.println("</Owners>");
@@ -94,6 +98,10 @@ public class ExtractDatastoreAsXML extends HttpServlet {
       out.println("<Telephone>"+ t.getPhoneNumber() + "</Telephone>");
       out.println("<Fax>"+ t.getFax() + "</Fax>");
       out.println("<Email>"+ t.getEmail() + "</Email>");
+      out.println("<Street>" + t.getStreet() + "</Street>");
+      out.println("<Country>"+ t.getCountry() + "</Country>");
+      out.println("<PostalCode>"+ t.getPostalCode() + "</PostalCode>");
+      out.println("<City>"+ t.getCity() + "</City>");
       out.println("</Tenant>");
     }
     out.println("</Tenants>");
@@ -105,6 +113,7 @@ public class ExtractDatastoreAsXML extends HttpServlet {
       out.println("<Name>"+ e.getReference() + "</Name>");
       out.println("<Street>" + e.getStreet() + "</Street>");
       out.println("<Country>"+ e.getCountry() + "</Country>");
+      out.println("<PostalCode>"+ e.getPostalCode() + "</PostalCode>");
       out.println("<City>"+ e.getCity() + "</City>");
       out.println("<Square>" + e.getSquare() + "</Square>");
       out.println("<State>" + e.getState().name() + "</State>");
@@ -137,6 +146,7 @@ public class ExtractDatastoreAsXML extends HttpServlet {
       out.println("<Name>"+ cnty.getName() + "</Name>");
       for (City city : countryDao.getListCities(cnty.getId())) {
         out.println("<City id='"+ city.getId() + "'>");
+        out.println("<PostalCode>"+ city.getPostalCode() + "</PostalCode>");
         out.println("<Name>"+ city.getName() + "</Name>");
         List<String> lstSquares = city.getSquareList();
         if (lstSquares!=null){

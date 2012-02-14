@@ -9,6 +9,7 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Indexed;
 import com.googlecode.objectify.annotation.Parent;
 import com.googlecode.objectify.annotation.Unindexed;
+
 @Unindexed
 public class City implements IsSerializable {
 
@@ -19,6 +20,8 @@ public class City implements IsSerializable {
   private Key<Country> country;
   @Indexed
   private String name;
+  @Indexed
+  private String postalCode;
   private ArrayList<String> SquareList;
 
   public City() {
@@ -37,6 +40,10 @@ public class City implements IsSerializable {
     return name;
   }
 
+  public String getPostalCode() {
+    return postalCode;
+  }
+
   public ArrayList<String> getSquareList() {
     return SquareList;
   }
@@ -51,6 +58,10 @@ public class City implements IsSerializable {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public void setPostalCode(String postalCode) {
+    this.postalCode = postalCode;
   }
 
   public void setSquareList(ArrayList<String> squareList) {
