@@ -2,6 +2,10 @@ package eu.comexis.napoleon.shared.validation;
 
 import java.math.BigDecimal;
 
+import com.google.gwt.query.client.js.JsRegexp;
+
+
+
 /**
  * Common class gathering all useful functions for validations
  * 
@@ -10,6 +14,8 @@ import java.math.BigDecimal;
  * @param <T>
  */
 public abstract class AbstractValidator<T> implements Validator<T> {
+  
+  private JsRegexp EMAIL_REGEX = new JsRegexp("^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$");
 
   /**
    * Test is a {@link String} is empty. A string is considered as empty if it is null or its length is equal
@@ -180,6 +186,14 @@ public abstract class AbstractValidator<T> implements Validator<T> {
    */
   protected boolean isGreaterOrEqualThan(BigDecimal toCompare, BigDecimal lowerBound) {
     return toCompare.compareTo(lowerBound) >= 0;
+  }
+  
+  protected boolean isValidEmail(String email) {
+    if (email == null || email.length() == 0){
+      //cannot valid a empty string
+      return true;
+    }
+    return EMAIL_REGEX.test(email);
   }
 
 }

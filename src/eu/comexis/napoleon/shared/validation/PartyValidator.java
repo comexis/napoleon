@@ -14,9 +14,19 @@ public class PartyValidator<T extends Party> extends AbstractValidator<T> {
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
     
     validateName(party, messages);
+    validateEmail(party.getEmail(), messages);
     //continue...
     
     return messages;
+  }
+
+  private void validateEmail(String email, List<ValidationMessage> messages) {
+    if (isEmpty(email)){
+      messages.add(new ValidationMessage(VALIDATION_MESSAGES.fieldIsMandatory("email"), "email"));
+    }else if(!isValidEmail(email)){
+      messages.add(new ValidationMessage(VALIDATION_MESSAGES.emailInvalid(email), "email"));
+    }
+    
   }
 
   private void validateName(T party, List<ValidationMessage> messages) {
@@ -28,7 +38,10 @@ public class PartyValidator<T extends Party> extends AbstractValidator<T> {
     if (isEmpty(party.getLastName())){
       messages.add(new ValidationMessage(VALIDATION_MESSAGES.fieldIsMandatory("nom"), "name"));
     }
+
     
   }
+
+ 
 
 }
