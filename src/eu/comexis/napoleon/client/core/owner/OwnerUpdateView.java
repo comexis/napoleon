@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.logging.client.LogConfiguration;
@@ -64,7 +63,7 @@ public class OwnerUpdateView extends ViewImpl implements OwnerUpdatePresenter.My
   @UiField(provided = true)
   ListBox matrimonialRegime;
   @UiField
-  DateBox birthDayDateBox;
+  DateBox birthDayDate;
   @UiField(provided = true)
   ListBox title;
   @UiField
@@ -92,6 +91,20 @@ public class OwnerUpdateView extends ViewImpl implements OwnerUpdatePresenter.My
   public OwnerUpdateView(final Binder binder) {
     init();
     widget = binder.createAndBindUi(this);
+    initNames();
+  }
+
+  /**
+   * For some widgets (SuggestBox, DateBox), it is not possible to set the name via uibinder
+   * 
+   */
+  private void initNames() {
+    city.getTextBox().setName("city");
+    country.getTextBox().setName("country");
+    postalCode.getTextBox().setName("postalCode");
+    nationality.getTextBox().setName("nationality");
+    job.getTextBox().setName("job");
+    birthDayDate.getTextBox().setName("birthDayDate");
   }
 
   @Override
@@ -108,20 +121,20 @@ public class OwnerUpdateView extends ViewImpl implements OwnerUpdatePresenter.My
   public void fillCityList(List<String> cities) {
     MultiWordSuggestOracle oracle = (MultiWordSuggestOracle) city.getSuggestOracle();
     oracle.clear();
-    if (cities!=null){
+    if (cities != null) {
       for (String sCity : cities) {
         oracle.add(sCity);
       }
     }
   }
-  
+
   @Override
   public void fillPostalCodeList(List<String> postCdes) {
     MultiWordSuggestOracle oracle = (MultiWordSuggestOracle) postalCode.getSuggestOracle();
     oracle.clear();
-    if (postCdes!=null){
+    if (postCdes != null) {
       for (String sPC : postCdes) {
-        if (sPC!=null){
+        if (sPC != null) {
           oracle.add(sPC);
         }
       }
@@ -132,7 +145,7 @@ public class OwnerUpdateView extends ViewImpl implements OwnerUpdatePresenter.My
   public void fillCountryList(List<Country> countries) {
     MultiWordSuggestOracle oracle = (MultiWordSuggestOracle) country.getSuggestOracle();
     oracle.clear();
-    if (countries!=null){
+    if (countries != null) {
       for (Country cnty : countries) {
         oracle.add(cnty.getName());
       }
@@ -165,7 +178,7 @@ public class OwnerUpdateView extends ViewImpl implements OwnerUpdatePresenter.My
 
     name.setText(o.getLastName());
     firstName.setText(o.getFirstName());
-    
+
     BigDecimal _fee = o.getFee();
     fee.setText((_fee != null ? _fee.toString() : ""));
     UiHelper.selectTextItemBoxByValue(unit, o.getUnit());
@@ -176,11 +189,11 @@ public class OwnerUpdateView extends ViewImpl implements OwnerUpdatePresenter.My
     phoneNumber.setText(o.getPhoneNumber());
     mobileNumber.setText(o.getMobilePhoneNumber());
     fax.setText(o.getFax());
-    birthDayDateBox.setValue(o.getDateOfBirth());
-    
+    birthDayDate.setValue(o.getDateOfBirth());
+
     DateTimeFormat dateFormat = DateTimeFormat.getShortDateFormat();
-    birthDayDateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
-    
+    birthDayDate.setFormat(new DateBox.DefaultFormat(dateFormat));
+
     placeOfBirth.setText(o.getPlaceOfBirth());
     country.setValue(o.getCountry());
     presenter.onCountrySelect(country.getValue());
@@ -191,17 +204,16 @@ public class OwnerUpdateView extends ViewImpl implements OwnerUpdatePresenter.My
     nationality.setText(o.getNationality());
     job.setText(o.getJobTitle());
     nationalRegister.setText(o.getNationalRegisterNumber());
-    
+
     UiHelper.selectTextItemBoxByValue(maritalStatus, o.getMaritalStatus());
     UiHelper.selectTextItemBoxByValue(matrimonialRegime, o.getMatrimonialRegime());
- 
+
   }
 
   @Override
   public void setOwnerUpdateUiHandler(OwnerUpdateUiHandlers handler) {
     this.presenter = handler;
   }
-
 
   @Override
   public Owner updateOwner(Owner o) {
@@ -216,7 +228,7 @@ public class OwnerUpdateView extends ViewImpl implements OwnerUpdatePresenter.My
     o.setPhoneNumber(phoneNumber.getValue());
     o.setMobilePhoneNumber(mobileNumber.getValue());
     o.setFax(fax.getValue());
-    o.setDateOfBirth(birthDayDateBox.getValue());
+    o.setDateOfBirth(birthDayDate.getValue());
     o.setPlaceOfBirth(placeOfBirth.getValue());
     o.setStreet(addresse.getValue());
     o.setPostalCode(postalCode.getValue());
@@ -256,16 +268,19 @@ public class OwnerUpdateView extends ViewImpl implements OwnerUpdatePresenter.My
     city.setValue("");
     postalCode.setValue("");
   }
+
   @UiHandler("country")
   public void onCountrySelect(SelectionEvent<SuggestOracle.Suggestion> event) {
     presenter.onCountrySelect(event.getSelectedItem().getReplacementString());
     city.setValue("");
     postalCode.setValue("");
   }
+
   @UiHandler("postalCode")
   public void onPostalCodeChange(ValueChangeEvent<String> event) {
     city.setValue("");
   }
+
   @UiHandler("postalCode")
   public void onPostalCodeSelect(SelectionEvent<SuggestOracle.Suggestion> event) {
     presenter.onPostalCodeSelect(event.getSelectedItem().getReplacementString());
@@ -274,14 +289,11 @@ public class OwnerUpdateView extends ViewImpl implements OwnerUpdatePresenter.My
 
   @Override
   public void displayValidationMessage(List<ValidationMessage> validationMessages) {
-    // TODO Display the messages in a PopupPanel
-    StringBuilder msgBuilder = new StringBuilder("Vueillez corriger les erreurs suivantes : \n\n");
-    
-    for (ValidationMessage msg : validationMessages){
-      msgBuilder.append(msg.getMessage()).append("\n");
-    }
-    
-    Window.alert(msgBuilder.toString());
-    
+    UiHelper.displayValidationMessage(validationMessages, asWidget());
+  }
+
+  @Override
+  public void reset() {
+    UiHelper.resetForm(asWidget());
   }
 }

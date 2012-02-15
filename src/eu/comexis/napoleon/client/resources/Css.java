@@ -23,4 +23,12 @@ public interface Css extends CssResource {
   public String detailTable();
   
   public String separationRow();
+  
+  public String validationMessage();
+
+  public String validationMessageInner();
+  
+  public String validationMessageOuter();
+
+  public String fieldInError();
 }

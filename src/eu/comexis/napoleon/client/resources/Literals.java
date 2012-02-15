@@ -100,5 +100,14 @@ public interface Literals extends ConstantsWithLookup {
 
   @DefaultStringValue("Villa")
   public String TypeOfRealEstate_VILLA();
+
+  @DefaultStringValue("Veuillez corriger les erreurs suivantes :")
+  public String validationMessageDisplayIntro();
+
+  @DefaultStringValue("Message d'information")
+  public String informationDialogDefaultTitle();
+
+  @DefaultStringValue("Erreur de validation")
+  public String validationMessageDialogTitle();
   
 }

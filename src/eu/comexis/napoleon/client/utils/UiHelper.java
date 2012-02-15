@@ -1,8 +1,15 @@
 package eu.comexis.napoleon.client.utils;
 
+import static com.google.gwt.query.client.GQuery.$;
+import java.util.List;
+
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.Widget;
 
 import eu.comexis.napoleon.client.resources.Literals;
+import eu.comexis.napoleon.client.resources.Resources;
+import eu.comexis.napoleon.client.widget.InformationDialog;
+import eu.comexis.napoleon.shared.validation.ValidationMessage;
 
 public class UiHelper {
 
@@ -46,6 +53,22 @@ public class UiHelper {
     if (value != null){
       selectTextItemBoxByValue(tb, value.name());
     }
+  }
+  
+  public static void displayValidationMessage(List<ValidationMessage> validationMessages, Widget w){
+    resetForm(w);
+    
+    InformationDialog.get().showValidationMessages(validationMessages);
+    
+    for (ValidationMessage m : validationMessages){
+      String selector = "[name='"+m.getComponentId()+"' ]";
+      $(selector, w).addClass(Resources.INSTANCE.css().fieldInError());
+    }
+  }
+  
+  
+  public static void resetForm(Widget w){
+    $("input, select", w).removeClass(Resources.INSTANCE.css().fieldInError());
   }
 
 }

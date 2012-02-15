@@ -22,11 +22,11 @@ public class PartyValidator<T extends Party> extends AbstractValidator<T> {
   private void validateName(T party, List<ValidationMessage> messages) {
    
     if (isEmpty(party.getFirstName())){
-      messages.add(new ValidationMessage(VALIDATION_MESSAGES.fieldIsMandatory("prénom"), "name"));
+      messages.add(new ValidationMessage(VALIDATION_MESSAGES.fieldIsMandatory("prénom"), "firstName"));
     }
     
     if (isEmpty(party.getLastName())){
-      messages.add(new ValidationMessage(VALIDATION_MESSAGES.fieldIsMandatory("nom"), "firstName"));
+      messages.add(new ValidationMessage(VALIDATION_MESSAGES.fieldIsMandatory("nom"), "name"));
     }
     
   }

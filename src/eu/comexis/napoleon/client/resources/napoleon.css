@@ -1,10 +1,9 @@
-.loadingOuter{
+.loadingOuter {
 	width: 100%;
 }
 
-@sprite .loadingInner{
+@sprite .loadingInner {
 	gwt-image: "loading";
-	
 	width: 185px;
 	margin-left: auto;
 	margin-right: auto;
@@ -13,38 +12,38 @@
 	padding-top: 5px
 }
 
-.detailRow{
+.detailRow {
 	clear: both;
 }
 
-.separationRow{
+.separationRow {
 	padding-top: 20px;
 }
 
-.detailCellValue, .detailCellLabel, .detailCellInputText, .detailCellInputList,.detailCellInputLabel{
+.detailCellValue,.detailCellLabel,.detailCellInputText,.detailCellInputList,.detailCellInputLabel
+	{
 	display: block;
 	float: left;
 	margin: 5px;
 }
 
-.detailCellInputLabel, .detailCellLabel{
+.detailCellInputLabel,.detailCellLabel {
 	font-weight: bold;
 }
 
-.detailCellLabel{
+.detailCellLabel {
 	width: 150px;
 }
 
-.detailCellInputLabel{
+.detailCellInputLabel {
 	padding-top: 5px;
 }
-  
-.detailCellValue{
+
+.detailCellValue {
 	min-width: 200px;
 }
 
-
-.detailCellInputText, .detailCellInputList {
+.detailCellInputText,.detailCellInputList {
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
@@ -55,10 +54,31 @@
 .detailCellInputText {
 	width: 200px;
 	padding: 5px 10px;
-	
 }
 
-.detailTable{
+.detailTable {
 	width: 100%;
-	
+}
+
+.validationMessage {
+	margin-bottom: 5px;
+	font-style: italic;
+}
+
+.validationMessageInner {
+	padding-left: 35px;
+	padding-top: 10px;
+}
+
+.validationMessageOuter {
+	color: #D8000C;
+}
+
+.validationMessageOuter > span{
+	font-weight: bold;
+}
+
+.fieldInError{
+	color: #D8000C;
+	background-color: #FFBABA;
 }

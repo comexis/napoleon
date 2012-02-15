@@ -57,6 +57,8 @@ public class OwnerUpdatePresenter extends
     public Owner updateOwner(Owner o);
 
     public void displayValidationMessage(List<ValidationMessage> validationMessages);
+
+    public void reset();
   }
 
   public static final String UUID_PARAMETER = "uuid";
@@ -188,6 +190,12 @@ public class OwnerUpdatePresenter extends
       getView().setOwner(owner);
     }
 
+  }
+  
+  @Override
+  protected void onHide() {
+    super.onHide();
+    getView().reset();
   }
 
   private void init() {
