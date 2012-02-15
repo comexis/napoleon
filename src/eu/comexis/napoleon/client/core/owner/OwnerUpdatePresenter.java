@@ -198,8 +198,6 @@ public class OwnerUpdatePresenter extends
         
       }
     });
-    
-    //onCountrySelect(getView().getSelectedCountry());
   }
   
   private void saveOwner(){

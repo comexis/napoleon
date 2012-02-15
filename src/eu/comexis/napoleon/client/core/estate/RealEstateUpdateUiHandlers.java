@@ -12,4 +12,6 @@ public interface RealEstateUpdateUiHandlers {
   public void onCitySelect(String selectedCity);
 
   public void onCountrySelect(String selectedText);
+  
+  public void onPostalCodeSelect(String selectedPostalCode);
 }

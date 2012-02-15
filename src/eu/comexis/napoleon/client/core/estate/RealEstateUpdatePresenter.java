@@ -21,19 +21,25 @@ import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.rpc.callback.GotAllCities;
 import eu.comexis.napoleon.client.rpc.callback.GotAllCountries;
 import eu.comexis.napoleon.client.rpc.callback.GotAllOwner;
+import eu.comexis.napoleon.client.rpc.callback.GotCountry;
 import eu.comexis.napoleon.client.rpc.callback.GotRealEstate;
 import eu.comexis.napoleon.client.rpc.callback.UpdatedRealEstate;
 import eu.comexis.napoleon.shared.command.country.GetAllCitiesCommand;
 import eu.comexis.napoleon.shared.command.country.GetAllCountriesCommand;
+import eu.comexis.napoleon.shared.command.country.GetCountryCommand;
 import eu.comexis.napoleon.shared.command.estate.GetRealEstateCommand;
 import eu.comexis.napoleon.shared.command.estate.UpdateRealEstateCommand;
 import eu.comexis.napoleon.shared.command.owner.GetAllOwnerCommand;
 import eu.comexis.napoleon.client.core.estate.RealEstateUpdateUiHandlers.HasRealEstateUpdateUiHandler;
+import eu.comexis.napoleon.client.core.owner.OwnerUpdatePresenter;
 import eu.comexis.napoleon.shared.model.City;
 import eu.comexis.napoleon.shared.model.Country;
 import eu.comexis.napoleon.shared.model.Condo;
 import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 import eu.comexis.napoleon.shared.model.RealEstate;
+import eu.comexis.napoleon.shared.validation.OwnerValidator;
+import eu.comexis.napoleon.shared.validation.RealEstateValidator;
+import eu.comexis.napoleon.shared.validation.ValidationMessage;
 
 public class RealEstateUpdatePresenter extends
     Presenter<RealEstateUpdatePresenter.MyView, RealEstateUpdatePresenter.MyProxy> implements
@@ -46,27 +52,27 @@ public class RealEstateUpdatePresenter extends
   public interface MyView extends View, HasRealEstateUpdateUiHandler {
     public void displayError(String error);
 
-    public void fillCityList(List<City> cities);
+    public void displayValidationMessage(List<ValidationMessage> validationMessages);
+
+    public void fillCityList(List<String> cities);
 
     public void fillCountryList(List<Country> countries);
 
     public void fillOwnerList(List<SimpleOwner> owners);
 
+    public void fillPostalCodeList(List<String> postCdes);
+
     public void fillSquareList(List<String> squares);
+
+    public String getOwnerId();
 
     public String getSelectedCountry();
 
     public void setRealEstate(RealEstate e, SimpleOwner o, Condo cdo);
 
-    public void showCityOther(Boolean show);
-
-    public void showCountryOther(Boolean show);
+    public Condo updateCondo(Condo cdo);
 
     public RealEstate updateRealEstate(RealEstate o);
-    
-    public Condo updateCondo(Condo cdo);
-    
-    public String getOwnerId();
   }
 
   public static final String UUID_PARAMETER = "uuid";
@@ -77,14 +83,15 @@ public class RealEstateUpdatePresenter extends
   private String id;
   private RealEstate realEstate;
   private Condo cdo;
-  private List<City> allCities;
-  private List<Country> allCountries;
+  private Country country;
+  private RealEstateValidator validator;
 
   @Inject
   public RealEstateUpdatePresenter(final EventBus eventBus, final MyView view, final MyProxy proxy,
       final PlaceManager placeManager) {
     super(eventBus, view, proxy);
     this.placeManager = placeManager;
+    this.validator = new RealEstateValidator();
   }
 
   @Override
@@ -97,10 +104,98 @@ public class RealEstateUpdatePresenter extends
 
   @Override
   public void onButtonSaveClick() {
-    // Try to save the realEstate
-    // Get the realEstate to save
-    realEstate = getView().updateRealEstate(realEstate);
-    cdo = getView().updateCondo(cdo);
+    getView().updateRealEstate(realEstate);
+    getView().updateCondo(cdo);
+
+    List<ValidationMessage> validationMessages = validator.validate(realEstate);
+
+    if (validationMessages.isEmpty()) {
+      saveRealEstate();
+    } else {
+      getView().displayValidationMessage(validationMessages);
+    }
+
+  }
+
+  @Override
+  public void onCitySelect(String selectedCity) {
+    if (RealEstateUpdatePresenter.this.country != null) {
+      for (City c : RealEstateUpdatePresenter.this.country.getCities()) {
+        if (c.getName().equals(selectedCity) && c.getSquareList() != null) {
+          getView().fillSquareList(c.getSquareList());
+          break;
+        } else {
+          getView().fillSquareList(new ArrayList<String>());
+        }
+      }
+    }
+  }
+
+  @Override
+  public void onCountrySelect(String selectedCountry) {
+
+    if (selectedCountry == null || selectedCountry.length() == 0) {
+      return;
+    }
+
+    // get all the already encoded cities for the given country
+    // -> get a full country object from the server
+    // This object contains the list of cities of the given country
+    GetCountryCommand cmd = new GetCountryCommand();
+    cmd.setName(selectedCountry);
+    cmd.dispatch(new GotCountry() {
+      @Override
+      public void got(Country cnty) {
+        RealEstateUpdatePresenter.this.country = cnty;
+        if (cnty != null) {
+          List<String> lst = cnty.getListPostalCode();
+          getView().fillPostalCodeList(lst);
+          if (lst != null && !lst.isEmpty()) {
+            onPostalCodeSelect(lst.get(0));
+          }
+        }
+      }
+    });
+
+  }
+
+  @Override
+  public void onPostalCodeSelect(String selectedPostalCode) {
+
+    if (selectedPostalCode == null || selectedPostalCode.length() == 0) {
+      return;
+    }
+    List<String> lstCities = new ArrayList<String>();
+    if (RealEstateUpdatePresenter.this.country != null) {
+      for (City c : RealEstateUpdatePresenter.this.country
+          .getListCitiesByPostalCode(selectedPostalCode)) {
+        lstCities.add(c.getName());
+      }
+    }
+    getView().fillCityList(lstCities);
+
+  }
+
+  /**
+   * Retrieve the id of the realEstate to show it
+   */
+  @Override
+  public void prepareFromRequest(PlaceRequest placeRequest) {
+    super.prepareFromRequest(placeRequest);
+    // In the next call, "view" is the default value,
+    // returned if "action" is not found on the URL.
+    id = placeRequest.getParameter(UUID_PARAMETER, null);
+    if (id != "new") {
+      if (id == null || id.length() == 0) {
+        if (LogConfiguration.loggingIsEnabled()) {
+          LOG.severe("invalid id is null or empty");
+        }
+        placeManager.revealErrorPlace(placeRequest.getNameToken());
+      }
+    }
+  }
+
+  public void saveRealEstate() {
     // Save it
     UpdateRealEstateCommand cmd = new UpdateRealEstateCommand();
     cmd.setRealEstate(realEstate);
@@ -121,60 +216,6 @@ public class RealEstateUpdatePresenter extends
     // On success display the realEstate detail screen
     // On failure display the realEstate update screen with the reason why it cannot be saved
 
-  }
-
-  @Override
-  public void onCitySelect(String selectedCity) {
-    if (selectedCity.equals("(...)")) {
-      getView().showCityOther(true);
-    } else {
-      getView().showCityOther(false);
-      for (City c : allCities) {
-        if (c.getName().equals(selectedCity) && c.getSquareList() != null) {
-          getView().fillSquareList(c.getSquareList());
-          break;
-        } else {
-          getView().fillSquareList(new ArrayList<String>());
-        }
-      }
-    }
-  }
-
-  @Override
-  public void onCountrySelect(String selectedCountry) {
-    if (selectedCountry.equals("(...)")) {
-      getView().showCountryOther(true);
-    } else {
-      // get all the already encoded cities for the given country
-      GetAllCitiesCommand cmd = new GetAllCitiesCommand();
-      cmd.setName(selectedCountry);
-      cmd.dispatch(new GotAllCities() {
-        public void got(List<City> cities) {
-          RealEstateUpdatePresenter.this.allCities = cities;
-          getView().fillCityList(cities);
-        }
-      });
-      getView().showCountryOther(false);
-    }
-  }
-
-  /**
-   * Retrieve the id of the realEstate to show it
-   */
-  @Override
-  public void prepareFromRequest(PlaceRequest placeRequest) {
-    super.prepareFromRequest(placeRequest);
-    // In the next call, "view" is the default value,
-    // returned if "action" is not found on the URL.
-    id = placeRequest.getParameter(UUID_PARAMETER, null);
-    if (id != "new") {
-      if (id == null || id.length() == 0) {
-        if (LogConfiguration.loggingIsEnabled()) {
-          LOG.severe("invalid id is null or empty");
-        }
-        placeManager.revealErrorPlace(placeRequest.getNameToken());
-      }
-    }
   }
 
   @Override
@@ -212,15 +253,8 @@ public class RealEstateUpdatePresenter extends
     new GetAllCountriesCommand().dispatch(new GotAllCountries() {
       @Override
       public void got(List<Country> countries) {
-        RealEstateUpdatePresenter.this.allCountries = countries;
         getView().fillCountryList(countries);
-        GetAllCitiesCommand cmd = new GetAllCitiesCommand();
-        cmd.setName(getView().getSelectedCountry());
-        cmd.dispatch(new GotAllCities() {
-          public void got(List<City> cities) {
-            getView().fillCityList(cities);
-          }
-        });
+
       }
     });
     new GetAllOwnerCommand().dispatch(new GotAllOwner() {

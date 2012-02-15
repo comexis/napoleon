@@ -41,8 +41,16 @@
 			<span class="{res.css.detailCellInputLabel}">Boite :</span>
 			<g:TextBox ui:field="box" styleName="{res.css.detailCellInputText}" />
 		</div>
-
 		<div class="{res.css.detailRow}">
+			<span class="{res.css.detailCellInputLabel}" style="width:80px">Pays :</span>
+			<g:SuggestBox ui:field="country" styleName="{res.css.detailCellInputText}" />
+			<span class="{res.css.detailCellInputLabel}">Code Postal :</span>
+			<g:SuggestBox ui:field="postalCode" styleName="{res.css.detailCellInputText}" width="50px" />
+			<span class="{res.css.detailCellInputLabel}" >Ville :</span>
+			<g:SuggestBox ui:field="city" styleName="{res.css.detailCellInputText}" />
+			
+		</div>
+		<!--div class="{res.css.detailRow}">
 			<table>
 				<tr id="country">
 					<td>
@@ -67,7 +75,7 @@
 					</td>
 				</tr>
 			</table>
-		</div>
+		</div-->
 		
 		<div class="{res.css.detailRow}">
 			<span class="{res.css.detailCellInputLabel}">Quartier :</span>

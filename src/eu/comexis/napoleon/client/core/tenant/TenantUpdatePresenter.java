@@ -19,17 +19,19 @@ import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter;
 import eu.comexis.napoleon.client.core.tenant.TenantUpdateUiHandlers.HasTenantUpdateUiHandler;
 import eu.comexis.napoleon.client.place.NameTokens;
-import eu.comexis.napoleon.client.rpc.callback.GotAllCities;
 import eu.comexis.napoleon.client.rpc.callback.GotAllCountries;
+import eu.comexis.napoleon.client.rpc.callback.GotCountry;
 import eu.comexis.napoleon.client.rpc.callback.GotTenant;
 import eu.comexis.napoleon.client.rpc.callback.UpdatedTenant;
-import eu.comexis.napoleon.shared.command.country.GetAllCitiesCommand;
 import eu.comexis.napoleon.shared.command.country.GetAllCountriesCommand;
+import eu.comexis.napoleon.shared.command.country.GetCountryCommand;
 import eu.comexis.napoleon.shared.command.tenant.GetTenantCommand;
 import eu.comexis.napoleon.shared.command.tenant.UpdateTenantCommand;
 import eu.comexis.napoleon.shared.model.City;
 import eu.comexis.napoleon.shared.model.Country;
 import eu.comexis.napoleon.shared.model.Tenant;
+import eu.comexis.napoleon.shared.validation.TenantValidator;
+import eu.comexis.napoleon.shared.validation.ValidationMessage;
 
 public class TenantUpdatePresenter extends
     Presenter<TenantUpdatePresenter.MyView, TenantUpdatePresenter.MyProxy> implements
@@ -42,17 +44,17 @@ public class TenantUpdatePresenter extends
   public interface MyView extends View, HasTenantUpdateUiHandler {
     public void displayError(String error);
 
+    public void displayValidationMessage(List<ValidationMessage> validationMessages);
+
     public void fillCityList(List<String> cities);
 
     public void fillCountryList(List<Country> countries);
 
+    public void fillPostalCodeList(List<String> postCdes);
+
     public String getSelectedCountry();
 
     public void setTenant(Tenant o);
-
-    public void showCityOther(Boolean show);
-
-    public void showCountryOther(Boolean show);
 
     public Tenant updateTenant(Tenant o);
   }
@@ -64,14 +66,15 @@ public class TenantUpdatePresenter extends
   private PlaceManager placeManager;
   private String id;
   private Tenant tenant;
-  private List<String> allCities;
-  private List<Country> allCountries;
+  private Country country;
+  private TenantValidator validator;
 
   @Inject
   public TenantUpdatePresenter(final EventBus eventBus, final MyView view, final MyProxy proxy,
       final PlaceManager placeManager) {
     super(eventBus, view, proxy);
     this.placeManager = placeManager;
+    this.validator = new TenantValidator();
   }
 
   @Override
@@ -84,55 +87,61 @@ public class TenantUpdatePresenter extends
 
   @Override
   public void onButtonSaveClick() {
-    // Try to save the tenant
-    // Get the tenant to save
-    tenant = getView().updateTenant(tenant);
-    // Save it
-    new UpdateTenantCommand(tenant).dispatch(new UpdatedTenant() {
-      @Override
-      public void got(Tenant tenant) {
-        if (tenant != null) {
-          PlaceRequest myRequest = new PlaceRequest(NameTokens.tenant);
-          myRequest = myRequest.with(UUID_PARAMETER, tenant.getId());
-          placeManager.revealPlace(myRequest);
-        } else {
-          getView().displayError("The tenant cannot be save");
-        }
-      }
-    });
-    // On success display the tenant detail screen
-    // On failure display the tenant update screen with the reason why it cannot be saved
+    getView().updateTenant(tenant);
 
-  }
+    List<ValidationMessage> validationMessages = validator.validate(tenant);
 
-  @Override
-  public void onCitySelect(String selectedCity) {
-    if (selectedCity.equals("(...)")) {
-      getView().showCityOther(true);
+    if (validationMessages.isEmpty()) {
+      saveTenant();
     } else {
-      getView().showCityOther(false);
+      getView().displayValidationMessage(validationMessages);
     }
+
   }
 
   @Override
   public void onCountrySelect(String selectedCountry) {
-    if (selectedCountry.equals("(...)")) {
-      getView().showCountryOther(true);
-    } else {
-      // get all the already encoded cities for the given country
-      GetAllCitiesCommand cmd = new GetAllCitiesCommand();
-      cmd.setName(selectedCountry);
-      cmd.dispatch(new GotAllCities() {
-        public void got(List<City> cities) {
-          List<String> lstCities = new ArrayList();
-          for(City c:cities){
-            lstCities.add(c.getName());
-          }
-          getView().fillCityList(lstCities);
-        }
-      });
-      getView().showCountryOther(false);
+
+    if (selectedCountry == null || selectedCountry.length() == 0) {
+      return;
     }
+
+    // get all the already encoded cities for the given country
+    // -> get a full country object from the server
+    // This object contains the list of cities of the given country
+    GetCountryCommand cmd = new GetCountryCommand();
+    cmd.setName(selectedCountry);
+    cmd.dispatch(new GotCountry() {
+      @Override
+      public void got(Country cnty) {
+        TenantUpdatePresenter.this.country = cnty;
+        if (cnty != null) {
+          List<String> lst = cnty.getListPostalCode();
+          getView().fillPostalCodeList(lst);
+          if (lst != null && !lst.isEmpty()) {
+            onPostalCodeSelect(lst.get(0));
+          }
+        }
+      }
+    });
+
+  }
+
+  @Override
+  public void onPostalCodeSelect(String selectedPostalCode) {
+
+    if (selectedPostalCode == null || selectedPostalCode.length() == 0) {
+      return;
+    }
+    List<String> lstCities = new ArrayList<String>();
+    if (TenantUpdatePresenter.this.country != null) {
+      for (City c : TenantUpdatePresenter.this.country
+          .getListCitiesByPostalCode(selectedPostalCode)) {
+        lstCities.add(c.getName());
+      }
+    }
+    getView().fillCityList(lstCities);
+
   }
 
   /**
@@ -189,19 +198,23 @@ public class TenantUpdatePresenter extends
     new GetAllCountriesCommand().dispatch(new GotAllCountries() {
       @Override
       public void got(List<Country> countries) {
-        TenantUpdatePresenter.this.allCountries = countries;
         getView().fillCountryList(countries);
-        GetAllCitiesCommand cmd = new GetAllCitiesCommand();
-        cmd.setName(getView().getSelectedCountry());
-        cmd.dispatch(new GotAllCities() {
-          public void got(List<City> cities) {
-            List<String> lstCities = new ArrayList();
-            for(City c:cities){
-              lstCities.add(c.getName());
-            }
-            getView().fillCityList(lstCities);
-          }
-        });
+
+      }
+    });
+  }
+
+  private void saveTenant() {
+    new UpdateTenantCommand(tenant).dispatch(new UpdatedTenant() {
+      @Override
+      public void got(Tenant tenant) {
+        if (tenant != null) {
+          PlaceRequest myRequest = new PlaceRequest(NameTokens.owner);
+          myRequest = myRequest.with(UUID_PARAMETER, tenant.getId());
+          placeManager.revealPlace(myRequest);
+        } else {
+          getView().displayError("The tenant cannot be save");
+        }
       }
     });
   }

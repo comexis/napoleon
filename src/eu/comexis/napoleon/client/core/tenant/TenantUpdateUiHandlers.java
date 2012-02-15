@@ -9,7 +9,7 @@ public interface TenantUpdateUiHandlers {
 
   public void onButtonSaveClick();
 
-  public void onCitySelect(String selectedText);
-
   public void onCountrySelect(String selectedText);
+  
+  public void onPostalCodeSelect(String selectedPostalCode);
 }

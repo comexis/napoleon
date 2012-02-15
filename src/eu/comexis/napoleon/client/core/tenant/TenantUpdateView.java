@@ -1,13 +1,11 @@
 package eu.comexis.napoleon.client.core.tenant;
 
-import static com.google.gwt.query.client.GQuery.$;
-
 import java.util.List;
 import java.util.logging.Logger;
 
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.logging.client.LogConfiguration;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -17,6 +15,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.SuggestBox;
+import com.google.gwt.user.client.ui.SuggestOracle;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
@@ -29,6 +28,7 @@ import eu.comexis.napoleon.shared.model.MaritalStatus;
 import eu.comexis.napoleon.shared.model.MatrimonialRegime;
 import eu.comexis.napoleon.shared.model.Tenant;
 import eu.comexis.napoleon.shared.model.Title;
+import eu.comexis.napoleon.shared.validation.ValidationMessage;
 
 public class TenantUpdateView extends ViewImpl implements TenantUpdatePresenter.MyView {
   public interface Binder extends UiBinder<Widget, TenantUpdateView> {
@@ -52,14 +52,10 @@ public class TenantUpdateView extends ViewImpl implements TenantUpdatePresenter.
   TextBox mobileNumber;
   @UiField
   TextBox addresse;
-  @UiField(provided = true)
-  ListBox city;
   @UiField
-  TextBox cityOther;
-  @UiField(provided = true)
-  ListBox country;
+  SuggestBox city;
   @UiField
-  TextBox countryOther;
+  SuggestBox country;
   @UiField(provided = true)
   ListBox maritalStatus;
   @UiField(provided = true)
@@ -82,6 +78,8 @@ public class TenantUpdateView extends ViewImpl implements TenantUpdatePresenter.
   SuggestBox job;
   @UiField
   TextBox nationalRegister;
+  @UiField
+  SuggestBox postalCode;
 
   @Inject
   public TenantUpdateView(final Binder binder) {
@@ -100,34 +98,85 @@ public class TenantUpdateView extends ViewImpl implements TenantUpdatePresenter.
   }
 
   @Override
-  public void fillCityList(List<String> cities) {
-    city.clear();
-    for (String sCity : cities) {
-      city.addItem(sCity);
+  public void displayValidationMessage(List<ValidationMessage> validationMessages) {
+    // TODO Display the messages in a PopupPanel
+    StringBuilder msgBuilder = new StringBuilder("Vueillez corriger les erreurs suivantes : \n\n");
+
+    for (ValidationMessage msg : validationMessages) {
+      msgBuilder.append(msg.getMessage()).append("\n");
     }
-    city.addItem("(...)");
-    selectCityByName(countryOther.getText());
+
+    Window.alert(msgBuilder.toString());
+
+  }
+
+  @Override
+  public void fillCityList(List<String> cities) {
+    MultiWordSuggestOracle oracle = (MultiWordSuggestOracle) city.getSuggestOracle();
+    oracle.clear();
+    if (cities != null) {
+      for (String sCity : cities) {
+        oracle.add(sCity);
+      }
+    }
   }
 
   @Override
   public void fillCountryList(List<Country> countries) {
-    country.clear();
-    for (Country cnty : countries) {
-      country.addItem(cnty.getName(), cnty.getId());
+    MultiWordSuggestOracle oracle = (MultiWordSuggestOracle) country.getSuggestOracle();
+    oracle.clear();
+    if (countries != null) {
+      for (Country cnty : countries) {
+        oracle.add(cnty.getName());
+      }
     }
-    country.addItem("(...)", "(...)");
+  }
+
+  @Override
+  public void fillPostalCodeList(List<String> postCdes) {
+    MultiWordSuggestOracle oracle = (MultiWordSuggestOracle) postalCode.getSuggestOracle();
+    oracle.clear();
+    if (postCdes != null) {
+      for (String sPC : postCdes) {
+        if (sPC != null) {
+          oracle.add(sPC);
+        }
+      }
+    }
   }
 
   @Override
   public String getSelectedCountry() {
-    Integer index = country.getSelectedIndex();
-    String countryToSelect = country.getValue(index);
-    return countryToSelect;
+    return country.getValue();
   }
 
   @UiHandler("btnCancel")
   public void onCancel(ClickEvent e) {
     presenter.onButtonCancelClick();
+  }
+
+  @UiHandler("country")
+  public void onCountryChange(ValueChangeEvent<String> event) {
+    city.setValue("");
+    postalCode.setValue("");
+  }
+
+  @UiHandler("country")
+  public void onCountrySelect(SelectionEvent<SuggestOracle.Suggestion> event) {
+    presenter.onCountrySelect(event.getSelectedItem().getReplacementString());
+    city.setValue("");
+    postalCode.setValue("");
+  }
+
+  @UiHandler("postalCode")
+  public void onPostalCodeChange(ValueChangeEvent<String> event) {
+    city.setValue("");
+  }
+
+  @UiHandler("postalCode")
+  public void onPostalCodeSelect(SelectionEvent<SuggestOracle.Suggestion> event) {
+    presenter.onPostalCodeSelect(event.getSelectedItem().getReplacementString());
+    city.setValue("");
   }
 
   @UiHandler("btnSave")
@@ -137,20 +186,15 @@ public class TenantUpdateView extends ViewImpl implements TenantUpdatePresenter.
 
   @Override
   public void setTenant(Tenant o) {
-    countryOther.setText("");
-    cityOther.setText("");
     if (LogConfiguration.loggingIsEnabled()) {
       LOG.info("set tenant " + o.getId());
     }
-    if (o.getTitle() != null) {
-      for (int i = 0; i < title.getItemCount(); i++) {
-        if (title.getValue(i).equals(o.getTitle().name())) {
-          title.setSelectedIndex(i);
-        }
-      }
-    }
+
+    UiHelper.selectTextItemBoxByValue(title, o.getTitle());
+
     name.setText(o.getLastName());
     firstName.setText(o.getFirstName());
+
     bic.setText(o.getBic());
     iban.setText(o.getIban());
     email.setText(o.getEmail());
@@ -158,65 +202,29 @@ public class TenantUpdateView extends ViewImpl implements TenantUpdatePresenter.
     mobileNumber.setText(o.getMobilePhoneNumber());
     fax.setText(o.getFax());
     birthDayDateBox.setValue(o.getDateOfBirth());
+
     DateTimeFormat dateFormat = DateTimeFormat.getShortDateFormat();
     birthDayDateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
+
     placeOfBirth.setText(o.getPlaceOfBirth());
+    country.setValue(o.getCountry());
+    presenter.onCountrySelect(country.getValue());
     addresse.setText(o.getStreet());
-    countryOther.setText(o.getCity());
-    for (int i = 0; i < country.getItemCount(); i++) {
-      if (country.getItemText(i).equals(o.getCountry())) {
-        country.setSelectedIndex(i);
-        // load the corresponding cities
-        presenter.onCountrySelect(country.getValue(i));
-        break;
-      }
-    }
+    postalCode.setText(o.getPostalCode());
+    presenter.onPostalCodeSelect(postalCode.getValue());
+    city.setValue(o.getCity());
     nationality.setText(o.getNationality());
     job.setText(o.getJobTitle());
     nationalRegister.setText(o.getNationalRegisterNumber());
-    if (o.getMaritalStatus() != null) {
-      for (int i = 0; i < maritalStatus.getItemCount(); i++) {
-        if (maritalStatus.getValue(i).equals(o.getMaritalStatus().name())) {
-          maritalStatus.setSelectedIndex(i);
-        }
-      }
-    }
-    if (o.getMatrimonialRegime() != null) {
-      for (int i = 0; i < matrimonialRegime.getItemCount(); i++) {
-        if (matrimonialRegime.getValue(i).equals(o.getMatrimonialRegime().name())) {
-          matrimonialRegime.setSelectedIndex(i);
-        }
-      }
-    }
 
-    $("#countryOther").hide();
-    $("#cityOther").hide();
-
-    // TODO Auto-generated method stub
+    UiHelper.selectTextItemBoxByValue(maritalStatus, o.getMaritalStatus());
+    UiHelper.selectTextItemBoxByValue(matrimonialRegime, o.getMatrimonialRegime());
 
   }
 
   @Override
   public void setTenantUpdateUiHandler(TenantUpdateUiHandlers handler) {
     this.presenter = handler;
-  }
-
-  @Override
-  public void showCityOther(Boolean show) {
-    if (show.equals(true)) {
-      $("#cityOther").show();
-    } else {
-      $("#cityOther").hide();
-    }
-  }
-
-  @Override
-  public void showCountryOther(Boolean show) {
-    if (show.equals(true)) {
-      $("#countryOther").show();
-    } else {
-      $("#countryOther").hide();
-    }
   }
 
   @Override
@@ -233,10 +241,9 @@ public class TenantUpdateView extends ViewImpl implements TenantUpdatePresenter.
     o.setDateOfBirth(birthDayDateBox.getValue());
     o.setPlaceOfBirth(placeOfBirth.getValue());
     o.setStreet(addresse.getValue());
-    o.setCity(city.getValue(city.getSelectedIndex()).equals("(...)") ? cityOther.getValue() : city
-        .getValue(city.getSelectedIndex()));
-    o.setCountry(country.getItemText(country.getSelectedIndex()).equals("(...)") ? countryOther
-        .getValue() : country.getItemText(country.getSelectedIndex()));
+    o.setPostalCode(postalCode.getValue());
+    o.setCity(city.getValue());
+    o.setCountry(country.getValue());
     o.setJobTitle(job.getValue());
     o.setNationality(nationality.getValue());
     o.setNationalRegisterNumber(nationalRegister.getValue());
@@ -262,33 +269,6 @@ public class TenantUpdateView extends ViewImpl implements TenantUpdatePresenter.
     oracleJob.add("Ingénieur");
     oracleJob.add("Informaticien");
     job = new SuggestBox(oracleJob);
-    city = new ListBox();
-    city.addChangeHandler(new ChangeHandler() {
-      public void onChange(ChangeEvent event) {
-        int selectedIndex = city.getSelectedIndex();
-        if (selectedIndex > -1) {
-          presenter.onCitySelect(city.getValue(selectedIndex));
-        }
-      }
-    });
 
-    country = new ListBox();
-    country.addChangeHandler(new ChangeHandler() {
-      public void onChange(ChangeEvent event) {
-        int selectedIndex = country.getSelectedIndex();
-        if (selectedIndex > -1) {
-          presenter.onCountrySelect(country.getValue(selectedIndex));
-        }
-      }
-    });
-  }
-
-  private void selectCityByName(String name) {
-    for (int i = 0; i < city.getItemCount(); i++) {
-      if (city.getItemText(i).equals(name)) {
-        city.setSelectedIndex(i);
-        break;
-      }
-    }
   }
 }
