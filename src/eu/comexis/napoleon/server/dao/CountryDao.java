@@ -120,4 +120,18 @@ public class CountryDao extends NapoleonDao<Country> {
     }
     return super.update(country);
   }
+  public Country getFullCountryById(String id,String companyId){
+    Country cnty = this.getById(id, companyId);
+    cnty.setCities(this.getListCities(cnty.getId()));
+    return cnty;
+  }
+  public Country getFullCountryByName(String name,String companyId){
+    LOG.info("Get country with name: " + name + " for company " + companyId);
+    Country cnty = this.getByName(name, companyId);
+    if (cnty!=null){
+      LOG.info("Country found: " + cnty.getId());
+      cnty.setCities(this.getListCities(cnty.getId()));
+    }
+    return cnty;
+  }
 }

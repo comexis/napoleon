@@ -21,10 +21,12 @@ import eu.comexis.napoleon.client.core.owner.OwnerUpdateUiHandlers.HasOwnerUpdat
 import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.rpc.callback.GotAllCities;
 import eu.comexis.napoleon.client.rpc.callback.GotAllCountries;
+import eu.comexis.napoleon.client.rpc.callback.GotCountry;
 import eu.comexis.napoleon.client.rpc.callback.GotOwner;
 import eu.comexis.napoleon.client.rpc.callback.UpdatedOwner;
 import eu.comexis.napoleon.shared.command.country.GetAllCitiesCommand;
 import eu.comexis.napoleon.shared.command.country.GetAllCountriesCommand;
+import eu.comexis.napoleon.shared.command.country.GetCountryCommand;
 import eu.comexis.napoleon.shared.command.owner.GetOwnerCommand;
 import eu.comexis.napoleon.shared.command.owner.UpdateOwnerCommand;
 import eu.comexis.napoleon.shared.model.City;
@@ -43,6 +45,8 @@ public class OwnerUpdatePresenter extends
     public void displayError(String error);
 
     public void fillCityList(List<String> cities);
+    
+    public void fillPostalCodeList(List<String> postCdes);
 
     public void fillCountryList(List<Country> countries);
 
@@ -60,6 +64,7 @@ public class OwnerUpdatePresenter extends
   private PlaceManager placeManager;
   private String id;
   private Owner owner;
+  private Country country;
  
 
   @Inject
@@ -109,18 +114,39 @@ public class OwnerUpdatePresenter extends
     }
     
     // get all the already encoded cities for the given country
-    GetAllCitiesCommand cmd = new GetAllCitiesCommand();
+    // -> get a full country object from the server
+    // This object contains the list of cities of the given country
+    GetCountryCommand cmd = new GetCountryCommand();
     cmd.setName(selectedCountry);
-    cmd.dispatch(new GotAllCities() {
+    cmd.dispatch(new GotCountry() {
       @Override
-      public void got(List<City> cities) {
-        List<String> lstCities = new ArrayList<String>();
-        for (City c : cities) {
-          lstCities.add(c.toString());
+      public void got(Country cnty) {
+        OwnerUpdatePresenter.this.country = cnty;
+        if (cnty!=null){
+          List<String> lst = cnty.getListPostalCode();
+          getView().fillPostalCodeList(lst);
+          if (lst!=null && !lst.isEmpty()){
+            onPostalCodeSelect(lst.get(0));
+          }
         }
-        getView().fillCityList(lstCities);
       }
     });
+
+  }
+  
+  @Override
+  public void onPostalCodeSelect(String selectedPostalCode) {
+
+    if (selectedPostalCode == null || selectedPostalCode.length() == 0){
+      return;
+    }
+    List<String> lstCities = new ArrayList<String>();
+    if (OwnerUpdatePresenter.this.country!=null){
+      for(City c: OwnerUpdatePresenter.this.country.getListCitiesByPostalCode(selectedPostalCode)){
+        lstCities.add(c.getName());
+      }
+    }
+    getView().fillCityList(lstCities);
 
   }
 
@@ -178,7 +204,7 @@ public class OwnerUpdatePresenter extends
       }
     });
     
-    onCountrySelect(getView().getSelectedCountry());
+    //onCountrySelect(getView().getSelectedCountry());
   }
 
   @Override

@@ -10,4 +10,6 @@ public interface OwnerUpdateUiHandlers {
   public void onButtonSaveClick();
 
   public void onCountrySelect(String selectedText);
+  
+  public void onPostalCodeSelect(String selectedPostalCode);
 }

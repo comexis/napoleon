@@ -12,6 +12,8 @@ import eu.comexis.napoleon.shared.command.country.GetAllCitiesCommand;
 import eu.comexis.napoleon.shared.command.country.GetAllCitiesResponse;
 import eu.comexis.napoleon.shared.command.country.GetAllCountriesCommand;
 import eu.comexis.napoleon.shared.command.country.GetAllCountriesResponse;
+import eu.comexis.napoleon.shared.command.country.GetCountryCommand;
+import eu.comexis.napoleon.shared.command.country.GetCountryResponse;
 import eu.comexis.napoleon.shared.model.City;
 import eu.comexis.napoleon.shared.model.Country;
 
@@ -27,9 +29,19 @@ public class CountryServiceImpl extends RemoteServiceServlet implements CountryS
     String companyId = UserManager.INSTANCE.getCompanyId();
     CountryDao countryData = new CountryDao();
     List<City> cities = countryData.getListCities(command.getName());
-
     GetAllCitiesResponse response = new GetAllCitiesResponse();
     response.setCities(cities);
+
+    return response;
+  }
+  
+  @Override
+  public GetCountryResponse execute(GetCountryCommand command) {
+    String companyId = UserManager.INSTANCE.getCompanyId();
+    CountryDao countryData = new CountryDao();
+    Country cnty = countryData.getFullCountryByName(command.getName(),companyId);
+    GetCountryResponse response = new GetCountryResponse();
+    response.setCountry(cnty);
 
     return response;
   }

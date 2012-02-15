@@ -82,7 +82,7 @@ public class OwnerUpdateView extends ViewImpl implements OwnerUpdatePresenter.My
   @UiField
   TextBox nationalRegister;
   @UiField
-  TextBox postalCode;
+  SuggestBox postalCode;
 
   @Inject
   public OwnerUpdateView(final Binder binder) {
@@ -104,8 +104,23 @@ public class OwnerUpdateView extends ViewImpl implements OwnerUpdatePresenter.My
   public void fillCityList(List<String> cities) {
     MultiWordSuggestOracle oracle = (MultiWordSuggestOracle) city.getSuggestOracle();
     oracle.clear();
-    for (String sCity : cities) {
-      oracle.add(sCity);
+    if (cities!=null){
+      for (String sCity : cities) {
+        oracle.add(sCity);
+      }
+    }
+  }
+  
+  @Override
+  public void fillPostalCodeList(List<String> postCdes) {
+    MultiWordSuggestOracle oracle = (MultiWordSuggestOracle) postalCode.getSuggestOracle();
+    oracle.clear();
+    if (postCdes!=null){
+      for (String sPC : postCdes) {
+        if (sPC!=null){
+          oracle.add(sPC);
+        }
+      }
     }
   }
 
@@ -113,8 +128,10 @@ public class OwnerUpdateView extends ViewImpl implements OwnerUpdatePresenter.My
   public void fillCountryList(List<Country> countries) {
     MultiWordSuggestOracle oracle = (MultiWordSuggestOracle) country.getSuggestOracle();
     oracle.clear();
-    for (Country cnty : countries) {
-      oracle.add(cnty.getName());
+    if (countries!=null){
+      for (Country cnty : countries) {
+        oracle.add(cnty.getName());
+      }
     }
   }
 
@@ -161,8 +178,11 @@ public class OwnerUpdateView extends ViewImpl implements OwnerUpdatePresenter.My
     birthDayDateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
     
     placeOfBirth.setText(o.getPlaceOfBirth());
+    country.setValue(o.getCountry());
+    presenter.onCountrySelect(country.getValue());
     addresse.setText(o.getStreet());
     postalCode.setText(o.getPostalCode());
+    presenter.onPostalCodeSelect(postalCode.getValue());
     city.setValue(o.getCity());
     nationality.setText(o.getNationality());
     job.setText(o.getJobTitle());
@@ -229,6 +249,10 @@ public class OwnerUpdateView extends ViewImpl implements OwnerUpdatePresenter.My
 
   @UiHandler("country")
   public void onCountryChange(ValueChangeEvent<String> event) {
-    presenter.onCountrySelect(event.getValue());
+    presenter.onCountrySelect(country.getValue());
+  }
+  @UiHandler("postalCode")
+  public void onPostalCodeChange(ValueChangeEvent<String> event) {
+    presenter.onPostalCodeSelect(postalCode.getValue());
   }
 }
