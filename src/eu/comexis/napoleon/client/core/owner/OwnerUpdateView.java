@@ -28,6 +28,7 @@ import eu.comexis.napoleon.shared.model.MaritalStatus;
 import eu.comexis.napoleon.shared.model.MatrimonialRegime;
 import eu.comexis.napoleon.shared.model.Owner;
 import eu.comexis.napoleon.shared.model.Title;
+import eu.comexis.napoleon.shared.validation.ValidationMessage;
 
 public class OwnerUpdateView extends ViewImpl implements OwnerUpdatePresenter.MyView {
   public interface Binder extends UiBinder<Widget, OwnerUpdateView> {
@@ -254,5 +255,18 @@ public class OwnerUpdateView extends ViewImpl implements OwnerUpdatePresenter.My
   @UiHandler("postalCode")
   public void onPostalCodeChange(ValueChangeEvent<String> event) {
     presenter.onPostalCodeSelect(postalCode.getValue());
+  }
+
+  @Override
+  public void displayValidationMessage(List<ValidationMessage> validationMessages) {
+    // TODO Display the messages in a PopupPanel
+    StringBuilder msgBuilder = new StringBuilder("Vueillez corriger les erreurs suivantes : \n\n");
+    
+    for (ValidationMessage msg : validationMessages){
+      msgBuilder.append(msg.getMessage()).append("\n");
+    }
+    
+    Window.alert(msgBuilder.toString());
+    
   }
 }

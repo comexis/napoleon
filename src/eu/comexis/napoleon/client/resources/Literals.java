@@ -3,8 +3,6 @@ package eu.comexis.napoleon.client.resources;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.ConstantsWithLookup;
 
-import eu.comexis.napoleon.shared.model.Title;
-
 public interface Literals extends ConstantsWithLookup {
 
   public Literals INSTANCE = GWT.create(Literals.class);
@@ -102,4 +100,5 @@ public interface Literals extends ConstantsWithLookup {
 
   @DefaultStringValue("Villa")
   public String TypeOfRealEstate_VILLA();
+  
 }

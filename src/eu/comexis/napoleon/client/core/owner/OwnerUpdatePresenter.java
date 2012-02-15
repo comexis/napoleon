@@ -19,12 +19,10 @@ import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter;
 import eu.comexis.napoleon.client.core.owner.OwnerUpdateUiHandlers.HasOwnerUpdateUiHandler;
 import eu.comexis.napoleon.client.place.NameTokens;
-import eu.comexis.napoleon.client.rpc.callback.GotAllCities;
 import eu.comexis.napoleon.client.rpc.callback.GotAllCountries;
 import eu.comexis.napoleon.client.rpc.callback.GotCountry;
 import eu.comexis.napoleon.client.rpc.callback.GotOwner;
 import eu.comexis.napoleon.client.rpc.callback.UpdatedOwner;
-import eu.comexis.napoleon.shared.command.country.GetAllCitiesCommand;
 import eu.comexis.napoleon.shared.command.country.GetAllCountriesCommand;
 import eu.comexis.napoleon.shared.command.country.GetCountryCommand;
 import eu.comexis.napoleon.shared.command.owner.GetOwnerCommand;
@@ -32,6 +30,8 @@ import eu.comexis.napoleon.shared.command.owner.UpdateOwnerCommand;
 import eu.comexis.napoleon.shared.model.City;
 import eu.comexis.napoleon.shared.model.Country;
 import eu.comexis.napoleon.shared.model.Owner;
+import eu.comexis.napoleon.shared.validation.OwnerValidator;
+import eu.comexis.napoleon.shared.validation.ValidationMessage;
 
 public class OwnerUpdatePresenter extends
     Presenter<OwnerUpdatePresenter.MyView, OwnerUpdatePresenter.MyProxy> implements
@@ -55,6 +55,8 @@ public class OwnerUpdatePresenter extends
     public void setOwner(Owner o);
 
     public Owner updateOwner(Owner o);
+
+    public void displayValidationMessage(List<ValidationMessage> validationMessages);
   }
 
   public static final String UUID_PARAMETER = "uuid";
@@ -65,6 +67,7 @@ public class OwnerUpdatePresenter extends
   private String id;
   private Owner owner;
   private Country country;
+  private OwnerValidator validator;
  
 
   @Inject
@@ -72,6 +75,7 @@ public class OwnerUpdatePresenter extends
       final PlaceManager placeManager) {
     super(eventBus, view, proxy);
     this.placeManager = placeManager;
+    this.validator = new OwnerValidator();
 
   }
 
@@ -85,25 +89,16 @@ public class OwnerUpdatePresenter extends
 
   @Override
   public void onButtonSaveClick() {
-    // Try to save the owner
-    // Get the owner to save
-    owner = getView().updateOwner(owner);
-    // Save it
-    new UpdateOwnerCommand(owner).dispatch(new UpdatedOwner() {
-      @Override
-      public void got(Owner owner) {
-        if (owner != null) {
-          PlaceRequest myRequest = new PlaceRequest(NameTokens.owner);
-          myRequest = myRequest.with(UUID_PARAMETER, owner.getId());
-          placeManager.revealPlace(myRequest);
-        } else {
-          getView().displayError("The owner cannot be save");
-        }
-      }
-    });
-    // On success display the owner detail screen
-    // On failure display the owner update screen with the reason why it cannot be saved
-
+    getView().updateOwner(owner);
+    
+    List<ValidationMessage> validationMessages = validator.validate(owner);
+    
+    if (validationMessages.isEmpty()){
+      saveOwner();
+    }else{
+      getView().displayValidationMessage(validationMessages);
+    }
+  
   }
 
   @Override
@@ -205,6 +200,21 @@ public class OwnerUpdatePresenter extends
     });
     
     //onCountrySelect(getView().getSelectedCountry());
+  }
+  
+  private void saveOwner(){
+    new UpdateOwnerCommand(owner).dispatch(new UpdatedOwner() {
+      @Override
+      public void got(Owner owner) {
+        if (owner != null) {
+          PlaceRequest myRequest = new PlaceRequest(NameTokens.owner);
+          myRequest = myRequest.with(UUID_PARAMETER, owner.getId());
+          placeManager.revealPlace(myRequest);
+        } else {
+          getView().displayError("The owner cannot be save");
+        }
+      }
+    });
   }
 
   @Override
