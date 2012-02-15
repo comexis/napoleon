@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.logging.client.LogConfiguration;
@@ -15,6 +17,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.SuggestBox;
+import com.google.gwt.user.client.ui.SuggestOracle;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
@@ -249,10 +252,22 @@ public class OwnerUpdateView extends ViewImpl implements OwnerUpdatePresenter.My
 
   @UiHandler("country")
   public void onCountryChange(ValueChangeEvent<String> event) {
-    presenter.onCountrySelect(country.getValue());
+    city.setValue("");
+    postalCode.setValue("");
+  }
+  @UiHandler("country")
+  public void onCountrySelect(SelectionEvent<SuggestOracle.Suggestion> event) {
+    presenter.onCountrySelect(event.getSelectedItem().getReplacementString());
+    city.setValue("");
+    postalCode.setValue("");
   }
   @UiHandler("postalCode")
   public void onPostalCodeChange(ValueChangeEvent<String> event) {
-    presenter.onPostalCodeSelect(postalCode.getValue());
+    city.setValue("");
+  }
+  @UiHandler("postalCode")
+  public void onPostalCodeSelect(SelectionEvent<SuggestOracle.Suggestion> event) {
+    presenter.onPostalCodeSelect(event.getSelectedItem().getReplacementString());
+    city.setValue("");
   }
 }
