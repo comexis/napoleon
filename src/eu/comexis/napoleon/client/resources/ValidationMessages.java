@@ -16,4 +16,7 @@ public interface ValidationMessages extends Messages {
   @DefaultMessage("Le champ {0} doit être supérieur ou égale à {1} .")
   public String fieldMustBeGreaterOrEqualsThan(String string, String string2);
 
+  @DefaultMessage("L''addresse email ''{0}'' n''est pas une addresse email valide.")
+  public String emailInvalid(String email);
+
 }

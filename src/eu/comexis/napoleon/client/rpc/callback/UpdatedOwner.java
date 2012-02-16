@@ -9,10 +9,10 @@ public abstract class UpdatedOwner extends AbstractCallback<UpdateOwnerResponse>
     // TODO Auto-generated constructor stub
   }
 
-  public abstract void got(Owner owner);
+  public abstract void updated(Owner owner);
 
   @Override
   public void onSuccess(UpdateOwnerResponse result) {
-    got(result.getOwner());
+    updated(result.getOwner());
   }
 }
