@@ -79,4 +79,9 @@ public class TenantUpdatePresenter extends
     });
 
   }
+  
+  @Override
+  protected String getDetailsNameTokens() {
+    return NameTokens.tenant;
+  }
 }

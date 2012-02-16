@@ -15,7 +15,6 @@ import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
 import eu.comexis.napoleon.client.core.MainLayoutPresenter;
-import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.rpc.callback.GotAllCountries;
 import eu.comexis.napoleon.client.rpc.callback.GotCountry;
 import eu.comexis.napoleon.shared.command.country.GetAllCountriesCommand;
@@ -75,7 +74,7 @@ public abstract class PartyUpdatePresenter<T extends Party, V extends PartyUpdat
 
   @Override
   public void onButtonCancelClick() {
-    PlaceRequest myRequest = new PlaceRequest(NameTokens.owner);
+    PlaceRequest myRequest = new PlaceRequest(getDetailsNameTokens());
     // add the id of the owner to load
     myRequest = myRequest.with(UUID_PARAMETER, party.getId());
     placeManager.revealPlace(myRequest);
@@ -206,6 +205,8 @@ public abstract class PartyUpdatePresenter<T extends Party, V extends PartyUpdat
   }
   
   protected abstract void save();
+  
+  protected abstract String getDetailsNameTokens();
 
   @Override
   protected void revealInParent() {

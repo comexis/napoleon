@@ -7,9 +7,7 @@ import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
-import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
-import eu.comexis.napoleon.client.core.MainLayoutPresenter;
 import eu.comexis.napoleon.client.core.party.PartyUpdatePresenter;
 import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.rpc.callback.GotOwner;
@@ -75,5 +73,11 @@ public class OwnerUpdatePresenter extends
       }
     });
     
+  }
+
+
+  @Override
+  protected String getDetailsNameTokens() {
+    return NameTokens.owner;
   }
 }
