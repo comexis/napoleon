@@ -1,8 +1,11 @@
 package eu.comexis.napoleon.client.utils;
 
 import static com.google.gwt.query.client.GQuery.$;
+
+import java.util.Date;
 import java.util.List;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -12,6 +15,8 @@ import eu.comexis.napoleon.client.widget.InformationDialog;
 import eu.comexis.napoleon.shared.validation.ValidationMessage;
 
 public class UiHelper {
+  
+  private static DateTimeFormat DATE_FORMAT = DateTimeFormat.getFormat("dd/MM/yyyy");
 
   // static class
   private UiHelper() {
@@ -69,6 +74,19 @@ public class UiHelper {
   
   public static void resetForm(Widget w){
     $("input, select", w).removeClass(Resources.INSTANCE.css().fieldInError());
+  }
+  
+  /**
+   * Give a string representation of a date for display purpose 
+   * @param d
+   * @return
+   */
+  public static String displayDate(Date d){
+    if (d == null){
+      return "";
+    }
+    
+    return DATE_FORMAT.format(d);
   }
 
 }

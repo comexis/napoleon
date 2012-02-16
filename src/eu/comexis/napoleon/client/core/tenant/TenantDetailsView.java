@@ -97,7 +97,7 @@ public class TenantDetailsView extends ViewImpl implements TenantDetailsPresente
     nationality.setInnerText(o.getNationality());
     job.setInnerText(o.getJobTitle());
     nationalRegister.setInnerText(o.getNationalRegisterNumber());
-    birthDay.setInnerText(o.getDateOfBirth() != null ? o.getDateOfBirth().toGMTString() : "");
+    birthDay.setInnerText(UiHelper.displayDate(o.getDateOfBirth()));
     addresse.setInnerText(o.getStreet() + " " + o.getCity() + " " + o.getCountry());
     maritalStatus.setInnerText(o.getMaritalStatus() != null ? UiHelper.translateEnum("MaritalStatus_", o.getMaritalStatus()): "");
     matrimonialRegime.setInnerText(o.getMatrimonialRegime() != null ? UiHelper.translateEnum("MatrimonialRegime_", o.getMatrimonialRegime()): "");
