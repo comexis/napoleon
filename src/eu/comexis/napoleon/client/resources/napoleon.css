@@ -71,7 +71,7 @@
 }
 
 .validationMessageOuter {
-	color: #D8000C;
+	color: #D63301;
 }
 
 .validationMessageOuter > span{
@@ -79,6 +79,7 @@
 }
 
 .fieldInError{
-	color: #D8000C;
-	background-color: #FFBABA;
+	color: #D63301;
+	background-color: #FFCCBA;
+
 }

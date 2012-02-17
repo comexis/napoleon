@@ -9,10 +9,10 @@ public abstract class UpdatedTenant extends AbstractCallback<UpdateTenantRespons
     // TODO Auto-generated constructor stub
   }
 
-  public abstract void got(Tenant tenant);
+  public abstract void updated(Tenant tenant);
 
   @Override
   public void onSuccess(UpdateTenantResponse result) {
-    got(result.getTenant());
+    updated(result.getTenant());
   }
 }
