@@ -19,7 +19,7 @@ public abstract class GotRealEstate extends AbstractCallback<GetRealEstateRespon
 
   @Override
   public void onSuccess(GetRealEstateResponse result) {
-    got(result.getRealEstate(),result.getOwner(),result.getCondo());
+    got(result.getRealEstate());
   }
 
 }

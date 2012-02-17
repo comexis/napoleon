@@ -12,10 +12,12 @@ import javax.servlet.http.HttpServletResponse;
 import eu.comexis.napoleon.server.dao.ApplicationUserDao;
 import eu.comexis.napoleon.server.dao.CompanyDao;
 import eu.comexis.napoleon.server.dao.CondoDao;
+import eu.comexis.napoleon.server.dao.HomeownerAssocDao;
 import eu.comexis.napoleon.server.dao.OwnerDao;
 import eu.comexis.napoleon.server.dao.RealEstateDao;
 import eu.comexis.napoleon.server.dao.TenantDao;
 import eu.comexis.napoleon.shared.model.ApplicationUser;
+import eu.comexis.napoleon.shared.model.Association;
 import eu.comexis.napoleon.shared.model.Company;
 import eu.comexis.napoleon.shared.model.Condo;
 import eu.comexis.napoleon.shared.model.MaritalStatus;
@@ -147,16 +149,20 @@ public class InitDatastore extends HttpServlet {
 
   private void createRealEstate(String companyId) {
     CondoDao cdoData = new CondoDao();
+    HomeownerAssocDao assocData = new HomeownerAssocDao();
     Condo cdo = cdoData.create(companyId);
+    Association assoc = assocData.create(companyId);
     cdo.setName("Résidence les Chopinnettes");
-    cdo.setHomeownerAssociation("Lé valeureu d'joueu d'côte");
+    assoc.setName("Lé valeureu d'joueu d'côte");
     cdo.setCountry("Belgique");
     cdo.setCity("Mons");
     cdo.setPostalCode("7000");
     cdo.setStreet("Rue du get à pinte, 33");
-    cdo.setPhoneNumber("065 256489");
-    cdo.setMobilePhoneNumber("0477 258945");
-    cdo.setEmail("chopinette@gmail.com");
+    assoc.setPhoneNumber("065 256489");
+    assoc.setMobilePhoneNumber("0477 258945");
+    assoc.setEmail("chopinette@gmail.com");
+    assoc = assocData.update(assoc);
+    cdo.setHomeownerAssociation(assoc);
     cdo = cdoData.update(cdo);
     System.out.println("Copropriété: " + cdo.getId());
     

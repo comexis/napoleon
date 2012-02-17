@@ -10,7 +10,6 @@ import eu.comexis.napoleon.shared.model.RealEstate;
 public class UpdateRealEstateCommand implements Action<UpdateRealEstateResponse> {
 
   private RealEstate realEstate;
-  private Condo cdo;
   private String ownerId;
 
   public UpdateRealEstateCommand() {
@@ -27,20 +26,12 @@ public class UpdateRealEstateCommand implements Action<UpdateRealEstateResponse>
 
   }
 
-  public Condo getCondo() {
-    return cdo;
-  }
-
   public String getOwnerId() {
     return ownerId;
   }
 
   public RealEstate getRealEstate() {
     return realEstate;
-  }
-
-  public void setCondo(Condo cdo) {
-    this.cdo = cdo;
   }
 
   public void setOwnerId(String ownerId) {

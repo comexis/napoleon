@@ -32,7 +32,7 @@ public class RealEstateDetailsPresenter extends
   public interface MyProxy extends ProxyPlace<RealEstateDetailsPresenter> {
   }
   public interface MyView extends View, HasRealEstateDetailUiHandlers {
-    public void setRealEstate(RealEstate e,SimpleOwner o,Condo cdo);
+    public void setRealEstate(RealEstate e);
   }
 
   public static final String UUID_PARAMETER = "uuid";
@@ -99,7 +99,7 @@ public class RealEstateDetailsPresenter extends
       @Override
       public void got(RealEstate realEstate,SimpleOwner owner,Condo cdo) {
         RealEstateDetailsPresenter.this.realEstate = realEstate;
-        getView().setRealEstate(realEstate,owner,cdo);
+        getView().setRealEstate(realEstate);
       }
     });
 

@@ -7,6 +7,8 @@ import javax.persistence.Id;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.annotation.Indexed;
+import com.googlecode.objectify.annotation.NotSaved;
 import com.googlecode.objectify.annotation.Parent;
 import com.googlecode.objectify.annotation.Unindexed;
 
@@ -23,14 +25,18 @@ public class Condo implements IsSerializable {
   private Key<Company> company;
 
   // Syndicat de copropriété.
-  private String homeownerAssociation;
+  @Indexed
+  private Key<Association> homeownerAssociationKey;
+  @NotSaved
+  private Association homeownerAssociation;
 
   // Copropriété
   // adresse
   private String street;
-
   // municipalité
   private String city;
+
+  private String square;
 
   // code postal
   private String postalCode;
@@ -38,18 +44,13 @@ public class Condo implements IsSerializable {
   // pays
   private String country;
 
-  // adresse e-mail
-  private String email;
-  // n° de téléphone
-  private String phoneNumber;
-  // n° de téléphone mobile (GSM)
-  private String mobilePhoneNumber;
   /**
 	 * 
 	 */
   public Condo() {
     // empty constructor needed by GWT
   }
+
   public String getCity() {
     return city;
   }
@@ -62,32 +63,28 @@ public class Condo implements IsSerializable {
     return country;
   }
 
-  public String getEmail() {
-    return email;
+  public Association getHomeownerAssociation() {
+    return homeownerAssociation;
   }
 
-  public String getHomeownerAssociation() {
-    return homeownerAssociation;
+  public Key<Association> getHomeownerAssociationKey() {
+    return homeownerAssociationKey;
   }
 
   public String getId() {
     return id;
   }
 
-  public String getMobilePhoneNumber() {
-    return mobilePhoneNumber;
-  }
-
   public String getName() {
     return name;
   }
 
-  public String getPhoneNumber() {
-    return phoneNumber;
-  }
-
   public String getPostalCode() {
     return postalCode;
+  }
+
+  public String getSquare() {
+    return square;
   }
 
   public String getStreet() {
@@ -106,32 +103,28 @@ public class Condo implements IsSerializable {
     country = value;
   }
 
-  public void setEmail(String value) {
-    email = value;
+  public void setHomeownerAssociation(Association homeownerAssociation) {
+    this.homeownerAssociation = homeownerAssociation;
   }
 
-  public void setHomeownerAssociation(String value) {
-    homeownerAssociation = value;
+  public void setHomeownerAssociationKey(Key<Association> value) {
+    homeownerAssociationKey = value;
   }
 
   public void setId(String id) {
     this.id = id;
   }
 
-  public void setMobilePhoneNumber(String value) {
-    mobilePhoneNumber = value;
-  }
-
   public void setName(String name) {
     this.name = name;
   }
 
-  public void setPhoneNumber(String value) {
-    phoneNumber = value;
-  }
-
   public void setPostalCode(String value) {
     postalCode = value;
+  }
+
+  public void setSquare(String square) {
+    this.square = square;
   }
 
   public void setStreet(String value) {

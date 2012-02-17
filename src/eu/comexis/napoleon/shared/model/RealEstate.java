@@ -5,8 +5,11 @@ import javax.persistence.Id;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Indexed;
+import com.googlecode.objectify.annotation.NotSaved;
 import com.googlecode.objectify.annotation.Parent;
 import com.googlecode.objectify.annotation.Unindexed;
+
+import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 
 /**
  * @author xavier Bien immobilier
@@ -38,9 +41,13 @@ public class RealEstate implements IsSerializable {
 
   private TypeOfRealEstate type;
   @Indexed
-  private Key<Condo> condo;
+  private Key<Condo> condoKey;
+  @NotSaved
+  private Condo condo;
   @Indexed
-  private Key<Owner> owner;
+  private Key<Owner> ownerKey;
+  @NotSaved
+  private SimpleOwner owner;
   private String postalCode;
 
   public RealEstate() {
@@ -58,8 +65,12 @@ public class RealEstate implements IsSerializable {
     return company;
   }
 
-  public Key<Condo> getCondo() {
+  public Condo getCondo() {
     return condo;
+  }
+
+  public Key<Condo> getCondoKey() {
+    return condoKey;
   }
 
   public String getCountry() {
@@ -78,8 +89,16 @@ public class RealEstate implements IsSerializable {
     return number;
   }
 
-  public Key<Owner> getOwner() {
+  public SimpleOwner getOwner() {
     return owner;
+  }
+
+  public Key<Owner> getOwnerKey() {
+    return ownerKey;
+  }
+
+  public String getPostalCode() {
+    return postalCode;
   }
 
   public String getReference() {
@@ -114,8 +133,12 @@ public class RealEstate implements IsSerializable {
     this.company = company;
   }
 
-  public void setCondo(Key<Condo> condo) {
+  public void setCondo(Condo condo) {
     this.condo = condo;
+  }
+
+  public void setCondoKey(Key<Condo> condoKey) {
+    this.condoKey = condoKey;
   }
 
   public void setCountry(String country) {
@@ -134,8 +157,16 @@ public class RealEstate implements IsSerializable {
     this.number = number;
   }
 
-  public void setOwner(Key<Owner> owner) {
+  public void setOwner(SimpleOwner owner) {
     this.owner = owner;
+  }
+
+  public void setOwnerKey(Key<Owner> ownerKey) {
+    this.ownerKey = ownerKey;
+  }
+
+  public void setPostalCode(String string) {
+    this.postalCode = string;
   }
 
   public void setReference(String reference) {
@@ -157,15 +188,5 @@ public class RealEstate implements IsSerializable {
   public void setType(TypeOfRealEstate type) {
     this.type = type;
   }
-
-  public void setPostalCode(String string) {
-   this.postalCode = string;
-  }
-  
-  public String getPostalCode() {
-    return postalCode;
-  }
-  
-  
 
 }

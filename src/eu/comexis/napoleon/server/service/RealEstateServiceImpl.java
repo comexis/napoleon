@@ -49,8 +49,6 @@ public class RealEstateServiceImpl extends RemoteServiceServlet implements RealE
     String companyId = UserManager.INSTANCE.getCompanyId();
     RealEstateDao dao = new RealEstateDao();
     RealEstate e;
-    Condo cdo = null;
-    SimpleOwner o = null;
     if (id == null || id.length() == 0) {
       // TODO add logging
 
@@ -58,22 +56,16 @@ public class RealEstateServiceImpl extends RemoteServiceServlet implements RealE
       throw new RuntimeException("Ooops something wrong happened");
     } else {
       e = dao.getById(id, companyId);
-      if (e != null){
-        cdo =  dao.getCondo(e);
-        o = dao.getOwner(e);
-      }
     }
     GetRealEstateResponse response = new GetRealEstateResponse();
     response.setRealEstate(e);
-    response.setCondo(cdo);
-    response.setOwner(o);
     return response;
   }
 
   @Override
   public UpdateRealEstateResponse execute(UpdateRealEstateCommand command) {
     RealEstate realEstate = command.getRealEstate();
-    Condo cdo = command.getCondo();
+    Condo cdo = realEstate.getCondo();
     String ownerId = command.getOwnerId();
     String companyId = UserManager.INSTANCE.getCompanyId();
     if (cdo!=null){

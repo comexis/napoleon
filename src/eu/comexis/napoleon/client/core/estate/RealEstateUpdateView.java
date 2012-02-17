@@ -23,6 +23,7 @@ import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
 import eu.comexis.napoleon.client.utils.UiHelper;
+import eu.comexis.napoleon.shared.model.Association;
 import eu.comexis.napoleon.shared.model.Condo;
 import eu.comexis.napoleon.shared.model.Country;
 import eu.comexis.napoleon.shared.model.RealEstate;
@@ -218,7 +219,7 @@ public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePr
   }
 
   @Override
-  public void setRealEstate(RealEstate e, SimpleOwner o, Condo cdo) {
+  public void setRealEstate(RealEstate e) {
     // cleanup
     this.reference.setText("");
     this.addressRealEstate.setText("");
@@ -237,29 +238,41 @@ public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePr
     this.phoneNumber.setText("");
     UiHelper.selectTextItemBoxByValue(this.ownerName, "(...)");
     if (e != null) {
+      SimpleOwner o = e.getOwner();
       this.reference.setText(e.getReference());
-      this.country.setValue(e.getCountry());
-      this.presenter.onCountrySelect(country.getValue());
-      this.addressRealEstate.setText(e.getStreet());
-      this.postalCode.setText(e.getPostalCode());
-      this.presenter.onPostalCodeSelect(postalCode.getValue());
-      this.city.setValue(o.getCity());
-      this.presenter.onCitySelect(city.getValue());
       this.number.setText(e.getNumber());
       this.box.setText(e.getBox());
-      this.square.setText(e.getSquare());
       this.dimension.setText(e.getDimension());
       UiHelper.selectTextItemBoxByValue(this.state, e.getState().name());
       UiHelper.selectTextItemBoxByValue(this.type, e.getType().name());
       UiHelper.selectTextItemBoxByValue(this.ownerName, o.getId());
-    }
-    if (cdo != null) {
-      this.condo.setText(cdo.getName());
-      this.association.setText(cdo.getHomeownerAssociation());
-      this.address.setText(cdo.getStreet());
-      this.email.setText(cdo.getEmail());
-      this.mobileNumber.setText(cdo.getMobilePhoneNumber());
-      this.phoneNumber.setText(cdo.getPhoneNumber());
+      Condo cdo = e.getCondo();
+      if (cdo != null) {
+        Association assoc = cdo.getHomeownerAssociation();
+        this.condo.setText(cdo.getName());
+        this.country.setValue(cdo.getCountry());
+        this.presenter.onCountrySelect(country.getValue());
+        this.addressRealEstate.setText(cdo.getStreet());
+        this.postalCode.setText(cdo.getPostalCode());
+        this.presenter.onPostalCodeSelect(postalCode.getValue());
+        this.city.setValue(cdo.getCity());
+        this.presenter.onCitySelect(city.getValue());
+        this.square.setText(cdo.getSquare());
+        this.association.setText(assoc.getName());
+        this.address.setText(assoc.getStreet());
+        this.email.setText(assoc.getEmail());
+        this.mobileNumber.setText(assoc.getMobilePhoneNumber());
+        this.phoneNumber.setText(assoc.getPhoneNumber());
+      }else{
+        this.country.setValue(e.getCountry());
+        this.presenter.onCountrySelect(country.getValue());
+        this.addressRealEstate.setText(e.getStreet());
+        this.postalCode.setText(e.getPostalCode());
+        this.presenter.onPostalCodeSelect(postalCode.getValue());
+        this.city.setValue(o.getCity());
+        this.presenter.onCitySelect(city.getValue());
+        this.square.setText(e.getSquare());
+      }
     }
 
   }
@@ -269,18 +282,26 @@ public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePr
     this.presenter = handler;
   }
 
-  @Override
   public Condo updateCondo(Condo cdo) {
     if (!condo.getValue().isEmpty()) {
+      Association assoc;
       if (cdo == null) {
         cdo = new Condo();
+        assoc = new Association();
       }
+      assoc = cdo.getHomeownerAssociation();
       cdo.setName(condo.getValue());
-      cdo.setHomeownerAssociation(association.getValue());
-      cdo.setStreet(address.getValue());
-      cdo.setEmail(email.getValue());
-      cdo.setMobilePhoneNumber(mobileNumber.getValue());
-      cdo.setPhoneNumber(phoneNumber.getValue());
+      cdo.setStreet(addressRealEstate.getValue());
+      cdo.setSquare(square.getValue());
+      cdo.setPostalCode(postalCode.getValue());
+      cdo.setCity(city.getValue());
+      cdo.setCountry(country.getValue());
+      assoc.setName(association.getValue());
+      assoc.setStreet(address.getValue());
+      assoc.setEmail(email.getValue());
+      assoc.setMobilePhoneNumber(mobileNumber.getValue());
+      assoc.setPhoneNumber(phoneNumber.getValue());
+      cdo.setHomeownerAssociation(assoc);
       return cdo;
     }
     return null;
@@ -288,17 +309,27 @@ public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePr
 
   @Override
   public RealEstate updateRealEstate(RealEstate e) {
+    Condo cdo = updateCondo(e.getCondo());
     e.setReference(reference.getValue());
-    e.setStreet(addressRealEstate.getValue());
     e.setNumber(number.getValue());
     e.setBox(box.getValue());
     e.setDimension(dimension.getValue());
-    e.setSquare(square.getValue());
     e.setType(TypeOfRealEstate.valueOf(type.getValue(type.getSelectedIndex())));
     e.setState(RealEstateState.valueOf(state.getValue(state.getSelectedIndex())));
-    e.setPostalCode(postalCode.getValue());
-    e.setCity(city.getValue());
-    e.setCountry(country.getValue());
+    if (cdo!=null){ // the address is the one of the condominium
+      cdo.setStreet(addressRealEstate.getValue());
+      cdo.setSquare(square.getValue());
+      cdo.setPostalCode(postalCode.getValue());
+      cdo.setCity(city.getValue());
+      cdo.setCountry(country.getValue());
+      e.setCondo(cdo);
+    }else{ // no condominium, the address is updated at the level of the estate
+      e.setStreet(addressRealEstate.getValue());
+      e.setSquare(square.getValue());
+      e.setPostalCode(postalCode.getValue());
+      e.setCity(city.getValue());
+      e.setCountry(country.getValue());
+    }
     return e;
   }
 

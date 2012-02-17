@@ -68,9 +68,7 @@ public class RealEstateUpdatePresenter extends
 
     public String getSelectedCountry();
 
-    public void setRealEstate(RealEstate e, SimpleOwner o, Condo cdo);
-
-    public Condo updateCondo(Condo cdo);
+    public void setRealEstate(RealEstate e);
 
     public RealEstate updateRealEstate(RealEstate o);
   }
@@ -105,7 +103,6 @@ public class RealEstateUpdatePresenter extends
   @Override
   public void onButtonSaveClick() {
     getView().updateRealEstate(realEstate);
-    getView().updateCondo(cdo);
 
     List<ValidationMessage> validationMessages = validator.validate(realEstate);
 
@@ -199,7 +196,6 @@ public class RealEstateUpdatePresenter extends
     // Save it
     UpdateRealEstateCommand cmd = new UpdateRealEstateCommand();
     cmd.setRealEstate(realEstate);
-    cmd.setCondo(cdo);
     cmd.setOwnerId(getView().getOwnerId());
     cmd.dispatch(new UpdatedRealEstate() {
       @Override
@@ -234,13 +230,13 @@ public class RealEstateUpdatePresenter extends
         @Override
         public void got(RealEstate realEstate, SimpleOwner owner, Condo cdo) {
           RealEstateUpdatePresenter.this.realEstate = realEstate;
-          getView().setRealEstate(realEstate, owner, cdo);
+          getView().setRealEstate(realEstate);
         }
       });
     } else {
       RealEstate realEstate = new RealEstate();
       RealEstateUpdatePresenter.this.realEstate = realEstate;
-      getView().setRealEstate(realEstate, null, null);
+      getView().setRealEstate(realEstate);
     }
   }
 

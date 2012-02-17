@@ -129,9 +129,9 @@ public class ExtractDatastoreAsXML extends HttpServlet {
         out.println("<Name>" + cdo.getName() + "</Name>");
         out.println("<HomeownerAssociation>" + cdo.getHomeownerAssociation() + "</HomeownerAssociation>");
         out.println("<Address>" + cdo.getStreet() + "</Address>");
-        out.println("<Email>" + cdo.getEmail() + "</Email>");
-        out.println("<Tel>" + cdo.getPhoneNumber() + "</Tel>");
-        out.println("<GSM>" + cdo.getMobilePhoneNumber() + "</GSM>");
+        //out.println("<Email>" + cdo.getEmail() + "</Email>");
+        //out.println("<Tel>" + cdo.getPhoneNumber() + "</Tel>");
+        //out.println("<GSM>" + cdo.getMobilePhoneNumber() + "</GSM>");
         out.println("</Condominium>");
       }
       out.println("</RealEstate>");

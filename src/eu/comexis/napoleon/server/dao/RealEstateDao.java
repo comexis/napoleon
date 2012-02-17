@@ -85,36 +85,38 @@ public class RealEstateDao extends NapoleonDao<RealEstate> {
       realEstate.setCompany(companyKey);
     }
     // if country does not exist, create it.
-    Country country = countryData.getByName(realEstate.getCountry(), companyKey);
-    if (country == null) {
-      country = countryData.create(companyKey);
-      country.setName(realEstate.getCountry());
-      countryData.update(country);
-    }
-    City city = countryData.getCityByFullName(country.getId(), realEstate.getCity(),realEstate.getPostalCode());
-    // if city does not exist, create it.
-    if (city == null) {
-      city = countryData.addCity(country.getId(), realEstate.getCity(),realEstate.getPostalCode());
-    }
-    if (!realEstate.getSquare().isEmpty()){
-      ArrayList<String> allSquares = city.getSquareList();
-      if (allSquares != null){
-        if (!allSquares.contains(realEstate.getSquare())){
+    if (realEstate.getCountry()!=null && !realEstate.getCountry().isEmpty()){
+      Country country = countryData.getByName(realEstate.getCountry(), companyKey);
+      if (country == null) {
+        country = countryData.create(companyKey);
+        country.setName(realEstate.getCountry());
+        countryData.update(country);
+      }
+      City city = countryData.getCityByFullName(country.getId(), realEstate.getCity(),realEstate.getPostalCode());
+      // if city does not exist, create it.
+      if (city == null) {
+        city = countryData.addCity(country.getId(), realEstate.getCity(),realEstate.getPostalCode());
+      }
+      if (!realEstate.getSquare().isEmpty()){
+        ArrayList<String> allSquares = city.getSquareList();
+        if (allSquares != null){
+          if (!allSquares.contains(realEstate.getSquare())){
+            allSquares.add(realEstate.getSquare());
+            city.setSquareList(allSquares);
+            countryData.UpdateCity(city);
+          }
+        }else{
+          allSquares = new ArrayList<String>();
           allSquares.add(realEstate.getSquare());
           city.setSquareList(allSquares);
           countryData.UpdateCity(city);
         }
-      }else{
-        allSquares = new ArrayList<String>();
-        allSquares.add(realEstate.getSquare());
-        city.setSquareList(allSquares);
-        countryData.UpdateCity(city);
       }
     }
     return super.update(realEstate);
   }
   public Condo getCondo(RealEstate realEstate){
-    Key<Condo> condoKey = realEstate.getCondo();
+    Key<Condo> condoKey = realEstate.getCondoKey();
     if (condoKey!=null){
       Condo cdo = ofy().get(condoKey);
       return cdo;
@@ -123,29 +125,27 @@ public class RealEstateDao extends NapoleonDao<RealEstate> {
   }
   public void setCondo(RealEstate realEstate,Condo cdo){
     Key<Condo> cdoKey = new Key<Condo>(cdo.getCompany(), Condo.class, cdo.getId());
-    realEstate.setCondo(cdoKey);
+    realEstate.setCondoKey(cdoKey);
   }
   public void deleteCondo(RealEstate realEstate){
     realEstate.setCondo(null);
   }
   public void setOwner(RealEstate realEstate,Owner owner){
     Key<Owner> ownerKey = new Key<Owner>(owner.getCompany(),Owner.class, owner.getId());
-    realEstate.setOwner(ownerKey);
+    realEstate.setOwnerKey(ownerKey);
   }
   public void setOwner(RealEstate realEstate,String ownerId,String companyId){
     Key<Company> companyKey = new Key<Company>(Company.class, companyId);
     Key<Owner> ownerKey = new Key<Owner>(companyKey,Owner.class, ownerId);
-    realEstate.setOwner(ownerKey);
+    realEstate.setOwnerKey(ownerKey);
   }
   public SimpleOwner getOwner(RealEstate realEstate){
     SimpleOwner o = new SimpleOwner();
-    Owner own = ofy().get(realEstate.getOwner());
-    if (own!= null){
-      o.setId(own.getId());
-      o.setName(own.getLastName());
-      o.setMobileNumber(own.getMobilePhoneNumber());
-      o.setPhoneNumber(own.getPhoneNumber());
-    }
+    Owner own = ofy().get(realEstate.getOwnerKey());
+    o.setId(own.getId());
+    o.setName(own.getLastName());
+    o.setMobileNumber(own.getMobilePhoneNumber());
+    o.setPhoneNumber(own.getPhoneNumber());
     return o;
   }
   public ArrayList<SimpleRealEstate> getListSimpleRealEstatesForOwner(String companyId,String ownerId) {
@@ -167,5 +167,18 @@ public class RealEstateDao extends NapoleonDao<RealEstate> {
     } catch (Exception e) {
       return null;
     }
+  }
+  @Override
+  public RealEstate getById(String estateId,String companyId){
+    RealEstate e = super.getById(estateId, companyId);
+    // load the condo if any
+    if (e.getCondoKey()!=null){
+      Condo cdo = ofy().get(e.getCondoKey());
+      e.setCondo(cdo);
+    }
+    // load the owner (not supposed to be null)
+    SimpleOwner o = getOwner(e);
+    e.setOwner(o);
+    return e;
   }
 }
