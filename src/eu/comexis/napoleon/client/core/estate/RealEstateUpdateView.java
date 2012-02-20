@@ -277,8 +277,8 @@ public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePr
       this.number.setText(e.getNumber());
       this.box.setText(e.getBox());
       this.dimension.setText(e.getDimension());
-      UiHelper.selectTextItemBoxByValue(this.state, e.getState().name());
-      UiHelper.selectTextItemBoxByValue(this.type, e.getType().name());
+      UiHelper.selectTextItemBoxByValue(this.state, (e.getState() != null ? e.getState().name() : ""));
+      UiHelper.selectTextItemBoxByValue(this.type, (e.getType() != null ? e.getType().name() : ""));
       UiHelper.selectTextItemBoxByValue(this.ownerName, o.getId());
       if (!e.getCondominium().isEmpty()) {
         this.condo.setText(e.getCondominium());
