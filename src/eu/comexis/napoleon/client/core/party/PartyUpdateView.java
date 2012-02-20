@@ -221,6 +221,13 @@ public abstract class PartyUpdateView<T extends Party> extends ViewImpl implemen
   public void onSave(ClickEvent e) {
     presenter.onButtonSaveClick();
   }
+  
+  @UiHandler("maritalStatus")
+  public void onMaritalStatusChange(ValueChangeEvent<String> event) {
+    String value = event.getValue();
+    MaritalStatus status = MaritalStatus.valueOf(value);
+    presenter.onMaritalStatusSelected(status);
+  }
 
   @Override
   public void reset() {
@@ -229,7 +236,6 @@ public abstract class PartyUpdateView<T extends Party> extends ViewImpl implemen
 
   @Override
   public void setData(T party) {
-
     UiHelper.selectTextItemBoxByValue(title, party.getTitle());
 
     name.setText(party.getLastName());
@@ -256,8 +262,8 @@ public abstract class PartyUpdateView<T extends Party> extends ViewImpl implemen
     job.setText(party.getJobTitle());
     nationalRegister.setText(party.getNationalRegisterNumber());
 
-    UiHelper.selectTextItemBoxByValue(maritalStatus, party.getMaritalStatus());
-    UiHelper.selectTextItemBoxByValue(matrimonialRegime, party.getMatrimonialRegime());
+    UiHelper.selectTextItemBoxByValue(maritalStatus, party.getMaritalStatus(), MaritalStatus.SINGLE);
+    UiHelper.selectTextItemBoxByValue(matrimonialRegime, party.getMatrimonialRegime(), MatrimonialRegime.NONE);
 
   }
 
@@ -291,6 +297,11 @@ public abstract class PartyUpdateView<T extends Party> extends ViewImpl implemen
     party.setMatrimonialRegime(MatrimonialRegime.fromStringToEnum(matrimonialRegime
         .getValue(matrimonialRegime.getSelectedIndex())));
 
+  }
+  
+  @Override
+  public void setMatrimonialRegime(MatrimonialRegime matrimonialRegime) {
+    UiHelper.selectTextItemBoxByValue(this.matrimonialRegime, matrimonialRegime); 
   }
 
 }

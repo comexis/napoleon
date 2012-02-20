@@ -21,6 +21,8 @@ import eu.comexis.napoleon.shared.command.country.GetAllCountriesCommand;
 import eu.comexis.napoleon.shared.command.country.GetCountryCommand;
 import eu.comexis.napoleon.shared.model.City;
 import eu.comexis.napoleon.shared.model.Country;
+import eu.comexis.napoleon.shared.model.MaritalStatus;
+import eu.comexis.napoleon.shared.model.MatrimonialRegime;
 import eu.comexis.napoleon.shared.model.Party;
 import eu.comexis.napoleon.shared.validation.PartyValidator;
 import eu.comexis.napoleon.shared.validation.ValidationMessage;
@@ -48,6 +50,8 @@ public abstract class PartyUpdatePresenter<T extends Party, V extends PartyUpdat
     public void setData(T o);
 
     public void updateData(T o);
+    
+    public void setMatrimonialRegime(MatrimonialRegime matrimonialRegime);
   }
 
   public static final String UUID_PARAMETER = "uuid";
@@ -147,13 +151,12 @@ public abstract class PartyUpdatePresenter<T extends Party, V extends PartyUpdat
     // In the next call, "view" is the default value,
     // returned if "action" is not found on the URL.
     id = placeRequest.getParameter(UUID_PARAMETER, null);
-    if (id != "new") {
-      if (id == null || id.length() == 0) {
-        if (LogConfiguration.loggingIsEnabled()) {
-          LOG.severe("invalid id is null or empty");
-        }
-        placeManager.revealErrorPlace(placeRequest.getNameToken());
+    
+    if (id == null || id.length() == 0) {
+      if (LogConfiguration.loggingIsEnabled()) {
+        LOG.severe("invalid id is null or empty");
       }
+      placeManager.revealErrorPlace(placeRequest.getNameToken());
     }
   }
 
@@ -185,7 +188,7 @@ public abstract class PartyUpdatePresenter<T extends Party, V extends PartyUpdat
   @Override
   protected void onReset() {
     super.onReset();
-    if (id != "new") { // call the server to get the requested owner
+    if (id != null && !"new".equals(id)) { // call the server to get the requested owner
       requestData(id);
     } else {
       party = createNewDataModel();
@@ -227,5 +230,13 @@ public abstract class PartyUpdatePresenter<T extends Party, V extends PartyUpdat
         
       }
     });
+  }
+  
+  @Override
+  public void onMaritalStatusSelected(MaritalStatus maritalStatus) {
+    if (MaritalStatus.SINGLE == maritalStatus){
+      getView().setMatrimonialRegime(MatrimonialRegime.NONE);
+    }
+    
   }
 }
