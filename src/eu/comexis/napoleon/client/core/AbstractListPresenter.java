@@ -25,6 +25,8 @@ public abstract class AbstractListPresenter<T extends Identifiable, V extends Ab
     public void dataIsLoading();
 
     public void setData(List<T> data);
+    
+    public void resetFocus();
   }
   
   public interface ListFilter<T>{
@@ -75,10 +77,13 @@ public abstract class AbstractListPresenter<T extends Identifiable, V extends Ab
   protected void onReset() {
     GWT.log("onReset");
     super.onReset();
-
+    
+    getView().resetFocus();
     getView().dataIsLoading();
 
     requestData();
+    
+    
 
   }
   
@@ -119,6 +124,10 @@ public abstract class AbstractListPresenter<T extends Identifiable, V extends Ab
 
   @Override
   public void onSelect(T data) {
+    if (data == null){
+      return;
+    }
+    
     PlaceRequest myRequest = new PlaceRequest(getDetailsNameTokens());
     // add the id of the owner to load
     myRequest = myRequest.with(UUID_PARAMETER, data.getId());

@@ -25,6 +25,8 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
+import eu.comexis.napoleon.client.widget.LoadingDataIndicator;
+
 public abstract class AbstractListView<T> extends ViewImpl implements
     AbstractListPresenter.MyView<T> {
 
@@ -117,6 +119,20 @@ public abstract class AbstractListView<T> extends ViewImpl implements
     $(filter).val("");
   }
   
+  @SuppressWarnings("unchecked")
+  public void resetFocus(){
+    //deselect the current selected object
+    SingleSelectionModel<T> selectionModel = (SingleSelectionModel<T>) table.getSelectionModel();
+    T selectedObject  = selectionModel.getSelectedObject();
+    selectionModel.setSelected(selectedObject, false);
+    
+    //put focus on the table 
+    // TODO : doesn't work
+    table.setFocus(true);
+    
+  }
+  
+  
   private void preInit() {
 
     dataProvider = new ListDataProvider<T>();
@@ -157,6 +173,9 @@ public abstract class AbstractListView<T> extends ViewImpl implements
 
     // Connect the table to the data provider.
     dataProvider.addDataDisplay(table);
+    
+    table.setLoadingIndicator(new LoadingDataIndicator());
+    
 
   }
 }
