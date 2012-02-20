@@ -9,25 +9,13 @@
 <%@page import="com.google.appengine.api.users.UserService"%>
 
 <%
-
-// The part of the code will check quickly if the user is connected with a Google account
-// and if the account has access to the application.
 UserService userService = UserServiceFactory.getUserService();
 
-//if user not logged !!
-if (!userService.isUserLoggedIn()) {
-	response.sendRedirect(userService.createLoginURL(request.getRequestURI()));
-	return;
-}
-
-//user is logged, check if he has access to the application
 ApplicationUser user = UserManager.INSTANCE.getConnectedUser();
 
-//the google acount is not authorize to access to the application
+//This test is normally unusefull because the SecurityFilter class should stop the application before
 if (user == null){
-	response.sendError(HttpServletResponse.SC_FORBIDDEN,
-               	"You are not authorized to use the application.");
-	return;
+  response.sendError(HttpServletResponse.SC_FORBIDDEN);
 }
 
 Company client = UserManager.INSTANCE.getConnectedCompany();

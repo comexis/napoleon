@@ -1,9 +1,9 @@
 package eu.comexis.napoleon.client.core.owner;
 
-import static eu.comexis.napoleon.client.core.owner.OwnerDetailsPresenter.UUID_PARAMETER;
-
+import static eu.comexis.napoleon.client.core.party.PartyUpdatePresenter.UUID_PARAMETER;
 import java.util.List;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.Presenter;
@@ -76,9 +76,14 @@ public class OwnerListPresenter extends
 
     getView().setOwnerListUiHandler(this);
   }
+  
+  protected void onReveal() {
+    GWT.log("onReveal");
+  };
 
   @Override
   protected void onReset() {
+    GWT.log("onReset");
     super.onReset();
 
     if (dataLoaded) {

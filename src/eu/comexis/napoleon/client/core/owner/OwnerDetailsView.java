@@ -3,144 +3,102 @@ package eu.comexis.napoleon.client.core.owner;
 import java.math.BigDecimal;
 import java.util.List;
 
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.safehtml.client.SafeHtmlTemplates;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
+import com.google.gwt.safehtml.shared.SafeUri;
+import com.google.gwt.safehtml.shared.UriUtils;
 import com.google.inject.Inject;
-import com.gwtplatform.mvp.client.ViewImpl;
 
+import eu.comexis.napoleon.client.core.party.PartyDetailsView;
+import eu.comexis.napoleon.client.place.NameTokens;
+import eu.comexis.napoleon.client.resources.Css;
+import eu.comexis.napoleon.client.resources.Resources;
 import eu.comexis.napoleon.client.utils.UiHelper;
 import eu.comexis.napoleon.shared.model.Owner;
 import eu.comexis.napoleon.shared.model.simple.SimpleRealEstate;
 
 
-public class OwnerDetailsView extends ViewImpl implements OwnerDetailsPresenter.MyView {
+public class OwnerDetailsView extends PartyDetailsView<Owner> implements OwnerDetailsPresenter.MyView {
 
-  public interface Binder extends UiBinder<Widget, OwnerDetailsView> {
-  }
-
-  private final Widget widget;
-
-  private OwnerDetailUiHandlers presenter;
   
-  @UiField
-  Element name;
-  @UiField
-  Element email;
-  @UiField
-  Element phoneNumber;
-  @UiField
-  Element mobileNumber;
-  @UiField
-  Element birthDay;
-  @UiField
-  Element addresse;
-  @UiField
-  Element maritalStatus;
-  @UiField
-  Element matrimonialRegime;
-  @UiField
-  Element bic;
-  @UiField
-  Element iban;
-  @UiField
-  Element fee;
-  @UiField
-  Element nationalRegister;
-  @UiField
-  Element nationality;
-  @UiField
-  Element job;
-  @UiField
-  Element fax;
-  @UiField
-  Element placeOfBirth;
-  @UiField
-  Element estates;
+  public interface Templates extends SafeHtmlTemplates {
+
+    Templates INSTANCE = GWT.create(Templates.class);
+    
+    @Template("<ul class='{0}'>")
+    SafeHtml estateOuterBegin(String cssClassName);
+    
+    @Template("<li class='{2}'><a href='{1}'>{0}</a></li>")
+    SafeHtml estateInner(String label, SafeUri href, String cssClassName);
+    
+    @Template("<div class='{2} {3}'><span class='{4}'>{1}</span><span id='fee' class='{5}'>{0}</span></div>")
+    SafeHtml row(SafeHtml fee, String label, String detailRowCssClass, String separationRowCssClass, String detailCellLabelCssClass, String detailCellValueCssClass);
+  }
 
   @Inject
-  public OwnerDetailsView(final Binder binder) {
-    widget = binder.createAndBindUi(this);
+  public OwnerDetailsView() {
+   super();
+   init();
 
   }
 
-  @Override
-  public Widget asWidget() {
-    return widget;
-  }
-
-  @UiHandler("btnDelete")
-  public void onDeleteClicked(ClickEvent e) {
-    Window.alert("Supprimer");
-  }
-  
-  @UiHandler("btnToList")
-  public void onGoToListClicked(ClickEvent e) {
-    presenter.onButtonBackToListClick();
-  }
-
-  @UiHandler("btnUpdate")
-  public void onUpdateClicked(ClickEvent e) {
-    presenter.onButtonUpdateClick();
-  }
-
-  @Override
-  public void setOwner(Owner o) {
-    displayName(o);
-    displayFee(o);
-
-    iban.setInnerText(o.getIban());
-    bic.setInnerText(o.getBic());
-    email.setInnerText(o.getEmail());
-    phoneNumber.setInnerText(o.getPhoneNumber());
-    mobileNumber.setInnerText(o.getMobilePhoneNumber());
-    fax.setInnerText(o.getFax());
-    placeOfBirth.setInnerText(o.getPlaceOfBirth());
-    nationality.setInnerText(o.getNationality());
-    job.setInnerText(o.getJobTitle());
-    nationalRegister.setInnerText(o.getNationalRegisterNumber());
-    birthDay.setInnerText(UiHelper.displayDate(o.getDateOfBirth()));
-    addresse.setInnerText(o.getStreet() + " " + o.getCity() + " " + o.getCountry());
-    maritalStatus.setInnerText(o.getMaritalStatus() != null ? UiHelper.translateEnum("MaritalStatus_", o.getMaritalStatus()): "");
-    matrimonialRegime.setInnerText(o.getMatrimonialRegime() != null ? UiHelper.translateEnum("MatrimonialRegime_", o.getMatrimonialRegime()): "");
-    
-    // TODO use templates for that !!!!!!
-    List<SimpleRealEstate> realEstates = o.getEstates();
-    String sLstEstates = "<br/>";
-    if (realEstates!=null){
-      for(SimpleRealEstate e:realEstates){
-        sLstEstates += e.getReference() + " " + e.getAddress() + " " + e.getCity() + "<br/>";
+  private void init() {
       }
-      estates.setInnerHTML(sLstEstates);
-    }
+
+  @Override
+  public void setData(Owner o) {
+    super.setData(o);
+    
+    displayFee(o);
+    displayEstate(o);
+   
 
   }
 
   private void displayFee(Owner o) {
-    BigDecimal _fee = o.getFee();
     
-    if (_fee != null){
-      fee.setInnerText(o.getFee() + " " + UiHelper.translateEnum("FeeUnit_", o.getUnit()));
+    BigDecimal feeBd = o.getFee();
+    String fee = "";
+    
+    
+    if (feeBd != null){
+      fee = feeBd + " " + UiHelper.translateEnum("FeeUnit_", o.getUnit());
     }
-   
     
+    Css css = Resources.INSTANCE.css();   
+    setTopAdditionnalData(Templates.INSTANCE.row(SafeHtmlUtils.fromSafeConstant(fee), "Honoraires :", css.detailRow(), css.separationRow(), css.detailCellLabel(), css.detailCellValue()));
+
+    
+
+   
   }
+  
+  private void displayEstate(Owner o) {
+    
+    Css css = Resources.INSTANCE.css(); 
+    Templates t = Templates.INSTANCE;
+    
+    List<SimpleRealEstate> realEstates = o.getEstates();
+    SafeHtmlBuilder builder = new SafeHtmlBuilder();
+    
+    if (realEstates != null && !realEstates.isEmpty()){
+      
+      builder.append(t.estateOuterBegin(css.outerRealEstateList()));
+      
+      for(SimpleRealEstate e:realEstates){
+        String href = "#"+NameTokens.realEstate+";uuid="+e.getId();
+        builder.append(t.estateInner(e.getReference(), UriUtils.fromString(href), css.innerRealEstateList()));
+      }
+      
+      builder.appendHtmlConstant("</ul>");
+    }
 
-  private void displayName(Owner o) {
-    StringBuilder nameBuilder = new StringBuilder();
-    nameBuilder.append(UiHelper.translateEnum("Title_", o.getTitle(), "_short")).append(" ");
-    nameBuilder.append(o.getLastName()).append(" ");
-    nameBuilder.append(o.getFirstName());
-    name.setInnerText(nameBuilder.toString());
-  }
+    SafeHtml outer = Templates.INSTANCE.row(builder.toSafeHtml(), "Biens immobiliers :", css.detailRow(), css.separationRow(), css.detailCellLabel(), css.detailCellValue());
 
-  @Override
-  public void setOwnerDetailUiHandler(OwnerDetailUiHandlers handler) {
-    this.presenter = handler;
-
+    setBottomAdditionnalData(outer);
+    
   }
 }

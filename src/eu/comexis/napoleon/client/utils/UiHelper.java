@@ -34,13 +34,13 @@ public class UiHelper {
   }
 
   public static String translateEnum(String prefix, Enum<?> e) {
-    if (e == null) {
-      return "";
-    }
     return translateEnum(prefix, e, "");
   }
 
   public static String translateEnum(String prefix, Enum<?> e, String suffix) {
+    if (e == null) {
+      return "";
+    }
     String literalKey = new StringBuilder(prefix).append(e.name()).append(suffix).toString();
     return Literals.INSTANCE.getString(literalKey);
   }
