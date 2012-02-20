@@ -19,7 +19,7 @@
 		<table style="width:100%">
 			<tr>
 				<td align='center'>
-					<c:CellTable ui:field='realEstateTable' styleName="{style.datagrid}"></c:CellTable>
+					<c:CellTable ui:field='table' styleName="{style.datagrid}"></c:CellTable>
 				</td>
 			</tr>
 			<tr>

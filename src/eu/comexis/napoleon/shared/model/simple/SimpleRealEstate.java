@@ -2,7 +2,9 @@ package eu.comexis.napoleon.shared.model.simple;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class SimpleRealEstate implements IsSerializable {
+import eu.comexis.napoleon.shared.model.Identifiable;
+
+public class SimpleRealEstate implements IsSerializable, Identifiable {
   private String id;
   private String clientId;
   private String reference;
