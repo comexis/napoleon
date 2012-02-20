@@ -5,6 +5,7 @@ import static com.google.gwt.query.client.GQuery.$;
 import java.util.Date;
 import java.util.List;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -46,6 +47,7 @@ public class UiHelper {
   }
 
   public static void selectTextItemBoxByValue(ListBox tb, String value) {
+
     for (int i = 0; i < tb.getItemCount(); i++) {
       if (tb.getValue(i).equals(value)) {
         tb.setSelectedIndex(i);
@@ -55,8 +57,14 @@ public class UiHelper {
   }
   
   public static void selectTextItemBoxByValue(ListBox tb, Enum<?> value) {
+   selectTextItemBoxByValue(tb, value, null);
+  }
+  
+  public static void selectTextItemBoxByValue(ListBox tb, Enum<?> value, Enum<?> defaultValue) {
     if (value != null){
       selectTextItemBoxByValue(tb, value.name());
+    }else if (defaultValue != null){
+      selectTextItemBoxByValue(tb, defaultValue.name());
     }
   }
   
