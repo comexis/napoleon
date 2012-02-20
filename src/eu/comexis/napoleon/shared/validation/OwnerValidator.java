@@ -24,6 +24,11 @@ public class OwnerValidator extends PartyValidator<Owner>{
   private void validateFee(Owner owner, List<ValidationMessage> messages) {
     
     BigDecimal fee = owner.getFee();
+    
+    if (fee == null){
+      return;
+    }
+    
     FeeUnit feeUnit = owner.getUnit();
     
     if (isLessThan(fee, 0)){

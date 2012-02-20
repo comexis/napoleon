@@ -1,6 +1,6 @@
 package eu.comexis.napoleon.client.core.tenant;
 
-import static eu.comexis.napoleon.client.core.tenant.TenantDetailsPresenter.UUID_PARAMETER;
+import static eu.comexis.napoleon.client.core.party.PartyUpdatePresenter.UUID_PARAMETER;
 
 import java.util.List;
 
