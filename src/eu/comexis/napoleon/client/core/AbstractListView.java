@@ -16,7 +16,7 @@ import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
-import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
@@ -38,6 +38,8 @@ public abstract class AbstractListView<T> extends ViewImpl implements
   InputElement filter;
   @UiField(provided = true)
   SimplePager pager;
+  @UiField
+  Button btnNew;
 
   // list containing the datas to display
   private ListDataProvider<T> dataProvider;
@@ -47,12 +49,11 @@ public abstract class AbstractListView<T> extends ViewImpl implements
 
   @Inject
   public AbstractListView() {
-    init();
-
+    preInit();
     Binder binder = GWT.create(Binder.class);
     widget = binder.createAndBindUi(this);
     
-    bind();
+    init();
 
   }
 
@@ -91,28 +92,32 @@ public abstract class AbstractListView<T> extends ViewImpl implements
   }
 
   protected abstract ProvidesKey<T> getKeyProvider();
+  
+  protected abstract String getButtonNewLabel();
 
   protected abstract void initTableColumns(SingleSelectionModel<T> selectionModel,
       ListHandler<T> sortHandler);
 
-  private void bind() {
+  private void init() {
     $(filter).keyup(new Function(){
       @Override
       public void f() { 
         String filterString = $(filter).val();
-GWT.log("Filter with "+filterString);
         presenter.filter(filterString);
       }
     });
+    
+    btnNew.setText(getButtonNewLabel());
     
   }
   
   @UiHandler("reset")
   public void onResetFilter(ClickEvent e){
     presenter.filter(null);
+    $(filter).val("");
   }
   
-  private void init() {
+  private void preInit() {
 
     dataProvider = new ListDataProvider<T>();
 

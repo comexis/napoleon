@@ -12,12 +12,32 @@
 			text-align: left;
 			margin-bottom: 4px;
 		}
+		
+		.filterOuter {
+			margin: 10px;
+			margin-left: 30px;
+		}
+		
+		.filterLabel {
+			font-weight: bold;
+		}
+		
+		.filterInput {
+			-webkit-border-radius: 5px;
+			-moz-border-radius: 5px;
+			border-radius: 5px;
+			border: 1px solid black;
+			color: black;
+			padding: 5px 10px;
+		}
 	</ui:style>
 
 
 	<g:HTMLPanel>
-		<div>
-			<span>Filtrer la liste :</span><input ui:field="filter"></input><g:Button ui:field="reset">effacer</g:Button>
+		<div class='{style.filterOuter}'>
+			<span class='{style.filterLabel}'>Filtrer la liste :</span>
+			<input ui:field="filter" size="60" class='{style.filterInput}'></input>
+			<g:Button ui:field="reset">Réinitialiser</g:Button>
 		</div>
 		<table style="width:100%">
 			<tr>
@@ -31,7 +51,7 @@
 				</td>
 			</tr>
 		</table>
-		<g:Button ui:field="btnNew">Nouveau bien immobilier</g:Button>
+		<g:Button ui:field="btnNew"></g:Button>
 		<g:Button ui:field="btnToDashBoard">Retour vers le dashboard</g:Button>
 	</g:HTMLPanel>
 
