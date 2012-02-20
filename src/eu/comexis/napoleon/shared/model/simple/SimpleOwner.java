@@ -1,10 +1,11 @@
 package eu.comexis.napoleon.shared.model.simple;
 
-import java.util.Date;
-
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class SimpleOwner implements IsSerializable {
+import eu.comexis.napoleon.shared.model.Identifiable;
+
+
+public class SimpleOwner implements IsSerializable, Identifiable{
 
   private String id;
   private String clientId;
@@ -18,76 +19,68 @@ public class SimpleOwner implements IsSerializable {
   public SimpleOwner() {
   }
 
-  public String getAddress() {
-    return address;
-  }
-
-  public String getCity() {
-    return city;
-  }
-
-  public String getClientId() {
-    return clientId;
-  }
-
   public String getId() {
     return id;
-  }
-
-  public String getMobile() {
-    return mobile;
-  }
-
-  public String getMobileNumber() {
-    return mobile;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public String getPhoneNumber() {
-    return phoneNumber;
-  }
-
-  public String getPostalCode() {
-    return postalCode;
-  }
-
-  public void setAddress(String address) {
-    this.address = address;
-  }
-
-  public void setCity(String city) {
-    this.city = city;
-  }
-
-  public void setClientId(String clientId) {
-    this.clientId = clientId;
   }
 
   public void setId(String id) {
     this.id = id;
   }
 
-  public void setMobile(String mobile) {
-    this.mobile = mobile;
+  public String getClientId() {
+    return clientId;
   }
 
-  public void setMobileNumber(String mobile) {
-    this.mobile = mobile;
+  public void setClientId(String clientId) {
+    this.clientId = clientId;
+  }
+
+  public String getName() {
+    return name;
   }
 
   public void setName(String name) {
     this.name = name;
   }
 
-  public void setPhoneNumber(String telephone) {
-    this.phoneNumber = telephone;
+  public String getPostalCode() {
+    return postalCode;
   }
 
   public void setPostalCode(String postalCode) {
     this.postalCode = postalCode;
+  }
+
+  public String getAddress() {
+    return address;
+  }
+
+  public void setAddress(String address) {
+    this.address = address;
+  }
+
+  public String getCity() {
+    return city;
+  }
+
+  public void setCity(String city) {
+    this.city = city;
+  }
+
+  public String getPhoneNumber() {
+    return phoneNumber;
+  }
+
+  public void setPhoneNumber(String telephone) {
+    this.phoneNumber = telephone;
+  }
+
+  public String getMobileNumber() {
+    return mobile;
+  }
+
+  public void setMobileNumber(String mobile) {
+    this.mobile = mobile;
   }
 
 }
