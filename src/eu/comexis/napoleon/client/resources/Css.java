@@ -31,4 +31,8 @@ public interface Css extends CssResource {
   public String validationMessageOuter();
 
   public String fieldInError();
+
+  public String innerRealEstateList();
+
+  public String outerRealEstateList();
 }
