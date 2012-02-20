@@ -37,7 +37,7 @@
 	<g:DockLayoutPanel unit='EM'>
 		<g:north size='5'>
 			<g:HTMLPanel styleName='{style.top}'>
-				<img ui:field="logoElement" class='{style.logo}'></img>
+				<a href='#dashboard'><img ui:field="logoElement" class='{style.logo}'></img></a>
 
 				<div class="{style.statusDiv}">
 					<div>
