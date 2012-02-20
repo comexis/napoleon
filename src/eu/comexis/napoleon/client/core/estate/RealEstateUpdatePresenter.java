@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.logging.client.LogConfiguration;
 import com.google.inject.Inject;
@@ -17,9 +18,9 @@ import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
 import eu.comexis.napoleon.client.core.MainLayoutPresenter;
+import eu.comexis.napoleon.client.core.estate.RealEstateUpdateUiHandlers.HasRealEstateUpdateUiHandler;
 import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.rpc.callback.GotAllAssoc;
-import eu.comexis.napoleon.client.rpc.callback.GotAllCities;
 import eu.comexis.napoleon.client.rpc.callback.GotAllCondo;
 import eu.comexis.napoleon.client.rpc.callback.GotAllCountries;
 import eu.comexis.napoleon.client.rpc.callback.GotAllOwner;
@@ -32,21 +33,17 @@ import eu.comexis.napoleon.shared.command.association.GetAllAssocCommand;
 import eu.comexis.napoleon.shared.command.association.GetAssocCommand;
 import eu.comexis.napoleon.shared.command.condo.GetAllCondoCommand;
 import eu.comexis.napoleon.shared.command.condo.GetCondoCommand;
-import eu.comexis.napoleon.shared.command.country.GetAllCitiesCommand;
 import eu.comexis.napoleon.shared.command.country.GetAllCountriesCommand;
 import eu.comexis.napoleon.shared.command.country.GetCountryCommand;
 import eu.comexis.napoleon.shared.command.estate.GetRealEstateCommand;
 import eu.comexis.napoleon.shared.command.estate.UpdateRealEstateCommand;
 import eu.comexis.napoleon.shared.command.owner.GetAllOwnerCommand;
-import eu.comexis.napoleon.client.core.estate.RealEstateUpdateUiHandlers.HasRealEstateUpdateUiHandler;
-import eu.comexis.napoleon.client.core.owner.OwnerUpdatePresenter;
 import eu.comexis.napoleon.shared.model.Association;
 import eu.comexis.napoleon.shared.model.City;
-import eu.comexis.napoleon.shared.model.Country;
 import eu.comexis.napoleon.shared.model.Condo;
-import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
+import eu.comexis.napoleon.shared.model.Country;
 import eu.comexis.napoleon.shared.model.RealEstate;
-import eu.comexis.napoleon.shared.validation.OwnerValidator;
+import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 import eu.comexis.napoleon.shared.validation.RealEstateValidator;
 import eu.comexis.napoleon.shared.validation.ValidationMessage;
 
@@ -68,13 +65,13 @@ public class RealEstateUpdatePresenter extends
     public void fillCountryList(List<Country> countries);
 
     public void fillOwnerList(List<SimpleOwner> owners);
-    
+
     public void fillCondoList(List<String> condoNames);
-    
+
     public void fillCondo(Condo cdo);
-    
+
     public void fillAssoc(Association assoc);
-    
+
     public void fillAssocList(List<String> assocNames);
 
     public void fillPostalCodeList(List<String> postCdes);
@@ -111,6 +108,7 @@ public class RealEstateUpdatePresenter extends
   public void onButtonCancelClick() {
     PlaceRequest myRequest = new PlaceRequest(NameTokens.realEstate);
     // add the id of the realEstate to load
+    GWT.log("cancel click on " + realEstate.getId());
     myRequest = myRequest.with(UUID_PARAMETER, realEstate.getId());
     placeManager.revealPlace(myRequest);
   }
@@ -187,7 +185,7 @@ public class RealEstateUpdatePresenter extends
     getView().fillCityList(lstCities);
 
   }
-  
+
   @Override
   public void onCondoSelect(String selectedCondo) {
 
@@ -203,7 +201,7 @@ public class RealEstateUpdatePresenter extends
       }
     });
   }
-  
+
   @Override
   public void onAssocSelect(String selectedAssoc) {
 
@@ -229,14 +227,14 @@ public class RealEstateUpdatePresenter extends
     // In the next call, "view" is the default value,
     // returned if "action" is not found on the URL.
     id = placeRequest.getParameter(UUID_PARAMETER, null);
-    if (id != "new") {
-      if (id == null || id.length() == 0) {
-        if (LogConfiguration.loggingIsEnabled()) {
-          LOG.severe("invalid id is null or empty");
-        }
-        placeManager.revealErrorPlace(placeRequest.getNameToken());
+
+    if (id == null || id.length() == 0) {
+      if (LogConfiguration.loggingIsEnabled()) {
+        LOG.severe("invalid id is null or empty");
       }
+      placeManager.revealErrorPlace(placeRequest.getNameToken());
     }
+
   }
 
   public void saveRealEstate() {
@@ -270,8 +268,7 @@ public class RealEstateUpdatePresenter extends
   @Override
   protected void onReset() {
     super.onReset();
-
-    if (id != "new") { // call the server to get the requested owner
+    if (id != null && !"new".equals(id)) { // call the server to get the requested owner
       new GetRealEstateCommand(id).dispatch(new GotRealEstate() {
         @Override
         public void got(RealEstate realEstate) {
@@ -280,8 +277,7 @@ public class RealEstateUpdatePresenter extends
         }
       });
     } else {
-      RealEstate realEstate = new RealEstate();
-      RealEstateUpdatePresenter.this.realEstate = realEstate;
+      realEstate = new RealEstate();
       getView().setRealEstate(realEstate);
     }
   }
