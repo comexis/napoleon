@@ -33,21 +33,21 @@ public abstract class PartyUpdatePresenter<T extends Party, V extends PartyUpdat
   public interface MyView<T extends Party> extends View, PartyUpdateUiHandlers.HasPresenter {
     public void displayError(String error);
 
-    public void fillCityList(List<String> cities);
+    public void displayValidationMessage(List<ValidationMessage> validationMessages);
     
-    public void fillPostalCodeList(List<String> postCdes);
+    public void fillCityList(List<String> cities);
 
     public void fillCountryList(List<Country> countries);
 
+    public void fillPostalCodeList(List<String> postCdes);
+
     public String getSelectedCountry();
+
+    public void reset();
 
     public void setData(T o);
 
     public void updateData(T o);
-
-    public void displayValidationMessage(List<ValidationMessage> validationMessages);
-
-    public void reset();
   }
 
   public static final String UUID_PARAMETER = "uuid";
@@ -70,14 +70,14 @@ public abstract class PartyUpdatePresenter<T extends Party, V extends PartyUpdat
 
   }
 
-  protected abstract PartyValidator<T> createValidator();
-
   @Override
   public void onButtonCancelClick() {
-    PlaceRequest myRequest = new PlaceRequest(getDetailsNameTokens());
-    // add the id of the owner to load
-    myRequest = myRequest.with(UUID_PARAMETER, party.getId());
-    placeManager.revealPlace(myRequest);
+    if (party == null || party.getId() == null || party.getId().length() == 0){
+      goToList();
+    }else {
+      goToDetails();
+    }
+   
   }
 
   @Override
@@ -121,7 +121,7 @@ public abstract class PartyUpdatePresenter<T extends Party, V extends PartyUpdat
     });
 
   }
-  
+
   @Override
   public void onPostalCodeSelect(String selectedPostalCode) {
 
@@ -157,6 +157,18 @@ public abstract class PartyUpdatePresenter<T extends Party, V extends PartyUpdat
     }
   }
 
+  protected abstract  T createNewDataModel();
+  
+  protected abstract PartyValidator<T> createValidator();
+
+  protected T getDataObjectModel(){
+    return party;
+  }
+
+  protected abstract String getDetailsNameTokens();
+
+  protected abstract String getListNameTokens();
+  
   @Override
   protected void onBind() {
     super.onBind();
@@ -164,6 +176,12 @@ public abstract class PartyUpdatePresenter<T extends Party, V extends PartyUpdat
     init();
   }
 
+  @Override
+  protected void onHide() {
+    super.onHide();
+    getView().reset();
+  }
+  
   @Override
   protected void onReset() {
     super.onReset();
@@ -175,15 +193,30 @@ public abstract class PartyUpdatePresenter<T extends Party, V extends PartyUpdat
     }
 
   }
-  
-  protected abstract  T createNewDataModel();
 
   protected abstract void requestData(String id);
   
   @Override
-  protected void onHide() {
-    super.onHide();
-    getView().reset();
+  protected void revealInParent() {
+    RevealContentEvent.fire(this, MainLayoutPresenter.MAIN_CONTENT, this);
+  }
+  
+  protected abstract void save();
+  
+  protected void setDataObjectModel(T t){
+    party = t;
+  }
+  
+  private void goToDetails() {
+    PlaceRequest myRequest = new PlaceRequest(getDetailsNameTokens());
+    // add the id of the owner to load
+    myRequest = myRequest.with(UUID_PARAMETER, party.getId());
+    placeManager.revealPlace(myRequest);
+  }
+  private void goToList() {
+    PlaceRequest myRequest = new PlaceRequest(getListNameTokens());
+    placeManager.revealPlace(myRequest);
+    
   }
 
   private void init() {
@@ -194,22 +227,5 @@ public abstract class PartyUpdatePresenter<T extends Party, V extends PartyUpdat
         
       }
     });
-  }
-  
-  protected T getDataObjectModel(){
-    return party;
-  }
-  
-  protected void setDataObjectModel(T t){
-    party = t;
-  }
-  
-  protected abstract void save();
-  
-  protected abstract String getDetailsNameTokens();
-
-  @Override
-  protected void revealInParent() {
-    RevealContentEvent.fire(this, MainLayoutPresenter.MAIN_CONTENT, this);
   }
 }

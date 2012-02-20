@@ -80,4 +80,10 @@ public class OwnerUpdatePresenter extends
   protected String getDetailsNameTokens() {
     return NameTokens.owner;
   }
+
+
+  @Override
+  protected String getListNameTokens() {
+    return NameTokens.ownerlist;
+  }
 }

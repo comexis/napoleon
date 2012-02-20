@@ -84,4 +84,9 @@ public class TenantUpdatePresenter extends
   protected String getDetailsNameTokens() {
     return NameTokens.tenant;
   }
+  
+  @Override
+  protected String getListNameTokens() {
+    return NameTokens.tenantlist;
+  }
 }
