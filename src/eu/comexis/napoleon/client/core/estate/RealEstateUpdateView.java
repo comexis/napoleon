@@ -2,6 +2,7 @@ package eu.comexis.napoleon.client.core.estate;
 
 import static com.google.gwt.query.client.GQuery.$;
 
+import java.util.Date;
 import java.util.List;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -23,6 +24,7 @@ import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
 import eu.comexis.napoleon.client.utils.UiHelper;
+import eu.comexis.napoleon.shared.model.Association;
 import eu.comexis.napoleon.shared.model.Condo;
 import eu.comexis.napoleon.shared.model.Country;
 import eu.comexis.napoleon.shared.model.RealEstate;
@@ -52,9 +54,9 @@ public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePr
   @UiField
   SuggestBox country;
   @UiField
-  TextBox condo;
+  SuggestBox condo;
   @UiField
-  TextBox association;
+  SuggestBox association;
   @UiField
   TextBox address;
   @UiField
@@ -97,7 +99,7 @@ public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePr
   @Override
   public void displayValidationMessage(List<ValidationMessage> validationMessages) {
     // TODO Display the messages in a PopupPanel
-    StringBuilder msgBuilder = new StringBuilder("Vueillez corriger les erreurs suivantes : \n\n");
+    StringBuilder msgBuilder = new StringBuilder("Veuillez corriger les erreurs suivantes : \n\n");
 
     for (ValidationMessage msg : validationMessages) {
       msgBuilder.append(msg.getMessage()).append("\n");
@@ -114,6 +116,28 @@ public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePr
     if (cities != null) {
       for (String sCity : cities) {
         oracle.add(sCity);
+      }
+    }
+  }
+  
+  @Override
+  public void fillCondoList(List<String> condoNames) {
+    MultiWordSuggestOracle oracle = (MultiWordSuggestOracle) condo.getSuggestOracle();
+    oracle.clear();
+    if (condoNames != null) {
+      for (String sCdo : condoNames) {
+        oracle.add(sCdo);
+      }
+    }
+  }
+  
+  @Override
+  public void fillAssocList(List<String> assocNames) {
+    MultiWordSuggestOracle oracle = (MultiWordSuggestOracle) this.association.getSuggestOracle();
+    oracle.clear();
+    if (assocNames != null) {
+      for (String sCdo : assocNames) {
+        oracle.add(sCdo);
       }
     }
   }
@@ -162,9 +186,10 @@ public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePr
     }
   }
 
-  @Override
-  public String getOwnerId() {
-    return ownerName.getValue(ownerName.getSelectedIndex());
+  public SimpleOwner getOwner() {
+    SimpleOwner o = new SimpleOwner();
+    o.setId(ownerName.getValue(ownerName.getSelectedIndex()));
+    return o;
   }
 
   @Override
@@ -180,6 +205,16 @@ public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePr
   @UiHandler("city")
   public void onCityChange(ValueChangeEvent<String> event) {
     square.setValue("");
+  }
+  
+  @UiHandler("association")
+  public void onAssocChange(SelectionEvent<SuggestOracle.Suggestion> event) {
+    presenter.onAssocSelect(event.getSelectedItem().getReplacementString());
+  }
+  
+  @UiHandler("condo")
+  public void onCondoChange(SelectionEvent<SuggestOracle.Suggestion> event) {
+    presenter.onCondoSelect(event.getSelectedItem().getReplacementString());
   }
 
   @UiHandler("city")
@@ -218,7 +253,7 @@ public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePr
   }
 
   @Override
-  public void setRealEstate(RealEstate e, SimpleOwner o, Condo cdo) {
+  public void setRealEstate(RealEstate e) {
     // cleanup
     this.reference.setText("");
     this.addressRealEstate.setText("");
@@ -237,7 +272,22 @@ public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePr
     this.phoneNumber.setText("");
     UiHelper.selectTextItemBoxByValue(this.ownerName, "(...)");
     if (e != null) {
+      SimpleOwner o = e.getOwner();
       this.reference.setText(e.getReference());
+      this.number.setText(e.getNumber());
+      this.box.setText(e.getBox());
+      this.dimension.setText(e.getDimension());
+      UiHelper.selectTextItemBoxByValue(this.state, e.getState().name());
+      UiHelper.selectTextItemBoxByValue(this.type, e.getType().name());
+      UiHelper.selectTextItemBoxByValue(this.ownerName, o.getId());
+      if (!e.getCondominium().isEmpty()) {
+        this.condo.setText(e.getCondominium());
+        this.association.setText(e.getHomeownerAssociation());
+        this.address.setText(e.getAssocAdresss());
+        this.email.setText(e.getAssocEmail());
+        this.mobileNumber.setText(e.getAssocMobilePhoneNumber());
+        this.phoneNumber.setText(e.getAssocPhoneNumber());
+      }
       this.country.setValue(e.getCountry());
       this.presenter.onCountrySelect(country.getValue());
       this.addressRealEstate.setText(e.getStreet());
@@ -245,21 +295,7 @@ public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePr
       this.presenter.onPostalCodeSelect(postalCode.getValue());
       this.city.setValue(o.getCity());
       this.presenter.onCitySelect(city.getValue());
-      this.number.setText(e.getNumber());
-      this.box.setText(e.getBox());
       this.square.setText(e.getSquare());
-      this.dimension.setText(e.getDimension());
-      UiHelper.selectTextItemBoxByValue(this.state, e.getState().name());
-      UiHelper.selectTextItemBoxByValue(this.type, e.getType().name());
-      UiHelper.selectTextItemBoxByValue(this.ownerName, o.getId());
-    }
-    if (cdo != null) {
-      this.condo.setText(cdo.getName());
-      this.association.setText(cdo.getHomeownerAssociation());
-      this.address.setText(cdo.getStreet());
-      this.email.setText(cdo.getEmail());
-      this.mobileNumber.setText(cdo.getMobilePhoneNumber());
-      this.phoneNumber.setText(cdo.getPhoneNumber());
     }
 
   }
@@ -270,40 +306,56 @@ public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePr
   }
 
   @Override
-  public Condo updateCondo(Condo cdo) {
-    if (!condo.getValue().isEmpty()) {
-      if (cdo == null) {
-        cdo = new Condo();
-      }
-      cdo.setName(condo.getValue());
-      cdo.setHomeownerAssociation(association.getValue());
-      cdo.setStreet(address.getValue());
-      cdo.setEmail(email.getValue());
-      cdo.setMobilePhoneNumber(mobileNumber.getValue());
-      cdo.setPhoneNumber(phoneNumber.getValue());
-      return cdo;
-    }
-    return null;
-  }
-
-  @Override
   public RealEstate updateRealEstate(RealEstate e) {
     e.setReference(reference.getValue());
-    e.setStreet(addressRealEstate.getValue());
     e.setNumber(number.getValue());
     e.setBox(box.getValue());
     e.setDimension(dimension.getValue());
-    e.setSquare(square.getValue());
     e.setType(TypeOfRealEstate.valueOf(type.getValue(type.getSelectedIndex())));
     e.setState(RealEstateState.valueOf(state.getValue(state.getSelectedIndex())));
+    e.setStreet(addressRealEstate.getValue());
+    e.setSquare(square.getValue());
     e.setPostalCode(postalCode.getValue());
     e.setCity(city.getValue());
     e.setCountry(country.getValue());
+    // Condominum
+    e.setCondominium(condo.getValue());
+    //HomeownerAssociation info
+    e.setHomeownerAssociation(association.getValue());
+    e.setAssocAdresss(address.getValue());
+    e.setAssocEmail(email.getValue());
+    e.setAssocMobilePhoneNumber(mobileNumber.getValue());
+    e.setAssocPhoneNumber(phoneNumber.getValue());
+    e.setOwner(getOwner());
+    e.setOwnershipDate(new Date());
     return e;
   }
 
   private void init() {
     type = UiHelper.createListBoxForEnum(TypeOfRealEstate.class, "TypeOfRealEstate_", false);
     state = UiHelper.createListBoxForEnum(RealEstateState.class, "RealEstateState_", false);
+  }
+
+  @Override
+  public void fillCondo(Condo cdo) {
+    this.association.setText(cdo.getHomeownerAssociation());
+    this.country.setValue(cdo.getCountry());
+    this.presenter.onCountrySelect(country.getValue());
+    this.addressRealEstate.setText(cdo.getStreet());
+    this.number.setText(cdo.getNumber());
+    this.postalCode.setText(cdo.getPostalCode());
+    this.presenter.onPostalCodeSelect(postalCode.getValue());
+    this.city.setValue(cdo.getCity());
+    this.presenter.onCitySelect(city.getValue());
+    this.square.setText(cdo.getSquare());
+    presenter.onAssocSelect(cdo.getHomeownerAssociation());
+  }
+
+  @Override
+  public void fillAssoc(Association assoc) {
+    this.address.setText(assoc.getStreet());
+    this.email.setText(assoc.getEmail());
+    this.mobileNumber.setText(assoc.getMobilePhoneNumber());
+    this.phoneNumber.setText(assoc.getPhoneNumber());
   }
 }

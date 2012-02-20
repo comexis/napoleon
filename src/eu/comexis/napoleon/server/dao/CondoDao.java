@@ -1,11 +1,18 @@
 package eu.comexis.napoleon.server.dao;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import com.googlecode.objectify.Key;
 
+import eu.comexis.napoleon.shared.model.Association;
+import eu.comexis.napoleon.shared.model.City;
 import eu.comexis.napoleon.shared.model.Company;
 import eu.comexis.napoleon.shared.model.Condo;
+import eu.comexis.napoleon.shared.model.Country;
+import eu.comexis.napoleon.shared.model.Owner;
+import eu.comexis.napoleon.shared.model.RealEstate;
 
 public class CondoDao extends NapoleonDao<Condo>{
 
@@ -37,13 +44,14 @@ public class CondoDao extends NapoleonDao<Condo>{
     return update(cdo,companyKey);
   }
   public Condo update(Condo cdo,Key<Company> companyKey){
-    String condoId = cdo.getId();
-    if (condoId == null || condoId.length() == 0) {
-      UUID uuid = UUID.randomUUID();
-      System.out.println("Creating Uuid " + uuid.toString());
-      cdo.setId(uuid.toString());
-      cdo.setCompany(companyKey);
-    }
+    cdo.setCompany(companyKey);
     return super.update(cdo);
+  }
+  public List<String> getNames(String companyId){
+    List<String> lst = new ArrayList<String>();
+    for (Condo cdo:this.listAll(companyId)){
+      lst.add(cdo.getName());
+    }
+    return lst;
   }
 }

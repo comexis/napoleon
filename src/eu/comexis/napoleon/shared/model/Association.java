@@ -1,51 +1,40 @@
-/**
- * 
- */
 package eu.comexis.napoleon.shared.model;
 
 import javax.persistence.Id;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.googlecode.objectify.Key;
-import com.googlecode.objectify.annotation.Indexed;
 import com.googlecode.objectify.annotation.Parent;
 import com.googlecode.objectify.annotation.Unindexed;
 
-/**
- * @author xavier Coopropriété (Condominium)
- */
 @Unindexed
-public class Condo implements IsSerializable {
+public class Association implements IsSerializable {
 
+  public Association() {
+    // TODO Auto-generated constructor stub
+  }
   @Id
   private String name;
   @Parent
   private Key<Company> company;
-
-  // Syndicat de copropriété.
-  @Indexed
-  private String homeownerAssociation;
   // adresse
   private String street;
-  // municipalité
+  // Localité
   private String city;
-
-  private String square;
-
   // code postal
   private String postalCode;
-
   // pays
   private String country;
-  // numéro
-  private String number;
+  // adresse e-mail
+  private String email;
+  // n° de téléphone
+  private String phoneNumber;
+  // n° de téléphone mobile (GSM)
+  private String mobilePhoneNumber;
 
   /**
-	 * 
-	 */
-  public Condo() {
-    // empty constructor needed by GWT
-  }
+   * 
+   */
 
   public String getCity() {
     return city;
@@ -59,24 +48,24 @@ public class Condo implements IsSerializable {
     return country;
   }
 
-  public String getHomeownerAssociation() {
-    return homeownerAssociation;
+  public String getEmail() {
+    return email;
+  }
+
+  public String getMobilePhoneNumber() {
+    return mobilePhoneNumber;
   }
 
   public String getName() {
     return name;
   }
 
-  public String getNumber() {
-    return number;
+  public String getPhoneNumber() {
+    return phoneNumber;
   }
 
   public String getPostalCode() {
     return postalCode;
-  }
-
-  public String getSquare() {
-    return square;
   }
 
   public String getStreet() {
@@ -95,24 +84,24 @@ public class Condo implements IsSerializable {
     country = value;
   }
 
-  public void setHomeownerAssociation(String homeownerAssociation) {
-    this.homeownerAssociation = homeownerAssociation;
+  public void setEmail(String value) {
+    email = value;
+  }
+
+  public void setMobilePhoneNumber(String value) {
+    mobilePhoneNumber = value;
   }
 
   public void setName(String name) {
     this.name = name;
   }
 
-  public void setNumber(String number) {
-    this.number = number;
+  public void setPhoneNumber(String value) {
+    phoneNumber = value;
   }
 
   public void setPostalCode(String value) {
     postalCode = value;
-  }
-
-  public void setSquare(String square) {
-    this.square = square;
   }
 
   public void setStreet(String value) {

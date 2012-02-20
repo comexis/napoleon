@@ -123,15 +123,11 @@ public class ExtractDatastoreAsXML extends HttpServlet {
       if (o !=null){
         out.println("<Owner>" + o.getName() + "</Owner>");
       }
-      Condo cdo = estateDao.getCondo(e);
-      if (cdo!=null){
+      if (!e.getCondominium().isEmpty()){
         out.println("<Condominium>");
-        out.println("<Name>" + cdo.getName() + "</Name>");
-        out.println("<HomeownerAssociation>" + cdo.getHomeownerAssociation() + "</HomeownerAssociation>");
-        out.println("<Address>" + cdo.getStreet() + "</Address>");
-        out.println("<Email>" + cdo.getEmail() + "</Email>");
-        out.println("<Tel>" + cdo.getPhoneNumber() + "</Tel>");
-        out.println("<GSM>" + cdo.getMobilePhoneNumber() + "</GSM>");
+        out.println("<Name>" + e.getCondominium() + "</Name>");
+        out.println("<HomeownerAssociation>" + e.getHomeownerAssociation() + "</HomeownerAssociation>");
+        out.println("<Address>" + e.getAssocAdresss() + "</Address>");
         out.println("</Condominium>");
       }
       out.println("</RealEstate>");
