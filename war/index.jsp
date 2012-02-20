@@ -1,6 +1,5 @@
 <!doctype html>
 
-<%@page import="org.apache.http.HttpResponse"%>
 <%@page import="eu.comexis.napoleon.shared.model.Company"%>
 <%@page import="eu.comexis.napoleon.shared.model.ApplicationUser"%>
 <%@page import="eu.comexis.napoleon.server.utils.JSONHelper"%>
