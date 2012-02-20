@@ -11,22 +11,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import eu.comexis.napoleon.server.dao.ApplicationUserDao;
 import eu.comexis.napoleon.server.dao.CompanyDao;
-import eu.comexis.napoleon.server.dao.CondoDao;
-import eu.comexis.napoleon.server.dao.HomeownerAssocDao;
 import eu.comexis.napoleon.server.dao.OwnerDao;
 import eu.comexis.napoleon.server.dao.RealEstateDao;
 import eu.comexis.napoleon.server.dao.TenantDao;
 import eu.comexis.napoleon.shared.model.ApplicationUser;
-import eu.comexis.napoleon.shared.model.Association;
 import eu.comexis.napoleon.shared.model.Company;
-import eu.comexis.napoleon.shared.model.Condo;
 import eu.comexis.napoleon.shared.model.MaritalStatus;
 import eu.comexis.napoleon.shared.model.Owner;
 import eu.comexis.napoleon.shared.model.RealEstate;
-import eu.comexis.napoleon.shared.model.RealEstateState;
 import eu.comexis.napoleon.shared.model.Tenant;
 import eu.comexis.napoleon.shared.model.Title;
-import eu.comexis.napoleon.shared.model.TypeOfRealEstate;
 
 @SuppressWarnings("serial")
 public class InitDatastore extends HttpServlet {
@@ -45,7 +39,7 @@ public class InitDatastore extends HttpServlet {
 
     //createTenantDao(companyId);
 
-    //createRealEstate(companyId);
+   //createRealEstate(companyId);
 
     printResults(companyId, resp);
 
@@ -73,6 +67,21 @@ public class InitDatastore extends HttpServlet {
     u.setFirstName("user1");
     u.setLastName("napoleon");
     u.setEmail("napoleon.user1@gmail.com");
+    userData.update(u); 
+
+    // create user napoleon.user1@gmail.com
+    u = userData.create(companyId);
+    u.setFirstName("Benoit");
+    u.setLastName("Hosselet");
+    u.setEmail("benoit.hosselet@gmail.com");
+    userData.update(u); 
+
+    
+ // create user napoleon.user1@gmail.com
+    u = userData.create(companyId);
+    u.setFirstName("Benoît");
+    u.setLastName("Tytgat");
+    u.setEmail("scatyb@gmail.com");
     userData.update(u); 
 
   }
