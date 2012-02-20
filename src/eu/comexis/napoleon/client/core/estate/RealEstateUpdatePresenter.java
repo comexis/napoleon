@@ -18,12 +18,20 @@ import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
 import eu.comexis.napoleon.client.core.MainLayoutPresenter;
 import eu.comexis.napoleon.client.place.NameTokens;
+import eu.comexis.napoleon.client.rpc.callback.GotAllAssoc;
 import eu.comexis.napoleon.client.rpc.callback.GotAllCities;
+import eu.comexis.napoleon.client.rpc.callback.GotAllCondo;
 import eu.comexis.napoleon.client.rpc.callback.GotAllCountries;
 import eu.comexis.napoleon.client.rpc.callback.GotAllOwner;
+import eu.comexis.napoleon.client.rpc.callback.GotAssoc;
+import eu.comexis.napoleon.client.rpc.callback.GotCondo;
 import eu.comexis.napoleon.client.rpc.callback.GotCountry;
 import eu.comexis.napoleon.client.rpc.callback.GotRealEstate;
 import eu.comexis.napoleon.client.rpc.callback.UpdatedRealEstate;
+import eu.comexis.napoleon.shared.command.association.GetAllAssocCommand;
+import eu.comexis.napoleon.shared.command.association.GetAssocCommand;
+import eu.comexis.napoleon.shared.command.condo.GetAllCondoCommand;
+import eu.comexis.napoleon.shared.command.condo.GetCondoCommand;
 import eu.comexis.napoleon.shared.command.country.GetAllCitiesCommand;
 import eu.comexis.napoleon.shared.command.country.GetAllCountriesCommand;
 import eu.comexis.napoleon.shared.command.country.GetCountryCommand;
@@ -32,6 +40,7 @@ import eu.comexis.napoleon.shared.command.estate.UpdateRealEstateCommand;
 import eu.comexis.napoleon.shared.command.owner.GetAllOwnerCommand;
 import eu.comexis.napoleon.client.core.estate.RealEstateUpdateUiHandlers.HasRealEstateUpdateUiHandler;
 import eu.comexis.napoleon.client.core.owner.OwnerUpdatePresenter;
+import eu.comexis.napoleon.shared.model.Association;
 import eu.comexis.napoleon.shared.model.City;
 import eu.comexis.napoleon.shared.model.Country;
 import eu.comexis.napoleon.shared.model.Condo;
@@ -59,12 +68,18 @@ public class RealEstateUpdatePresenter extends
     public void fillCountryList(List<Country> countries);
 
     public void fillOwnerList(List<SimpleOwner> owners);
+    
+    public void fillCondoList(List<String> condoNames);
+    
+    public void fillCondo(Condo cdo);
+    
+    public void fillAssoc(Association assoc);
+    
+    public void fillAssocList(List<String> assocNames);
 
     public void fillPostalCodeList(List<String> postCdes);
 
     public void fillSquareList(List<String> squares);
-
-    public String getOwnerId();
 
     public String getSelectedCountry();
 
@@ -172,6 +187,38 @@ public class RealEstateUpdatePresenter extends
     getView().fillCityList(lstCities);
 
   }
+  
+  @Override
+  public void onCondoSelect(String selectedCondo) {
+
+    if (selectedCondo == null || selectedCondo.length() == 0) {
+      return;
+    }
+    GetCondoCommand cmd = new GetCondoCommand();
+    cmd.setName(selectedCondo);
+    cmd.dispatch(new GotCondo() {
+      @Override
+      public void got(Condo cdo) {
+        getView().fillCondo(cdo);
+      }
+    });
+  }
+  
+  @Override
+  public void onAssocSelect(String selectedAssoc) {
+
+    if (selectedAssoc == null || selectedAssoc.length() == 0) {
+      return;
+    }
+    GetAssocCommand cmd = new GetAssocCommand();
+    cmd.setName(selectedAssoc);
+    cmd.dispatch(new GotAssoc() {
+      @Override
+      public void got(Association assoc) {
+        getView().fillAssoc(assoc);
+      }
+    });
+  }
 
   /**
    * Retrieve the id of the realEstate to show it
@@ -196,7 +243,6 @@ public class RealEstateUpdatePresenter extends
     // Save it
     UpdateRealEstateCommand cmd = new UpdateRealEstateCommand();
     cmd.setRealEstate(realEstate);
-    cmd.setOwnerId(getView().getOwnerId());
     cmd.dispatch(new UpdatedRealEstate() {
       @Override
       public void got(RealEstate realEstate) {
@@ -228,7 +274,7 @@ public class RealEstateUpdatePresenter extends
     if (id != "new") { // call the server to get the requested owner
       new GetRealEstateCommand(id).dispatch(new GotRealEstate() {
         @Override
-        public void got(RealEstate realEstate, SimpleOwner owner, Condo cdo) {
+        public void got(RealEstate realEstate) {
           RealEstateUpdatePresenter.this.realEstate = realEstate;
           getView().setRealEstate(realEstate);
         }
@@ -257,6 +303,18 @@ public class RealEstateUpdatePresenter extends
       @Override
       public void got(List<SimpleOwner> owners) {
         getView().fillOwnerList(owners);
+      }
+    });
+    new GetAllAssocCommand().dispatch(new GotAllAssoc() {
+      @Override
+      public void got(List<String> assocNames) {
+        getView().fillAssocList(assocNames);
+      }
+    });
+    new GetAllCondoCommand().dispatch(new GotAllCondo() {
+      @Override
+      public void got(List<String> condoNames) {
+        getView().fillCondoList(condoNames);
       }
     });
   }

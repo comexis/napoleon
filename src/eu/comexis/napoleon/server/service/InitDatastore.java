@@ -148,54 +148,7 @@ public class InitDatastore extends HttpServlet {
   }
 
   private void createRealEstate(String companyId) {
-    CondoDao cdoData = new CondoDao();
-    HomeownerAssocDao assocData = new HomeownerAssocDao();
-    Condo cdo = cdoData.create(companyId);
-    Association assoc = assocData.create(companyId);
-    cdo.setName("Résidence les Chopinnettes");
-    assoc.setName("Lé valeureu d'joueu d'côte");
-    cdo.setCountry("Belgique");
-    cdo.setCity("Mons");
-    cdo.setPostalCode("7000");
-    cdo.setStreet("Rue du get à pinte, 33");
-    assoc.setPhoneNumber("065 256489");
-    assoc.setMobilePhoneNumber("0477 258945");
-    assoc.setEmail("chopinette@gmail.com");
-    assoc = assocData.update(assoc);
-    cdo.setHomeownerAssociation(assoc);
-    cdo = cdoData.update(cdo);
-    System.out.println("Copropriété: " + cdo.getId());
-    
-    OwnerDao ownerData = new OwnerDao();
-    Owner o = ownerData.create(companyId);
-    o.setTitle(Title.MRS);
-    o.setFirstName("Jean");
-    o.setLastName("de Florette");
-    o.setCity("Ath");
-    o.setPostalCode("7800");
-    o.setStreet("Rue de la gouyasse, 1");
-    o.setPhoneNumber("064/659874");
-    o.setMobilePhoneNumber("0497/063970");
-    o.setCountry("Belgique");
-    o.setEmail("jean.deflorette@gmail.com");
-    o.setDateOfBirth(new Date());
-    o.setMaritalStatus(MaritalStatus.MARRIED);
-    o = ownerData.update(o);
-    
-    RealEstateDao estateData = new RealEstateDao();
-    RealEstate e = estateData.create(companyId);
-    e.setReference("Résidence les Chopinnettes - appartement 1");
-    e.setStreet("Rue des branleurs, 68");
-    e.setCity("1348 Louvain-la-Neuve");
-    e.setPostalCode("1348");
-    e.setCountry("Belgique");
-    e.setNumber("101 bis");
-    e.setSquare("Le guet à pintes");
-    e.setState(RealEstateState.EXCELLENT);
-    e.setType(TypeOfRealEstate.A2);
-    estateData.setCondo(e,cdo);
-    estateData.setOwner(e,o);
-    e = estateData.update(e);
+    //
   }
 
   private void createTenantDao(String companyId) {

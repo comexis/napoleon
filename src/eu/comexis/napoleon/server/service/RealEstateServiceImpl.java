@@ -52,7 +52,7 @@ public class RealEstateServiceImpl extends RemoteServiceServlet implements RealE
     if (id == null || id.length() == 0) {
       // TODO add logging
 
-      // will generate an error 500. Do put to many info
+      // will generate an error 500. Do not put too many info
       throw new RuntimeException("Ooops something wrong happened");
     } else {
       e = dao.getById(id, companyId);
@@ -65,23 +65,9 @@ public class RealEstateServiceImpl extends RemoteServiceServlet implements RealE
   @Override
   public UpdateRealEstateResponse execute(UpdateRealEstateCommand command) {
     RealEstate realEstate = command.getRealEstate();
-    Condo cdo = realEstate.getCondo();
-    String ownerId = command.getOwnerId();
-    String companyId = UserManager.INSTANCE.getCompanyId();
-    if (cdo!=null){
-      CondoDao cdoDao = new CondoDao();
-      cdo = cdoDao.update(cdo,companyId);
-    }
     RealEstateDao dao = new RealEstateDao();
-    if (cdo!=null){
-      dao.setCondo(realEstate, cdo);
-    }else{
-      LOG.info("Delete the Condominium for " + realEstate.getReference());
-      dao.deleteCondo(realEstate);
-    }
-    dao.setOwner(realEstate, ownerId,companyId);
+    String companyId = UserManager.INSTANCE.getCompanyId();
     realEstate = dao.update(realEstate,companyId);
-    
     UpdateRealEstateResponse response = new UpdateRealEstateResponse();
     response.setRealEstate(realEstate);
     return response;

@@ -13,34 +13,18 @@ public class Association implements IsSerializable {
   public Association() {
     // TODO Auto-generated constructor stub
   }
-
   @Id
-  private String id;
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
-  }
-
   private String name;
   @Parent
   private Key<Company> company;
-
-  // Copropriété
   // adresse
   private String street;
-
-  // municipalité
+  // Localité
   private String city;
-
   // code postal
   private String postalCode;
-
   // pays
   private String country;
-
   // adresse e-mail
   private String email;
   // n° de téléphone

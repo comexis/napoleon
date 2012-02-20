@@ -8,7 +8,6 @@ import javax.persistence.Id;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Indexed;
-import com.googlecode.objectify.annotation.NotSaved;
 import com.googlecode.objectify.annotation.Parent;
 import com.googlecode.objectify.annotation.Unindexed;
 
@@ -19,18 +18,13 @@ import com.googlecode.objectify.annotation.Unindexed;
 public class Condo implements IsSerializable {
 
   @Id
-  private String id;
   private String name;
   @Parent
   private Key<Company> company;
 
   // Syndicat de copropriété.
   @Indexed
-  private Key<Association> homeownerAssociationKey;
-  @NotSaved
-  private Association homeownerAssociation;
-
-  // Copropriété
+  private String homeownerAssociation;
   // adresse
   private String street;
   // municipalité
@@ -43,6 +37,8 @@ public class Condo implements IsSerializable {
 
   // pays
   private String country;
+  // numéro
+  private String number;
 
   /**
 	 * 
@@ -63,20 +59,16 @@ public class Condo implements IsSerializable {
     return country;
   }
 
-  public Association getHomeownerAssociation() {
+  public String getHomeownerAssociation() {
     return homeownerAssociation;
-  }
-
-  public Key<Association> getHomeownerAssociationKey() {
-    return homeownerAssociationKey;
-  }
-
-  public String getId() {
-    return id;
   }
 
   public String getName() {
     return name;
+  }
+
+  public String getNumber() {
+    return number;
   }
 
   public String getPostalCode() {
@@ -103,20 +95,16 @@ public class Condo implements IsSerializable {
     country = value;
   }
 
-  public void setHomeownerAssociation(Association homeownerAssociation) {
+  public void setHomeownerAssociation(String homeownerAssociation) {
     this.homeownerAssociation = homeownerAssociation;
-  }
-
-  public void setHomeownerAssociationKey(Key<Association> value) {
-    homeownerAssociationKey = value;
-  }
-
-  public void setId(String id) {
-    this.id = id;
   }
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public void setNumber(String number) {
+    this.number = number;
   }
 
   public void setPostalCode(String value) {

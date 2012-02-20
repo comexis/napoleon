@@ -15,7 +15,7 @@ import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
  */
 public abstract class GotRealEstate extends AbstractCallback<GetRealEstateResponse> {
 
-  public abstract void got(RealEstate realEstate,SimpleOwner owner, Condo cdo);
+  public abstract void got(RealEstate realEstate);
 
   @Override
   public void onSuccess(GetRealEstateResponse result) {

@@ -1,5 +1,7 @@
 package eu.comexis.napoleon.server.dao;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import com.googlecode.objectify.Key;
@@ -10,6 +12,7 @@ import eu.comexis.napoleon.shared.model.Company;
 import eu.comexis.napoleon.shared.model.Condo;
 import eu.comexis.napoleon.shared.model.Country;
 import eu.comexis.napoleon.shared.model.Owner;
+import eu.comexis.napoleon.shared.model.RealEstate;
 
 public class CondoDao extends NapoleonDao<Condo>{
 
@@ -41,33 +44,14 @@ public class CondoDao extends NapoleonDao<Condo>{
     return update(cdo,companyKey);
   }
   public Condo update(Condo cdo,Key<Company> companyKey){
-    String condoId = cdo.getId();
-    if (condoId == null || condoId.length() == 0) {
-      UUID uuid = UUID.randomUUID();
-      System.out.println("Creating Uuid " + uuid.toString());
-      cdo.setId(uuid.toString());
-      cdo.setCompany(companyKey);
-    }
-    CountryDao countryData = new CountryDao();
-    // if country does not exist, create it.
-    Country country = countryData.getByName(cdo.getCountry(), companyKey);
-    if (country == null) {
-      country = countryData.create(companyKey);
-      country.setName(cdo.getCountry());
-      countryData.update(country);
-    }
-    City city = countryData.getCityByFullName(country.getId(), cdo.getCity(),cdo.getPostalCode());
-    if (city == null) {
-      city = countryData.addCity(country.getId(), cdo.getCity(),cdo.getPostalCode());
-    }
+    cdo.setCompany(companyKey);
     return super.update(cdo);
   }
-  @Override
-  public Condo getById(String cdoId,String companyId){
-    Condo cdo = super.getById(cdoId, companyId);
-    // enrich the object with the corresponding homeownerAssociation
-    Association assoc = ofy().get(cdo.getHomeownerAssociationKey());
-    cdo.setHomeownerAssociation(assoc);
-    return cdo;
+  public List<String> getNames(String companyId){
+    List<String> lst = new ArrayList<String>();
+    for (Condo cdo:this.listAll(companyId)){
+      lst.add(cdo.getName());
+    }
+    return lst;
   }
 }

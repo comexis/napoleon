@@ -14,12 +14,12 @@
 			<span class="{res.css.detailCellInputLabel}">Référence :</span>
 			<g:TextBox ui:field="reference" styleName="{res.css.detailCellInputText}" />
 			<span class="{res.css.detailCellInputLabel}">Copropriété :</span>
-			<g:TextBox ui:field="condo" styleName="{res.css.detailCellInputText}" />
+			<g:SuggestBox ui:field="condo" styleName="{res.css.detailCellInputText}" />
 		</div>
 		
 		<div class="{res.css.detailRow}">
 			<span class="{res.css.detailCellInputLabel}">Syndicat :</span>
-			<g:TextBox ui:field="association" styleName="{res.css.detailCellInputText}" />
+			<g:SuggestBox ui:field="association" styleName="{res.css.detailCellInputText}" />
 			<span class="{res.css.detailCellInputLabel}">Adresse :</span>
 			<g:TextBox ui:field="address" styleName="{res.css.detailCellInputText}" />
 		</div>

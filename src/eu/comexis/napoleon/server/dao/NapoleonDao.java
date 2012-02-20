@@ -16,12 +16,14 @@ import com.googlecode.objectify.Query;
 import com.googlecode.objectify.util.DAOBase;
 
 import eu.comexis.napoleon.shared.model.ApplicationUser;
+import eu.comexis.napoleon.shared.model.Association;
 import eu.comexis.napoleon.shared.model.City;
 import eu.comexis.napoleon.shared.model.Company;
 import eu.comexis.napoleon.shared.model.Condo;
 import eu.comexis.napoleon.shared.model.Country;
 import eu.comexis.napoleon.shared.model.Lease;
 import eu.comexis.napoleon.shared.model.Owner;
+import eu.comexis.napoleon.shared.model.Ownership;
 import eu.comexis.napoleon.shared.model.RealEstate;
 import eu.comexis.napoleon.shared.model.Tenant;
 
@@ -38,11 +40,13 @@ public class NapoleonDao<T> extends DAOBase {
     ObjectifyService.register(Country.class);
     ObjectifyService.register(City.class);
     ObjectifyService.register(Owner.class);
+    ObjectifyService.register(Ownership.class);
     ObjectifyService.register(Tenant.class);
     ObjectifyService.register(Condo.class);
     ObjectifyService.register(RealEstate.class);
     ObjectifyService.register(Lease.class);
     ObjectifyService.register(ApplicationUser.class);
+    ObjectifyService.register(Association.class);
   }
   protected Class<T> clazz;
 
@@ -96,8 +100,9 @@ public class NapoleonDao<T> extends DAOBase {
     Query<T> q = ofy().query(this.clazz);
     if (companyKey != null) {
       q.ancestor(companyKey);
+      return q.list();
     }
-    return q.list();
+    return null;
   }
 
   public List<T> listAll(String companyId) {

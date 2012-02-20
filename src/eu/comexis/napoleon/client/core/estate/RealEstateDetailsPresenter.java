@@ -97,7 +97,7 @@ public class RealEstateDetailsPresenter extends
     new GetRealEstateCommand(id).dispatch(new GotRealEstate() {
 
       @Override
-      public void got(RealEstate realEstate,SimpleOwner owner,Condo cdo) {
+      public void got(RealEstate realEstate) {
         RealEstateDetailsPresenter.this.realEstate = realEstate;
         getView().setRealEstate(realEstate);
       }

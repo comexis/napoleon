@@ -96,19 +96,13 @@ public class RealEstateDetailsView extends ViewImpl implements RealEstateDetails
     type.setInnerText(e.getType().toString());
     state.setInnerText(e.getState().toString());
     dimension.setInnerText(e.getDimension());
-    Condo cdo = e.getCondo();
-    if (cdo!=null){
-      Association assoc = cdo.getHomeownerAssociation();
-      condo.setInnerText(cdo.getName());
-      association.setInnerText(assoc.getName());
-      address.setInnerText(assoc.getStreet() + " " + assoc.getCity() + " " + assoc.getCountry());
-      tel.setInnerText(assoc.getPhoneNumber());
-      gsm.setInnerText(assoc.getMobilePhoneNumber());
-      email.setInnerText(assoc.getEmail());
-      addresseRealEstate.setInnerText(cdo.getStreet() + " " + cdo.getCity() + " " + cdo.getCountry());
-    }else{
-      addresseRealEstate.setInnerText(e.getStreet() + " " + e.getCity() + " " + e.getCountry());
-    }
+    condo.setInnerText(e.getCondominium());
+    association.setInnerText(e.getHomeownerAssociation());
+    address.setInnerText(e.getAssocAdresss());
+    tel.setInnerText(e.getAssocPhoneNumber());
+    gsm.setInnerText(e.getAssocMobilePhoneNumber());
+    email.setInnerText(e.getAssocEmail());
+    addresseRealEstate.setInnerText(e.getStreet() + " " + e.getCity() + " " + e.getCountry());
     SimpleOwner o = e.getOwner();
     ownerName.setInnerText(o.getName());
     ownerTel.setInnerText(o.getPhoneNumber());

@@ -13,5 +13,9 @@ public interface RealEstateUpdateUiHandlers {
 
   public void onCountrySelect(String selectedText);
   
+  public void onCondoSelect(String selectedText);
+  
+  public void onAssocSelect(String selectedText);
+  
   public void onPostalCodeSelect(String selectedPostalCode);
 }

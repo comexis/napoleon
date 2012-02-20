@@ -1,88 +1,93 @@
 package eu.comexis.napoleon.shared.model.simple;
 
+import java.util.Date;
+
 import com.google.gwt.user.client.rpc.IsSerializable;
 
+public class SimpleOwner implements IsSerializable {
 
-public class SimpleOwner implements IsSerializable{
-	
-	private String id;
-	private String clientId;
-	private String name;
-	private String postalCode;
-	private String address;
-	private String city;
-	private String phoneNumber;
-	private String mobile;
-	
-	public SimpleOwner() {
-	}
+  private String id;
+  private String clientId;
+  private String name;
+  private String postalCode;
+  private String address;
+  private String city;
+  private String phoneNumber;
+  private String mobile;
 
-	public String getId() {
-		return id;
-	}
+  public SimpleOwner() {
+  }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+  public String getAddress() {
+    return address;
+  }
 
-	public String getClientId() {
-		return clientId;
-	}
+  public String getCity() {
+    return city;
+  }
 
-	public void setClientId(String clientId) {
-		this.clientId = clientId;
-	}
+  public String getClientId() {
+    return clientId;
+  }
 
-	public String getName() {
-		return name;
-	}
+  public String getId() {
+    return id;
+  }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  public String getMobile() {
+    return mobile;
+  }
 
-	public String getPostalCode() {
-		return postalCode;
-	}
+  public String getMobileNumber() {
+    return mobile;
+  }
 
-	public void setPostalCode(String postalCode) {
-		this.postalCode = postalCode;
-	}
+  public String getName() {
+    return name;
+  }
 
-	public String getAddress() {
-		return address;
-	}
+  public String getPhoneNumber() {
+    return phoneNumber;
+  }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+  public String getPostalCode() {
+    return postalCode;
+  }
 
-	public String getCity() {
-		return city;
-	}
+  public void setAddress(String address) {
+    this.address = address;
+  }
 
-	public void setCity(String city) {
-		this.city = city;
-	}
+  public void setCity(String city) {
+    this.city = city;
+  }
 
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
+  public void setClientId(String clientId) {
+    this.clientId = clientId;
+  }
 
-	public void setPhoneNumber(String telephone) {
-		this.phoneNumber = telephone;
-	}
+  public void setId(String id) {
+    this.id = id;
+  }
 
-	public String getMobileNumber() {
-		return mobile;
-	}
+  public void setMobile(String mobile) {
+    this.mobile = mobile;
+  }
 
-	public void setMobileNumber(String mobile) {
-		this.mobile = mobile;
-	}
-	
-	
-	
-	
+  public void setMobileNumber(String mobile) {
+    this.mobile = mobile;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public void setPhoneNumber(String telephone) {
+    this.phoneNumber = telephone;
+  }
+
+  public void setPostalCode(String postalCode) {
+    this.postalCode = postalCode;
+  }
 
 }

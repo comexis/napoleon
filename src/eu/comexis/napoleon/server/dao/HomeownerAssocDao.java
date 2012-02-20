@@ -1,6 +1,7 @@
 package eu.comexis.napoleon.server.dao;
 
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.googlecode.objectify.Key;
 
@@ -37,13 +38,14 @@ public class HomeownerAssocDao extends NapoleonDao<Association>{
     return update(assoc,companyKey);
   }
   public Association update(Association assoc,Key<Company> companyKey){
-    String assocId = assoc.getId();
-    if (assocId == null || assocId.length() == 0) {
-      UUID uuid = UUID.randomUUID();
-      System.out.println("Creating Uuid " + uuid.toString());
-      assoc.setId(uuid.toString());
-      assoc.setCompany(companyKey);
-    }
+    assoc.setCompany(companyKey);
     return super.update(assoc);
+  }
+  public List<String> getNames(String companyId){
+    List<String> lst = new ArrayList<String>();
+    for (Association assoc:this.listAll(companyId)){
+      lst.add(assoc.getName());
+    }
+    return lst;
   }
 }
