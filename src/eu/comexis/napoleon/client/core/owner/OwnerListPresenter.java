@@ -43,6 +43,7 @@ public class OwnerListPresenter extends
     return NameTokens.updateOwner;
   }
 
+
   protected void requestData() {
     new GetAllOwnerCommand().dispatch(new GotAllOwner() {
       @Override
