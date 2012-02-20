@@ -1,9 +1,13 @@
 package eu.comexis.napoleon.client.core;
 
+import static com.google.gwt.query.client.GQuery.$;
+
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.InputElement;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.query.client.Function;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -12,6 +16,7 @@ import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
@@ -26,16 +31,18 @@ public abstract class AbstractListView<T> extends ViewImpl implements
   public interface Binder extends UiBinder<Widget, AbstractListView<?>> {
   }
 
-  // list containing the datas to display
-  private ListDataProvider<T> dataProvider;
+  @UiField(provided = true)
+  protected CellTable<T> table;
 
+  @UiField
+  InputElement filter;
   @UiField(provided = true)
   SimplePager pager;
 
-  private ListUiHandlers<T> presenter;
+  // list containing the datas to display
+  private ListDataProvider<T> dataProvider;
 
-  @UiField(provided = true)
-  protected CellTable<T> table;
+  private ListUiHandlers<T> presenter;
   private final Widget widget;
 
   @Inject
@@ -44,6 +51,8 @@ public abstract class AbstractListView<T> extends ViewImpl implements
 
     Binder binder = GWT.create(Binder.class);
     widget = binder.createAndBindUi(this);
+    
+    bind();
 
   }
 
@@ -57,8 +66,52 @@ public abstract class AbstractListView<T> extends ViewImpl implements
     table.setVisibleRangeAndClearData(table.getVisibleRange(), true);
   }
 
+  @UiHandler("btnToDashBoard")
+  public void onGoHomeClicked(ClickEvent e) {
+    presenter.onButtonBackToDashBoardClick();
+  }
+
+  @UiHandler("btnNew")
+  public void onNewClicked(ClickEvent e) {
+    presenter.onButtonNewClick();
+  }
+
+  @Override
+  public void setData(List<T> datas) {
+    dataProvider.getList().clear();
+    dataProvider.getList().addAll(datas);
+    dataProvider.refresh();
+
+  }
+
+  @Override
+  public void setPresenter(ListUiHandlers<T> handler) {
+    this.presenter = handler;
+
+  }
+
   protected abstract ProvidesKey<T> getKeyProvider();
 
+  protected abstract void initTableColumns(SingleSelectionModel<T> selectionModel,
+      ListHandler<T> sortHandler);
+
+  private void bind() {
+    $(filter).keyup(new Function(){
+      @Override
+      public void f() { 
+        String filterString = $(filter).val();
+GWT.log("Filter with "+filterString);
+        presenter.filter(filterString);
+      }
+    });
+    
+  }
+  
+  @UiHandler("reset")
+  public void onResetFilter(ClickEvent e){
+    presenter.filter(null);
+  }
+  
   private void init() {
 
     dataProvider = new ListDataProvider<T>();
@@ -99,33 +152,6 @@ public abstract class AbstractListView<T> extends ViewImpl implements
 
     // Connect the table to the data provider.
     dataProvider.addDataDisplay(table);
-
-  }
-
-  protected abstract void initTableColumns(SingleSelectionModel<T> selectionModel,
-      ListHandler<T> sortHandler);
-
-  @UiHandler("btnToDashBoard")
-  public void onGoHomeClicked(ClickEvent e) {
-    presenter.onButtonBackToDashBoardClick();
-  }
-
-  @UiHandler("btnNew")
-  public void onNewClicked(ClickEvent e) {
-    presenter.onButtonNewClick();
-  }
-
-  @Override
-  public void setData(List<T> datas) {
-    dataProvider.getList().clear();
-    dataProvider.getList().addAll(datas);
-    dataProvider.refresh();
-
-  }
-
-  @Override
-  public void setPresenter(ListUiHandlers<T> handler) {
-    this.presenter = handler;
 
   }
 }

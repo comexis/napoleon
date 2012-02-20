@@ -19,6 +19,15 @@ public class RealEstateListPresenter
     extends
     AbstractListPresenter<SimpleRealEstate, RealEstateListPresenter.MyView, RealEstateListPresenter.MyProxy> {
 
+  private static class RealEstateFilter implements ListFilter<SimpleRealEstate>{
+
+    @Override
+    public boolean filter(SimpleRealEstate estate, String filter) {
+      return !estate.getReference().toLowerCase().startsWith(filter.toLowerCase());
+    }
+    
+  }
+  
   @ProxyCodeSplit
   @NameToken(NameTokens.realEstatelist)
   public interface MyProxy extends ProxyPlace<RealEstateListPresenter> {
@@ -55,11 +64,17 @@ public class RealEstateListPresenter
     new GetAllRealEstateCommand().dispatch(new GotAllRealEstate() {
       @Override
       public void got(List<SimpleRealEstate> realEstates) {
-        getView().setData(realEstates);
-
+        setDatas(realEstates);
       }
     });
 
   }
+  
+  @Override
+  protected ListFilter<SimpleRealEstate> createFilter() {
+    return new RealEstateFilter();
+  }
+  
+  
 
 }

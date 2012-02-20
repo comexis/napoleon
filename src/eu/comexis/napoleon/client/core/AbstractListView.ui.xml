@@ -16,6 +16,9 @@
 
 
 	<g:HTMLPanel>
+		<div>
+			<span>Filtrer la liste :</span><input ui:field="filter"></input><g:Button ui:field="reset">effacer</g:Button>
+		</div>
 		<table style="width:100%">
 			<tr>
 				<td align='center'>

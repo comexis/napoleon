@@ -17,6 +17,15 @@ import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 
 public class OwnerListPresenter extends
     AbstractListPresenter<SimpleOwner, OwnerListPresenter.MyView, OwnerListPresenter.MyProxy> {
+  
+  private static class OwnerListFilter implements ListFilter<SimpleOwner>{
+
+    @Override
+    public boolean filter(SimpleOwner owner, String filter) {
+      return !owner.getName().toLowerCase().startsWith(filter.toLowerCase());
+    }
+    
+  }
 
   @ProxyCodeSplit
   @NameToken(NameTokens.ownerlist)
@@ -48,9 +57,13 @@ public class OwnerListPresenter extends
     new GetAllOwnerCommand().dispatch(new GotAllOwner() {
       @Override
       public void got(List<SimpleOwner> owners) {
-        getView().setData(owners);
+        setDatas(owners);
       }
     });
   }
 
+  @Override
+  protected ListFilter<SimpleOwner> createFilter() {
+    return new OwnerListFilter();
+  }
 }

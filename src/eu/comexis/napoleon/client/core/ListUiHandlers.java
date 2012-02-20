@@ -28,4 +28,6 @@ public interface ListUiHandlers<T> {
    * @param selectedRealEstate
    */
   public void onSelect(T selectedRealEstate);
+
+  public void filter(String filterString);
 }

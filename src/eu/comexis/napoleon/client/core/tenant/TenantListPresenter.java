@@ -18,6 +18,15 @@ import eu.comexis.napoleon.shared.model.simple.SimpleTenant;
 
 public class TenantListPresenter extends
     AbstractListPresenter<SimpleTenant, TenantListPresenter.MyView, TenantListPresenter.MyProxy> {
+  
+  private static class TenantListFilter implements ListFilter<SimpleTenant>{
+
+    @Override
+    public boolean filter(SimpleTenant tenant, String filter) {
+      return !tenant.getName().toLowerCase().startsWith(filter.toLowerCase());
+    }
+    
+  }
 
   @ProxyCodeSplit
   @NameToken(NameTokens.tenantlist)
@@ -49,10 +58,15 @@ public class TenantListPresenter extends
     new GetAllTenantCommand().dispatch(new GotAllTenant() {
       @Override
       public void got(List<SimpleTenant> tenants) {
-        getView().setData(tenants);
+        setDatas(tenants);
       }
     });
 
+  }
+
+  @Override
+  protected ListFilter<SimpleTenant> createFilter() {
+    return new TenantListFilter();
   }
 
 }
