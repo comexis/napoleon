@@ -122,4 +122,10 @@ public class RealEstateListView extends AbstractListView<SimpleRealEstate> imple
     table.addColumn(mobileColumn, "Mobile");
 
   }
+  
+  
+  @Override
+  protected String getButtonNewLabel() {
+    return "Nouveau bien immobilier";
+  }
 }

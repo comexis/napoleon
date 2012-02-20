@@ -135,4 +135,9 @@ public class TenantListView extends AbstractListView<SimpleTenant> implements
     table.addColumn(mobileColumn, "Mobile");
 
   }
+
+  @Override
+  protected String getButtonNewLabel() {
+    return "Nouveau locataire";
+  }
 }

@@ -134,4 +134,9 @@ public class OwnerListView extends AbstractListView<SimpleOwner> implements
     table.addColumn(mobileColumn, "Mobile");
 
   }
+  
+  @Override
+  protected String getButtonNewLabel() {
+    return "Nouveau propriétaire";
+  }
 }
