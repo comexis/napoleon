@@ -1,12 +1,8 @@
 package eu.comexis.napoleon.client.core.estate;
 
-import static com.google.gwt.query.client.GQuery.$;
-
 import java.util.Date;
 import java.util.List;
 
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -29,8 +25,6 @@ import eu.comexis.napoleon.shared.model.Condo;
 import eu.comexis.napoleon.shared.model.Country;
 import eu.comexis.napoleon.shared.model.RealEstate;
 import eu.comexis.napoleon.shared.model.RealEstateState;
-import eu.comexis.napoleon.shared.model.Title;
-import eu.comexis.napoleon.shared.model.City;
 import eu.comexis.napoleon.shared.model.TypeOfRealEstate;
 import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 import eu.comexis.napoleon.shared.validation.ValidationMessage;
@@ -272,15 +266,18 @@ public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePr
     this.phoneNumber.setText("");
     UiHelper.selectTextItemBoxByValue(this.ownerName, "(...)");
     if (e != null) {
-      SimpleOwner o = e.getOwner();
+
       this.reference.setText(e.getReference());
       this.number.setText(e.getNumber());
       this.box.setText(e.getBox());
       this.dimension.setText(e.getDimension());
       UiHelper.selectTextItemBoxByValue(this.state, (e.getState() != null ? e.getState().name() : ""));
       UiHelper.selectTextItemBoxByValue(this.type, (e.getType() != null ? e.getType().name() : ""));
-      UiHelper.selectTextItemBoxByValue(this.ownerName, o.getId());
-      if (!e.getCondominium().isEmpty()) {
+      SimpleOwner o = e.getOwner();
+      if (o!= null){
+        UiHelper.selectTextItemBoxByValue(this.ownerName, o.getId());
+      }
+      if (e.getCondominium() != null && !e.getCondominium().isEmpty()) {
         this.condo.setText(e.getCondominium());
         this.association.setText(e.getHomeownerAssociation());
         this.address.setText(e.getAssocAdresss());
@@ -293,7 +290,9 @@ public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePr
       this.addressRealEstate.setText(e.getStreet());
       this.postalCode.setText(e.getPostalCode());
       this.presenter.onPostalCodeSelect(postalCode.getValue());
-      this.city.setValue(o.getCity());
+      if (o!= null){
+        this.city.setValue(o.getCity());
+      }
       this.presenter.onCitySelect(city.getValue());
       this.square.setText(e.getSquare());
     }
