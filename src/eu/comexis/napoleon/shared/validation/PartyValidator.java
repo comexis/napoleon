@@ -33,13 +33,19 @@ public class PartyValidator<T extends Party> extends AbstractValidator<T> {
    
     if (isEmpty(party.getFirstName())){
       messages.add(new ValidationMessage(VALIDATION_MESSAGES.fieldIsMandatory("prénom"), "firstName"));
+    }else{
+      if (!party.getFirstName().matches("^[\\p{L}\\p{M}' \\.\\-]+$")){
+        messages.add(new ValidationMessage(VALIDATION_MESSAGES.firstnameInvalid(party.getFirstName()), "firstName"));
+      }
     }
     
     if (isEmpty(party.getLastName())){
       messages.add(new ValidationMessage(VALIDATION_MESSAGES.fieldIsMandatory("nom"), "name"));
+    }else{
+      if (!party.getLastName().matches("^[\\p{L}\\p{M}' \\.\\-]+$")){
+        messages.add(new ValidationMessage(VALIDATION_MESSAGES.lastnameInvalid(party.getLastName()), "name"));
+      }
     }
-
-    
   }
 
  

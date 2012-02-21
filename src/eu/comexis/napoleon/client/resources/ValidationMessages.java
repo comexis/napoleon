@@ -18,5 +18,11 @@ public interface ValidationMessages extends Messages {
 
   @DefaultMessage("L''addresse email ''{0}'' n''est pas une addresse email valide.")
   public String emailInvalid(String email);
+  
+  @DefaultMessage("Le nom ''{0}'' n''est pas valide.")
+  public String lastnameInvalid(String name);
+  
+  @DefaultMessage("Le prénom ''{0}'' n''est pas valide.")
+  public String firstnameInvalid(String name);
 
 }

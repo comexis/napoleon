@@ -116,7 +116,7 @@ public abstract class PartyDetailsView<T extends Party> extends ViewImpl impleme
     job.setInnerText(party.getJobTitle());
     nationalRegister.setInnerText(party.getNationalRegisterNumber());
     birthDay.setInnerText(UiHelper.displayDate(party.getDateOfBirth()));
-    addresse.setInnerText(party.getStreet() + " " + party.getCity() + " " + party.getCountry());
+    addresse.setInnerHTML(party.getStreet() + "<br/>" + party.getPostalCode() + " " + party.getCity() + "<br/>" + party.getCountry());
     maritalStatus.setInnerText(party.getMaritalStatus() != null ? UiHelper.translateEnum(
         "MaritalStatus_", party.getMaritalStatus()) : "");
     matrimonialRegime.setInnerText(party.getMatrimonialRegime() != null ? UiHelper.translateEnum(
