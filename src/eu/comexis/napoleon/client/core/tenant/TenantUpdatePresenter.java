@@ -21,8 +21,7 @@ import eu.comexis.napoleon.shared.validation.PartyValidator;
 import eu.comexis.napoleon.shared.validation.TenantValidator;
 
 public class TenantUpdatePresenter extends
-    PartyUpdatePresenter<Tenant, TenantUpdatePresenter.MyView, TenantUpdatePresenter.MyProxy>
-    implements TenantUpdateUiHandlers {
+    PartyUpdatePresenter<Tenant, TenantUpdatePresenter.MyView, TenantUpdatePresenter.MyProxy>{
 
   @ProxyCodeSplit
   @NameToken(NameTokens.updateTenant)

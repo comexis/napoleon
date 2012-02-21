@@ -9,7 +9,6 @@ import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 
-import eu.comexis.napoleon.client.core.owner.OwnerDetailUiHandlers;
 import eu.comexis.napoleon.client.core.party.PartyDetailsPresenter;
 import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.rpc.callback.GotTenant;
@@ -17,8 +16,7 @@ import eu.comexis.napoleon.shared.command.tenant.GetTenantCommand;
 import eu.comexis.napoleon.shared.model.Tenant;
 
 public class TenantDetailsPresenter extends
-    PartyDetailsPresenter<Tenant, TenantDetailsPresenter.MyView, TenantDetailsPresenter.MyProxy>
-    implements OwnerDetailUiHandlers {
+    PartyDetailsPresenter<Tenant, TenantDetailsPresenter.MyView, TenantDetailsPresenter.MyProxy>{
 
   @ProxyCodeSplit
   @NameToken(NameTokens.tenant)

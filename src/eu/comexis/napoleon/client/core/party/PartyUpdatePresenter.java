@@ -14,6 +14,7 @@ import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
+import eu.comexis.napoleon.client.core.HasPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter;
 import eu.comexis.napoleon.client.rpc.callback.GotAllCountries;
 import eu.comexis.napoleon.client.rpc.callback.GotCountry;
@@ -32,7 +33,7 @@ public abstract class PartyUpdatePresenter<T extends Party, V extends PartyUpdat
     PartyUpdateUiHandlers {
 
   
-  public interface MyView<T extends Party> extends View, PartyUpdateUiHandlers.HasPresenter {
+  public interface MyView<T extends Party> extends View, HasPresenter<PartyUpdateUiHandlers> {
     public void displayError(String error);
 
     public void displayValidationMessage(List<ValidationMessage> validationMessages);

@@ -14,13 +14,14 @@ import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
+import eu.comexis.napoleon.client.core.HasPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter;
 import eu.comexis.napoleon.shared.model.Party;
 
 public abstract class PartyDetailsPresenter<T extends Party, V extends PartyDetailsPresenter.MyView<T>, P extends Proxy<?>>
     extends Presenter<V, P> implements PartyDetailsUiHandlers {
 
-  public interface MyView<T extends Party> extends View, PartyDetailsUiHandlers.HasPresenter {
+  public interface MyView<T extends Party> extends View, HasPresenter<PartyDetailsUiHandlers> {
     public void setData(T p);
   }
 

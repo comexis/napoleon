@@ -17,8 +17,7 @@ import eu.comexis.napoleon.shared.model.Owner;
 
 public class OwnerDetailsPresenter
     extends
-    PartyDetailsPresenter<Owner, OwnerDetailsPresenter.MyView , OwnerDetailsPresenter.MyProxy>
-    implements OwnerDetailUiHandlers {
+    PartyDetailsPresenter<Owner, OwnerDetailsPresenter.MyView , OwnerDetailsPresenter.MyProxy>{
 
   @ProxyCodeSplit
   @NameToken(NameTokens.owner)
