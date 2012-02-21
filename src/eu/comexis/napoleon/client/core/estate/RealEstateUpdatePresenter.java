@@ -43,6 +43,8 @@ import eu.comexis.napoleon.shared.model.City;
 import eu.comexis.napoleon.shared.model.Condo;
 import eu.comexis.napoleon.shared.model.Country;
 import eu.comexis.napoleon.shared.model.RealEstate;
+import eu.comexis.napoleon.shared.model.RealEstateState;
+import eu.comexis.napoleon.shared.model.TypeOfRealEstate;
 import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 import eu.comexis.napoleon.shared.validation.RealEstateValidator;
 import eu.comexis.napoleon.shared.validation.ValidationMessage;
@@ -60,25 +62,27 @@ public class RealEstateUpdatePresenter extends
 
     public void displayValidationMessage(List<ValidationMessage> validationMessages);
 
+    public void fillAssoc(Association assoc);
+
+    public void fillAssocList(List<String> assocNames);
+
     public void fillCityList(List<String> cities);
+
+    public void fillCondo(Condo cdo);
+
+    public void fillCondoList(List<String> condoNames);
 
     public void fillCountryList(List<Country> countries);
 
     public void fillOwnerList(List<SimpleOwner> owners);
-
-    public void fillCondoList(List<String> condoNames);
-
-    public void fillCondo(Condo cdo);
-
-    public void fillAssoc(Association assoc);
-
-    public void fillAssocList(List<String> assocNames);
 
     public void fillPostalCodeList(List<String> postCdes);
 
     public void fillSquareList(List<String> squares);
 
     public String getSelectedCountry();
+
+    public void reset();
 
     public void setRealEstate(RealEstate e);
 
@@ -102,6 +106,22 @@ public class RealEstateUpdatePresenter extends
     super(eventBus, view, proxy);
     this.placeManager = placeManager;
     this.validator = new RealEstateValidator();
+  }
+
+  @Override
+  public void onAssocSelect(String selectedAssoc) {
+
+    if (selectedAssoc == null || selectedAssoc.length() == 0) {
+      return;
+    }
+    GetAssocCommand cmd = new GetAssocCommand();
+    cmd.setName(selectedAssoc);
+    cmd.dispatch(new GotAssoc() {
+      @Override
+      public void got(Association assoc) {
+        getView().fillAssoc(assoc);
+      }
+    });
   }
 
   @Override
@@ -139,6 +159,22 @@ public class RealEstateUpdatePresenter extends
         }
       }
     }
+  }
+
+  @Override
+  public void onCondoSelect(String selectedCondo) {
+
+    if (selectedCondo == null || selectedCondo.length() == 0) {
+      return;
+    }
+    GetCondoCommand cmd = new GetCondoCommand();
+    cmd.setName(selectedCondo);
+    cmd.dispatch(new GotCondo() {
+      @Override
+      public void got(Condo cdo) {
+        getView().fillCondo(cdo);
+      }
+    });
   }
 
   @Override
@@ -184,38 +220,6 @@ public class RealEstateUpdatePresenter extends
     }
     getView().fillCityList(lstCities);
 
-  }
-
-  @Override
-  public void onCondoSelect(String selectedCondo) {
-
-    if (selectedCondo == null || selectedCondo.length() == 0) {
-      return;
-    }
-    GetCondoCommand cmd = new GetCondoCommand();
-    cmd.setName(selectedCondo);
-    cmd.dispatch(new GotCondo() {
-      @Override
-      public void got(Condo cdo) {
-        getView().fillCondo(cdo);
-      }
-    });
-  }
-
-  @Override
-  public void onAssocSelect(String selectedAssoc) {
-
-    if (selectedAssoc == null || selectedAssoc.length() == 0) {
-      return;
-    }
-    GetAssocCommand cmd = new GetAssocCommand();
-    cmd.setName(selectedAssoc);
-    cmd.dispatch(new GotAssoc() {
-      @Override
-      public void got(Association assoc) {
-        getView().fillAssoc(assoc);
-      }
-    });
   }
 
   /**
@@ -266,6 +270,12 @@ public class RealEstateUpdatePresenter extends
   }
 
   @Override
+  protected void onHide() {
+    super.onHide();
+    getView().reset();
+  }
+
+  @Override
   protected void onReset() {
     super.onReset();
     if (id != null && !"new".equals(id)) { // call the server to get the requested owner
@@ -278,6 +288,8 @@ public class RealEstateUpdatePresenter extends
       });
     } else {
       realEstate = new RealEstate();
+      realEstate.setState(RealEstateState.NONE);
+      realEstate.setType(TypeOfRealEstate.NONE);
       getView().setRealEstate(realEstate);
     }
   }

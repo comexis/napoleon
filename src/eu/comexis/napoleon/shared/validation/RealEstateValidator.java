@@ -14,6 +14,7 @@ public class RealEstateValidator extends AbstractValidator<RealEstate> {
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
     
     validateReference(estate, messages);
+    validateOwner(estate, messages);
     
     return messages;
   }
@@ -22,6 +23,14 @@ public class RealEstateValidator extends AbstractValidator<RealEstate> {
    
     if (isEmpty(estate.getReference())){
       messages.add(new ValidationMessage(VALIDATION_MESSAGES.fieldIsMandatory("Référence"), "reference"));
+    }
+    
+  }
+  
+  private void validateOwner(RealEstate estate, List<ValidationMessage> messages) {
+    
+    if (estate.getOwner()==null){
+      messages.add(new ValidationMessage(VALIDATION_MESSAGES.fieldIsMandatory("propriétaire"), "owner"));
     }
     
   }

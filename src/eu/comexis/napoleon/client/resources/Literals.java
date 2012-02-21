@@ -72,6 +72,9 @@ public interface Literals extends ConstantsWithLookup {
 
   @DefaultStringValue("Renové")
   public String RealEstateState_RENEWED();
+  
+  @DefaultStringValue("-")
+  public String RealEstateState_NONE();
 
   // TypeOfRealEstate Enum
   @DefaultStringValue("Appartement 1 ch.")
@@ -100,6 +103,9 @@ public interface Literals extends ConstantsWithLookup {
 
   @DefaultStringValue("Villa")
   public String TypeOfRealEstate_VILLA();
+  
+  @DefaultStringValue("-")
+  public String TypeOfRealEstate_NONE();
 
   @DefaultStringValue("Veuillez corriger les erreurs suivantes :")
   public String validationMessageDisplayIntro();
