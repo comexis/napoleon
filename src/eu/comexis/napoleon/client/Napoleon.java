@@ -11,7 +11,7 @@ import eu.comexis.napoleon.client.resources.Resources;
 
 public class Napoleon implements EntryPoint {
 
-  private final ClientGinjector ginjector = GWT.create(ClientGinjector.class);
+  public final ClientGinjector ginjector = GWT.create(ClientGinjector.class);
 
   @Override
   public void onModuleLoad() {
