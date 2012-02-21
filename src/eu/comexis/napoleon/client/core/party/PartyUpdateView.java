@@ -62,7 +62,7 @@ public abstract class PartyUpdateView<T extends Party> extends ViewImpl implemen
   TextBox firstName;
   @UiField
   TextBox iban;
-  @UiField(provided = true)
+  @UiField
   SuggestBox job;
   @UiField(provided = true)
   ListBox maritalStatus;
@@ -72,7 +72,7 @@ public abstract class PartyUpdateView<T extends Party> extends ViewImpl implemen
   TextBox mobileNumber;
   @UiField
   TextBox name;
-  @UiField(provided = true)
+  @UiField
   SuggestBox nationality;
   @UiField
   TextBox nationalRegister;
@@ -144,6 +144,32 @@ public abstract class PartyUpdateView<T extends Party> extends ViewImpl implemen
       }
     }
   }
+  
+  @Override
+  public void fillNationalityList(List<String> nationalities) {
+    MultiWordSuggestOracle oracle = (MultiWordSuggestOracle) nationality.getSuggestOracle();
+    oracle.clear();
+    if (nationalities != null) {
+      for (String sVal : nationalities) {
+        if (sVal != null) {
+          oracle.add(sVal);
+        }
+      }
+    }
+  }
+  
+  @Override
+  public void fillJobList(List<String> jobs) {
+    MultiWordSuggestOracle oracle = (MultiWordSuggestOracle) this.job.getSuggestOracle();
+    oracle.clear();
+    if (jobs != null) {
+      for (String sVal : jobs) {
+        if (sVal != null) {
+          oracle.add(sVal);
+        }
+      }
+    }
+  }
 
   @Override
   public String getSelectedCountry() {
@@ -155,21 +181,6 @@ public abstract class PartyUpdateView<T extends Party> extends ViewImpl implemen
     maritalStatus = UiHelper.createListBoxForEnum(MaritalStatus.class, "MaritalStatus_", false);
     matrimonialRegime =
         UiHelper.createListBoxForEnum(MatrimonialRegime.class, "MatrimonialRegime_", false);
-
-    // TODO get the value from the server
-    nationality = new SuggestBox();
-    MultiWordSuggestOracle oracleNationality =
-        (MultiWordSuggestOracle) nationality.getSuggestOracle();
-    oracleNationality.add("Belge");
-    oracleNationality.add("Français");
-
-    // TODO get the value from the server
-    job = new SuggestBox();
-    MultiWordSuggestOracle oracleJob = (MultiWordSuggestOracle) job.getSuggestOracle();
-    oracleJob.add("Enseignant");
-    oracleJob.add("Ingénieur");
-    oracleJob.add("Informaticien");
-
   }
 
   /**

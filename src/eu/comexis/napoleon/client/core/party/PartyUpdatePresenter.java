@@ -16,9 +16,11 @@ import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
 import eu.comexis.napoleon.client.core.MainLayoutPresenter;
 import eu.comexis.napoleon.client.rpc.callback.GotAllCountries;
+import eu.comexis.napoleon.client.rpc.callback.GotAllSuggest;
 import eu.comexis.napoleon.client.rpc.callback.GotCountry;
 import eu.comexis.napoleon.shared.command.country.GetAllCountriesCommand;
 import eu.comexis.napoleon.shared.command.country.GetCountryCommand;
+import eu.comexis.napoleon.shared.command.suggest.GetAllSuggestCommand;
 import eu.comexis.napoleon.shared.model.City;
 import eu.comexis.napoleon.shared.model.Country;
 import eu.comexis.napoleon.shared.model.MaritalStatus;
@@ -41,6 +43,10 @@ public abstract class PartyUpdatePresenter<T extends Party, V extends PartyUpdat
 
     public void fillCountryList(List<Country> countries);
 
+    public void fillJobList(List<String> jobs);
+    
+    public void fillNationalityList(List<String> nationalities);
+    
     public void fillPostalCodeList(List<String> postCdes);
 
     public String getSelectedCountry();
@@ -49,9 +55,9 @@ public abstract class PartyUpdatePresenter<T extends Party, V extends PartyUpdat
 
     public void setData(T o);
 
-    public void updateData(T o);
-    
     public void setMatrimonialRegime(MatrimonialRegime matrimonialRegime);
+    
+    public void updateData(T o);
   }
 
   public static final String UUID_PARAMETER = "uuid";
@@ -127,6 +133,14 @@ public abstract class PartyUpdatePresenter<T extends Party, V extends PartyUpdat
   }
 
   @Override
+  public void onMaritalStatusSelected(MaritalStatus maritalStatus) {
+    if (MaritalStatus.SINGLE == maritalStatus){
+      getView().setMatrimonialRegime(MatrimonialRegime.NONE);
+    }
+    
+  }
+
+  @Override
   public void onPostalCodeSelect(String selectedPostalCode) {
 
     if (selectedPostalCode == null || selectedPostalCode.length() == 0){
@@ -159,9 +173,9 @@ public abstract class PartyUpdatePresenter<T extends Party, V extends PartyUpdat
       placeManager.revealErrorPlace(placeRequest.getNameToken());
     }
   }
-
-  protected abstract  T createNewDataModel();
   
+  protected abstract  T createNewDataModel();
+
   protected abstract PartyValidator<T> createValidator();
 
   protected T getDataObjectModel(){
@@ -169,22 +183,22 @@ public abstract class PartyUpdatePresenter<T extends Party, V extends PartyUpdat
   }
 
   protected abstract String getDetailsNameTokens();
-
-  protected abstract String getListNameTokens();
   
+  protected abstract String getListNameTokens();
+
   @Override
   protected void onBind() {
     super.onBind();
     getView().setPresenter(this);
     init();
   }
-
+  
   @Override
   protected void onHide() {
     super.onHide();
     getView().reset();
   }
-  
+
   @Override
   protected void onReset() {
     super.onReset();
@@ -196,7 +210,7 @@ public abstract class PartyUpdatePresenter<T extends Party, V extends PartyUpdat
     }
 
   }
-
+  
   protected abstract void requestData(String id);
   
   @Override
@@ -209,19 +223,19 @@ public abstract class PartyUpdatePresenter<T extends Party, V extends PartyUpdat
   protected void setDataObjectModel(T t){
     party = t;
   }
-  
   private void goToDetails() {
     PlaceRequest myRequest = new PlaceRequest(getDetailsNameTokens());
     // add the id of the owner to load
     myRequest = myRequest.with(UUID_PARAMETER, party.getId());
     placeManager.revealPlace(myRequest);
   }
+
   private void goToList() {
     PlaceRequest myRequest = new PlaceRequest(getListNameTokens());
     placeManager.revealPlace(myRequest);
-    
-  }
 
+  }
+  
   private void init() {
     new GetAllCountriesCommand().dispatch(new GotAllCountries() {
       @Override
@@ -230,13 +244,17 @@ public abstract class PartyUpdatePresenter<T extends Party, V extends PartyUpdat
         
       }
     });
-  }
-  
-  @Override
-  public void onMaritalStatusSelected(MaritalStatus maritalStatus) {
-    if (MaritalStatus.SINGLE == maritalStatus){
-      getView().setMatrimonialRegime(MatrimonialRegime.NONE);
-    }
-    
+    new GetAllSuggestCommand("JobTitle").dispatch(new GotAllSuggest() {
+      @Override
+      public void got(List<String> suggests) {
+        getView().fillJobList(suggests);
+      }
+    });
+    new GetAllSuggestCommand("Nationality").dispatch(new GotAllSuggest() {
+      @Override
+      public void got(List<String> suggests) {
+        getView().fillNationalityList(suggests);
+      }
+    });
   }
 }

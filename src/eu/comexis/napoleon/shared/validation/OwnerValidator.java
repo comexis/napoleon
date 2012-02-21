@@ -44,6 +44,10 @@ public class OwnerValidator extends PartyValidator<Owner>{
       if (isLessThan(fee, 5) || isGreaterThan(fee, 15)){
         messages.add(new ValidationMessage(VALIDATION_MESSAGES.feePercentageInvalid(), "fee"));
       }
+    }else{
+      if (isLessThan(fee,0)){
+        messages.add(new ValidationMessage(VALIDATION_MESSAGES.feeAmountInvalid(), "fee"));
+      }
     }
     
     //continue...

@@ -9,6 +9,8 @@ import com.googlecode.objectify.Key;
 import eu.comexis.napoleon.shared.model.City;
 import eu.comexis.napoleon.shared.model.Company;
 import eu.comexis.napoleon.shared.model.Country;
+import eu.comexis.napoleon.shared.model.JobTitle;
+import eu.comexis.napoleon.shared.model.Nationality;
 import eu.comexis.napoleon.shared.model.Owner;
 import eu.comexis.napoleon.shared.model.Tenant;
 import eu.comexis.napoleon.shared.model.simple.SimpleTenant;
@@ -84,6 +86,18 @@ public class TenantDao extends NapoleonDao<Tenant> {
     City city = countryData.getCityByFullName(country.getId(), tenant.getCity(),tenant.getPostalCode());
     if (city == null) {
       city = countryData.addCity(country.getId(), tenant.getCity(),tenant.getPostalCode());
+    }
+    if (tenant.getNationality()!= null && !tenant.getNationality().isEmpty()){
+      NationalityDao natDao = new NationalityDao();
+      Nationality nat = new Nationality();
+      nat.setCompany(companyKey);
+      natDao.update(nat);
+    }
+    if (tenant.getJobTitle()!= null && !tenant.getJobTitle().isEmpty()){
+      JobTitleDao jobDao = new JobTitleDao();
+      JobTitle job = new JobTitle();
+      job.setCompany(companyKey);
+      jobDao.update(job);
     }
     return super.update(tenant);
   }

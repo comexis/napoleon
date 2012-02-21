@@ -9,6 +9,8 @@ import com.googlecode.objectify.Key;
 import eu.comexis.napoleon.shared.model.City;
 import eu.comexis.napoleon.shared.model.Company;
 import eu.comexis.napoleon.shared.model.Country;
+import eu.comexis.napoleon.shared.model.JobTitle;
+import eu.comexis.napoleon.shared.model.Nationality;
 import eu.comexis.napoleon.shared.model.Owner;
 import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 
@@ -84,6 +86,20 @@ public class OwnerDao extends NapoleonDao<Owner> {
     City city = countryData.getCityByFullName(country.getId(), owner.getCity(),owner.getPostalCode());
     if (city == null) {
       city = countryData.addCity(country.getId(), owner.getCity(),owner.getPostalCode());
+    }
+    if (owner.getNationality()!= null && !owner.getNationality().isEmpty()){
+      NationalityDao natDao = new NationalityDao();
+      Nationality nat = new Nationality();
+      nat.setName(owner.getNationality());
+      nat.setCompany(companyKey);
+      natDao.update(nat);
+    }
+    if (owner.getJobTitle()!= null && !owner.getJobTitle().isEmpty()){
+      JobTitleDao jobDao = new JobTitleDao();
+      JobTitle job = new JobTitle();
+      job.setName(owner.getJobTitle());
+      job.setCompany(companyKey);
+      jobDao.update(job);
     }
     return super.update(owner);
   }

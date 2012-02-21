@@ -73,7 +73,7 @@
 			<g:TextBox ui:field="nationalRegister" styleName="{res.css.detailCellInputText}" name="nationalRegister"/>
 		</div>
 		<div class="{res.css.detailRow}">
-			<span class="{res.css.detailCellInputLabel}" style="width:140px">Marital status :</span>
+			<span class="{res.css.detailCellInputLabel}" style="width:140px">Etat civil :</span>
 			<g:ListBox ui:field="maritalStatus" styleName="{res.css.detailCellInputList}" name="maritalStatus"/>
 			<span class="{res.css.detailCellInputLabel}">Régime matrimonial :</span>
 			<g:ListBox ui:field="matrimonialRegime" styleName="{res.css.detailCellInputList}" name="matrimonialRegime"/>

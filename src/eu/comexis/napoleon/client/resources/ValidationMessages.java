@@ -28,8 +28,8 @@ public interface ValidationMessages extends Messages {
   @DefaultMessage("Le champ honoraire doit être compris entre 5 et 15 % inclus")
   public String feePercentageInvalid();
   
-  @DefaultMessage("Le champ ''{0}'' doit être numeric")
-  public String amountInvalid(String name);
+  @DefaultMessage("Le champ honoraire doit être un montant positif")
+  public String feeAmountInvalid();
 
 
 }
