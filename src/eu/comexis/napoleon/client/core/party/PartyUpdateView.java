@@ -231,6 +231,16 @@ public abstract class PartyUpdateView<T extends Party> extends ViewImpl implemen
     city.setValue("");
   }
 
+  @UiHandler("name")
+  public void onNameChange(ValueChangeEvent<String> event) {
+    name.setValue(UiHelper.formatLastName(name.getValue()));
+  }
+  
+  @UiHandler("firstName")
+  public void onFirstNameChange(ValueChangeEvent<String> event) {
+    firstName.setValue(UiHelper.formatFirstName(firstName.getValue()));
+  }
+  
   @UiHandler("btnSave")
   public void onSave(ClickEvent e) {
     presenter.onButtonSaveClick();
