@@ -39,7 +39,7 @@ public class RealEstateValidator extends AbstractValidator<RealEstate> {
   private void validateAddress(RealEstate estate, List<ValidationMessage> messages) {
     
     if (estate.getStreet()==null || estate.getStreet().isEmpty()){
-      messages.add(new ValidationMessage(VALIDATION_MESSAGES.fieldIsMandatory("adresse"), "street"));
+      messages.add(new ValidationMessage(VALIDATION_MESSAGES.fieldIsMandatory("adresse"), "addressRealEstate"));
     }
     if (estate.getNumber()==null || estate.getNumber().isEmpty()){
       messages.add(new ValidationMessage(VALIDATION_MESSAGES.fieldIsMandatory("n°"), "number"));
