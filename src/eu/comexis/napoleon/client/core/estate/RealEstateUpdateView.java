@@ -290,9 +290,7 @@ public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePr
       this.addressRealEstate.setText(e.getStreet());
       this.postalCode.setText(e.getPostalCode());
       this.presenter.onPostalCodeSelect(postalCode.getValue());
-      if (o!= null){
-        this.city.setValue(o.getCity());
-      }
+      this.city.setValue(e.getCity());
       this.presenter.onCitySelect(city.getValue());
       this.square.setText(e.getSquare());
     }

@@ -18,7 +18,7 @@
 		</div>
 		
 		<div class="{res.css.detailRow}">
-			<span class="{res.css.detailCellInputLabel}">Syndicat :</span>
+			<span class="{res.css.detailCellInputLabel}">Syndic :</span>
 			<g:SuggestBox ui:field="association" styleName="{res.css.detailCellInputText}" />
 			<span class="{res.css.detailCellInputLabel}">Adresse :</span>
 			<g:TextBox ui:field="address" styleName="{res.css.detailCellInputText}" />

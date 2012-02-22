@@ -5,7 +5,6 @@ import static com.google.gwt.query.client.GQuery.$;
 import java.util.Date;
 import java.util.List;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -96,5 +95,23 @@ public class UiHelper {
     
     return DATE_FORMAT.format(d);
   }
-
+  public static String formatLastName(String name){
+    name.toUpperCase();
+    return name;
+  }
+  public static String formatFirstName(String name){
+    String formatedName = "";
+    String [] parts=name.toLowerCase().split(" ");
+    for(int i=0; i < parts.length; i++){
+      parts[i] = parts[i].substring(0,1).toUpperCase() + parts[i].substring(1);
+      formatedName += parts[i] + " ";
+    }
+    parts=formatedName.split("_");
+    formatedName = "";
+    for(int i=0; i < parts.length; i++){
+      parts[i] = parts[i].substring(0,1).toUpperCase() + parts[i].substring(1);
+      formatedName += parts[i] + "_";
+    }
+    return formatedName.substring(0,formatedName.length()-1);
+  }
 }

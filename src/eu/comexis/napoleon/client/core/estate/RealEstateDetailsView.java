@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
+import eu.comexis.napoleon.client.utils.UiHelper;
 import eu.comexis.napoleon.shared.model.Association;
 import eu.comexis.napoleon.shared.model.Condo;
 import eu.comexis.napoleon.shared.model.RealEstate;
@@ -39,6 +40,12 @@ public class RealEstateDetailsView extends ViewImpl implements RealEstateDetails
   Element email;
   @UiField
   Element addresseRealEstate;
+  @UiField
+  Element postalCode;
+  @UiField
+  Element city;
+  @UiField
+  Element country;
   @UiField
   Element number;
   @UiField
@@ -90,11 +97,10 @@ public class RealEstateDetailsView extends ViewImpl implements RealEstateDetails
     // TODO improve and continue
 
     reference.setInnerText(e.getReference());
-    number.setInnerText(e.getNumber());
-    box.setInnerText(e.getBox());
-    square.setInnerText(e.getSquare());
-    type.setInnerText(e.getType().toString());
-    state.setInnerText(e.getState().toString());
+    type.setInnerText(e.getType() != null ? UiHelper.translateEnum(
+        "TypeOfRealEstate_", e.getType()) : "");
+    state.setInnerText(e.getState() != null ? UiHelper.translateEnum(
+        "RealEstateState_", e.getState()) : "");
     dimension.setInnerText(e.getDimension());
     condo.setInnerText(e.getCondominium());
     association.setInnerText(e.getHomeownerAssociation());
@@ -102,7 +108,13 @@ public class RealEstateDetailsView extends ViewImpl implements RealEstateDetails
     tel.setInnerText(e.getAssocPhoneNumber());
     gsm.setInnerText(e.getAssocMobilePhoneNumber());
     email.setInnerText(e.getAssocEmail());
-    addresseRealEstate.setInnerText(e.getStreet() + " " + e.getCity() + " " + e.getCountry());
+    addresseRealEstate.setInnerText(e.getStreet());
+    postalCode.setInnerText(e.getPostalCode());
+    city.setInnerText(e.getCity());
+    country.setInnerText(e.getCountry());
+    number.setInnerText(e.getNumber());
+    box.setInnerText(e.getBox());
+    square.setInnerText(e.getSquare());
     SimpleOwner o = e.getOwner();
     ownerName.setInnerText(o.getName());
     ownerTel.setInnerText(o.getPhoneNumber());
