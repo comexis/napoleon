@@ -24,6 +24,7 @@ import eu.comexis.napoleon.shared.model.Owner;
 import eu.comexis.napoleon.shared.model.RealEstate;
 import eu.comexis.napoleon.shared.model.Tenant;
 import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
+import eu.comexis.napoleon.shared.model.simple.SimpleRealEstate;
 
 public class ExtractDatastoreAsXML extends HttpServlet {
 
@@ -96,6 +97,12 @@ public class ExtractDatastoreAsXML extends HttpServlet {
         }
         out.println("</FileDescriptors>");
       }
+
+      RealEstateDao eDao = new RealEstateDao();
+      for (SimpleRealEstate e : eDao.getListSimpleRealEstatesForOwner(companyId, o.getId())) {
+        out.println("<RealEstate reference='"+ e.getReference() + "'/>");
+      }
+
       out.println("</Owner>");
     }
     out.println("</Owners>");

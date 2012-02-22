@@ -7,6 +7,7 @@
 
 	<ui:with field='res' type='eu.comexis.napoleon.client.resources.Resources' />
 
+
 	<g:TabLayoutPanel barUnit="PX" barHeight="35">
 		<g:tab>
 			<g:header>Général</g:header>

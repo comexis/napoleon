@@ -18,5 +18,18 @@ public interface ValidationMessages extends Messages {
 
   @DefaultMessage("L''addresse email ''{0}'' n''est pas une addresse email valide.")
   public String emailInvalid(String email);
+  
+  @DefaultMessage("Le nom ''{0}'' n''est pas valide.")
+  public String lastnameInvalid(String name);
+  
+  @DefaultMessage("Le prénom ''{0}'' n''est pas valide.")
+  public String firstnameInvalid(String name);
+  
+  @DefaultMessage("Le champ honoraire doit être compris entre 5 et 15 % inclus")
+  public String feePercentageInvalid();
+  
+  @DefaultMessage("Le champ honoraire doit être un montant positif")
+  public String feeAmountInvalid();
+
 
 }

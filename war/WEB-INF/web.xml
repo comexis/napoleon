@@ -85,6 +85,17 @@
 		<servlet-name>condoServlet</servlet-name>
 		<url-pattern>/napoleon/condominium</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>suggestServlet</servlet-name>
+		<servlet-class>eu.comexis.napoleon.server.service.SuggestServiceImpl</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>suggestServlet</servlet-name>
+		<url-pattern>/napoleon/suggest</url-pattern>
+	</servlet-mapping>
+	
 
 	<!-- Add this to your web.xml to enable remote API on Java. -->
 	<servlet>

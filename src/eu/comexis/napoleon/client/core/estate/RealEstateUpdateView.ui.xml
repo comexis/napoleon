@@ -12,7 +12,7 @@
 
 		<div class="{res.css.detailRow}">
 			<span class="{res.css.detailCellInputLabel}">Référence :</span>
-			<g:TextBox ui:field="reference" styleName="{res.css.detailCellInputText}" />
+			<g:TextBox ui:field="reference" styleName="{res.css.detailCellInputText}" name="reference"/>
 			<span class="{res.css.detailCellInputLabel}">Copropriété :</span>
 			<g:SuggestBox ui:field="condo" styleName="{res.css.detailCellInputText}" />
 		</div>
@@ -50,32 +50,6 @@
 			<g:SuggestBox ui:field="city" styleName="{res.css.detailCellInputText}" />
 			
 		</div>
-		<!--div class="{res.css.detailRow}">
-			<table>
-				<tr id="country">
-					<td>
-						<span class="{res.css.detailCellInputLabel}" style="width:80px">Pays :</span>
-						<g:ListBox ui:field="country" styleName="{res.css.detailCellInputList}" />
-					</td>
-					<td id="countryOther">
-						<span class="{res.css.detailCellInputLabel}" style="width:80px">autre :</span>
-						<g:TextBox ui:field="countryOther" styleName="{res.css.detailCellInputText}"
-							width="100px" />
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<span class="{res.css.detailCellInputLabel}" style="width:80px">Localité :</span>
-						<g:ListBox ui:field="city" styleName="{res.css.detailCellInputList}" />
-					</td>
-					<td id="cityOther">
-						<span class="{res.css.detailCellInputLabel}" style="width:80px">autre :</span>
-						<g:TextBox ui:field="cityOther" styleName="{res.css.detailCellInputText}"
-							width="100px" />
-					</td>
-				</tr>
-			</table>
-		</div-->
 		
 		<div class="{res.css.detailRow}">
 			<span class="{res.css.detailCellInputLabel}">Quartier :</span>
@@ -90,7 +64,7 @@
 		
 		<div class="{res.css.detailRow}">
 			<span class="{res.css.detailCellInputLabel}">Propriétaire :</span>
-			<g:ListBox ui:field="ownerName" styleName="{res.css.detailCellInputList}" />
+			<g:ListBox ui:field="ownerName" styleName="{res.css.detailCellInputList}"  name="ownerName"/>
 		</div>
 		
 		<div class="{res.css.separationRow}" style="clear: both;">

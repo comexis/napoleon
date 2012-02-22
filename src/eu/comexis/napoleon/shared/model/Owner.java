@@ -42,7 +42,7 @@ public class Owner extends Party implements IsSerializable {
       return null;
     }
   }
-
+  
   public FeeUnit getUnit() {
     return unit;
   }
@@ -60,7 +60,14 @@ public class Owner extends Party implements IsSerializable {
   }
 
   public void setFee(String fee) {
-    this.setFee(fee != null && fee.length() > 0 ? new BigDecimal(fee) : null);
+    if (fee != null && fee.length() > 0){
+      try{
+        this.setFee(new BigDecimal(fee));
+      }catch(Exception e){
+        // the fee cannot be converted in decimal, set to -1
+        this.setFee(new BigDecimal(-1));
+      }
+    }
   }
 
   public void setUnit(FeeUnit unit) {

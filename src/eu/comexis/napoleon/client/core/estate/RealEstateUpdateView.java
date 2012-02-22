@@ -92,15 +92,7 @@ public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePr
 
   @Override
   public void displayValidationMessage(List<ValidationMessage> validationMessages) {
-    // TODO Display the messages in a PopupPanel
-    StringBuilder msgBuilder = new StringBuilder("Veuillez corriger les erreurs suivantes : \n\n");
-
-    for (ValidationMessage msg : validationMessages) {
-      msgBuilder.append(msg.getMessage()).append("\n");
-    }
-
-    Window.alert(msgBuilder.toString());
-
+    UiHelper.displayValidationMessage(validationMessages, asWidget());
   }
 
   @Override
@@ -181,8 +173,12 @@ public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePr
   }
 
   public SimpleOwner getOwner() {
-    SimpleOwner o = new SimpleOwner();
-    o.setId(ownerName.getValue(ownerName.getSelectedIndex()));
+    SimpleOwner o = null;
+    String ownerId = ownerName.getValue(ownerName.getSelectedIndex());
+    if (!ownerId.equals("(...)")){
+      o = new SimpleOwner();
+      o.setId(ownerId);
+    }
     return o;
   }
 
@@ -265,17 +261,21 @@ public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePr
     this.mobileNumber.setText("");
     this.phoneNumber.setText("");
     UiHelper.selectTextItemBoxByValue(this.ownerName, "(...)");
+    UiHelper.selectTextItemBoxByValue(this.state, "-");
+    UiHelper.selectTextItemBoxByValue(this.type, "-");
     if (e != null) {
 
       this.reference.setText(e.getReference());
       this.number.setText(e.getNumber());
       this.box.setText(e.getBox());
       this.dimension.setText(e.getDimension());
-      UiHelper.selectTextItemBoxByValue(this.state, (e.getState() != null ? e.getState().name() : ""));
-      UiHelper.selectTextItemBoxByValue(this.type, (e.getType() != null ? e.getType().name() : ""));
+      UiHelper.selectTextItemBoxByValue(this.state, (e.getState() != null ? e.getState().name() : "-"));
+      UiHelper.selectTextItemBoxByValue(this.type, (e.getType() != null ? e.getType().name() : "-"));
       SimpleOwner o = e.getOwner();
-      if (o!= null){
+      if (o!= null && o.getId()!=null){
         UiHelper.selectTextItemBoxByValue(this.ownerName, o.getId());
+      }else{
+        UiHelper.selectTextItemBoxByValue(this.ownerName,"(...)");
       }
       if (e.getCondominium() != null && !e.getCondominium().isEmpty()) {
         this.condo.setText(e.getCondominium());
@@ -356,5 +356,9 @@ public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePr
     this.email.setText(assoc.getEmail());
     this.mobileNumber.setText(assoc.getMobilePhoneNumber());
     this.phoneNumber.setText(assoc.getPhoneNumber());
+  }
+  @Override
+  public void reset() {
+    UiHelper.resetForm(asWidget());
   }
 }

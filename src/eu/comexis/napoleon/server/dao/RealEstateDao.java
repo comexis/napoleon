@@ -163,9 +163,9 @@ public class RealEstateDao extends NapoleonDao<RealEstate> {
     Ownership currentOwner = getCurrentOwnership(realEstate);
     if (currentOwner!=null){
       if (currentOwner.getOwnerKey().equals(ownerKey)){
-        currentOwner.setFromDate(fromDate);
+        //currentOwner.setFromDate(fromDate);
         ofy().put(currentOwner);
-        realEstate.setOwnershipDate(fromDate);
+        //realEstate.setOwnershipDate(fromDate);
       }else{
         // if owner is different and the ownership date is more recent than the previous one
         // we stop the ownership of the previous owner and add a new ownership for the current
@@ -216,7 +216,7 @@ public class RealEstateDao extends NapoleonDao<RealEstate> {
       Query<RealEstate> q = ofy().query(RealEstate.class);
       q.ancestor(companyKey);
       ArrayList<SimpleRealEstate> realEstates = new ArrayList<SimpleRealEstate>();
-      for(RealEstate e:q.filter("owner", ownerKey).list()){
+      for(RealEstate e:q.filter("ownerKey", ownerKey).list()){
         SimpleRealEstate se = new SimpleRealEstate();
         se.setId(e.getId());
         se.setReference(e.getReference());
