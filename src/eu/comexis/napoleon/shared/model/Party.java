@@ -8,6 +8,7 @@ import javax.persistence.Id;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.annotation.Indexed;
 import com.googlecode.objectify.annotation.Parent;
 import com.googlecode.objectify.annotation.Unindexed;
 
@@ -50,6 +51,8 @@ public abstract class Party implements IsSerializable, Identifiable, HasFiles {
   private String street;
   private String number;
   private Title title;
+  @Indexed
+  private Boolean flagActivated;
 
   @Embedded
   private ArrayList<FileDescriptor> files;
@@ -106,6 +109,10 @@ public abstract class Party implements IsSerializable, Identifiable, HasFiles {
 
   public String getFirstName() {
     return firstName;
+  }
+
+  public Boolean getFlagActivated() {
+    return flagActivated;
   }
 
   public String getIban() {
@@ -227,6 +234,10 @@ public abstract class Party implements IsSerializable, Identifiable, HasFiles {
 
   public void setFirstName(String value) {
     firstName = value;
+  }
+
+  public void setFlagActivated(Boolean flagActivated) {
+    this.flagActivated = flagActivated;
   }
 
   public void setIban(String iban) {

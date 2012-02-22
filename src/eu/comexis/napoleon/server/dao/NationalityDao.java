@@ -1,6 +1,7 @@
 package eu.comexis.napoleon.server.dao;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import eu.comexis.napoleon.shared.model.Nationality;
@@ -14,6 +15,7 @@ public class NationalityDao extends NapoleonDao<Nationality>{
     for (Nationality nat:this.listAll(companyId)){
       lst.add(nat.getName());
     }
+    Collections.sort(lst);
     return lst;
   }
 }

@@ -247,13 +247,36 @@ public abstract class PartyUpdateView<T extends Party> extends ViewImpl implemen
   public void reset() {
     UiHelper.resetForm(asWidget());
   }
-
+  private void emptyFields(){
+    name.setText("");
+    firstName.setText("");
+    bic.setText("");
+    iban.setText("");
+    email.setText("");
+    phoneNumber.setText("");
+    mobileNumber.setText("");
+    fax.setText("");
+    birthDayDate.setValue(null);
+    placeOfBirth.setText("");
+    country.setValue("");
+    addresse.setText("");
+    number.setText("");
+    postalCode.setText("");
+    city.setValue("");
+    nationality.setText("");
+    job.setText("");
+    nationalRegister.setText("");
+    UiHelper.selectTextItemBoxByValue(maritalStatus, null, MaritalStatus.SINGLE);
+    UiHelper.selectTextItemBoxByValue(matrimonialRegime, null, MatrimonialRegime.NONE);
+    UiHelper.selectTextItemBoxByValue(title, Title.MR);
+  }
   @Override
   public void setData(T party) {
+    emptyFields();
     UiHelper.selectTextItemBoxByValue(title, party.getTitle());
 
-    name.setText(party.getLastName());
-    firstName.setText(party.getFirstName());
+    name.setText(UiHelper.formatLastName(party.getLastName()));
+    firstName.setText(UiHelper.formatFirstName(party.getFirstName()));
     bic.setText(party.getBic());
     iban.setText(party.getIban());
     email.setText(party.getEmail());

@@ -54,14 +54,17 @@ public class RealEstateDao extends NapoleonDao<RealEstate> {
     ArrayList<SimpleRealEstate> realEstates = new ArrayList<SimpleRealEstate>();
     while (iterator.hasNext()) {
       RealEstate realEstate = iterator.next();
-      SimpleRealEstate o = new SimpleRealEstate();
-      o.setId(realEstate.getId());
-      o.setReference(realEstate.getReference());
-      o.setCity(realEstate.getCity());
-      o.setAddress(realEstate.getStreet());
-      // o.setMobileNumber(Owner.mobile);
-      // o.setPhoneNumber(realEstate.getPhoneNumber());
-      realEstates.add(o);
+      SimpleRealEstate e = new SimpleRealEstate();
+      e.setId(realEstate.getId());
+      e.setReference(realEstate.getReference());
+      e.setCity(realEstate.getCity());
+      e.setAddress(realEstate.getStreet());
+      e.setPostalCode(realEstate.getPostalCode());
+      SimpleOwner o = getOwner(realEstate);
+      e.setOwner(o.getName());
+      e.setMobile(o.getMobileNumber());
+      e.setPhoneNumber(o.getPhoneNumber());
+      realEstates.add(e);
     }
     return realEstates;
   }
@@ -87,6 +90,7 @@ public class RealEstateDao extends NapoleonDao<RealEstate> {
       System.out.println("Creating Uuid " + uuid.toString());
       realEstate.setId(uuid.toString());
       realEstate.setCompany(companyKey);
+      realEstate.setFlagActivated(true);
     }
     // if country does not exist, create it.
     if (realEstate.getCountry()!=null && !realEstate.getCountry().isEmpty()){

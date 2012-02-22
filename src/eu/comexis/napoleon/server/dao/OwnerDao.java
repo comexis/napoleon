@@ -75,6 +75,7 @@ public class OwnerDao extends NapoleonDao<Owner> {
       System.out.println("Creating Uuid " + uuid.toString());
       owner.setId(uuid.toString());
       owner.setCompany(companyKey);
+      owner.setFlagActivated(true);
     }
     // if country does not exist, create it.
     Country country = countryData.getByName(owner.getCountry(), companyKey);

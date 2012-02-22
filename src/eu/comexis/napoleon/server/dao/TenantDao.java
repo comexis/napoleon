@@ -75,6 +75,7 @@ public class TenantDao extends NapoleonDao<Tenant> {
       System.out.println("Creating Uuid " + uuid.toString());
       tenant.setId(uuid.toString());
       tenant.setCompany(companyKey);
+      tenant.setFlagActivated(true);
     }
     // if country does not exist, create it.
     Country country = countryData.getByName(tenant.getCountry(), companyKey);
@@ -90,12 +91,14 @@ public class TenantDao extends NapoleonDao<Tenant> {
     if (tenant.getNationality()!= null && !tenant.getNationality().isEmpty()){
       NationalityDao natDao = new NationalityDao();
       Nationality nat = new Nationality();
+      nat.setName(tenant.getNationality());
       nat.setCompany(companyKey);
       natDao.update(nat);
     }
     if (tenant.getJobTitle()!= null && !tenant.getJobTitle().isEmpty()){
       JobTitleDao jobDao = new JobTitleDao();
       JobTitle job = new JobTitle();
+      job.setName(tenant.getJobTitle());
       job.setCompany(companyKey);
       jobDao.update(job);
     }

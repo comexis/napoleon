@@ -92,7 +92,7 @@ public abstract class PartyDetailsView<T extends Party> extends ViewImpl impleme
   private void displayName(T party) {
     StringBuilder nameBuilder = new StringBuilder();
     nameBuilder.append(UiHelper.translateEnum("Title_", party.getTitle())).append(" ");
-    nameBuilder.append(party.getLastName()).append(" ");
+    nameBuilder.append(UiHelper.formatLastName(party.getLastName())).append(" ");
     nameBuilder.append(UiHelper.formatFirstName(party.getFirstName()));
     name.setInnerText(nameBuilder.toString());
   }

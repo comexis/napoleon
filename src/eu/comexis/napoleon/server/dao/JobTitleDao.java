@@ -1,6 +1,7 @@
 package eu.comexis.napoleon.server.dao;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import eu.comexis.napoleon.shared.model.JobTitle;
@@ -15,6 +16,7 @@ public class JobTitleDao extends NapoleonDao<JobTitle>{
     for (JobTitle job:this.listAll(companyId)){
       lst.add(job.getName());
     }
+    Collections.sort(lst);
     return lst;
   }
 }

@@ -25,7 +25,6 @@ public class UiHelper {
   public static ListBox createListBoxForEnum(Class<? extends Enum<?>> enumClass, String prefix,
       boolean mutiple) {
     ListBox box = new ListBox(mutiple);
-
     for (Enum<?> e : enumClass.getEnumConstants()) {
       box.addItem(translateEnum(prefix, e), e.name());
     }
@@ -96,21 +95,26 @@ public class UiHelper {
     return DATE_FORMAT.format(d);
   }
   public static String formatLastName(String name){
-    name.toUpperCase();
-    return name;
+    return name.toUpperCase();
   }
   public static String formatFirstName(String name){
+    return formatWordsFirstUpper(name);
+  }
+  public static String formatSuggest(String name){
+    return formatWordsFirstUpper(name);
+  }
+  public static String formatWordsFirstUpper(String name){
     String formatedName = "";
     String [] parts=name.toLowerCase().split(" ");
     for(int i=0; i < parts.length; i++){
       parts[i] = parts[i].substring(0,1).toUpperCase() + parts[i].substring(1);
       formatedName += parts[i] + " ";
     }
-    parts=formatedName.split("_");
+    parts=formatedName.split("-");
     formatedName = "";
     for(int i=0; i < parts.length; i++){
       parts[i] = parts[i].substring(0,1).toUpperCase() + parts[i].substring(1);
-      formatedName += parts[i] + "_";
+      formatedName += parts[i] + "-";
     }
     return formatedName.substring(0,formatedName.length()-1);
   }
