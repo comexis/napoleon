@@ -59,7 +59,7 @@
 		</g:west>
 
 		<g:center>
-			<g:SimplePanel styleName='{style.center}' ui:field="centerPanel" />
+			<g:LayoutPanel styleName='{style.center}' ui:field="centerPanel" />
 
 		</g:center>
 	</g:DockLayoutPanel>

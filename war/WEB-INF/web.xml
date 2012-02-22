@@ -100,7 +100,7 @@
 
 	<servlet>
 		<servlet-name>initDatastore</servlet-name>
-		<servlet-class>eu.comexis.napoleon.server.service.InitDatastore</servlet-class>
+		<servlet-class>eu.comexis.napoleon.server.servlet.InitDatastore</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>initDatastore</servlet-name>
@@ -110,12 +110,33 @@
 
 	<servlet>
 		<servlet-name>ExtractDatastoreAsXML</servlet-name>
-		<servlet-class>eu.comexis.napoleon.server.service.ExtractDatastoreAsXML</servlet-class>
+		<servlet-class>eu.comexis.napoleon.server.servlet.ExtractDatastoreAsXML</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>ExtractDatastoreAsXML</servlet-name>
 		<url-pattern>/ExtractDatastoreAsXML</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>downloadServlet</servlet-name>
+		<servlet-class>eu.comexis.napoleon.server.servlet.DownloadServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>downloadServlet</servlet-name>
+		<url-pattern>/napoleon/download</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>uploadServlet</servlet-name>
+		<servlet-class>eu.comexis.napoleon.server.servlet.UploadServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>uploadServlet</servlet-name>
+		<url-pattern>/napoleon/upload</url-pattern>
+	</servlet-mapping>
+	
 
 	<security-constraint>
 		<web-resource-collection>

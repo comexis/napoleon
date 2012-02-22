@@ -8,6 +8,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
@@ -59,6 +60,9 @@ public abstract class PartyDetailsView<T extends Party> extends ViewImpl impleme
   Element phoneNumber;
   @UiField
   Element placeOfBirth;
+  @UiField
+  SimplePanel documentsPanel;
+  
   private PartyDetailsUiHandlers presenter;
   private final Widget widget;
 
@@ -67,6 +71,11 @@ public abstract class PartyDetailsView<T extends Party> extends ViewImpl impleme
     widget = binder.createAndBindUi(this);
   }
 
+  @Override
+  public void addDocumentWidget(Widget w) {
+    documentsPanel.add(w);
+  }
+  
   @Override
   public Widget asWidget() {
     return widget;

@@ -1,4 +1,4 @@
-package eu.comexis.napoleon.server.service;
+package eu.comexis.napoleon.server.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;

@@ -28,6 +28,8 @@ import eu.comexis.napoleon.client.core.tenant.TenantListPresenter;
 import eu.comexis.napoleon.client.core.tenant.TenantListView;
 import eu.comexis.napoleon.client.core.tenant.TenantUpdatePresenter;
 import eu.comexis.napoleon.client.core.tenant.TenantUpdateView;
+import eu.comexis.napoleon.client.widget.DocumentPanelPresenter;
+import eu.comexis.napoleon.client.widget.DocumentPanelView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -81,5 +83,8 @@ public class ClientModule extends AbstractPresenterModule {
     bindPresenter(RealEstateUpdatePresenter.class,
         RealEstateUpdatePresenter.MyView.class, RealEstateUpdateView.class,
         RealEstateUpdatePresenter.MyProxy.class);
+
+    bindPresenterWidget(DocumentPanelPresenter.class, DocumentPanelPresenter.MyView.class,
+        DocumentPanelView.class);
 	}
 }

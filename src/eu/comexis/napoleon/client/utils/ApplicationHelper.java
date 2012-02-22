@@ -39,12 +39,13 @@ public enum ApplicationHelper {
     return logoutUrl;
   }
 
+
   private native JsArrayMixed getJsonUserFromJs()/*-{
                                                  return $wnd.__GLOBALS[0];
                                                  }-*/;
 
-  private native String getLogoutUrlFromJs()/*-{
-                                            return $wnd.__GLOBALS[1];
+  private native String getGlobalAsString(int index)/*-{
+                                            return $wnd.__GLOBALS[index];
                                             }-*/;
 
   private void readStaticInfo() {
@@ -67,7 +68,7 @@ public enum ApplicationHelper {
     company.setUrl(clientArray.getString(i++));
     company.setLogo(clientArray.getString(i++));
 
-    logoutUrl = getLogoutUrlFromJs();
+    logoutUrl = getGlobalAsString(1);
 
   }
 

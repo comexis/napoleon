@@ -3,6 +3,8 @@ package eu.comexis.napoleon.client.core.tenant;
 import java.util.logging.Logger;
 
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
@@ -13,6 +15,9 @@ import eu.comexis.napoleon.client.core.party.PartyDetailsPresenter;
 import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.rpc.callback.GotTenant;
 import eu.comexis.napoleon.shared.command.tenant.GetTenantCommand;
+import eu.comexis.napoleon.shared.command.tenant.UpdateTenantCommand;
+import eu.comexis.napoleon.shared.command.tenant.UpdateTenantResponse;
+import eu.comexis.napoleon.shared.model.FileDescriptor;
 import eu.comexis.napoleon.shared.model.Tenant;
 
 public class TenantDetailsPresenter extends
@@ -57,6 +62,24 @@ public class TenantDetailsPresenter extends
       }
     });
 
+  }
+
+  @Override
+  protected void saveFile(FileDescriptor file) {
+    new UpdateTenantCommand(getData()).dispatch(new AsyncCallback<UpdateTenantResponse>() {
+      
+      @Override
+      public void onSuccess(UpdateTenantResponse result) {}
+      
+      @Override
+      public void onFailure(Throwable caught) {
+        //TODO improve that
+        Window.alert("Impossible de lier le fichier au locataire. Veuillez reessayer.");
+        
+      }
+    });
+
+    
   }
 
 }

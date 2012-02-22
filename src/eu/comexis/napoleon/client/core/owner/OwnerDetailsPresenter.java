@@ -3,6 +3,8 @@ package eu.comexis.napoleon.client.core.owner;
 import java.util.logging.Logger;
 
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
@@ -13,6 +15,9 @@ import eu.comexis.napoleon.client.core.party.PartyDetailsPresenter;
 import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.rpc.callback.GotOwner;
 import eu.comexis.napoleon.shared.command.owner.GetOwnerCommand;
+import eu.comexis.napoleon.shared.command.owner.UpdateOwnerCommand;
+import eu.comexis.napoleon.shared.command.owner.UpdateOwnerResponse;
+import eu.comexis.napoleon.shared.model.FileDescriptor;
 import eu.comexis.napoleon.shared.model.Owner;
 
 public class OwnerDetailsPresenter
@@ -58,6 +63,24 @@ public class OwnerDetailsPresenter
       }
     });
 
+  }
+
+  @Override
+  protected void saveFile(FileDescriptor file) {
+    new UpdateOwnerCommand(getData()).dispatch(new AsyncCallback<UpdateOwnerResponse>() {
+      
+      @Override
+      public void onSuccess(UpdateOwnerResponse result) {}
+      
+      @Override
+      public void onFailure(Throwable caught) {
+        //TODO improve that
+        Window.alert("Impossible de lier le fichier au proprietaire. Veuillez reessayer.");
+        
+      }
+    });
+
+    
   }
 
 }

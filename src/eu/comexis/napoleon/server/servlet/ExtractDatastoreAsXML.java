@@ -1,4 +1,4 @@
-package eu.comexis.napoleon.server.service;
+package eu.comexis.napoleon.server.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,8 +18,8 @@ import eu.comexis.napoleon.server.dao.TenantDao;
 import eu.comexis.napoleon.shared.model.ApplicationUser;
 import eu.comexis.napoleon.shared.model.City;
 import eu.comexis.napoleon.shared.model.Company;
-import eu.comexis.napoleon.shared.model.Condo;
 import eu.comexis.napoleon.shared.model.Country;
+import eu.comexis.napoleon.shared.model.FileDescriptor;
 import eu.comexis.napoleon.shared.model.Owner;
 import eu.comexis.napoleon.shared.model.RealEstate;
 import eu.comexis.napoleon.shared.model.Tenant;
@@ -85,6 +85,17 @@ public class ExtractDatastoreAsXML extends HttpServlet {
       out.println("<Country>"+ o.getCountry() + "</Country>");
       out.println("<PostalCode>"+ o.getPostalCode() + "</PostalCode>");
       out.println("<City>"+ o.getCity() + "</City>");
+      if (o.getFiles() != null && !o.getFiles().isEmpty()){
+        out.println("<FileDescriptors>");
+        for (FileDescriptor f : o.getFiles()){
+          out.println("<FileDescriptor>");
+          out.println("<Id>"+f.getId()+"</Id>");
+          out.println("<Description>"+f.getDescription()+"</Description>");
+          out.println("<FileName>"+f.getFileName()+"</FileName>");
+          out.println("</FileDescriptor>");
+        }
+        out.println("</FileDescriptors>");
+      }
       out.println("</Owner>");
     }
     out.println("</Owners>");

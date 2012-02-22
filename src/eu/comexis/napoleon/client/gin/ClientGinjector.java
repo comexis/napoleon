@@ -4,6 +4,7 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.inject.client.AsyncProvider;
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
+import com.google.inject.Provider;
 import com.gwtplatform.dispatch.client.gin.DispatchAsyncModule;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 
@@ -18,6 +19,7 @@ import eu.comexis.napoleon.client.core.owner.OwnerUpdatePresenter;
 import eu.comexis.napoleon.client.core.tenant.TenantDetailsPresenter;
 import eu.comexis.napoleon.client.core.tenant.TenantListPresenter;
 import eu.comexis.napoleon.client.core.tenant.TenantUpdatePresenter;
+import eu.comexis.napoleon.client.widget.DocumentPanelPresenter;
 
 @GinModules({DispatchAsyncModule.class, ClientModule.class})
 public interface ClientGinjector extends Ginjector {
@@ -47,4 +49,6 @@ public interface ClientGinjector extends Ginjector {
   AsyncProvider<TenantListPresenter> getTenantListPresenter();
 
   AsyncProvider<TenantUpdatePresenter> getTenantUpdatePresenter();
+  
+  Provider<DocumentPanelPresenter> getDocumentPanelPresenter();
 }

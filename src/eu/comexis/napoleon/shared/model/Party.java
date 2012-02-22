@@ -1,7 +1,9 @@
 package eu.comexis.napoleon.shared.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 
+import javax.persistence.Embedded;
 import javax.persistence.Id;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
@@ -17,7 +19,7 @@ import com.googlecode.objectify.annotation.Unindexed;
  * 
  */
 @Unindexed
-public abstract class Party implements IsSerializable {
+public abstract class Party implements IsSerializable, Identifiable, HasFiles {
 
   private String bankAccountNumber;
   private String bic;
@@ -47,10 +49,19 @@ public abstract class Party implements IsSerializable {
   private String status;
   private String street;
   private Title title;
+  
+  @Embedded
+  private ArrayList<FileDescriptor> files;
 
   public Party() {
+    files = new ArrayList<FileDescriptor>();
   }
 
+  @Override
+  public void addFile(FileDescriptor file) {
+    files.add(file); 
+  }
+  
   public String getBankAccountNumber() {
     return bankAccountNumber;
   }
@@ -87,6 +98,12 @@ public abstract class Party implements IsSerializable {
     return fax;
   }
 
+  @Override
+  public ArrayList<FileDescriptor> getFiles() {
+    return files;
+  }
+  
+  
   public String getFirstName() {
     return firstName;
   }
@@ -158,6 +175,11 @@ public abstract class Party implements IsSerializable {
   public Title getTitle() {
     return title;
   }
+  
+  @Override
+  public void removeFile(FileDescriptor file) {
+    files.remove(file);
+  }
 
   public void setBankAccountNumber(String value) {
     bankAccountNumber = value;
@@ -199,6 +221,10 @@ public abstract class Party implements IsSerializable {
     firstName = value;
   }
 
+  public void setFiles(ArrayList<FileDescriptor> files) {
+    this.files = files;
+  }
+  
   public void setIban(String iban) {
     this.iban = iban;
   }
