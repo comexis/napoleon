@@ -15,6 +15,7 @@ public class RealEstateValidator extends AbstractValidator<RealEstate> {
     
     validateReference(estate, messages);
     validateOwner(estate, messages);
+    validateAddress(estate, messages);
     
     return messages;
   }
@@ -31,6 +32,26 @@ public class RealEstateValidator extends AbstractValidator<RealEstate> {
     
     if (estate.getOwner()==null){
       messages.add(new ValidationMessage(VALIDATION_MESSAGES.fieldIsMandatory("propriétaire"), "owner"));
+    }
+    
+  }
+  
+  private void validateAddress(RealEstate estate, List<ValidationMessage> messages) {
+    
+    if (estate.getStreet()==null || estate.getStreet().isEmpty()){
+      messages.add(new ValidationMessage(VALIDATION_MESSAGES.fieldIsMandatory("adresse"), "street"));
+    }
+    if (estate.getNumber()==null || estate.getNumber().isEmpty()){
+      messages.add(new ValidationMessage(VALIDATION_MESSAGES.fieldIsMandatory("n°"), "number"));
+    }
+    if (estate.getPostalCode()==null || estate.getPostalCode().isEmpty()){
+      messages.add(new ValidationMessage(VALIDATION_MESSAGES.fieldIsMandatory("code postal"), "postalCode"));
+    }
+    if (estate.getCity()==null || estate.getCity().isEmpty()){
+      messages.add(new ValidationMessage(VALIDATION_MESSAGES.fieldIsMandatory("localité"), "city"));
+    }
+    if (estate.getCountry()==null || estate.getCountry().isEmpty()){
+      messages.add(new ValidationMessage(VALIDATION_MESSAGES.fieldIsMandatory("pays"), "country"));
     }
     
   }

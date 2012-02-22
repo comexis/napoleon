@@ -22,7 +22,7 @@ public class PartyValidator<T extends Party> extends AbstractValidator<T> {
 
   private void validateEmail(String email, List<ValidationMessage> messages) {
     if (isEmpty(email)){
-      messages.add(new ValidationMessage(VALIDATION_MESSAGES.fieldIsMandatory("email"), "email"));
+      //messages.add(new ValidationMessage(VALIDATION_MESSAGES.fieldIsMandatory("email"), "email"));
     }else if(!isValidEmail(email)){
       messages.add(new ValidationMessage(VALIDATION_MESSAGES.emailInvalid(email), "email"));
     }
@@ -32,7 +32,7 @@ public class PartyValidator<T extends Party> extends AbstractValidator<T> {
   private void validateName(T party, List<ValidationMessage> messages) {
    
     if (isEmpty(party.getFirstName())){
-      messages.add(new ValidationMessage(VALIDATION_MESSAGES.fieldIsMandatory("prénom"), "firstName"));
+      //messages.add(new ValidationMessage(VALIDATION_MESSAGES.fieldIsMandatory("prénom"), "firstName"));
     }else{
       /*if (!party.getFirstName().matches("^[\\p{L}\\p{M}' \\.\\-]+$")){
         messages.add(new ValidationMessage(VALIDATION_MESSAGES.firstnameInvalid(party.getFirstName()), "firstName"));

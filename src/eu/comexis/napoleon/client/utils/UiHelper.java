@@ -95,7 +95,7 @@ public class UiHelper {
     return DATE_FORMAT.format(d);
   }
   public static String formatLastName(String name){
-    if (name!=null){
+    if (name!=null && !name.isEmpty()){
       return name.toUpperCase();
     }else{
       return "";
@@ -108,7 +108,7 @@ public class UiHelper {
     return formatWordsFirstUpper(name);
   }
   public static String formatWordsFirstUpper(String name){
-    if (name!=null){
+    if (name!=null && !name.isEmpty()){
       String formatedName = "";
       String [] parts=name.toLowerCase().split(" ");
       for(int i=0; i < parts.length; i++){
