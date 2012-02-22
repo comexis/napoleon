@@ -95,7 +95,11 @@ public class UiHelper {
     return DATE_FORMAT.format(d);
   }
   public static String formatLastName(String name){
-    return name.toUpperCase();
+    if (name!=null){
+      return name.toUpperCase();
+    }else{
+      return "";
+    }
   }
   public static String formatFirstName(String name){
     return formatWordsFirstUpper(name);
@@ -104,18 +108,22 @@ public class UiHelper {
     return formatWordsFirstUpper(name);
   }
   public static String formatWordsFirstUpper(String name){
-    String formatedName = "";
-    String [] parts=name.toLowerCase().split(" ");
-    for(int i=0; i < parts.length; i++){
-      parts[i] = parts[i].substring(0,1).toUpperCase() + parts[i].substring(1);
-      formatedName += parts[i] + " ";
+    if (name!=null){
+      String formatedName = "";
+      String [] parts=name.toLowerCase().split(" ");
+      for(int i=0; i < parts.length; i++){
+        parts[i] = parts[i].substring(0,1).toUpperCase() + parts[i].substring(1);
+        formatedName += parts[i] + " ";
+      }
+      parts=formatedName.split("-");
+      formatedName = "";
+      for(int i=0; i < parts.length; i++){
+        parts[i] = parts[i].substring(0,1).toUpperCase() + parts[i].substring(1);
+        formatedName += parts[i] + "-";
+      }
+      return formatedName.substring(0,formatedName.length()-1);
+    }else{
+      return "";
     }
-    parts=formatedName.split("-");
-    formatedName = "";
-    for(int i=0; i < parts.length; i++){
-      parts[i] = parts[i].substring(0,1).toUpperCase() + parts[i].substring(1);
-      formatedName += parts[i] + "-";
-    }
-    return formatedName.substring(0,formatedName.length()-1);
   }
 }
