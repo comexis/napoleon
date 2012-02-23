@@ -18,7 +18,7 @@
 		</div>
 		
 		<div class="{res.css.detailRow}">
-			<span class="{res.css.detailCellInputLabel}">Syndicat :</span>
+			<span class="{res.css.detailCellInputLabel}">Syndic :</span>
 			<g:SuggestBox ui:field="association" styleName="{res.css.detailCellInputText}" />
 			<span class="{res.css.detailCellInputLabel}">Adresse :</span>
 			<g:TextBox ui:field="address" styleName="{res.css.detailCellInputText}" />
@@ -35,19 +35,19 @@
 		
 		<div class="{res.css.detailRow}">
 			<span class="{res.css.detailCellInputLabel}">Adresse du bien :</span>
-			<g:TextBox ui:field="addressRealEstate" styleName="{res.css.detailCellInputText}" />
+			<g:TextBox ui:field="addressRealEstate" styleName="{res.css.detailCellInputText}" name="addressRealEstate"/>
 			<span class="{res.css.detailCellInputLabel}">N°:</span>
-			<g:TextBox ui:field="number" styleName="{res.css.detailCellInputText}" />
+			<g:TextBox ui:field="number" styleName="{res.css.detailCellInputText}" name="number"/>
 			<span class="{res.css.detailCellInputLabel}">Boite :</span>
 			<g:TextBox ui:field="box" styleName="{res.css.detailCellInputText}" />
 		</div>
 		<div class="{res.css.detailRow}">
 			<span class="{res.css.detailCellInputLabel}" style="width:80px">Pays :</span>
-			<g:SuggestBox ui:field="country" styleName="{res.css.detailCellInputText}" />
+			<g:SuggestBox ui:field="country" styleName="{res.css.detailCellInputText}"/>
 			<span class="{res.css.detailCellInputLabel}">Code Postal :</span>
-			<g:SuggestBox ui:field="postalCode" styleName="{res.css.detailCellInputText}" width="50px" />
+			<g:SuggestBox ui:field="postalCode" styleName="{res.css.detailCellInputText}" width="50px"/>
 			<span class="{res.css.detailCellInputLabel}" >Ville :</span>
-			<g:SuggestBox ui:field="city" styleName="{res.css.detailCellInputText}" />
+			<g:SuggestBox ui:field="city" styleName="{res.css.detailCellInputText}"/>
 			
 		</div>
 		

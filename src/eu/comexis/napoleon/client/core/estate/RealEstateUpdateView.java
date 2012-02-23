@@ -78,6 +78,7 @@ public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePr
   public RealEstateUpdateView(final Binder binder) {
     init();
     widget = binder.createAndBindUi(this);
+    initNames();
   }
 
   @Override
@@ -115,6 +116,11 @@ public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePr
         oracle.add(sCdo);
       }
     }
+  }
+  protected void initNames() {
+    city.getTextBox().setName("city");
+    country.getTextBox().setName("country");
+    postalCode.getTextBox().setName("postalCode");
   }
   
   @Override
@@ -290,9 +296,7 @@ public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePr
       this.addressRealEstate.setText(e.getStreet());
       this.postalCode.setText(e.getPostalCode());
       this.presenter.onPostalCodeSelect(postalCode.getValue());
-      if (o!= null){
-        this.city.setValue(o.getCity());
-      }
+      this.city.setValue(e.getCity());
       this.presenter.onCitySelect(city.getValue());
       this.square.setText(e.getSquare());
     }

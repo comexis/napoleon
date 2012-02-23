@@ -5,4 +5,5 @@ public interface PartyDetailsUiHandlers {
   void onButtonBackToListClick();
 
   void onButtonUpdateClick();
+  
 }

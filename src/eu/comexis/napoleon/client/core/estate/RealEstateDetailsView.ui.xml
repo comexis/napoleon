@@ -17,7 +17,7 @@
 		</div>
 		
 		<div class="{res.css.detailRow}">
-			<span class="{res.css.detailCellLabel}">Syndicat :</span>
+			<span class="{res.css.detailCellLabel}">Syndic :</span>
 			<span ui:field="association" class="{res.css.detailCellValue}" />
 			<span class="{res.css.detailCellLabel}">Adresse :</span>
 			<span ui:field="address" class="{res.css.detailCellValue}" />
@@ -39,6 +39,12 @@
 			<span ui:field="number" class="{res.css.detailCellValue}" />
 			<span class="{res.css.detailCellLabel}">Boite :</span>
 			<span ui:field="box" class="{res.css.detailCellValue}" />
+			<span class="{res.css.detailCellLabel}">Code Postal :</span>
+			<span ui:field="postalCode" class="{res.css.detailCellValue}" />
+			<span class="{res.css.detailCellLabel}">Localité :</span>
+			<span ui:field="city" class="{res.css.detailCellValue}" />
+			<span class="{res.css.detailCellLabel}">Pays :</span>
+			<span ui:field="country" class="{res.css.detailCellValue}" />
 		</div>
 		
 		<div class="{res.css.detailRow}">

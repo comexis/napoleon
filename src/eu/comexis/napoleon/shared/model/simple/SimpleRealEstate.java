@@ -9,8 +9,11 @@ public class SimpleRealEstate implements IsSerializable, Identifiable {
   private String clientId;
   private String reference;
   private String address;
+  private String postalCode;
   private String city;
+
   private String owner;
+
   private String phoneNumber;
   private String mobile;
 
@@ -40,6 +43,10 @@ public class SimpleRealEstate implements IsSerializable, Identifiable {
 
   public String getPhoneNumber() {
     return phoneNumber;
+  }
+
+  public String getPostalCode() {
+    return postalCode;
   }
 
   public String getReference() {
@@ -72,6 +79,10 @@ public class SimpleRealEstate implements IsSerializable, Identifiable {
 
   public void setPhoneNumber(String phoneNumber) {
     this.phoneNumber = phoneNumber;
+  }
+
+  public void setPostalCode(String postalCode) {
+    this.postalCode = postalCode;
   }
 
   public void setReference(String reference) {

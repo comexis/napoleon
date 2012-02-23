@@ -28,6 +28,8 @@ public class RealEstate implements IsSerializable {
   private String box;
 
   private String number;
+  @Indexed
+  private Boolean flagActivated;
 
   private String city;
 
@@ -55,14 +57,14 @@ public class RealEstate implements IsSerializable {
 
   // adresse du syndic
   private String assocAdresss;
+
   // adresse e-mail du syndic
   private String assocEmail;
+
   // n° de téléphone du syndic
   private String assocPhoneNumber;
-
   // n° de téléphone mobile (GSM) du syndic
   private String assocMobilePhoneNumber;
-
   @Indexed
   private Key<Owner> ownerKey;
 
@@ -112,6 +114,10 @@ public class RealEstate implements IsSerializable {
 
   public String getDimension() {
     return dimension;
+  }
+
+  public Boolean getFlagActivated() {
+    return flagActivated;
   }
 
   public String getHomeownerAssociation() {
@@ -200,6 +206,10 @@ public class RealEstate implements IsSerializable {
 
   public void setDimension(String dimension) {
     this.dimension = dimension;
+  }
+
+  public void setFlagActivated(Boolean flagActivated) {
+    this.flagActivated = flagActivated;
   }
 
   public void setHomeownerAssociation(String homeownerAssociation) {

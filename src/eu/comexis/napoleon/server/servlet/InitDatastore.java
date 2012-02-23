@@ -3,6 +3,7 @@ package eu.comexis.napoleon.server.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -39,7 +40,7 @@ public class InitDatastore extends HttpServlet {
 
     //createTenantDao(companyId);
 
-   //createRealEstate(companyId);
+    //createRealEstate(companyId);
 
     printResults(companyId, resp);
 
@@ -109,15 +110,16 @@ public class InitDatastore extends HttpServlet {
 
     Owner o = ownerData.create(companyId);
     o.setTitle(Title.MRS);
-    o.setFirstName("Oufti");
-    o.setLastName("Biloute");
+    o.setLastName("Propriétaire 1");
+    o.setFirstName("Prénom 1");
     o.setCity("Ath");
     o.setPostalCode("7800");
-    o.setStreet("Rue de la brasserie, 69");
+    o.setStreet("Rue de la brasserie");
+    o.setNumber("12");
     o.setPhoneNumber("064/659874");
     o.setMobilePhoneNumber("0497/063970");
     o.setCountry("Belgique");
-    o.setEmail("oufti.biloute@gmail.com");
+    o.setEmail("prop1@gmail.com");
     o.setDateOfBirth(new Date());
     o.setMaritalStatus(MaritalStatus.MARRIED);
     o = ownerData.update(o);
@@ -125,15 +127,16 @@ public class InitDatastore extends HttpServlet {
     // --------------------------------------------------------------------------
     o = ownerData.create(companyId);
     o.setTitle(Title.MR);
-    o.setFirstName("Machin");
-    o.setLastName("Brol");
+    o.setLastName("Propriétaire 2");
+    o.setFirstName("Prénom 2");
     o.setPostalCode("7000");
     o.setCity("Mons");
-    o.setStreet("Rue de la bazar, 1");
+    o.setStreet("Rue de la Poste");
+    o.setNumber("25");
     o.setPhoneNumber("065/896574");
     o.setMobilePhoneNumber("0497/895476");
     o.setCountry("Belgique");
-    o.setEmail("machin.brol@gmail.com");
+    o.setEmail("prop2@gmail.com");
     o.setDateOfBirth(new Date());
     o.setMaritalStatus(MaritalStatus.SINGLE);
     o = ownerData.update(o);
@@ -141,15 +144,16 @@ public class InitDatastore extends HttpServlet {
     // --------------------------------------------------------------------------
     o = ownerData.create(companyId);
     o.setTitle(Title.MISS);
-    o.setFirstName("Cindy");
-    o.setLastName("Troforte");
+    o.setLastName("Propriétaire 3");
+    o.setFirstName("Prénom 3");
     o.setCity("Bruxelles");
     o.setPostalCode("1000");
-    o.setStreet("Rue de la gaindaille, 5");
+    o.setStreet("Rue de la Gare");
+    o.setNumber("101");
     o.setPhoneNumber("02/6545874");
     o.setMobilePhoneNumber("0497/089654");
     o.setCountry("Belgique");
-    o.setEmail("cindy.troforte@gmail.com");
+    o.setEmail("prop3@gmail.com");
     o.setDateOfBirth(new Date());
     o.setMaritalStatus(MaritalStatus.COHABITATION);
     o = ownerData.update(o);
@@ -157,7 +161,26 @@ public class InitDatastore extends HttpServlet {
   }
 
   private void createRealEstate(String companyId) {
-    //
+    RealEstateDao eDao = new RealEstateDao();
+    OwnerDao ownerData = new OwnerDao();
+    List<Owner> allOwners = ownerData.listAll(companyId);
+    RealEstate e = null;
+    int j=0;
+    for(int i=0; i< 300 ; i++){
+      e = eDao.create(companyId);
+      e.setReference("Residence " + i);
+      e.setStreet("Rue " + i);
+      e.setNumber("" + i);
+      e.setPostalCode("" + (7000 + i));
+      e.setCity("Ville " + i);
+      e.setCountry("Belgique");
+      e.setOwnerKey(ownerData.getOwnerKey(allOwners.get(j).getId(),companyId));
+      eDao.update(e);
+      j++;
+      if (j > 2){
+        j=0;
+      }
+    }
   }
 
   private void createTenantDao(String companyId) {

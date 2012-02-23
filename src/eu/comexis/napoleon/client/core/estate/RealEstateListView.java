@@ -51,6 +51,23 @@ public class RealEstateListView extends AbstractListView<SimpleRealEstate> imple
     });
 
     table.addColumn(referenceColumn, "Référence");
+    
+    // Proprio
+    Column<SimpleRealEstate, String> ownerColumn =
+        new Column<SimpleRealEstate, String>(new TextCell()) {
+          @Override
+          public String getValue(SimpleRealEstate object) {
+            return object.getOwner();
+          }
+        };
+
+    ownerColumn.setSortable(true);
+    sortHandler.setComparator(ownerColumn, new SimpleTextComparator<SimpleRealEstate>() {
+      public int compare(SimpleRealEstate o1, SimpleRealEstate o2) {
+        return compare(o1.getOwner(), o2.getOwner());
+      }
+    });
+    table.addColumn(ownerColumn, "Propriétaire");
 
     // address.
     Column<SimpleRealEstate, String> addressColumn =
@@ -70,6 +87,24 @@ public class RealEstateListView extends AbstractListView<SimpleRealEstate> imple
 
     table.addColumn(addressColumn, "Adresse");
 
+    
+    // Code postal
+    Column<SimpleRealEstate, String> postalCodeColumn =
+        new Column<SimpleRealEstate, String>(new TextCell()) {
+          @Override
+          public String getValue(SimpleRealEstate object) {
+            return object.getPostalCode();
+          }
+        };
+
+    postalCodeColumn.setSortable(true);
+    sortHandler.setComparator(postalCodeColumn, new SimpleTextComparator<SimpleRealEstate>() {
+      public int compare(SimpleRealEstate o1, SimpleRealEstate o2) {
+        return compare(o1.getPostalCode(), o2.getPostalCode());
+      }
+    });
+    table.addColumn(postalCodeColumn, "Code Postal");
+    
     // City
     Column<SimpleRealEstate, String> cityColumn =
         new Column<SimpleRealEstate, String>(new TextCell()) {

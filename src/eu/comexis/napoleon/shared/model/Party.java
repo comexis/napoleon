@@ -8,6 +8,7 @@ import javax.persistence.Id;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.annotation.Indexed;
 import com.googlecode.objectify.annotation.Parent;
 import com.googlecode.objectify.annotation.Unindexed;
 
@@ -48,8 +49,11 @@ public abstract class Party implements IsSerializable, Identifiable, HasFiles {
   private String postalCode;
   private String status;
   private String street;
+  private String number;
   private Title title;
-  
+  @Indexed
+  private Boolean flagActivated;
+
   @Embedded
   private ArrayList<FileDescriptor> files;
 
@@ -59,9 +63,9 @@ public abstract class Party implements IsSerializable, Identifiable, HasFiles {
 
   @Override
   public void addFile(FileDescriptor file) {
-    files.add(file); 
+    files.add(file);
   }
-  
+
   public String getBankAccountNumber() {
     return bankAccountNumber;
   }
@@ -102,10 +106,13 @@ public abstract class Party implements IsSerializable, Identifiable, HasFiles {
   public ArrayList<FileDescriptor> getFiles() {
     return files;
   }
-  
-  
+
   public String getFirstName() {
     return firstName;
+  }
+
+  public Boolean getFlagActivated() {
+    return flagActivated;
   }
 
   public String getIban() {
@@ -152,6 +159,10 @@ public abstract class Party implements IsSerializable, Identifiable, HasFiles {
     return nationalRegisterNumber;
   }
 
+  public String getNumber() {
+    return number;
+  }
+
   public String getPhoneNumber() {
     return phoneNumber;
   }
@@ -175,7 +186,7 @@ public abstract class Party implements IsSerializable, Identifiable, HasFiles {
   public Title getTitle() {
     return title;
   }
-  
+
   @Override
   public void removeFile(FileDescriptor file) {
     files.remove(file);
@@ -217,14 +228,18 @@ public abstract class Party implements IsSerializable, Identifiable, HasFiles {
     fax = value;
   }
 
+  public void setFiles(ArrayList<FileDescriptor> files) {
+    this.files = files;
+  }
+
   public void setFirstName(String value) {
     firstName = value;
   }
 
-  public void setFiles(ArrayList<FileDescriptor> files) {
-    this.files = files;
+  public void setFlagActivated(Boolean flagActivated) {
+    this.flagActivated = flagActivated;
   }
-  
+
   public void setIban(String iban) {
     this.iban = iban;
   }
@@ -263,6 +278,10 @@ public abstract class Party implements IsSerializable, Identifiable, HasFiles {
 
   public void setNationalRegisterNumber(String value) {
     nationalRegisterNumber = value;
+  }
+
+  public void setNumber(String number) {
+    this.number = number;
   }
 
   public void setPhoneNumber(String value) {

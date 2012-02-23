@@ -44,6 +44,8 @@ public abstract class PartyUpdateView<T extends Party> extends ViewImpl implemen
 
   @UiField
   TextBox addresse;
+  @UiField
+  TextBox number;
   @UiField(provided = true)
   ListBox title;
   @UiField
@@ -229,6 +231,16 @@ public abstract class PartyUpdateView<T extends Party> extends ViewImpl implemen
     city.setValue("");
   }
 
+  @UiHandler("name")
+  public void onNameChange(ValueChangeEvent<String> event) {
+    name.setValue(UiHelper.formatLastName(name.getValue()));
+  }
+  
+  @UiHandler("firstName")
+  public void onFirstNameChange(ValueChangeEvent<String> event) {
+    firstName.setValue(UiHelper.formatFirstName(firstName.getValue()));
+  }
+  
   @UiHandler("btnSave")
   public void onSave(ClickEvent e) {
     presenter.onButtonSaveClick();
@@ -245,13 +257,36 @@ public abstract class PartyUpdateView<T extends Party> extends ViewImpl implemen
   public void reset() {
     UiHelper.resetForm(asWidget());
   }
-
+  private void emptyFields(){
+    name.setText("");
+    firstName.setText("");
+    bic.setText("");
+    iban.setText("");
+    email.setText("");
+    phoneNumber.setText("");
+    mobileNumber.setText("");
+    fax.setText("");
+    birthDayDate.setValue(null);
+    placeOfBirth.setText("");
+    country.setValue("");
+    addresse.setText("");
+    number.setText("");
+    postalCode.setText("");
+    city.setValue("");
+    nationality.setText("");
+    job.setText("");
+    nationalRegister.setText("");
+    UiHelper.selectTextItemBoxByValue(maritalStatus, null, MaritalStatus.SINGLE);
+    UiHelper.selectTextItemBoxByValue(matrimonialRegime, null, MatrimonialRegime.NONE);
+    UiHelper.selectTextItemBoxByValue(title, Title.MR);
+  }
   @Override
   public void setData(T party) {
+    emptyFields();
     UiHelper.selectTextItemBoxByValue(title, party.getTitle());
 
-    name.setText(party.getLastName());
-    firstName.setText(party.getFirstName());
+    name.setText(UiHelper.formatLastName(party.getLastName()));
+    firstName.setText(UiHelper.formatFirstName(party.getFirstName()));
     bic.setText(party.getBic());
     iban.setText(party.getIban());
     email.setText(party.getEmail());
@@ -267,6 +302,7 @@ public abstract class PartyUpdateView<T extends Party> extends ViewImpl implemen
     country.setValue(party.getCountry());
     presenter.onCountrySelect(country.getValue());
     addresse.setText(party.getStreet());
+    number.setText(party.getNumber());
     postalCode.setText(party.getPostalCode());
     presenter.onPostalCodeSelect(postalCode.getValue());
     city.setValue(party.getCity());
@@ -298,6 +334,7 @@ public abstract class PartyUpdateView<T extends Party> extends ViewImpl implemen
     party.setDateOfBirth(birthDayDate.getValue());
     party.setPlaceOfBirth(placeOfBirth.getValue());
     party.setStreet(addresse.getValue());
+    party.setNumber(number.getValue());
     party.setPostalCode(postalCode.getValue());
     party.setCity(city.getValue());
     party.setCountry(country.getValue());

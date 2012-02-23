@@ -29,6 +29,14 @@ public abstract class PartyDetailsView<T extends Party> extends ViewImpl impleme
 
   @UiField
   Element addresse;
+  @UiField
+  Element number;
+  @UiField
+  Element city;
+  @UiField
+  Element postalCode;
+  @UiField
+  Element country;
 
   @UiField
   Element bic;
@@ -83,9 +91,9 @@ public abstract class PartyDetailsView<T extends Party> extends ViewImpl impleme
 
   private void displayName(T party) {
     StringBuilder nameBuilder = new StringBuilder();
-    nameBuilder.append(UiHelper.translateEnum("Title_", party.getTitle(), "_short")).append(" ");
-    nameBuilder.append(party.getLastName()).append(" ");
-    nameBuilder.append(party.getFirstName());
+    nameBuilder.append(UiHelper.translateEnum("Title_", party.getTitle())).append(" ");
+    nameBuilder.append(UiHelper.formatLastName(party.getLastName())).append(" ");
+    nameBuilder.append(UiHelper.formatFirstName(party.getFirstName()));
     name.setInnerText(nameBuilder.toString());
   }
 
@@ -125,7 +133,11 @@ public abstract class PartyDetailsView<T extends Party> extends ViewImpl impleme
     job.setInnerText(party.getJobTitle());
     nationalRegister.setInnerText(party.getNationalRegisterNumber());
     birthDay.setInnerText(UiHelper.displayDate(party.getDateOfBirth()));
-    addresse.setInnerHTML(party.getStreet() + "<br/>" + party.getPostalCode() + " " + party.getCity() + "<br/>" + party.getCountry());
+    addresse.setInnerText(party.getStreet());
+    number.setInnerText(party.getNumber());
+    postalCode.setInnerText(party.getPostalCode());
+    city.setInnerText(party.getCity());
+    country.setInnerText(party.getCountry());
     maritalStatus.setInnerText(party.getMaritalStatus() != null ? UiHelper.translateEnum(
         "MaritalStatus_", party.getMaritalStatus()) : "");
     matrimonialRegime.setInnerText(party.getMatrimonialRegime() != null ? UiHelper.translateEnum(

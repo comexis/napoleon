@@ -5,7 +5,6 @@ import static com.google.gwt.query.client.GQuery.$;
 import java.util.Date;
 import java.util.List;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -26,7 +25,6 @@ public class UiHelper {
   public static ListBox createListBoxForEnum(Class<? extends Enum<?>> enumClass, String prefix,
       boolean mutiple) {
     ListBox box = new ListBox(mutiple);
-
     for (Enum<?> e : enumClass.getEnumConstants()) {
       box.addItem(translateEnum(prefix, e), e.name());
     }
@@ -96,5 +94,36 @@ public class UiHelper {
     
     return DATE_FORMAT.format(d);
   }
-
+  public static String formatLastName(String name){
+    if (name!=null && !name.isEmpty()){
+      return name.toUpperCase();
+    }else{
+      return "";
+    }
+  }
+  public static String formatFirstName(String name){
+    return formatWordsFirstUpper(name);
+  }
+  public static String formatSuggest(String name){
+    return formatWordsFirstUpper(name);
+  }
+  public static String formatWordsFirstUpper(String name){
+    if (name!=null && !name.isEmpty()){
+      String formatedName = "";
+      String [] parts=name.toLowerCase().split(" ");
+      for(int i=0; i < parts.length; i++){
+        parts[i] = parts[i].substring(0,1).toUpperCase() + parts[i].substring(1);
+        formatedName += parts[i] + " ";
+      }
+      parts=formatedName.split("-");
+      formatedName = "";
+      for(int i=0; i < parts.length; i++){
+        parts[i] = parts[i].substring(0,1).toUpperCase() + parts[i].substring(1);
+        formatedName += parts[i] + "-";
+      }
+      return formatedName.substring(0,formatedName.length()-1);
+    }else{
+      return "";
+    }
+  }
 }
