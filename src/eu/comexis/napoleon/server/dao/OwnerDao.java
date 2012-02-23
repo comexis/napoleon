@@ -1,6 +1,7 @@
 package eu.comexis.napoleon.server.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.UUID;
 
@@ -12,6 +13,7 @@ import eu.comexis.napoleon.shared.model.Country;
 import eu.comexis.napoleon.shared.model.JobTitle;
 import eu.comexis.napoleon.shared.model.Nationality;
 import eu.comexis.napoleon.shared.model.Owner;
+import eu.comexis.napoleon.shared.model.RealEstate;
 import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 
 public class OwnerDao extends NapoleonDao<Owner> {
@@ -110,5 +112,10 @@ public class OwnerDao extends NapoleonDao<Owner> {
     RealEstateDao eDao = new RealEstateDao();
     o.setEstates(eDao.getListSimpleRealEstatesForOwner(companyId, ownerId));
     return o;
+  }
+  public Key<Owner> getOwnerKey(String ownerId,String companyId){
+    Key<Company> companyKey = new Key<Company>(Company.class, companyId);
+    Key<Owner> ownerKey = new Key<Owner>(companyKey,Owner.class, ownerId);
+    return ownerKey;
   }
 }

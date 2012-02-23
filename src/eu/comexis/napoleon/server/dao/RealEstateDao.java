@@ -105,7 +105,7 @@ public class RealEstateDao extends NapoleonDao<RealEstate> {
       if (city == null) {
         city = countryData.addCity(country.getId(), realEstate.getCity(),realEstate.getPostalCode());
       }
-      if (!realEstate.getSquare().isEmpty()){
+      if (realEstate.getSquare()!=null && !realEstate.getSquare().isEmpty()){
         ArrayList<String> allSquares = city.getSquareList();
         if (allSquares != null){
           if (!allSquares.contains(realEstate.getSquare())){
@@ -123,7 +123,7 @@ public class RealEstateDao extends NapoleonDao<RealEstate> {
     }
     // Enrich condo + association storage for list
     String companyId = UserManager.INSTANCE.getCompanyId();
-    if (!realEstate.getCondominium().isEmpty()){
+    if (realEstate.getCondominium()!=null && !realEstate.getCondominium().isEmpty()){
       CondoDao cdoDao = new CondoDao();
       Condo cdo = new Condo();
       cdo.setName(realEstate.getCondominium());
@@ -136,7 +136,7 @@ public class RealEstateDao extends NapoleonDao<RealEstate> {
       cdo.setNumber(realEstate.getNumber());
       cdo = cdoDao.update(cdo,companyId);
     }
-    if (!realEstate.getHomeownerAssociation().isEmpty()){
+    if (realEstate.getHomeownerAssociation()!=null && !realEstate.getHomeownerAssociation().isEmpty()){
       HomeownerAssocDao assocDao = new HomeownerAssocDao();
       Association assoc = new Association();
       assoc.setName(realEstate.getHomeownerAssociation());
@@ -146,7 +146,9 @@ public class RealEstateDao extends NapoleonDao<RealEstate> {
       assoc.setPhoneNumber(realEstate.getAssocPhoneNumber());
       assocDao.update(assoc, companyId);
     }
-    setOwner(realEstate, realEstate.getOwner().getId(),companyId,realEstate.getOwnershipDate());
+    if (realEstate.getOwner()!=null){
+      setOwner(realEstate, realEstate.getOwner().getId(),companyId,realEstate.getOwnershipDate());
+    }
     return super.update(realEstate);
   }
   public Ownership getCurrentOwnership(RealEstate realEstate){
