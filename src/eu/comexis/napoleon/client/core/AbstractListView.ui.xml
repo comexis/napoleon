@@ -32,28 +32,29 @@
 		}
 	</ui:style>
 
-
-	<g:HTMLPanel>
-		<div class='{style.filterOuter}'>
-			<span class='{style.filterLabel}'>Filtrer la liste :</span>
-			<input ui:field="filter" size="60" class='{style.filterInput}'></input>
-			<g:Button ui:field="reset">Réinitialiser</g:Button>
-		</div>
-		<table style="width:100%">
-			<tr>
-				<td align='center'>
-					<c:CellTable ui:field='table' styleName="{style.datagrid}"></c:CellTable>
-				</td>
-			</tr>
-			<tr>
-				<td align='center'>
-					<c:SimplePager ui:field='pager' />
-				</td>
-			</tr>
-		</table>
-		<g:Button ui:field="btnNew"></g:Button>
-		<g:Button ui:field="btnToDashBoard">Retour vers le dashboard</g:Button>
-	</g:HTMLPanel>
+	<g:ScrollPanel>
+		<g:HTMLPanel>
+			<div class='{style.filterOuter}'>
+				<span class='{style.filterLabel}'>Filtrer la liste :</span>
+				<input ui:field="filter" size="60" class='{style.filterInput}'></input>
+				<g:Button ui:field="reset">Réinitialiser</g:Button>
+			</div>
+			<table style="width:100%">
+				<tr>
+					<td align='center'>
+						<c:CellTable ui:field='table' styleName="{style.datagrid}"></c:CellTable>
+					</td>
+				</tr>
+				<tr>
+					<td align='center'>
+						<c:SimplePager ui:field='pager' />
+					</td>
+				</tr>
+			</table>
+			<g:Button ui:field="btnNew"></g:Button>
+			<g:Button ui:field="btnToDashBoard">Retour vers le dashboard</g:Button>
+		</g:HTMLPanel>
+	</g:ScrollPanel>
 
 
 </ui:UiBinder>
