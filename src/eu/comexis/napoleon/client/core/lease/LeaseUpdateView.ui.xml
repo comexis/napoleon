@@ -1,0 +1,38 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	xmlns:dp="urn:import:com.google.gwt.user.datepicker.client"
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+	<ui:with field='res' type='eu.comexis.napoleon.client.resources.Resources' />
+
+	<g:ScrollPanel>
+		<g:HTMLPanel styleName="{res.css.detailTable}">
+
+			<div class="{res.css.detailRow}">
+				<span class="{res.css.detailCellInputLabel}">Référence :</span>
+				<g:ListBox ui:field="reference" styleName="{res.css.detailCellInputText}"
+					name="reference" />
+				<span class="{res.css.detailCellInputLabel}">Année académique :</span>
+				<g:SuggestBox ui:field="academicYear" styleName="{res.css.detailCellInputText}" />
+			</div>
+
+			<div class="{res.css.detailRow}">
+				<span class="{res.css.detailCellInputLabel}">Locataire :</span>
+				<g:ListBox ui:field="tenantName" styleName="{res.css.detailCellInputList}"
+					name="tenantName" />
+			</div>
+
+			<div class="{res.css.separationRow}" style="clear: both;">
+
+			</div>
+
+			<div>
+				<g:Button ui:field="btnSave">Sauver</g:Button>
+				<g:Button ui:field="btnCancel">Annuler</g:Button>
+			</div>
+		</g:HTMLPanel>
+	</g:ScrollPanel>
+</ui:UiBinder>

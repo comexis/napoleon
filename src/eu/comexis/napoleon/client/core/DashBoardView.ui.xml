@@ -33,6 +33,10 @@
 			<a class="{style.item}" href="#realEstateList">
 				<div>Biens</div>
 			</a>
+			<br/>
+			<a class="{style.item}" href="#leaseList">
+				<div>Locations</div>
+			</a>
 		</div>
 		
 	</g:HTMLPanel>

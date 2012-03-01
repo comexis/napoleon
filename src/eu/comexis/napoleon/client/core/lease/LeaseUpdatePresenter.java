@@ -1,0 +1,171 @@
+package eu.comexis.napoleon.client.core.lease;
+
+import java.util.List;
+import java.util.logging.Logger;
+
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.logging.client.LogConfiguration;
+import com.google.inject.Inject;
+import com.gwtplatform.mvp.client.Presenter;
+import com.gwtplatform.mvp.client.View;
+import com.gwtplatform.mvp.client.annotations.NameToken;
+import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
+import com.gwtplatform.mvp.client.proxy.PlaceManager;
+import com.gwtplatform.mvp.client.proxy.PlaceRequest;
+import com.gwtplatform.mvp.client.proxy.ProxyPlace;
+import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
+
+import eu.comexis.napoleon.client.core.MainLayoutPresenter;
+import eu.comexis.napoleon.client.core.lease.LeaseUpdateUiHandlers.HasLeaseUpdateUiHandler;
+import eu.comexis.napoleon.client.place.NameTokens;
+import eu.comexis.napoleon.client.rpc.callback.GotLease;
+import eu.comexis.napoleon.client.rpc.callback.UpdatedLease;
+import eu.comexis.napoleon.shared.command.lease.GetLeaseCommand;
+import eu.comexis.napoleon.shared.command.lease.UpdateLeaseCommand;
+import eu.comexis.napoleon.shared.model.Lease;
+import eu.comexis.napoleon.shared.model.RealEstate;
+import eu.comexis.napoleon.shared.validation.LeaseValidator;
+import eu.comexis.napoleon.shared.validation.ValidationMessage;
+
+public class LeaseUpdatePresenter extends
+    Presenter<LeaseUpdatePresenter.MyView, LeaseUpdatePresenter.MyProxy> implements
+    LeaseUpdateUiHandlers {
+
+  @ProxyCodeSplit
+  @NameToken(NameTokens.updateRealEstate)
+  public interface MyProxy extends ProxyPlace<LeaseUpdatePresenter> {
+  }
+  public interface MyView extends View, HasLeaseUpdateUiHandler {
+    public void displayError(String error);
+
+    public void displayValidationMessage(List<ValidationMessage> validationMessages);
+
+    public void reset();
+
+    public void setLease(Lease l);
+
+    public Lease updateLease(Lease l);
+  }
+
+  public static final String UUID_PARAMETER = "uuid";
+  public static final String ESTATE_UUID_PARAMETER = "estate_uuid";
+
+  private static final Logger LOG = Logger.getLogger(LeaseDetailsPresenter.class.getName());
+
+  private PlaceManager placeManager;
+  private String id;
+  private String realEstateId;
+  private Lease lease;
+  private LeaseValidator validator;
+
+  @Inject
+  public LeaseUpdatePresenter(final EventBus eventBus, final MyView view, final MyProxy proxy,
+      final PlaceManager placeManager) {
+    super(eventBus, view, proxy);
+    this.placeManager = placeManager;
+    this.validator = new LeaseValidator();
+  }
+
+  @Override
+  public void onButtonCancelClick() {
+    PlaceRequest myRequest = new PlaceRequest(NameTokens.lease);
+    // add the id of the realEstate to load
+    GWT.log("cancel click on " + lease.getId());
+    myRequest = myRequest.with(UUID_PARAMETER, lease.getId());
+    placeManager.revealPlace(myRequest);
+  }
+
+  @Override
+  public void onButtonSaveClick() {
+    getView().updateLease(lease);
+
+    List<ValidationMessage> validationMessages = validator.validate(lease);
+
+    if (validationMessages.isEmpty()) {
+      saveLease();
+    } else {
+      getView().displayValidationMessage(validationMessages);
+    }
+    
+  }
+
+  /**
+   * Retrieve the id of the realEstate to show it
+   */
+  @Override
+  public void prepareFromRequest(PlaceRequest placeRequest) {
+    super.prepareFromRequest(placeRequest);
+    // In the next call, "view" is the default value,
+    // returned if "action" is not found on the URL.
+    id = placeRequest.getParameter(UUID_PARAMETER, null);
+    realEstateId = placeRequest.getParameter(ESTATE_UUID_PARAMETER, null);
+
+    if (id == null || id.length() == 0) {
+      if (LogConfiguration.loggingIsEnabled()) {
+        LOG.severe("invalid id is null or empty");
+      }
+      placeManager.revealErrorPlace(placeRequest.getNameToken());
+    }
+
+  }
+
+  public void saveLease() {
+    // Save it
+    UpdateLeaseCommand cmd = new UpdateLeaseCommand();
+    cmd.setLease(lease);
+    cmd.dispatch(new UpdatedLease() {
+      @Override
+      public void got(Lease lease) {
+        if (lease != null) {
+          PlaceRequest myRequest = new PlaceRequest(NameTokens.lease);
+          myRequest = myRequest.with(UUID_PARAMETER, lease.getId());
+          myRequest = myRequest.with(ESTATE_UUID_PARAMETER, lease.getRealEstate().getId());
+          placeManager.revealPlace(myRequest);
+        } else {
+          getView().displayError("The realEstate cannot be save");
+        }
+      }
+    });
+
+  }
+
+  @Override
+  protected void onBind() {
+    super.onBind();
+    getView().setLeaseUpdateUiHandler(this);
+    init();
+  }
+
+  @Override
+  protected void onHide() {
+    super.onHide();
+    getView().reset();
+  }
+
+  @Override
+  protected void onReset() {
+    super.onReset();
+    if (id != null && !"new".equals(id)) { // call the server to get the requested owner
+      new GetLeaseCommand(id,realEstateId).dispatch(new GotLease() {
+        @Override
+        public void got(Lease lease) {
+          LeaseUpdatePresenter.this.lease = lease;
+          getView().setLease(lease);
+        }
+      });
+    } else {
+      lease = new Lease();
+      getView().setLease(lease);
+    }
+  }
+
+  @Override
+  protected void revealInParent() {
+    RevealContentEvent.fire(this, MainLayoutPresenter.MAIN_CONTENT, this);
+  }
+
+  private void init() {
+    //
+  }
+}
