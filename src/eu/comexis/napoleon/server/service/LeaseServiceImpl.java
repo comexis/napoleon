@@ -27,7 +27,8 @@ public class LeaseServiceImpl extends RemoteServiceServlet implements LeaseServi
   @Override
   public GetLeaseResponse execute(GetLeaseCommand command) {
     LeaseDao dao = new LeaseDao();
-    Lease lease = dao.getById(command.getId(), command.getRealEstateId());
+    String companyId = UserManager.INSTANCE.getCompanyId();
+    Lease lease = dao.getById(command.getId(), command.getRealEstateId(), companyId);
     GetLeaseResponse response = new GetLeaseResponse();
     response.setLease(lease);
     return response;
@@ -39,7 +40,7 @@ public class LeaseServiceImpl extends RemoteServiceServlet implements LeaseServi
     String companyId = UserManager.INSTANCE.getCompanyId();
     List<SimpleLease> leaseList = new ArrayList<SimpleLease>();
     if (command.getRealEstateId()!=null && !command.getRealEstateId().isEmpty()){
-      leaseList = dao.getAllLeaseForEstate(command.getRealEstateId(),companyId);
+      leaseList = dao.getAllLease(command.getRealEstateId(),companyId);
     }else{
       leaseList = dao.getAllLease(companyId);
     }
@@ -50,8 +51,9 @@ public class LeaseServiceImpl extends RemoteServiceServlet implements LeaseServi
 
   @Override
   public UpdateLeaseResponse execute(UpdateLeaseCommand command) {
+    String companyId = UserManager.INSTANCE.getCompanyId();
     LeaseDao dao = new LeaseDao();
-    Lease lease = dao.update(command.getLease());
+    Lease lease = dao.update(command.getLease(),companyId);
     UpdateLeaseResponse response = new UpdateLeaseResponse();
     response.setLease(lease);
     return response;

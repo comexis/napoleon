@@ -2,8 +2,11 @@ package eu.comexis.napoleon.server.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,16 +15,20 @@ import javax.servlet.http.HttpServletResponse;
 
 import eu.comexis.napoleon.server.dao.ApplicationUserDao;
 import eu.comexis.napoleon.server.dao.CompanyDao;
+import eu.comexis.napoleon.server.dao.LeaseDao;
 import eu.comexis.napoleon.server.dao.OwnerDao;
 import eu.comexis.napoleon.server.dao.RealEstateDao;
 import eu.comexis.napoleon.server.dao.TenantDao;
 import eu.comexis.napoleon.shared.model.ApplicationUser;
 import eu.comexis.napoleon.shared.model.Company;
+import eu.comexis.napoleon.shared.model.Lease;
 import eu.comexis.napoleon.shared.model.MaritalStatus;
 import eu.comexis.napoleon.shared.model.Owner;
 import eu.comexis.napoleon.shared.model.RealEstate;
 import eu.comexis.napoleon.shared.model.Tenant;
 import eu.comexis.napoleon.shared.model.Title;
+import eu.comexis.napoleon.shared.model.simple.SimpleRealEstate;
+import eu.comexis.napoleon.shared.model.simple.SimpleTenant;
 
 @SuppressWarnings("serial")
 public class InitDatastore extends HttpServlet {
@@ -40,9 +47,13 @@ public class InitDatastore extends HttpServlet {
 
     createOwners(companyId);
 
-    //createTenantDao(companyId);
+    createTenantDao(companyId);
 
+    //create300RealEstate(companyId);
+    
     createRealEstate(companyId);
+    
+    createLease(companyId);
 
     printResults(companyId, resp);
 
@@ -181,8 +192,45 @@ public class InitDatastore extends HttpServlet {
     o = ownerData.update(o);
 
   }
-
   private void createRealEstate(String companyId) {
+    RealEstateDao eDao = new RealEstateDao();
+    OwnerDao ownerData = new OwnerDao();
+    List<Owner> allOwners = ownerData.listAll(companyId);
+    RealEstate e = eDao.create(companyId);
+    e.setReference("Residence du Granite Rose /1");
+    e.setCondominium("Residence du Granite Rose");
+    e.setHomeownerAssociation("Syndic de la Mer");
+    e.setStreet("Rue de l'océan");
+    e.setNumber("12");
+    e.setPostalCode("7800");
+    e.setCity("Ath");
+    e.setCountry("Belgique");
+    e.setOwnerKey(ownerData.getOwnerKey(allOwners.get(0).getId(),companyId));
+    eDao.update(e);
+    
+    e = eDao.create(companyId);
+    e.setReference("Residence du Granite Rose /2");
+    e.setCondominium("Residence du Granite Rose");
+    e.setHomeownerAssociation("Syndic de la Mer");
+    e.setStreet("Rue de l'océan");
+    e.setNumber("12");
+    e.setPostalCode("7800");
+    e.setCity("Ath");
+    e.setCountry("Belgique");
+    e.setOwnerKey(ownerData.getOwnerKey(allOwners.get(1).getId(),companyId));
+    eDao.update(e);
+    
+    e = eDao.create(companyId);
+    e.setReference("Residence les Alouettes");
+    e.setStreet("Rue des Marins");
+    e.setNumber("25");
+    e.setPostalCode("7000");
+    e.setCity("Mons");
+    e.setCountry("Belgique");
+    e.setOwnerKey(ownerData.getOwnerKey(allOwners.get(1).getId(),companyId));
+    eDao.update(e);
+  }
+  private void create300RealEstate(String companyId) {
     RealEstateDao eDao = new RealEstateDao();
     OwnerDao ownerData = new OwnerDao();
     List<Owner> allOwners = ownerData.listAll(companyId);
@@ -203,6 +251,25 @@ public class InitDatastore extends HttpServlet {
         j=0;
       }
     }
+  }
+  
+  private void createLease(String companyId){
+    Calendar cal1 = Calendar.getInstance(
+        TimeZone.getTimeZone("CEST"), Locale.FRANCE);
+    
+    LeaseDao lDao = new LeaseDao();
+    Lease l = new Lease();
+    RealEstateDao eDao = new RealEstateDao();
+    TenantDao tDao = new TenantDao();
+    List<SimpleRealEstate> allEstate = eDao.getListSimpleRealEstates(companyId);
+    List<SimpleTenant> allTenant = tDao.getListSimpleTenants(companyId);
+    l.setRealEstate(allEstate.get(0));
+    l.setTenant(allTenant.get(0));
+    cal1.set(2011, Calendar.SEPTEMBER, 1, 00, 00);
+    l.setStartDate(cal1.getTime());
+    cal1.set(2012, Calendar.JUNE, 30, 00, 00);
+    l.setEndDate(cal1.getTime());
+    lDao.update(l,companyId);
   }
 
   private void createTenantDao(String companyId) {

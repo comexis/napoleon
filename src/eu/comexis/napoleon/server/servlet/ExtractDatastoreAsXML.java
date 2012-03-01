@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import eu.comexis.napoleon.server.dao.ApplicationUserDao;
 import eu.comexis.napoleon.server.dao.CompanyDao;
 import eu.comexis.napoleon.server.dao.CountryDao;
+import eu.comexis.napoleon.server.dao.LeaseDao;
 import eu.comexis.napoleon.server.dao.OwnerDao;
 import eu.comexis.napoleon.server.dao.RealEstateDao;
 import eu.comexis.napoleon.server.dao.TenantDao;
@@ -20,9 +21,11 @@ import eu.comexis.napoleon.shared.model.City;
 import eu.comexis.napoleon.shared.model.Company;
 import eu.comexis.napoleon.shared.model.Country;
 import eu.comexis.napoleon.shared.model.FileDescriptor;
+import eu.comexis.napoleon.shared.model.Lease;
 import eu.comexis.napoleon.shared.model.Owner;
 import eu.comexis.napoleon.shared.model.RealEstate;
 import eu.comexis.napoleon.shared.model.Tenant;
+import eu.comexis.napoleon.shared.model.simple.SimpleLease;
 import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 import eu.comexis.napoleon.shared.model.simple.SimpleRealEstate;
 
@@ -134,14 +137,14 @@ public class ExtractDatastoreAsXML extends HttpServlet {
       out.println("<PostalCode>"+ e.getPostalCode() + "</PostalCode>");
       out.println("<City>"+ e.getCity() + "</City>");
       out.println("<Square>" + e.getSquare() + "</Square>");
-      out.println("<State>" + e.getState().name() + "</State>");
-      out.println("<Type>" + e.getType().name() + "</Type>");
+      out.println("<State>" + (e.getState()!=null ? e.getState().name() :"") + "</State>");
+      out.println("<Type>" + (e.getType()!=null ? e.getType().name() :"") + "</Type>");
       out.println("<Dim>" + e.getDimension() + "</Dim>");
       SimpleOwner o = estateDao.getOwner(e);
       if (o !=null){
         out.println("<Owner>" + o.getName() + "</Owner>");
       }
-      if (!e.getCondominium().isEmpty()){
+      if (e.getCondominium()!=null && !e.getCondominium().isEmpty()){
         out.println("<Condominium>");
         out.println("<Name>" + e.getCondominium() + "</Name>");
         out.println("<HomeownerAssociation>" + e.getHomeownerAssociation() + "</HomeownerAssociation>");
@@ -151,6 +154,36 @@ public class ExtractDatastoreAsXML extends HttpServlet {
       out.println("</RealEstate>");
     }
     out.println("</RealEstates>");
+    
+    // print realEstate
+    out.println("<Leases>");
+    LeaseDao lDao = new LeaseDao();
+    for (SimpleLease l : lDao.getAllLease(companyId)) {
+      out.println("<Lease id='"+ l.getId() + "'>");
+      out.println("<RealEstateRef>"+ l.getRealEstateRef() + "</RealEstateRef>");
+      out.println("<Owner>"+ l.getOwnerName() + "</Owner>");
+      out.println("<Tenant>"+ l.getTenantName() + "</Tenant>");
+      out.println("<StartDate>"+ l.getStartDate().toString() + "</StartDate>");
+      out.println("<EndDate>"+ l.getEndDate().toString() + "</EndDate>");
+      out.println("</Lease>");
+    }
+    out.println("</Leases>");
+    
+    /*// print realEstate
+    out.println("<Leases>");
+    for (Lease l : lDao.listAll(companyId)) {
+      RealEstate re = lDao.getRealEstate(l);
+      out.println("<Lease id='"+ l.getId() + "'>");
+      out.println("<RealEstateRef>"+ re.getReference() + "</RealEstateRef>");
+      out.println("<Owner>"+ estateDao.getOwner(re).getName() + "</Owner>");
+      out.println("<Tenant>"+ lDao.getTenant(l).getLastName() + "</Tenant>");
+      out.println("<StartDate>"+ l.getStartDate().toString() + "</StartDate>");
+      out.println("<EndDate>"+ l.getEndDate().toString() + "</EndDate>");
+      out.println("<Duration>"+ l.getDuration() + "</Duration>");
+      out.println("<DurationUnit>"+ l.getDurationUnit() + "</DurationUnit>");
+      out.println("</Lease>");
+    }
+    out.println("</Leases>");*/
     
     // Countries
     out.println("<Countries>");

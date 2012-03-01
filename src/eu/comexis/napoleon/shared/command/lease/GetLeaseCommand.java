@@ -12,6 +12,10 @@ public class GetLeaseCommand implements Action<GetLeaseResponse> {
   public GetLeaseCommand() {
     // TODO Auto-generated constructor stub
   }
+  public GetLeaseCommand(String id,String realEstateId) {
+    this.id = id;
+    this.realEstateId = realEstateId;
+  }
 
   @Override
   public void dispatch(AsyncCallback<GetLeaseResponse> callback) {
