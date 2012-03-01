@@ -259,5 +259,4 @@ public class RealEstate implements IsSerializable {
   public void setType(TypeOfRealEstate type) {
     this.type = type;
   }
-
 }

@@ -46,7 +46,6 @@ public class NapoleonDao<T> extends DAOBase {
     ObjectifyService.register(Tenant.class);
     ObjectifyService.register(Condo.class);
     ObjectifyService.register(RealEstate.class);
-    ObjectifyService.register(Lease.class);
     ObjectifyService.register(ApplicationUser.class);
     ObjectifyService.register(Association.class);
     ObjectifyService.register(Nationality.class);

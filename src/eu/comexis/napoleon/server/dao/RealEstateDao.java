@@ -166,8 +166,11 @@ public class RealEstateDao extends NapoleonDao<RealEstate> {
   public void setOwner(RealEstate realEstate,String ownerId,String companyId, Date fromDate){
     Key<Company> companyKey = new Key<Company>(Company.class, companyId);
     Key<Owner> ownerKey = new Key<Owner>(companyKey,Owner.class, ownerId);
+    // get the currentOwner
     Ownership currentOwner = getCurrentOwnership(realEstate);
     if (currentOwner!=null){
+      // if the owner is already the current Owner, we will allow the change the from date if that date is
+      // not before the "from date" of the previous owner.
       if (currentOwner.getOwnerKey().equals(ownerKey)){
         //currentOwner.setFromDate(fromDate);
         ofy().put(currentOwner);
