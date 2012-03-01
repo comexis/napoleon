@@ -115,5 +115,8 @@ public interface Literals extends ConstantsWithLookup {
 
   @DefaultStringValue("Erreur de validation")
   public String validationMessageDialogTitle();
+
+  @DefaultStringValue("Chargement du fichier...")
+  public String fileUpload();
   
 }

@@ -8,6 +8,7 @@ import com.gwtplatform.mvp.client.DelayedBindRegistry;
 
 import eu.comexis.napoleon.client.gin.ClientGinjector;
 import eu.comexis.napoleon.client.resources.Resources;
+import eu.comexis.napoleon.client.widget.MessagePanel;
 
 public class Napoleon implements EntryPoint {
 
@@ -20,6 +21,9 @@ public class Napoleon implements EntryPoint {
 
     // inject css
     Resources.INSTANCE.css().ensureInjected();
+    
+    //init message 
+    MessagePanel.INSTANCE.bind(ginjector.getEventBus());
 
     ginjector.getPlaceManager().revealCurrentPlace();
 

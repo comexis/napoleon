@@ -54,7 +54,7 @@ public abstract class AbstractListView<T> extends ViewImpl implements
     preInit();
     Binder binder = GWT.create(Binder.class);
     widget = binder.createAndBindUi(this);
-    
+
     init();
 
   }
@@ -66,6 +66,7 @@ public abstract class AbstractListView<T> extends ViewImpl implements
 
   @Override
   public void dataIsLoading() {
+    GWT.log("DataIsLoading :"+table.getVisibleRange());
     table.setVisibleRangeAndClearData(table.getVisibleRange(), true);
   }
 
@@ -94,50 +95,50 @@ public abstract class AbstractListView<T> extends ViewImpl implements
   }
 
   protected abstract ProvidesKey<T> getKeyProvider();
-  
+
   protected abstract String getButtonNewLabel();
 
   protected abstract void initTableColumns(SingleSelectionModel<T> selectionModel,
       ListHandler<T> sortHandler);
 
   private void init() {
-    $(filter).keyup(new Function(){
+    $(filter).keyup(new Function() {
       @Override
-      public void f() { 
+      public void f() {
         String filterString = $(filter).val();
         presenter.filter(filterString);
       }
     });
-    
+
     btnNew.setText(getButtonNewLabel());
-    
+
   }
-  
+
   @UiHandler("reset")
-  public void onResetFilter(ClickEvent e){
+  public void onResetFilter(ClickEvent e) {
     presenter.filter(null);
     $(filter).val("");
   }
-  
+
   @SuppressWarnings("unchecked")
-  public void resetFocus(){
-    //deselect the current selected object
+  public void resetFocus() {
+    // deselect the current selected object
     SingleSelectionModel<T> selectionModel = (SingleSelectionModel<T>) table.getSelectionModel();
-    T selectedObject  = selectionModel.getSelectedObject();
+    T selectedObject = selectionModel.getSelectedObject();
     selectionModel.setSelected(selectedObject, false);
-    
-    //put focus on the table 
+
+    // put focus on the table
     // TODO : doesn't work
     table.setFocus(true);
-    
+
   }
-  
-  
+
   private void preInit() {
 
     dataProvider = new ListDataProvider<T>();
 
-    table = new CellTable<T>(40, getKeyProvider());
+    table = new CellTable<T>(25, getKeyProvider());
+    // table.setLoadingIndicator(new LoadingDataIndicator());
 
     table.setWidth("100%");
 
@@ -173,9 +174,8 @@ public abstract class AbstractListView<T> extends ViewImpl implements
 
     // Connect the table to the data provider.
     dataProvider.addDataDisplay(table);
-    
-    table.setLoadingIndicator(new LoadingDataIndicator());
-    
+
+    dataIsLoading();
 
   }
 }

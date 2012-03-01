@@ -35,14 +35,36 @@ public class InitDatastore extends HttpServlet {
     String companyId = createCompany();
 
     createApplicationUsers(companyId);
+    
+    //createApplicationUsersLive(companyId);
 
-    //createOwners(companyId);
+    createOwners(companyId);
 
     //createTenantDao(companyId);
 
-    //createRealEstate(companyId);
+    createRealEstate(companyId);
 
     printResults(companyId, resp);
+
+  }
+  
+  private void createApplicationUsersLive(String companyId) {
+
+    // create user xavier.platiaux@gmail.com
+    ApplicationUserDao userData = new ApplicationUserDao();
+    ApplicationUser u = userData.create(companyId);
+    u.setFirstName("Aiglon");
+    u.setLastName("sprl");
+    u.setEmail("aiglonsprl@gmail.com");
+    userData.update(u);
+    
+    // create user napoleon.user1@gmail.com
+    u = userData.create(companyId);
+    u.setFirstName("comexis");
+    u.setLastName("user");
+    u.setEmail("comexis.partners@gmail.com");
+    userData.update(u); 
+    
 
   }
 

@@ -35,4 +35,8 @@ public interface Css extends CssResource {
   public String innerRealEstateList();
 
   public String outerRealEstateList();
+
+  public String messagePanelOuter();
+
+  public String messagePanelInner();
 }

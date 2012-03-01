@@ -15,6 +15,9 @@ import com.gwtplatform.mvp.client.View;
 
 import eu.comexis.napoleon.client.core.HasPresenter;
 import eu.comexis.napoleon.client.events.AddedFileEvent;
+import eu.comexis.napoleon.client.events.DisplayMessageEvent;
+import eu.comexis.napoleon.client.events.HideMessageEvent;
+import eu.comexis.napoleon.client.resources.Literals;
 import eu.comexis.napoleon.shared.model.FileDescriptor;
 import eu.comexis.napoleon.shared.model.HasFiles;
 import eu.comexis.napoleon.shared.validation.AbstractValidator;
@@ -55,12 +58,16 @@ public class DocumentPanelPresenter extends PresenterWidget<DocumentPanelPresent
   public DocumentPanelPresenter(final EventBus eventBus, final MyView view) {
     super(eventBus, view);
     validator = new NapoleonFileValidator();
+    
+    
   }
 
   @Override
   public void onBeforeUpload(final FileDescriptor file) {
 
     uploadingFile = null;
+    
+    getEventBus().fireEvent(new DisplayMessageEvent(Literals.INSTANCE.fileUpload()));
 
     List<ValidationMessage> msgs = validator.validate(file);
 
@@ -89,6 +96,9 @@ public class DocumentPanelPresenter extends PresenterWidget<DocumentPanelPresent
   @Override
   public void onSubmitError() {
     uploadingFile = null;
+    
+    HideMessageEvent.fire(getEventBus());
+    
     // TODO call the view to display a nice message
     Window.alert("Impossible d'uploader le fichier. Veuillez réessayer.");
 
@@ -104,6 +114,7 @@ public class DocumentPanelPresenter extends PresenterWidget<DocumentPanelPresent
     getView().reset();
 
     AddedFileEvent.fire(getEventBus(), uploadingFile, entity);
+    HideMessageEvent.fire(getEventBus());
 
     uploadingFile = null;
 

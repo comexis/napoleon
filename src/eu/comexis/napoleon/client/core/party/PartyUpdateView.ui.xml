@@ -8,7 +8,7 @@
 
 	<ui:with field='res' type='eu.comexis.napoleon.client.resources.Resources' />
 
-
+<g:ScrollPanel>
 	<g:HTMLPanel styleName="{res.css.detailTable}">
 
 		<div class="{res.css.detailRow}">
@@ -90,4 +90,5 @@
 			<g:Button ui:field="btnCancel">Annuler</g:Button>
 		</div>
 	</g:HTMLPanel>
+	</g:ScrollPanel>
 </ui:UiBinder>
