@@ -66,6 +66,7 @@ public class LeaseDetailsPresenter extends
     PlaceRequest myRequest = new PlaceRequest(NameTokens.updateLease);
     // add the id of the realEstate to load
     myRequest = myRequest.with(UUID_PARAMETER, LeaseDetailsPresenter.this.lease.getId());
+    myRequest = myRequest.with(ESTATE_UUID_PARAMETER, LeaseDetailsPresenter.this.lease.getRealEstate().getId());
     placeManager.revealPlace(myRequest);
   }
 

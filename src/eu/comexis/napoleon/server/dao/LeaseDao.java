@@ -16,6 +16,7 @@ import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
 import com.googlecode.objectify.util.DAOBase;
 
+import eu.comexis.napoleon.shared.model.AcademicYear;
 import eu.comexis.napoleon.shared.model.Company;
 import eu.comexis.napoleon.shared.model.Lease;
 import eu.comexis.napoleon.shared.model.Owner;
@@ -77,6 +78,7 @@ public class LeaseDao extends DAOBase {
       l.setRealEstate(se);
       Tenant t = ofy().find(l.getTenantKey());
       SimpleTenant st = new SimpleTenant();
+      st.setId(t.getId());
       st.setName(t.getLastName());
       st.setAddress(t.getStreet());
       st.setCity(t.getCity());
@@ -190,6 +192,7 @@ public class LeaseDao extends DAOBase {
   public Lease update(Lease lease,Key<Company> companyKey) {
     LOG.info("Update Lease");
     String leaseId = lease.getId();
+    Key<RealEstate> estateKey = null;
     // create unique id if new entity
     if (leaseId == null || leaseId.length() == 0) {
       UUID uuid = UUID.randomUUID();
@@ -199,7 +202,7 @@ public class LeaseDao extends DAOBase {
     // set parent
     if (lease.getRealEstateKey() == null) {
       if (lease.getRealEstate() != null) {
-        Key<RealEstate> estateKey =
+        estateKey =
             new Key<RealEstate>(companyKey,RealEstate.class, lease.getRealEstate().getId());
         lease.setRealEstateKey(estateKey);
       } else {
@@ -208,7 +211,7 @@ public class LeaseDao extends DAOBase {
       }
     }
     // set tenant
-    if (lease.getTenantKey() == null) {
+    //if (lease.getTenantKey() == null) {
       if (lease.getTenant() != null) {
         Key<Tenant> tenantKey = new Key<Tenant>(companyKey,Tenant.class, lease.getTenant().getId());
         lease.setTenantKey(tenantKey);
@@ -216,11 +219,16 @@ public class LeaseDao extends DAOBase {
         LOG.error("Lease cannot be updated, missing tenant");
         return null;
       }
-    }
+    //}
+    AcademicYearDao ayDao = new AcademicYearDao();
+    AcademicYear year = new AcademicYear();
+    year.setCompany(companyKey);
+    year.setName(lease.getAcademicYear());
+    ayDao.update(year);
     try {
       Key<Lease> leaseKey = ofy().put(lease);
       LOG.info("Lease has been updated");
-      return ofy().get(leaseKey);
+      return getById(lease.getId(),lease.getRealEstateKey());
     } catch (Exception e) {
       LOG.fatal("Lease cannot be updated: ", e);
       return null;

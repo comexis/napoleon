@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import eu.comexis.napoleon.client.rpc.SuggestService;
+import eu.comexis.napoleon.server.dao.AcademicYearDao;
 import eu.comexis.napoleon.server.dao.HomeownerAssocDao;
 import eu.comexis.napoleon.server.dao.JobTitleDao;
 import eu.comexis.napoleon.server.dao.NationalityDao;
@@ -30,6 +31,9 @@ public class SuggestServiceImpl extends RemoteServiceServlet implements SuggestS
     }else if (command.getName().equals("Nationality")){
       NationalityDao natDao = new NationalityDao();
       lst = natDao.getNames(companyId);
+    }else if (command.getName().equals("AcademicYear")){
+      AcademicYearDao ayDao = new AcademicYearDao();
+      lst = ayDao.getNames(companyId);
     }
     GetAllSuggestResponse response = new GetAllSuggestResponse();
     response.setSuggestList(lst);

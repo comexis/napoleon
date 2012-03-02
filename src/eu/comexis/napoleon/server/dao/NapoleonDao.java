@@ -15,6 +15,7 @@ import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
 import com.googlecode.objectify.util.DAOBase;
 
+import eu.comexis.napoleon.shared.model.AcademicYear;
 import eu.comexis.napoleon.shared.model.ApplicationUser;
 import eu.comexis.napoleon.shared.model.Association;
 import eu.comexis.napoleon.shared.model.City;
@@ -50,6 +51,7 @@ public class NapoleonDao<T> extends DAOBase {
     ObjectifyService.register(Association.class);
     ObjectifyService.register(Nationality.class);
     ObjectifyService.register(JobTitle.class);
+    ObjectifyService.register(AcademicYear.class);
   }
   protected Class<T> clazz;
 

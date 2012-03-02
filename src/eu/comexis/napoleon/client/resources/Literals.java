@@ -106,6 +106,23 @@ public interface Literals extends ConstantsWithLookup {
   
   @DefaultStringValue("-")
   public String TypeOfRealEstate_NONE();
+  
+  //TypeOfRent
+  @DefaultStringValue("-")
+  public String TypeOfRent_NONE();
+  
+  @DefaultStringValue("Kot")
+  public String TypeOfRent_KOT();
+  
+  //AmountOfTimeUnit
+  @DefaultStringValue("-")
+  public String AmountOfTimeUnit_NONE();
+  
+  @DefaultStringValue("Jour(s)")
+  public String AmountOfTimeUnit_DAY();
+  
+  @DefaultStringValue("Mois")
+  public String AmountOfTimeUnit_MONTH();
 
   @DefaultStringValue("Veuillez corriger les erreurs suivantes :")
   public String validationMessageDisplayIntro();

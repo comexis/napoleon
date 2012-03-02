@@ -19,12 +19,23 @@ import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter;
 import eu.comexis.napoleon.client.core.lease.LeaseUpdateUiHandlers.HasLeaseUpdateUiHandler;
 import eu.comexis.napoleon.client.place.NameTokens;
+import eu.comexis.napoleon.client.rpc.callback.GotAllOwner;
+import eu.comexis.napoleon.client.rpc.callback.GotAllRealEstate;
+import eu.comexis.napoleon.client.rpc.callback.GotAllSuggest;
+import eu.comexis.napoleon.client.rpc.callback.GotAllTenant;
 import eu.comexis.napoleon.client.rpc.callback.GotLease;
 import eu.comexis.napoleon.client.rpc.callback.UpdatedLease;
+import eu.comexis.napoleon.shared.command.estate.GetAllRealEstateCommand;
 import eu.comexis.napoleon.shared.command.lease.GetLeaseCommand;
 import eu.comexis.napoleon.shared.command.lease.UpdateLeaseCommand;
+import eu.comexis.napoleon.shared.command.owner.GetAllOwnerCommand;
+import eu.comexis.napoleon.shared.command.suggest.GetAllSuggestCommand;
+import eu.comexis.napoleon.shared.command.tenant.GetAllTenantCommand;
 import eu.comexis.napoleon.shared.model.Lease;
 import eu.comexis.napoleon.shared.model.RealEstate;
+import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
+import eu.comexis.napoleon.shared.model.simple.SimpleRealEstate;
+import eu.comexis.napoleon.shared.model.simple.SimpleTenant;
 import eu.comexis.napoleon.shared.validation.LeaseValidator;
 import eu.comexis.napoleon.shared.validation.ValidationMessage;
 
@@ -33,7 +44,7 @@ public class LeaseUpdatePresenter extends
     LeaseUpdateUiHandlers {
 
   @ProxyCodeSplit
-  @NameToken(NameTokens.updateRealEstate)
+  @NameToken(NameTokens.updateLease)
   public interface MyProxy extends ProxyPlace<LeaseUpdatePresenter> {
   }
   public interface MyView extends View, HasLeaseUpdateUiHandler {
@@ -46,6 +57,12 @@ public class LeaseUpdatePresenter extends
     public void setLease(Lease l);
 
     public Lease updateLease(Lease l);
+    
+    public void fillEstateList(List<SimpleRealEstate> estates);
+    
+    public void fillTenantList(List<SimpleTenant> tenants);
+    
+    public void fillAcademicYearList(List<String> years);
   }
 
   public static final String UUID_PARAMETER = "uuid";
@@ -123,7 +140,7 @@ public class LeaseUpdatePresenter extends
           myRequest = myRequest.with(ESTATE_UUID_PARAMETER, lease.getRealEstate().getId());
           placeManager.revealPlace(myRequest);
         } else {
-          getView().displayError("The realEstate cannot be save");
+          getView().displayError("The lease cannot be save");
         }
       }
     });
@@ -166,6 +183,23 @@ public class LeaseUpdatePresenter extends
   }
 
   private void init() {
-    //
+    new GetAllTenantCommand().dispatch(new GotAllTenant() {
+      @Override
+      public void got(List<SimpleTenant> tenants) {
+        getView().fillTenantList(tenants);
+      }
+    });
+    new GetAllRealEstateCommand().dispatch(new GotAllRealEstate() {
+      @Override
+      public void got(List<SimpleRealEstate> estates) {
+        getView().fillEstateList(estates);
+      }
+    });
+    new GetAllSuggestCommand("AcademicYear").dispatch(new GotAllSuggest() {
+      @Override
+      public void got(List<String> suggests) {
+        getView().fillAcademicYearList(suggests);
+      }
+    });
   }
 }

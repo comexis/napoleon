@@ -24,6 +24,60 @@
 				<g:ListBox ui:field="tenantName" styleName="{res.css.detailCellInputList}"
 					name="tenantName" />
 			</div>
+			
+			<div class="{res.css.detailRow} {res.css.separationRow}">
+				<span class="{res.css.detailCellInputLabel}" style="width:140px">Date d'entrée :</span>
+				<dp:DateBox ui:field="startDate" styleName="{res.css.detailCellInputText}"/>
+				<span class="{res.css.detailCellInputLabel}" style="width:140px">Durée :</span>
+				<g:TextBox ui:field="duration" styleName="{res.css.detailCellInputText}" />
+				<g:ListBox ui:field="unit" styleName="{res.css.detailCellInputList}"
+					name="unit" />
+				<span class="{res.css.detailCellInputLabel}" style="width:140px">Date de sortie :</span>
+				<dp:DateBox ui:field="endDate" styleName="{res.css.detailCellInputText}"/>
+				<span class="{res.css.detailCellInputLabel}" style="width:140px">Type de location :</span>
+				<g:ListBox ui:field="type" styleName="{res.css.detailCellInputList}"
+					name="type" />
+			</div>
+			
+			<div class="{res.css.detailRow} {res.css.separationRow}">
+				<span class="{res.css.detailCellInputLabel}" style="width:140px">ELE :</span>
+				<dp:DateBox ui:field="eleDate" styleName="{res.css.detailCellInputText}"/>
+				<span class="{res.css.detailCellInputLabel}" style="width:140px">ELS :</span>
+				<dp:DateBox ui:field="elsDate" styleName="{res.css.detailCellInputText}"/>
+			</div>
+			
+			<div class="{res.css.detailRow}">
+				<span class="{res.css.detailCellInputLabel}" style="width:140px">Loyer (EUR) :</span>
+				<g:TextBox ui:field="rent" styleName="{res.css.detailCellInputList}"
+					name="rent" />
+				<span class="{res.css.detailCellInputLabel}" style="width:140px">Charges (EUR) :</span>
+				<g:TextBox ui:field="charges" styleName="{res.css.detailCellInputList}"
+					name="charges" />
+				<span class="{res.css.detailCellInputLabel}" style="width:140px">Garantie locative (EUR) :</span>
+				<g:TextBox ui:field="deposit" styleName="{res.css.detailCellInputList}"
+					name="deposit" />
+				<span class="{res.css.detailCellInputLabel}" style="width:140px">Date :</span>
+				<dp:DateBox ui:field="depositDate" styleName="{res.css.detailCellInputText}"/>
+			</div>
+			
+			<div class="{res.css.detailRow}">
+				<span class="{res.css.detailCellInputLabel}" style="width:140px">Propriétaire (EUR) :</span>
+				<g:TextBox ui:field="feeOwner" styleName="{res.css.detailCellInputList}"
+					name="feeOwner" />
+				<span class="{res.css.detailCellInputLabel}" style="width:140px">Honoraire (EUR) :</span>
+				<g:TextBox ui:field="fee" styleName="{res.css.detailCellInputList}"
+					name="fee" />
+			</div>
+			
+			<div class="{res.css.detailRow}">
+				<span class="{res.css.detailCellInputLabel}" style="width:140px">Référence comptable 460 :</span>
+				<g:TextBox ui:field="bookkeepingRef" styleName="{res.css.detailCellInputList}"
+					name="bookkeepingRef" />
+			</div>
+			
+			<div class="{res.css.detailRow}">
+				
+			</div>
 
 			<div class="{res.css.separationRow}" style="clear: both;">
 
