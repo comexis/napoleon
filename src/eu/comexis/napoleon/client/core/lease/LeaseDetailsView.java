@@ -6,7 +6,12 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.RadioButton;
+import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
@@ -29,6 +34,54 @@ public class LeaseDetailsView extends ViewImpl implements LeaseDetailsPresenter.
   Element reference;
   @UiField
   Element academicYear;
+  @UiField
+  Element tenantName;
+  @UiField
+  Element ownerName;
+  @UiField
+  Element startDate;
+  @UiField
+  Element endDate;
+  @UiField
+  Element eleDate;
+  @UiField
+  Element elsDate;
+  @UiField
+  Element depositDate;
+  @UiField
+  Element cash;
+  @UiField
+  Element bank;
+  @UiField
+  Element iban;
+  @UiField
+  Element bic;
+  @UiField
+  Element deposit;
+  @UiField
+  Element fee;
+  @UiField
+  Element feeOwner;
+  @UiField
+  Element rent;
+  @UiField
+  Element charges;
+  @UiField
+  Element type;
+  @UiField
+  Element bookkeepingRef;
+  @UiField
+  Element hasFurnituresRental;
+  @UiField
+  Element hasFurnituresWithContract;
+  @UiField
+  Element furnituresPayment;
+  @UiField
+  Element furnituresDate;
+  @UiField
+  Element furnituresAmount;
+  @UiField
+  Element coocuppant;
   
 
   @Inject
@@ -60,9 +113,27 @@ public class LeaseDetailsView extends ViewImpl implements LeaseDetailsPresenter.
   public void setLease(Lease l) {
     // TODO improve and continue
 
-    reference.setInnerText(l.getRealEstate().getReference());
-    academicYear.setInnerText(l.getAcademicYear());
-    
+    this.reference.setInnerText(l.getRealEstate().getReference());
+    this.academicYear.setInnerText(l.getAcademicYear());
+    this.coocuppant.setInnerText(l.getCooccupant());
+    this.startDate.setInnerText(UiHelper.displayDate(l.getStartDate()));
+    this.endDate.setInnerText(UiHelper.displayDate(l.getEndDate()));
+    this.tenantName.setInnerText(l.getTenant().getName());
+    this.ownerName.setInnerText(l.getRealEstate().getOwner());
+    this.type.setInnerText(l.getType().name());
+    //this.fee.setInnerText(l.get);
+    //this.feeOwner.setInnerText("");
+    this.charges.setInnerText(UiHelper.FloatToString(l.getServiceCharges()));
+    this.deposit.setInnerText(UiHelper.FloatToString(l.getSecurityDeposit()));
+    this.rent.setInnerText(UiHelper.FloatToString(l.getRent()));
+    this.eleDate.setInnerText(UiHelper.displayDate(l.getEleDate()));
+    this.elsDate.setInnerText(UiHelper.displayDate(l.getElsDate()));
+    this.depositDate.setInnerText(UiHelper.displayDate(l.getDepositDate()));
+    this.furnituresPayment.setInnerText((l.getFurnituresPaymentOK()!=null && l.getFurnituresPaymentOK().equals(true))? "Oui":"Non" );
+    this.hasFurnituresWithContract.setInnerText((l.getHasFurnituresWithContract()!=null && l.getHasFurnituresWithContract().equals(true))?"Oui":"Non");
+    this.hasFurnituresRental.setInnerText((l.getHasFurnituresRental()!=null && l.getHasFurnituresRental().equals(true))?"Oui":"Non");
+    this.cash.setInnerText((l.getDepositInCash()!=null && l.getDepositInCash().equals(true))? "Oui":"Non");
+    this.bank.setInnerText((l.getDepositInCash()!=null && l.getDepositInCash().equals(false))? "Oui":"Non");
   }
 
   @Override

@@ -306,13 +306,15 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
     disableFurniture();
     
     if (l != null) {
-      UiHelper.selectTextItemBoxByValue(this.reference, (l.getRealEstate().getId() != null ? l.getRealEstate().getId() : "-"));
-      UiHelper.selectTextItemBoxByValue(this.tenantName, (l.getTenant().getId() != null ? l.getTenant().getId() : "-"));
+      UiHelper.selectTextItemBoxByValue(this.reference, ((l.getRealEstate()!=null && l.getRealEstate().getId() != null) ? l.getRealEstate().getId() : "-"));
+      UiHelper.selectTextItemBoxByValue(this.tenantName, ((l.getTenant()!=null && l.getTenant().getId() != null) ? l.getTenant().getId() : "-"));
       this.coocuppant.setValue(l.getCooccupant());
       this.academicYear.setText(l.getAcademicYear());
       this.startDate.setValue(l.getStartDate());
       this.endDate.setValue(l.getEndDate());
-      this.reference.setEnabled(false);
+      if (!reference.getValue(reference.getSelectedIndex()).equals("-")){
+        this.reference.setEnabled(false);
+      }
       this.charges.setValue(UiHelper.FloatToString(l.getServiceCharges()));
       this.deposit.setValue(UiHelper.FloatToString(l.getSecurityDeposit()));
       this.depositDate.setValue(l.getDepositDate());

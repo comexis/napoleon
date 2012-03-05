@@ -2,11 +2,11 @@ package eu.comexis.napoleon.client.utils;
 
 import static com.google.gwt.query.client.GQuery.$;
 
-import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -141,10 +141,12 @@ public class UiHelper {
     return fValue;
   }
   public static String FloatToString(Float value){
-    DecimalFormat dec = new DecimalFormat("##,##0.00");
+    NumberFormat fmt = NumberFormat.getFormat("#,##0.00");
+    //NumberFormat  dec = new NumberFormat("#,##0.00");
     String sValue = "0,00";
     try{
-      sValue = dec.format(value).replace(".", "#");
+      //sValue = dec.format(value).replace(".", "#");
+      sValue = fmt.format(value).replace(".", "#");
       sValue = sValue.replace(",", ".");
       sValue = sValue.replace("#", ",");
     }catch(Exception e){

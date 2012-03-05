@@ -30,6 +30,9 @@ public interface ValidationMessages extends Messages {
   
   @DefaultMessage("Le champ honoraire doit être un montant positif")
   public String feeAmountInvalid();
+  
+  @DefaultMessage("La date de sortie doit être posterieure à la date d''entrée")
+  public String endDateInvalid();
 
 
 }

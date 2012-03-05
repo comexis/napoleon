@@ -15,6 +15,8 @@ public class LeaseValidator extends AbstractValidator<Lease> {
     
     validateRealEstate(lease, messages);
     validateTenant(lease, messages);
+    validateStartDate(lease, messages);
+    validateEndDate(lease, messages);
     
     return messages;
   }
@@ -28,8 +30,28 @@ public class LeaseValidator extends AbstractValidator<Lease> {
   }
   private void validateTenant(Lease lease, List<ValidationMessage> messages) {
     
-    if (lease.getRealEstate()==null){
+    if (lease.getTenant()==null){
       messages.add(new ValidationMessage(VALIDATION_MESSAGES.fieldIsMandatory("locataire"), "tenantName"));
+    }
+    
+  }
+  
+  private void validateStartDate(Lease lease, List<ValidationMessage> messages) {
+    
+    if (lease.getStartDate()==null){
+      messages.add(new ValidationMessage(VALIDATION_MESSAGES.fieldIsMandatory("date d'entrée"), "startDate"));
+    }
+    
+  }
+  
+  private void validateEndDate(Lease lease, List<ValidationMessage> messages) {
+    
+    if (lease.getEndDate()==null){
+      messages.add(new ValidationMessage(VALIDATION_MESSAGES.fieldIsMandatory("date de sortie"), "endDate"));
+    }else{
+      if (lease.getStartDate()!=null && lease.getEndDate().before(lease.getStartDate())){
+        messages.add(new ValidationMessage(VALIDATION_MESSAGES.endDateInvalid(), "endDate"));
+      }
     }
     
   }

@@ -72,9 +72,11 @@ public class LeaseDao extends DAOBase {
     Lease l = ofy().find(new Key<Lease>(estateKey, Lease.class, leaseId));
     if (l != null) {
       RealEstate realEstate = ofy().find(estateKey);
+      Owner o = ofy().find(realEstate.getOwnerKey());
       SimpleRealEstate se = new SimpleRealEstate();
       se.setReference(realEstate.getReference());
       se.setId(realEstate.getId());
+      se.setOwner(o.getLastName());
       l.setRealEstate(se);
       Tenant t = ofy().find(l.getTenantKey());
       SimpleTenant st = new SimpleTenant();
@@ -144,25 +146,21 @@ public class LeaseDao extends DAOBase {
     return ofy().get(l.getTenantKey());
   }
 
-  public Lease isAlreadyRented(Key<RealEstate> estateKey, Date startDate, Date endDate) {
+  public Lease isAlreadyRented(String id,Key<RealEstate> estateKey, Date startDate, Date endDate) {
     Query<Lease> q = ofy().query(Lease.class);
     q.ancestor(estateKey);
-    Lease lease = q.filter("endDate >=", startDate).order("endDate").get();
-    if (lease != null) {
-      return lease;
-    }
-    q = ofy().query(Lease.class);
-    q.ancestor(estateKey);
-    lease = q.filter("startDate <=", endDate).order("-startDate").get();
-    if (lease != null) {
-      return lease;
+    List<Lease> leases = q.filter("endDate >=", startDate).order("endDate").list();
+    for (Lease l:leases){
+      if (!l.getId().equals(id) && l.getStartDate().compareTo(endDate) <= 0){
+        return l;
+      }
     }
     return null;
   }
 
-  public Lease isAlreadyRented(String realEstateId, Date startDate, Date endDate) {
+  public Lease isAlreadyRented(String id,String realEstateId, Date startDate, Date endDate) {
     Key<RealEstate> estateKey = new Key<RealEstate>(RealEstate.class, realEstateId);
-    return isAlreadyRented(estateKey, startDate, endDate);
+    return isAlreadyRented(id,estateKey, startDate, endDate);
   }
 
   public List<Lease> listAll(Key<Company> companyKey) {
@@ -194,6 +192,7 @@ public class LeaseDao extends DAOBase {
     String leaseId = lease.getId();
     Key<RealEstate> estateKey = null;
     // create unique id if new entity
+    
     if (leaseId == null || leaseId.length() == 0) {
       UUID uuid = UUID.randomUUID();
       System.out.println("Creating Uuid " + uuid.toString());
@@ -205,10 +204,18 @@ public class LeaseDao extends DAOBase {
         estateKey =
             new Key<RealEstate>(companyKey,RealEstate.class, lease.getRealEstate().getId());
         lease.setRealEstateKey(estateKey);
+        
       } else {
         LOG.fatal("Lease cannot be updated, missing parent RealEstate");
         return null;
       }
+    }else{
+      estateKey =lease.getRealEstateKey();
+    }
+    Lease actualLease =isAlreadyRented(lease.getId(),estateKey,lease.getStartDate(),lease.getEndDate());
+    if (actualLease!=null){
+      LOG.info("Lease cannot be updated because the real estate is already rented by " + actualLease.getId());
+      return null;
     }
     // set tenant
     //if (lease.getTenantKey() == null) {
@@ -220,11 +227,13 @@ public class LeaseDao extends DAOBase {
         return null;
       }
     //}
-    AcademicYearDao ayDao = new AcademicYearDao();
-    AcademicYear year = new AcademicYear();
-    year.setCompany(companyKey);
-    year.setName(lease.getAcademicYear());
-    ayDao.update(year);
+    if (lease.getAcademicYear()!=null && !lease.getAcademicYear().isEmpty()){
+      AcademicYearDao ayDao = new AcademicYearDao();
+      AcademicYear year = new AcademicYear();
+      year.setCompany(companyKey);
+      year.setName(lease.getAcademicYear());
+      ayDao.update(year);
+    }
     try {
       Key<Lease> leaseKey = ofy().put(lease);
       LOG.info("Lease has been updated");

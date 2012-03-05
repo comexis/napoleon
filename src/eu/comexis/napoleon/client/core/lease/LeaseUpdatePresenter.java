@@ -83,14 +83,26 @@ public class LeaseUpdatePresenter extends
     this.placeManager = placeManager;
     this.validator = new LeaseValidator();
   }
+  private void goToDetails() {
+    PlaceRequest myRequest = new PlaceRequest(NameTokens.lease);
+    // add the id of the owner to load
+    myRequest = myRequest.with(UUID_PARAMETER, lease.getId());
+    myRequest = myRequest.with(ESTATE_UUID_PARAMETER, lease.getRealEstate().getId());
+    placeManager.revealPlace(myRequest);
+  }
 
+  private void goToList() {
+    PlaceRequest myRequest = new PlaceRequest(NameTokens.leaselist);
+    placeManager.revealPlace(myRequest);
+
+  }
   @Override
   public void onButtonCancelClick() {
-    PlaceRequest myRequest = new PlaceRequest(NameTokens.lease);
-    // add the id of the realEstate to load
-    GWT.log("cancel click on " + lease.getId());
-    myRequest = myRequest.with(UUID_PARAMETER, lease.getId());
-    placeManager.revealPlace(myRequest);
+    if (lease == null || lease.getId() == null || lease.getId().length() == 0){
+      goToList();
+    }else {
+      goToDetails();
+    }
   }
 
   @Override

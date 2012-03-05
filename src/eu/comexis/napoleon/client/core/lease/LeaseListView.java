@@ -8,6 +8,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
 
 import eu.comexis.napoleon.client.core.AbstractListView;
 import eu.comexis.napoleon.client.utils.SimpleTextComparator;
+import eu.comexis.napoleon.client.utils.UiHelper;
 import eu.comexis.napoleon.shared.model.simple.SimpleLease;
 import eu.comexis.napoleon.shared.model.simple.SimpleLease;
 
@@ -52,21 +53,89 @@ public class LeaseListView extends AbstractListView<SimpleLease> implements
     table.addColumn(nameColumn, "Référence");
 
     // Academic Year.
-    Column<SimpleLease, String> addressColumn = new Column<SimpleLease, String>(new TextCell()) {
+    Column<SimpleLease, String> academicYearColumn = new Column<SimpleLease, String>(new TextCell()) {
       @Override
       public String getValue(SimpleLease object) {
         return object.getAcademicYear();
       }
     };
 
-    addressColumn.setSortable(true);
-    sortHandler.setComparator(addressColumn, new SimpleTextComparator<SimpleLease>() {
+    academicYearColumn.setSortable(true);
+    sortHandler.setComparator(academicYearColumn, new SimpleTextComparator<SimpleLease>() {
       public int compare(SimpleLease o1, SimpleLease o2) {
         return compare(o1.getAcademicYear(), o2.getAcademicYear());
       }
     });
 
-    table.addColumn(addressColumn, "Année académique");
+    table.addColumn(academicYearColumn, "Année académique");
+    
+    // Tenant.
+    Column<SimpleLease, String> tenantColumn = new Column<SimpleLease, String>(new TextCell()) {
+      @Override
+      public String getValue(SimpleLease object) {
+        return object.getTenantName();
+      }
+    };
+
+    tenantColumn.setSortable(true);
+    sortHandler.setComparator(tenantColumn, new SimpleTextComparator<SimpleLease>() {
+      public int compare(SimpleLease o1, SimpleLease o2) {
+        return compare(o1.getTenantName(), o2.getTenantName());
+      }
+    });
+
+    table.addColumn(tenantColumn, "Locataire");
+    
+    // Entry Date.
+    Column<SimpleLease, String> startDateColumn = new Column<SimpleLease, String>(new TextCell()) {
+      @Override
+      public String getValue(SimpleLease object) {
+        return UiHelper.displayDate(object.getStartDate());
+      }
+    };
+
+    startDateColumn.setSortable(true);
+    sortHandler.setComparator(startDateColumn, new SimpleTextComparator<SimpleLease>() {
+      public int compare(SimpleLease o1, SimpleLease o2) {
+        return compare(UiHelper.displayDate(o1.getStartDate()), UiHelper.displayDate(o2.getStartDate()));
+      }
+    });
+
+    table.addColumn(startDateColumn, "Date d'entrée");
+    
+    // Date de sortie.
+    Column<SimpleLease, String> endDateColumn = new Column<SimpleLease, String>(new TextCell()) {
+      @Override
+      public String getValue(SimpleLease object) {
+        return UiHelper.displayDate(object.getEndDate());
+      }
+    };
+
+    endDateColumn.setSortable(true);
+    sortHandler.setComparator(endDateColumn, new SimpleTextComparator<SimpleLease>() {
+      public int compare(SimpleLease o1, SimpleLease o2) {
+        return compare(UiHelper.displayDate(o1.getEndDate()), UiHelper.displayDate(o2.getEndDate()));
+      }
+    });
+
+    table.addColumn(endDateColumn, "Date de sortie");
+    
+    // Owner.
+    Column<SimpleLease, String> ownerColumn = new Column<SimpleLease, String>(new TextCell()) {
+      @Override
+      public String getValue(SimpleLease object) {
+        return object.getOwnerName();
+      }
+    };
+
+    ownerColumn.setSortable(true);
+    sortHandler.setComparator(ownerColumn, new SimpleTextComparator<SimpleLease>() {
+      public int compare(SimpleLease o1, SimpleLease o2) {
+        return compare(o1.getOwnerName(), o2.getOwnerName());
+      }
+    });
+
+    table.addColumn(ownerColumn, "Propriétaire");
 
   }
   

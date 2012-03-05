@@ -20,11 +20,88 @@
 						<span class="{res.css.detailCellLabel}">Année académique :</span>
 						<span ui:field="academicYear" class="{res.css.detailCellValue}" />
 					</div>
+			<div class="{res.css.detailRow}">
+				<span class="{res.css.detailCellLabel}">Propriétaire :</span>
+				<span ui:field="ownerName" class="{res.css.detailCellValue}" />
+			</div>
+					
+			<div class="{res.css.detailRow}">
+				<span class="{res.css.detailCellLabel}">Locataire :</span>
+				<span ui:field="tenantName" class="{res.css.detailCellValue}" />
+				<span class="{res.css.detailCellLabel}">Cooccupant(s) :</span>
+				<span ui:field="coocuppant" class="{res.css.detailCellValue}" />	
+			</div>
+			
+			<div class="{res.css.detailRow} {res.css.separationRow}">
+				<span class="{res.css.detailCellLabel}">Date d'entrée :</span>
+				<span ui:field="startDate" class="{res.css.detailCellValue}" />
+				<span class="{res.css.detailCellLabel}">Date de sortie :</span>
+				<span ui:field="endDate" class="{res.css.detailCellValue}" />
+				<span class="{res.css.detailCellLabel}">Type de location :</span>
+				<span ui:field="type" class="{res.css.detailCellValue}" />
+			</div>
+			
+			<div class="{res.css.detailRow} {res.css.separationRow}">
+				<span class="{res.css.detailCellLabel}">ELE :</span>
+				<span ui:field="eleDate" class="{res.css.detailCellValue}" />
+				<span class="{res.css.detailCellLabel}">ELS :</span>
+				<span ui:field="elsDate" class="{res.css.detailCellValue}" />
+			</div>
+			
+			<div class="{res.css.detailRow}">
+				<span class="{res.css.detailCellLabel}">Loyer (EUR) :</span>
+				<span ui:field="rent" class="{res.css.detailCellValue}" />
+				<span class="{res.css.detailCellLabel}">Charges (EUR) :</span>
+				<span ui:field="charges" class="{res.css.detailCellValue}" />
+			</div>
+			
+			<div class="{res.css.detailRow}">
+				<span class="{res.css.detailCellLabel}">Garantie locative (EUR) :</span>
+				<span ui:field="deposit" class="{res.css.detailCellValue}" />
+				<span class="{res.css.detailCellLabel}">Date :</span>
+				<span ui:field="depositDate" class="{res.css.detailCellValue}" />
+			</div>
+			<div class="{res.css.detailRow}">
+				<span class="{res.css.detailCellLabel}">Cash :</span>
+				<span ui:field="cash" class="{res.css.detailCellValue}" />
+				<span class="{res.css.detailCellLabel}">Banque :</span>
+				<span ui:field="bank" class="{res.css.detailCellValue}" />
+				<span class="{res.css.detailCellLabel}">IBAN :</span>
+				<span ui:field="iban" class="{res.css.detailCellValue}" />
+				<span class="{res.css.detailCellLabel}">BIC :</span>
+				<span ui:field="bic" class="{res.css.detailCellValue}" />
+			</div>
+			
+			<div class="{res.css.detailRow}">
+				<span class="{res.css.detailCellLabel}">Propriétaire (EUR) :</span>
+				<span ui:field="feeOwner" class="{res.css.detailCellValue}" />
+				<span class="{res.css.detailCellLabel}">Honoraire (EUR) :</span>
+				<span ui:field="fee" class="{res.css.detailCellValue}" />
+			</div>
+			
+			<div class="{res.css.detailRow}">
+				<span class="{res.css.detailCellLabel}">Référence comptable 460 :</span>
+				<span ui:field="bookkeepingRef" class="{res.css.detailCellValue}" />
+			</div>
+			
+			<div class="{res.css.detailRow}">
+				<span class="{res.css.detailCellLabel}">Mobilier :</span>
+				<span ui:field="hasFurnituresRental" class="{res.css.detailCellValue}" />
+				<span class="{res.css.detailCellLabel}">Avec contrat :</span>
+				<span ui:field="hasFurnituresWithContract" class="{res.css.detailCellValue}" />
+			</div>
+			
+			<div class="{res.css.detailRow}">
+				<span class="{res.css.detailCellLabel}">Somme annuelle (EUR) :</span>
+				<span ui:field="furnituresAmount" class="{res.css.detailCellValue}" />
+				<span class="{res.css.detailCellLabel}">Date convenue:</span>
+				<span ui:field="furnituresDate" class="{res.css.detailCellValue}" />
+				<span class="{res.css.detailCellLabel}">Paiement :</span>
+				<span ui:field="furnituresPayment" class="{res.css.detailCellValue}" />
+			</div>
 
 					<div ui:field="additionnalData"></div>
-
 					
-
 					<div ui:field="bottomAdditionnalData">
 					</div>
 					<div style="clear: both;">
