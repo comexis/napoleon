@@ -98,7 +98,7 @@ public class LeaseUpdatePresenter extends
     getView().updateLease(lease);
 
     List<ValidationMessage> validationMessages = validator.validate(lease);
-
+    
     if (validationMessages.isEmpty()) {
       saveLease();
     } else {

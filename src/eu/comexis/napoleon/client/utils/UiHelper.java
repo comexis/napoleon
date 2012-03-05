@@ -2,6 +2,7 @@ package eu.comexis.napoleon.client.utils;
 
 import static com.google.gwt.query.client.GQuery.$;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -125,5 +126,30 @@ public class UiHelper {
     }else{
       return "";
     }
+  }
+  public static Float stringToFloat(String value){
+    Float fValue = new Float("0");
+    value = value.replace(",", "#");
+    value = value.replace(".", "");
+    value = value.replace(" ", "");
+    value = value.replace("#", ".");
+    try{
+      fValue = Float.parseFloat(value);
+    }catch(Exception e){
+      //
+    }
+    return fValue;
+  }
+  public static String FloatToString(Float value){
+    DecimalFormat dec = new DecimalFormat("##,##0.00");
+    String sValue = "0,00";
+    try{
+      sValue = dec.format(value).replace(".", "#");
+      sValue = sValue.replace(",", ".");
+      sValue = sValue.replace("#", ",");
+    }catch(Exception e){
+      sValue = "0,00";
+    }
+    return sValue;
   }
 }

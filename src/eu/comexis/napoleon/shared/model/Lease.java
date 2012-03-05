@@ -3,7 +3,7 @@
  */
 package eu.comexis.napoleon.shared.model;
 
-//import java.util.Calendar;// Not supported by GWT :-(
+// import java.util.Calendar;// Not supported by GWT :-(
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -35,12 +35,12 @@ public class Lease implements IsSerializable {
   private Date endDate;
   @Indexed
   private Key<Tenant> tenantKey;
-  private float rent;
+  private Float rent;
   private Date entranceDate;
   private Date leaveDate;
   private Date eleDate;
   private Date elsDate;
-  private float securityDeposit;
+  private Float securityDeposit;
   private Date depositDate;
   private Boolean depositInCash;
   private String iban;
@@ -51,11 +51,12 @@ public class Lease implements IsSerializable {
   private Date furnituresDate;
   private Boolean furnituresPaymentOK;
   private TypeOfRent type;
-  private float serviceCharges;
+  private Float serviceCharges;
   private String bookkeepingReference;
   private Long duration;
   private AmountOfTimeUnit durationUnit;
   private String academicYear;
+  private String cooccupant;
   @NotSaved
   private SimpleRealEstate realEstate;
 
@@ -79,6 +80,10 @@ public class Lease implements IsSerializable {
 
   public String getBookkeepingReference() {
     return bookkeepingReference;
+  }
+
+  public String getCooccupant() {
+    return cooccupant;
   }
 
   public Date getDepositDate() {
@@ -153,15 +158,15 @@ public class Lease implements IsSerializable {
     return realEstateKey;
   }
 
-  public float getRent() {
+  public Float getRent() {
     return rent;
   }
 
-  public float getSecurityDeposit() {
+  public Float getSecurityDeposit() {
     return securityDeposit;
   }
 
-  public float getServiceCharges() {
+  public Float getServiceCharges() {
     return serviceCharges;
   }
 
@@ -193,6 +198,10 @@ public class Lease implements IsSerializable {
     this.bookkeepingReference = bookkeepingReference;
   }
 
+  public void setCooccupant(String cooccupant) {
+    this.cooccupant = cooccupant;
+  }
+
   public void setDepositDate(Date depositDate) {
     this.depositDate = depositDate;
   }
@@ -201,35 +210,9 @@ public class Lease implements IsSerializable {
     this.depositInCash = depositInCash;
   }
 
-/*Not supported by GWT :-(
-  public void setDuration() {
-    if (this.startDate != null && this.endDate != null) {
-      Calendar cal1 = Calendar.getInstance();
-      cal1.setTime(this.startDate);
-      Calendar cal2 = Calendar.getInstance();
-      cal2.setTime(this.endDate);
-      this.duration = (cal2.getTimeInMillis() - cal1.getTimeInMillis()) / (24 * 60 * 60 * 1000);
-      this.durationUnit = AmountOfTimeUnit.DAY;
-    }
-  }
-*/
   public void setDuration(int duration, AmountOfTimeUnit unit) {
     this.duration = new Long(duration);
     this.durationUnit = unit;
-    /* Not supported by GWT :-(
-    if (this.startDate != null) {
-      Calendar cal = Calendar.getInstance();
-      cal.setTime(this.startDate);
-      if (unit.equals(AmountOfTimeUnit.MONTH)) {
-        cal.add(Calendar.MONTH, duration);
-      } else if (unit.equals(AmountOfTimeUnit.DAY)) {
-        cal.add(Calendar.DAY_OF_MONTH, duration);
-      } else {
-        cal.add(Calendar.MONTH, duration);
-      }
-      this.endDate = cal.getTime();
-    }
-    */
   }
 
   public void setDurationUnit(AmountOfTimeUnit durationUnit) {
@@ -246,30 +229,6 @@ public class Lease implements IsSerializable {
 
   public void setEndDate(Date endDate) {
     this.endDate = endDate;
-    /* Not supported by GWT :-(
-    // if the duration is given, compute the end date
-    if (this.duration != null) {
-      int duration = this.duration.intValue();
-      AmountOfTimeUnit unit = this.durationUnit;
-      Calendar cal = Calendar.getInstance();
-      cal.setTime(this.startDate);
-      if (unit.equals(AmountOfTimeUnit.MONTH)) {
-        cal.add(Calendar.MONTH, -duration);
-      } else {
-        cal.add(Calendar.DAY_OF_MONTH, -duration);
-      }
-      this.startDate = cal.getTime();
-    }
-    // if the end date is given, compute the duration in days
-    if (this.startDate != null) {
-      if (this.endDate.before(this.startDate)) {
-        this.endDate = this.startDate;
-        this.duration = 0L;
-      } else {
-        setDuration();
-      }
-    }
-    */
   }
 
   public void setEntranceDate(Date entranceDate) {
@@ -320,39 +279,16 @@ public class Lease implements IsSerializable {
     this.rent = rent;
   }
 
-  public void setSecurityDeposit(float securityDeposit) {
+  public void setSecurityDeposit(Float securityDeposit) {
     this.securityDeposit = securityDeposit;
   }
 
-  public void setServiceCharges(float serviceCharges) {
+  public void setServiceCharges(Float serviceCharges) {
     this.serviceCharges = serviceCharges;
   }
 
   public void setStartDate(Date startDate) {
     this.startDate = startDate;
-    /* Not supported by GWT :-(
-    // if the duration is given, compute the end date
-    if (this.duration != null) {
-      int duration = this.duration.intValue();
-      AmountOfTimeUnit unit = this.durationUnit;
-      Calendar cal = Calendar.getInstance();
-      cal.setTime(this.startDate);
-      if (unit.equals(AmountOfTimeUnit.MONTH)) {
-        cal.add(Calendar.MONTH, duration);
-      } else {
-        cal.add(Calendar.DAY_OF_MONTH, duration);
-      }
-      this.endDate = cal.getTime();
-    }
-    // if the end date is given, compute the duration in days
-    if (this.endDate != null) {
-      if (this.endDate.before(this.startDate)) {
-        this.endDate = this.startDate;
-        this.duration = 0L;
-      } else {
-        setDuration();
-      }
-    }*/
   }
 
   public void setTenant(SimpleTenant tenant) {

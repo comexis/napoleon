@@ -71,7 +71,7 @@
 				<span class="{res.css.detailCellInputLabel}">Propriétaire :</span>
 				<g:ListBox ui:field="ownerName" styleName="{res.css.detailCellInputList}"
 					name="ownerName" />
-			</div>
+			</div>z
 
 			<div class="{res.css.separationRow}" style="clear: both;">
 
