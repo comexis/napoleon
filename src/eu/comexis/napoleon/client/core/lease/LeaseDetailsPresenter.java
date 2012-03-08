@@ -60,6 +60,22 @@ public class LeaseDetailsPresenter extends
     PlaceRequest myRequest = new PlaceRequest(NameTokens.leaselist);
     placeManager.revealPlace(myRequest);
   }
+  
+  @Override
+  public void onButtonPaymentTenantClick() {
+    PlaceRequest myRequest = new PlaceRequest(NameTokens.paymentTenantlist);
+    myRequest = myRequest.with(UUID_PARAMETER, LeaseDetailsPresenter.this.lease.getId());
+    myRequest = myRequest.with(ESTATE_UUID_PARAMETER, LeaseDetailsPresenter.this.lease.getRealEstate().getId());
+    placeManager.revealPlace(myRequest);
+  }
+  
+  @Override
+  public void onButtonPaymentOwnerClick() {
+    PlaceRequest myRequest = new PlaceRequest(NameTokens.paymentOwnerlist);
+    myRequest = myRequest.with(UUID_PARAMETER, LeaseDetailsPresenter.this.lease.getId());
+    myRequest = myRequest.with(ESTATE_UUID_PARAMETER, LeaseDetailsPresenter.this.lease.getRealEstate().getId());
+    placeManager.revealPlace(myRequest);
+  }
 
   @Override
   public void onButtonUpdateClick() {
@@ -115,6 +131,12 @@ public class LeaseDetailsPresenter extends
   @Override
   protected void revealInParent() {
     RevealContentEvent.fire(this, MainLayoutPresenter.MAIN_CONTENT, this);
+  }
+
+  @Override
+  public void onButtonPaymentClick() {
+    // TODO Auto-generated method stub
+    
   }
 
 }

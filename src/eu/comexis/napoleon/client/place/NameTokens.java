@@ -15,7 +15,12 @@ public class NameTokens {
   public static final String leaselist = "leaseList";
   public static final String lease = "lease";
   public static final String updateLease = "updateLease";
-
+  public static final String paymentTenant = "paymentTenant";
+  public static final String paymentTenantlist = "paymentTenantList";
+  public static final String updatePaymentTenant = "updatePaymentTenant";
+  public static final String paymentOwner = "paymentOwner";
+  public static final String paymentOwnerlist = "paymentOwnerList";
+  public static final String updatePaymentOwner = "updatePaymentOwner";
   public static String getDashboard() {
     return dashboard;
   }
@@ -34,6 +39,22 @@ public class NameTokens {
 
   public static String getOwnerlist() {
     return ownerlist;
+  }
+  
+  public static String getPaymentOwner() {
+    return paymentOwner;
+  }
+
+  public static String getPaymentownerlist() {
+    return paymentOwnerlist;
+  }
+  
+  public static String getPaymentTenant() {
+    return paymentTenant;
+  }
+
+  public static String getPaymenttenantlist() {
+    return paymentTenantlist;
   }
 
   public static String getRealEstate() {
@@ -58,6 +79,14 @@ public class NameTokens {
 
   public static String getUpdateOwner() {
     return updateOwner;
+  }
+
+  public static String getUpdatePaymentOwner() {
+    return updatePaymentOwner;
+  }
+
+  public static String getUpdatePaymentTenant() {
+    return updatePaymentTenant;
   }
 
   public static String getUpdateRealEstate() {

@@ -65,6 +65,16 @@
 		<servlet-name>leaseServlet</servlet-name>
 		<url-pattern>/napoleon/lease</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>paymentServlet</servlet-name>
+		<servlet-class>eu.comexis.napoleon.server.service.PaymentServiceImpl</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>paymentServlet</servlet-name>
+		<url-pattern>/napoleon/payment</url-pattern>
+	</servlet-mapping>
 
 	<servlet>
 		<servlet-name>countryServlet</servlet-name>

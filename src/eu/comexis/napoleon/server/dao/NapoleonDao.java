@@ -27,6 +27,8 @@ import eu.comexis.napoleon.shared.model.Lease;
 import eu.comexis.napoleon.shared.model.Nationality;
 import eu.comexis.napoleon.shared.model.Owner;
 import eu.comexis.napoleon.shared.model.Ownership;
+import eu.comexis.napoleon.shared.model.PaymentOwner;
+import eu.comexis.napoleon.shared.model.PaymentTenant;
 import eu.comexis.napoleon.shared.model.RealEstate;
 import eu.comexis.napoleon.shared.model.Tenant;
 

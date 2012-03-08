@@ -19,6 +19,8 @@ import eu.comexis.napoleon.client.core.lease.LeaseUpdatePresenter;
 import eu.comexis.napoleon.client.core.owner.OwnerDetailsPresenter;
 import eu.comexis.napoleon.client.core.owner.OwnerListPresenter;
 import eu.comexis.napoleon.client.core.owner.OwnerUpdatePresenter;
+import eu.comexis.napoleon.client.core.paymentTenant.PaymentTenantListPresenter;
+import eu.comexis.napoleon.client.core.paymentTenant.PaymentTenantUpdatePresenter;
 import eu.comexis.napoleon.client.core.tenant.TenantDetailsPresenter;
 import eu.comexis.napoleon.client.core.tenant.TenantListPresenter;
 import eu.comexis.napoleon.client.core.tenant.TenantUpdatePresenter;
@@ -60,4 +62,8 @@ public interface ClientGinjector extends Ginjector {
   AsyncProvider<LeaseDetailsPresenter> getLeaseDetailsPresenter();
   
   AsyncProvider<LeaseUpdatePresenter> getLeaseUpdatePresenter();
+  
+  AsyncProvider<PaymentTenantListPresenter> getPaymentTenantListPresenter();
+  
+  AsyncProvider<PaymentTenantUpdatePresenter> getPaymentTenantUpdatePresenter();
 }

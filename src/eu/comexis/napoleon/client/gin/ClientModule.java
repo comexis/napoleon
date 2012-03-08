@@ -25,6 +25,10 @@ import eu.comexis.napoleon.client.core.owner.OwnerListPresenter;
 import eu.comexis.napoleon.client.core.owner.OwnerListView;
 import eu.comexis.napoleon.client.core.owner.OwnerUpdatePresenter;
 import eu.comexis.napoleon.client.core.owner.OwnerUpdateView;
+import eu.comexis.napoleon.client.core.paymentTenant.PaymentTenantListPresenter;
+import eu.comexis.napoleon.client.core.paymentTenant.PaymentTenantListView;
+import eu.comexis.napoleon.client.core.paymentTenant.PaymentTenantUpdatePresenter;
+import eu.comexis.napoleon.client.core.paymentTenant.PaymentTenantUpdateView;
 import eu.comexis.napoleon.client.core.tenant.TenantDetailsPresenter;
 import eu.comexis.napoleon.client.core.tenant.TenantDetailsView;
 import eu.comexis.napoleon.client.core.tenant.TenantListPresenter;
@@ -61,6 +65,14 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenter(LeaseListPresenter.class,
         LeaseListPresenter.MyView.class, LeaseListView.class,
         LeaseListPresenter.MyProxy.class);
+		
+		bindPresenter(PaymentTenantListPresenter.class,
+		    PaymentTenantListPresenter.MyView.class, PaymentTenantListView.class,
+		    PaymentTenantListPresenter.MyProxy.class);
+		
+		bindPresenter(PaymentTenantUpdatePresenter.class,
+        PaymentTenantUpdatePresenter.MyView.class, PaymentTenantUpdateView.class,
+        PaymentTenantUpdatePresenter.MyProxy.class);
 		
 		bindPresenter(LeaseDetailsPresenter.class,
 		    LeaseDetailsPresenter.MyView.class, LeaseDetailsView.class,

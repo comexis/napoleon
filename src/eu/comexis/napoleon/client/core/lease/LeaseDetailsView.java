@@ -98,7 +98,7 @@ public class LeaseDetailsView extends ViewImpl implements LeaseDetailsPresenter.
   public void onDeleteClicked(ClickEvent e) {
     Window.alert("Supprimer");
   }
-
+  
   @UiHandler("btnToList")
   public void onGoToListClicked(ClickEvent e) {
     presenter.onButtonBackToListClick();
@@ -108,7 +108,22 @@ public class LeaseDetailsView extends ViewImpl implements LeaseDetailsPresenter.
   public void onUpdateClicked(ClickEvent e) {
     presenter.onButtonUpdateClick();
   }
-
+  
+  @UiHandler("btnPayment")
+  public void onPaymentClicked(ClickEvent e) {
+    presenter.onButtonPaymentClick();
+  }
+  
+  @UiHandler("btnPaymentOwner")
+  public void onPaymentOwnerClicked(ClickEvent e) {
+    presenter.onButtonPaymentOwnerClick();
+  }
+  
+  @UiHandler("btnPaymentTenant")
+  public void onPaymentTenantClicked(ClickEvent e) {
+    presenter.onButtonPaymentTenantClick();
+  }
+  
   @Override
   public void setLease(Lease l) {
     // TODO improve and continue

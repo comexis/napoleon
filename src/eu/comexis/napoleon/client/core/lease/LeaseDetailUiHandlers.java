@@ -8,4 +8,10 @@ public interface LeaseDetailUiHandlers {
   void onButtonBackToListClick();
 
   void onButtonUpdateClick();
+  
+  void onButtonPaymentTenantClick();
+  
+  void onButtonPaymentOwnerClick();
+  
+  void onButtonPaymentClick();
 }
