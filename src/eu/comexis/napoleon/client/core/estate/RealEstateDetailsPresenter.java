@@ -20,8 +20,6 @@ import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.rpc.callback.GotRealEstate;
 import eu.comexis.napoleon.shared.command.estate.GetRealEstateCommand;
 import eu.comexis.napoleon.shared.model.RealEstate;
-import eu.comexis.napoleon.shared.model.Condo;
-import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 
 public class RealEstateDetailsPresenter extends
     Presenter<RealEstateDetailsPresenter.MyView, RealEstateDetailsPresenter.MyProxy> implements

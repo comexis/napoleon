@@ -1,8 +1,5 @@
 package eu.comexis.napoleon.shared.command.payment;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import eu.comexis.napoleon.client.rpc.PaymentServiceAsync;

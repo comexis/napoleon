@@ -1,6 +1,5 @@
 package eu.comexis.napoleon.shared.command.country;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import eu.comexis.napoleon.shared.command.Response;

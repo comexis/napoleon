@@ -1,7 +1,6 @@
 package eu.comexis.napoleon.shared.command.payment;
 
 import eu.comexis.napoleon.shared.command.Response;
-import eu.comexis.napoleon.shared.model.Lease;
 import eu.comexis.napoleon.shared.model.Payment;
 
 public class GetPaymentResponse<T extends Payment> implements Response {

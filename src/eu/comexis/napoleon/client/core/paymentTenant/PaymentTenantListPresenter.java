@@ -1,7 +1,5 @@
 package eu.comexis.napoleon.client.core.paymentTenant;
 
-import static eu.comexis.napoleon.client.core.party.PartyUpdatePresenter.UUID_PARAMETER;
-
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -15,7 +13,6 @@ import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 
 import eu.comexis.napoleon.client.core.AbstractListPresenter;
-import eu.comexis.napoleon.client.core.payment.PaymentUpdatePresenter;
 import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.rpc.callback.GotAllPayment;
 import eu.comexis.napoleon.shared.command.payment.GetAllPaymentCommand;

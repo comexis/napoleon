@@ -2,7 +2,6 @@ package eu.comexis.napoleon.shared.command.suggest;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-import eu.comexis.napoleon.client.rpc.CountryServiceAsync;
 import eu.comexis.napoleon.client.rpc.SuggestServiceAsync;
 import eu.comexis.napoleon.shared.command.Action;
 

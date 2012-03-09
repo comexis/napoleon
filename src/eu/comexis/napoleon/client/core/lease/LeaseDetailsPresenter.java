@@ -18,13 +18,8 @@ import eu.comexis.napoleon.client.core.MainLayoutPresenter;
 import eu.comexis.napoleon.client.core.lease.LeaseDetailUiHandlers.HasLeaseDetailUiHandlers;
 import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.rpc.callback.GotLease;
-import eu.comexis.napoleon.client.rpc.callback.GotRealEstate;
-import eu.comexis.napoleon.shared.command.estate.GetRealEstateCommand;
 import eu.comexis.napoleon.shared.command.lease.GetLeaseCommand;
 import eu.comexis.napoleon.shared.model.Lease;
-import eu.comexis.napoleon.shared.model.RealEstate;
-import eu.comexis.napoleon.shared.model.Condo;
-import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 
 public class LeaseDetailsPresenter extends
     Presenter<LeaseDetailsPresenter.MyView, LeaseDetailsPresenter.MyProxy> implements

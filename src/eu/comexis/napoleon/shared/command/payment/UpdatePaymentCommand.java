@@ -5,8 +5,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import eu.comexis.napoleon.client.rpc.PaymentServiceAsync;
 import eu.comexis.napoleon.shared.command.Action;
 import eu.comexis.napoleon.shared.model.Payment;
-import eu.comexis.napoleon.shared.model.PaymentOwner;
-import eu.comexis.napoleon.shared.model.PaymentTenant;
 
 public class UpdatePaymentCommand<T extends Payment> implements Action<UpdatePaymentResponse<T>> {
   private T payment;

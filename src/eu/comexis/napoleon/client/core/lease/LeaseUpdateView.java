@@ -2,7 +2,6 @@ package eu.comexis.napoleon.client.core.lease;
 
 import java.util.List;
 
-import com.google.gwt.dom.client.OptionElement;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -22,14 +21,8 @@ import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
 import eu.comexis.napoleon.client.utils.UiHelper;
-import eu.comexis.napoleon.shared.model.AmountOfTimeUnit;
 import eu.comexis.napoleon.shared.model.Lease;
-import eu.comexis.napoleon.shared.model.MaritalStatus;
-import eu.comexis.napoleon.shared.model.MatrimonialRegime;
-import eu.comexis.napoleon.shared.model.Title;
-import eu.comexis.napoleon.shared.model.TypeOfRealEstate;
 import eu.comexis.napoleon.shared.model.TypeOfRent;
-import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 import eu.comexis.napoleon.shared.model.simple.SimpleRealEstate;
 import eu.comexis.napoleon.shared.model.simple.SimpleTenant;
 import eu.comexis.napoleon.shared.validation.ValidationMessage;

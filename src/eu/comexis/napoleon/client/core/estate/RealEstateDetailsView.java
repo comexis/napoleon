@@ -11,8 +11,6 @@ import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
 import eu.comexis.napoleon.client.utils.UiHelper;
-import eu.comexis.napoleon.shared.model.Association;
-import eu.comexis.napoleon.shared.model.Condo;
 import eu.comexis.napoleon.shared.model.RealEstate;
 import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 

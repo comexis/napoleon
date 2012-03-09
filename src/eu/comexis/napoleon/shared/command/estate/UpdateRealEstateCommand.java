@@ -4,7 +4,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import eu.comexis.napoleon.client.rpc.RealEstateServiceAsync;
 import eu.comexis.napoleon.shared.command.Action;
-import eu.comexis.napoleon.shared.model.Condo;
 import eu.comexis.napoleon.shared.model.RealEstate;
 
 public class UpdateRealEstateCommand implements Action<UpdateRealEstateResponse> {

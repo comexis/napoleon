@@ -10,7 +10,6 @@ import eu.comexis.napoleon.client.core.AbstractListView;
 import eu.comexis.napoleon.client.utils.SimpleTextComparator;
 import eu.comexis.napoleon.client.utils.UiHelper;
 import eu.comexis.napoleon.shared.model.simple.SimpleLease;
-import eu.comexis.napoleon.shared.model.simple.SimpleLease;
 
 public class LeaseListView extends AbstractListView<SimpleLease> implements
   LeaseListPresenter.MyView {

@@ -6,21 +6,12 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.RadioButton;
-import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
 import eu.comexis.napoleon.client.utils.UiHelper;
-import eu.comexis.napoleon.shared.model.Association;
-import eu.comexis.napoleon.shared.model.Condo;
 import eu.comexis.napoleon.shared.model.Lease;
-import eu.comexis.napoleon.shared.model.RealEstate;
-import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 
 public class LeaseDetailsView extends ViewImpl implements LeaseDetailsPresenter.MyView {
 
