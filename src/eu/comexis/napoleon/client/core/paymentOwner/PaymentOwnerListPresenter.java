@@ -1,6 +1,4 @@
-package eu.comexis.napoleon.client.core.paymentTenant;
-
-import static eu.comexis.napoleon.client.core.party.PartyUpdatePresenter.UUID_PARAMETER;
+package eu.comexis.napoleon.client.core.paymentOwner;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -15,31 +13,30 @@ import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 
 import eu.comexis.napoleon.client.core.AbstractListPresenter;
-import eu.comexis.napoleon.client.core.payment.PaymentUpdatePresenter;
 import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.rpc.callback.GotAllPayment;
 import eu.comexis.napoleon.shared.command.payment.GetAllPaymentCommand;
-import eu.comexis.napoleon.shared.model.PaymentTenant;
+import eu.comexis.napoleon.shared.model.PaymentOwner;
 
-public class PaymentTenantListPresenter extends
-    AbstractListPresenter<PaymentTenant, PaymentTenantListPresenter.MyView, PaymentTenantListPresenter.MyProxy> {
+public class PaymentOwnerListPresenter extends
+    AbstractListPresenter<PaymentOwner, PaymentOwnerListPresenter.MyView, PaymentOwnerListPresenter.MyProxy> {
   public static final String UUID_PARAMETER = "uuid";
   public static final String ESTATE_UUID_PARAMETER = "estate_uuid";
   public static final String LEASE_UUID_PARAMETER = "lease_uuid";
   private String id;
   private String estateId;
-  private static final Logger LOG = Logger.getLogger(PaymentTenantListPresenter.class.getName());
+  private static final Logger LOG = Logger.getLogger(PaymentOwnerListPresenter.class.getName());
 
   @ProxyCodeSplit
-  @NameToken(NameTokens.paymentTenantlist)
-  public interface MyProxy extends ProxyPlace<PaymentTenantListPresenter> {
+  @NameToken(NameTokens.paymentOwnerlist)
+  public interface MyProxy extends ProxyPlace<PaymentOwnerListPresenter> {
   }
 
-  public interface MyView extends AbstractListPresenter.MyView<PaymentTenant> {
+  public interface MyView extends AbstractListPresenter.MyView<PaymentOwner> {
   }
 
   @Inject
-  public PaymentTenantListPresenter(final EventBus eventBus, final MyView view, final MyProxy proxy,
+  public PaymentOwnerListPresenter(final EventBus eventBus, final MyView view, final MyProxy proxy,
       final PlaceManager placeManager) {
     super(eventBus, view, proxy, placeManager);
 
@@ -47,12 +44,12 @@ public class PaymentTenantListPresenter extends
 
   @Override
   protected String getDetailsNameTokens() {
-    return NameTokens.paymentTenant;
+    return NameTokens.paymentOwner;
   }
 
   @Override
   protected String getUpdateNameTokens() {
-    return NameTokens.updatePaymentTenant;
+    return NameTokens.updatePaymentOwner;
   }
   @Override
   public void onButtonNewClick() {
@@ -64,9 +61,9 @@ public class PaymentTenantListPresenter extends
   }
 
   protected void requestData() {
-    new GetAllPaymentCommand<PaymentTenant>(id,estateId,PaymentTenant.class.toString()).dispatch(new GotAllPayment<PaymentTenant>() {
+    new GetAllPaymentCommand<PaymentOwner>(id,estateId,PaymentOwner.class.toString()).dispatch(new GotAllPayment<PaymentOwner>() {
       @Override
-      public void got(List<PaymentTenant> payments) {
+      public void got(List<PaymentOwner> payments) {
         setDatas(payments);
       }
     });
@@ -88,7 +85,7 @@ public class PaymentTenantListPresenter extends
     }
   }
   @Override
-  public void onSelect(PaymentTenant data) {
+  public void onSelect(PaymentOwner data) {
     if (data == null){
       return;
     }
@@ -102,7 +99,7 @@ public class PaymentTenantListPresenter extends
   }
 
   @Override
-  protected eu.comexis.napoleon.client.core.AbstractListPresenter.ListFilter<PaymentTenant> createFilter() {
+  protected eu.comexis.napoleon.client.core.AbstractListPresenter.ListFilter<PaymentOwner> createFilter() {
     // TODO Auto-generated method stub
     return null;
   }

@@ -24,20 +24,38 @@
 			<span class="{res.css.detailCellInputLabel}" style="width:100px">au :</span>
 			<dp:DateBox ui:field="toDate" styleName="{res.css.detailCellInputText}"/>
 		</div>
-		
-		<div class="{res.css.detailRow}">
-			<span class="{res.css.detailCellInputLabel}" style="width:100px">Date :</span>
-			<dp:DateBox ui:field="date" styleName="{res.css.detailCellInputText}"/>
-			<span class="{res.css.detailCellInputLabel}" style="width:100px">Montant (EUR) :</span>
-			<g:TextBox ui:field="amount" styleName="{res.css.detailCellInputList}" name="amount" />
+		<div id="moreDetailOwner" class="{res.css.detailRow} {res.css.separationRow}">
+			<div class="{res.css.detailRow} {res.css.separationRow}">
+				<span class="{res.css.detailCellLabel}">Loyer :</span>
+				<span ui:field="rent" class="{res.css.detailCellValue}" />
+				<span class="{res.css.detailCellLabel}">Honoraire :</span>
+				<span ui:field="fee" class="{res.css.detailCellValue}" />
+			</div>
+			<div class="{res.css.detailRow} {res.css.separationRow}">
+				<span class="{res.css.detailCellLabel}">Loyers - honoraires (EUR) :</span>
+				<span ui:field="rentWithoutFee" class="{res.css.detailCellValue}" />
+				<span class="{res.css.detailCellLabel}">Ancien solde (EUR) :</span>
+				<span ui:field="previousBalance" class="{res.css.detailCellValue}" />
+			</div>
+			<div class="{res.css.detailRow} {res.css.separationRow}">
+				<span class="{res.css.detailCellLabel}">Montant à payer au propriétaire (EUR) :</span>
+				<span ui:field="dueToOwner" class="{res.css.detailCellValue}" />
+				<span class="{res.css.detailCellInputLabel}" style="width:100px">Solde (EUR) :</span>
+				<g:TextBox ui:field="balance" styleName="{res.css.detailCellInputList}" name="balance" />
+			</div>
 		</div>
-		<div id="moreDetail">
-			<div class="{res.css.detailRow}">
+		<div class="{res.css.detailRow} {res.css.separationRow}">
+				<span class="{res.css.detailCellInputLabel}" style="width:100px">Date :</span>
+				<dp:DateBox ui:field="date" styleName="{res.css.detailCellInputText}"/>
+				<span class="{res.css.detailCellInputLabel}" style="width:100px">Montant (EUR) :</span>
+				<g:TextBox ui:field="amount" styleName="{res.css.detailCellInputList}" name="amount" />
+			</div>
+		<div id="moreDetailTenant" class="{res.css.detailRow} {res.css.separationRow}">
+			<div class="{res.css.detailRow} {res.css.separationRow}">
 				<span class="{res.css.detailCellInputLabel}" style="width:100px">Compte agence:</span>
 				<g:SuggestBox ui:field="account" styleName="{res.css.detailCellInputText}"/>
 			</div>
-			
-			<div class="{res.css.detailRow}">
+			<div class="{res.css.detailRow} {res.css.separationRow}">
 				<g:RadioButton ui:field="inCashYes" styleName="{res.css.detailCellInputList}"
 						name="inCash" text="Cash"/>
 				<g:RadioButton ui:field="inCashNo" styleName="{res.css.detailCellInputList}"

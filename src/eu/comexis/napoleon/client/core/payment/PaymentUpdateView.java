@@ -3,6 +3,8 @@ package eu.comexis.napoleon.client.core.payment;
 import java.util.List;
 import java.util.logging.Logger;
 
+import static com.google.gwt.query.client.GQuery.$;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -22,6 +24,7 @@ import com.gwtplatform.mvp.client.ViewImpl;
 import eu.comexis.napoleon.client.utils.UiHelper;
 import eu.comexis.napoleon.shared.model.Lease;
 import eu.comexis.napoleon.shared.model.Payment;
+import eu.comexis.napoleon.shared.model.PaymentOwner;
 import eu.comexis.napoleon.shared.model.PaymentTenant;
 import eu.comexis.napoleon.shared.validation.ValidationMessage;
 
@@ -53,10 +56,24 @@ public class PaymentUpdateView<T extends Payment> extends ViewImpl implements
   TextBox communication;
   @UiField
   SuggestBox account;
+  @UiField
+  Element dueToOwner;
+  @UiField
+  TextBox balance;
+  @UiField
+  Element fee;
+  @UiField
+  Element rent;
+  @UiField
+  Element previousBalance;
+  @UiField
+  Element rentWithoutFee;
   
   @UiHandler("amount")
   public void onChangeAmount(ChangeEvent e) {
+    Float solde = UiHelper.stringToFloat(dueToOwner.getInnerText()) - UiHelper.stringToFloat(amount.getValue());
     this.amount.setValue(UiHelper.FloatToString(UiHelper.stringToFloat(amount.getValue())));
+    this.balance.setValue(UiHelper.FloatToString(solde));
   }
   @UiHandler("inCashYes")
   public void onInCashYes(ClickEvent e) {
@@ -131,9 +148,11 @@ public class PaymentUpdateView<T extends Payment> extends ViewImpl implements
   public void setLease(Lease l) {
     this.academicYear.setInnerText("");
     this.reference.setInnerText("");
+    this.rent.setInnerText("");
     if (l!=null){
       this.academicYear.setInnerText(l.getAcademicYear());
       this.reference.setInnerText(l.getRealEstate().getReference());
+      this.rent.setInnerText(UiHelper.FloatToString(l.getRent()));
     }
   }
   @Override
@@ -147,19 +166,39 @@ public class PaymentUpdateView<T extends Payment> extends ViewImpl implements
     this.toDate.setValue(null);
     this.amount.setValue("");
     this.inCashNo.setValue(true);
+    this.number.setValue("");
+    this.communication.setValue("");
+    this.dueToOwner.setInnerText("");
+    this.balance.setValue("");
+    this.fee.setInnerText("");
+    this.previousBalance.setInnerText("");
+    this.rentWithoutFee.setInnerText("");
+    $("#moreDetailTenant").show();
+    $("#moreDetailOwner").show();
     if (payment != null) {
       this.date.setValue(payment.getPaymentDate());
       this.fromDate.setValue(payment.getPeriodStartDate());
       this.toDate.setValue(payment.getPeriodEndDate());
       this.amount.setValue(UiHelper.FloatToString(payment.getAmount()));
       try{
+        this.account.setValue(((PaymentTenant)payment).getAccount()!=null ? ((PaymentTenant)payment).getAccount():"");
         this.inCashYes.setValue(((PaymentTenant)payment).getPaymentInCash()!=null ? ((PaymentTenant)payment).getPaymentInCash(): false);
-        this.number.setValue(((PaymentTenant)payment).getNumber());
-        this.communication.setValue(((PaymentTenant)payment).getCommunication());
+        this.number.setValue(((PaymentTenant)payment).getNumber()!=null ? ((PaymentTenant)payment).getNumber():"");
+        this.communication.setValue(((PaymentTenant)payment).getCommunication()!=null ? ((PaymentTenant)payment).getCommunication():"");
       }catch(Exception e){
-        //
+        $("#moreDetailTenant").hide();
+      }
+      try{
+        this.fee.setInnerText(UiHelper.FloatToString(((PaymentOwner)payment).getFee()) + " " + UiHelper.translateEnum("FeeUnit_", ((PaymentOwner)payment).getFeeUnit()));
+        this.previousBalance.setInnerText(UiHelper.FloatToString(((PaymentOwner)payment).getPreviousbalance()));
+        this.dueToOwner.setInnerText(UiHelper.FloatToString(((PaymentOwner)payment).getBalance()));
+        this.balance.setValue(this.dueToOwner.getInnerText());
+        this.rentWithoutFee.setInnerText(UiHelper.FloatToString(((PaymentOwner)payment).getRentWithoutFee()));
+      }catch(Exception e){
+        $("#moreDetailOwner").hide();
       }
     }
+    this.fromDate.setEnabled(false);
   }
 
   @Override
@@ -178,6 +217,12 @@ public class PaymentUpdateView<T extends Payment> extends ViewImpl implements
       ((PaymentTenant)payment).setPaymentInCash(inCashYes.getValue());
       ((PaymentTenant)payment).setNumber(number.getValue());
       ((PaymentTenant)payment).setCommunication(communication.getValue());
+      ((PaymentTenant)payment).setAccount(account.getValue());
+    }catch(Exception e){
+      //
+    }
+    try{
+      ((PaymentOwner)payment).setBalance((UiHelper.stringToFloat(balance.getValue())));
     }catch(Exception e){
       //
     }

@@ -149,15 +149,12 @@ public abstract class PaymentUpdatePresenter<T extends Payment, V extends Paymen
   @Override
   protected void onReset() {
     super.onReset();
-    if (id != null && !"new".equals(id)) { // call the server to get the requested owner
+    if (id != null && !"next".equals(id)) { // call the server to get the requested owner
       requestLease();
       requestData(id);
     } else {
       requestLease();
-      payment = createNewDataModel();
-      payment.setLeaseId(leaseId);
-      payment.setEstateId(estateId);
-      getView().setData(payment);
+      requestData("next");
     }
 
   }
