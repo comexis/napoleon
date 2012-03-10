@@ -3,6 +3,7 @@ package eu.comexis.napoleon.client.core;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ContentSlot;
@@ -42,6 +43,8 @@ public class MainLayoutPresenter extends
     public void hideLeftMenu();
 
   }
+  
+  private HandlerRegistration selectedMenuEventHandlerRegistration;
 
   /**
    * Content slot are used in leaf presenters, inside their {@link #revealInParent} method.
@@ -62,8 +65,16 @@ public class MainLayoutPresenter extends
   @Override
   protected void onBind() {
     super.onBind();
+    selectedMenuEventHandlerRegistration = getEventBus().addHandler(SelectedMenuEvent.getType(), this);
+  }
+  
+  @Override
+  protected void onUnbind() {
+    // TODO Auto-generated method stub
+    super.onUnbind();
     
-    getEventBus().addHandler(SelectedMenuEvent.getType(), this);
+    if (selectedMenuEventHandlerRegistration != null)
+    selectedMenuEventHandlerRegistration.removeHandler();
   }
 
   @Override
