@@ -179,12 +179,9 @@ public class MainLayoutView extends ViewImpl implements MainLayoutPresenter.MyVi
   @Override
   public void selectLeftMenu(int id) {
     assert id > 0 || id < leftMenu.getWidgetCount() : "Try to display a menu that doesn't exist "+id;
+    GWT.log("selectLeftMenu with id "+id);
     
-    if (id == leftMenu.getVisibleIndex()){
-      return;
-    }
-
-    leftMenu.setVisible(true);
+    $(leftMenu).show();
     
     String selectedCssClass = Resources.INSTANCE.css().leftMenuSelected();
     
@@ -197,7 +194,7 @@ public class MainLayoutView extends ViewImpl implements MainLayoutPresenter.MyVi
 
   @Override
   public void hideLeftMenu() {
-    leftMenu.setVisible(false);
+    $(leftMenu).hide();
     
   }
 }
