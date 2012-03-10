@@ -1,8 +1,8 @@
 package eu.comexis.napoleon.shared.model;
 
-import com.googlecode.objectify.annotation.Unindexed;
+import com.googlecode.objectify.annotation.Subclass;
 
-@Unindexed
+@Subclass
 public class PaymentTenant extends Payment {
 
   private Boolean paymentInCash;

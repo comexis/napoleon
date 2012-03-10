@@ -4,17 +4,12 @@ import java.util.List;
 import java.util.UUID;
 
 import com.googlecode.objectify.Key;
-import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
 import com.googlecode.objectify.util.DAOBase;
 
 import eu.comexis.napoleon.shared.model.Company;
 
 public class CompanyDao extends DAOBase {
-
-  static {
-    ObjectifyService.register(Company.class);
-  }
 
   public Company create() {
     Company company = new Company();

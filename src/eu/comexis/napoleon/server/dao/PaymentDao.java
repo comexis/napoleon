@@ -11,7 +11,6 @@ import org.apache.commons.logging.LogFactory;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.googlecode.objectify.Key;
-import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
 import com.googlecode.objectify.util.DAOBase;
 
@@ -46,10 +45,7 @@ public class PaymentDao<T extends Payment> extends DAOBase{
     return payments;
   }
   public static Log LOG = LogFactory.getLog(PaymentDao.class);
-  static {
-    ObjectifyService.register(PaymentOwner.class);
-    ObjectifyService.register(PaymentTenant.class);
-  }
+
 
   public T getById(String paymentId, String leaseId, String realEstateId, String companyId) {
     Key<Company> companyKey = new Key<Company>(Company.class, companyId);

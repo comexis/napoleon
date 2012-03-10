@@ -12,7 +12,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.googlecode.objectify.Key;
-import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
 import com.googlecode.objectify.util.DAOBase;
 
@@ -23,7 +22,6 @@ import eu.comexis.napoleon.shared.model.Owner;
 import eu.comexis.napoleon.shared.model.RealEstate;
 import eu.comexis.napoleon.shared.model.Tenant;
 import eu.comexis.napoleon.shared.model.simple.SimpleLease;
-import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 import eu.comexis.napoleon.shared.model.simple.SimpleRealEstate;
 import eu.comexis.napoleon.shared.model.simple.SimpleTenant;
 
@@ -33,9 +31,7 @@ import eu.comexis.napoleon.shared.model.simple.SimpleTenant;
  */
 public class LeaseDao extends DAOBase {
   public static Log LOG = LogFactory.getLog(LeaseDao.class);
-  static {
-    ObjectifyService.register(Lease.class);
-  }
+
 
   public LeaseDao() {
     // TODO Auto-generated constructor stub

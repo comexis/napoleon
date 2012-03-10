@@ -6,11 +6,13 @@ import javax.persistence.Id;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Indexed;
 import com.googlecode.objectify.annotation.NotSaved;
 import com.googlecode.objectify.annotation.Parent;
 import com.googlecode.objectify.annotation.Unindexed;
 
+@Entity
 @Unindexed
 public class Payment implements IsSerializable, Identifiable  {
 

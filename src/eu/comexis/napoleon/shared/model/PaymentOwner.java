@@ -1,7 +1,9 @@
 package eu.comexis.napoleon.shared.model;
 
 import com.googlecode.objectify.annotation.NotSaved;
+import com.googlecode.objectify.annotation.Subclass;
 
+@Subclass
 public class PaymentOwner extends Payment {
   private Float balance;
   @NotSaved
