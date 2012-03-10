@@ -13,6 +13,8 @@ import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 
 import eu.comexis.napoleon.client.core.AbstractListPresenter;
+import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
+import eu.comexis.napoleon.client.events.SelectedMenuEvent;
 import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.rpc.callback.GotAllPayment;
 import eu.comexis.napoleon.shared.command.payment.GetAllPaymentCommand;
@@ -68,6 +70,13 @@ public class PaymentTenantListPresenter extends
       }
     });
   }
+  
+  @Override
+  protected void onReveal() {
+    super.onReveal();
+    SelectedMenuEvent.fire(getEventBus(), Menus.PAYMENT);
+  }
+  
   @Override
   public void prepareFromRequest(PlaceRequest placeRequest) {
     super.prepareFromRequest(placeRequest);

@@ -11,6 +11,8 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 
 import eu.comexis.napoleon.client.core.AbstractListPresenter;
+import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
+import eu.comexis.napoleon.client.events.SelectedMenuEvent;
 import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.rpc.callback.GotAllTenant;
 import eu.comexis.napoleon.shared.command.tenant.GetAllTenantCommand;
@@ -62,6 +64,12 @@ public class TenantListPresenter extends
       }
     });
 
+  }
+  
+  @Override
+  protected void onReveal() {
+    super.onReveal();
+    SelectedMenuEvent.fire(getEventBus(), Menus.TENANT);
   }
 
   @Override

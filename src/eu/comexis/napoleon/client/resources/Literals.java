@@ -136,4 +136,45 @@ public interface Literals extends ConstantsWithLookup {
   @DefaultStringValue("Chargement du fichier...")
   public String fileUpload();
   
+  @DefaultStringValue("Biens immobiliers")
+  public String menuRealEstate();
+  
+  @DefaultStringValue("Locataires")
+  public String menuTenant();
+  
+  @DefaultStringValue("Propriétaires")
+  public String menuOwner();
+  
+  @DefaultStringValue("Locations")
+  public String menuLease();
+  
+  @DefaultStringValue("Paiements")
+  public String menuPayment();
+
+  @DefaultStringValue("Mes propriétaires")
+  public String menuOwnerList();
+
+  @DefaultStringValue("Créer un propriétaire")
+  public String menuOwnerNew();
+
+  @DefaultStringValue("Mes locations")
+  public String menuLeaseList();
+  
+  @DefaultStringValue("Créer une location")
+  public String menuLeaseNew();
+
+  @DefaultStringValue("Mes biens")
+  public String menuRealEstateList();
+
+  @DefaultStringValue("Créer un bien")
+  public String menuRealEstateNew();
+
+  @DefaultStringValue("Mes locataires")
+  public String menuTenantList();
+
+  @DefaultStringValue("Créer un locataire")
+  public String menuTenantNew();
+  
+  
+  
 }

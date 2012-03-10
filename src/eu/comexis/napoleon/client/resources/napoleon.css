@@ -100,3 +100,16 @@
 .messagePanelInner{
 	
 }
+
+/* left menu */
+.leftMenuActionBegin{
+	
+}
+
+.leftMenuAction{
+	
+}
+
+.leftMenuSelected{
+	color: orange;
+}

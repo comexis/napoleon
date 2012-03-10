@@ -9,6 +9,7 @@ import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
+import eu.comexis.napoleon.client.events.SelectedMenuEvent;
 import eu.comexis.napoleon.client.place.NameTokens;
 
 public class DashBoardPresenter extends
@@ -30,6 +31,12 @@ public class DashBoardPresenter extends
   @Override
   protected void onBind() {
     super.onBind();
+  }
+  
+  @Override
+  protected void onReveal() {
+    super.onReveal();
+    SelectedMenuEvent.fire(getEventBus(), null);
   }
 
   @Override

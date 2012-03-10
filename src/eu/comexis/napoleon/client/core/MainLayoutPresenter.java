@@ -11,15 +11,23 @@ import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.gwtplatform.mvp.client.proxy.RevealRootLayoutContentEvent;
 
+import eu.comexis.napoleon.client.events.SelectedMenuEvent;
+import eu.comexis.napoleon.client.events.SelectedMenuEvent.SelectedMenuHandler;
 import eu.comexis.napoleon.client.utils.ApplicationHelper;
 import eu.comexis.napoleon.shared.model.ApplicationUser;
 import eu.comexis.napoleon.shared.model.Company;
 
 public class MainLayoutPresenter extends
-    Presenter<MainLayoutPresenter.MyView, MainLayoutPresenter.MyProxy> {
+    Presenter<MainLayoutPresenter.MyView, MainLayoutPresenter.MyProxy> implements SelectedMenuHandler {
 
   @ProxyCodeSplit
   public interface MyProxy extends Proxy<MainLayoutPresenter> {
+  }
+  
+  public enum Menus {
+    //order is important here !! We use the ordinal() method in
+    // onSelectedMenu()
+    OWNER, TENANT, REAL_ESTATE, LEASE, PAYMENT;
   }
 
   public interface MyView extends View {
@@ -28,6 +36,10 @@ public class MainLayoutPresenter extends
     public void setLogoutUrl(String logoutUrl);
 
     public void setUserName(String userName);
+    
+    public void selectLeftMenu(int id);
+    
+    public void hideLeftMenu();
 
   }
 
@@ -46,6 +58,13 @@ public class MainLayoutPresenter extends
     super(eventBus, view, proxy);
     initView();
   }
+  
+  @Override
+  protected void onBind() {
+    super.onBind();
+    
+    getEventBus().addHandler(SelectedMenuEvent.getType(), this);
+  }
 
   @Override
   protected void revealInParent() {
@@ -62,5 +81,15 @@ public class MainLayoutPresenter extends
     view.setUserName(loggedInUser.getFirstName() + " " + loggedInUser.getLastName());
     view.setLogoutUrl(ApplicationHelper.INSTANCE.getLogoutUrl());
 
+  }
+
+  @Override
+  public void onSelectedMenu(SelectedMenuEvent event) {
+    if (event.getMenu() != null){
+      getView().selectLeftMenu(event.getMenu().ordinal());
+    }else{
+      getView().hideLeftMenu();
+    }
+    
   }
 }

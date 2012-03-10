@@ -15,6 +15,8 @@ import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
 import eu.comexis.napoleon.client.core.HasPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter;
+import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
+import eu.comexis.napoleon.client.events.SelectedMenuEvent;
 import eu.comexis.napoleon.client.rpc.callback.GotLease;
 import eu.comexis.napoleon.shared.command.lease.GetLeaseCommand;
 import eu.comexis.napoleon.shared.model.Lease;
@@ -158,6 +160,13 @@ public abstract class PaymentUpdatePresenter<T extends Payment, V extends Paymen
     }
 
   }
+  
+  @Override
+  protected void onReveal() {
+    super.onReveal();
+    SelectedMenuEvent.fire(getEventBus(), Menus.PAYMENT);
+  }
+  
   protected void requestLease() {
     new GetLeaseCommand(this.leaseId,this.estateId).dispatch(new GotLease() {
       @Override

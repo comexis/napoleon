@@ -8,7 +8,9 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 
+import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
 import eu.comexis.napoleon.client.core.party.PartyUpdatePresenter;
+import eu.comexis.napoleon.client.events.SelectedMenuEvent;
 import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.rpc.callback.GotOwner;
 import eu.comexis.napoleon.client.rpc.callback.UpdatedOwner;
@@ -58,6 +60,13 @@ public class OwnerUpdatePresenter extends
     });
   }
 
+  
+  @Override
+  protected void onReveal() {
+    super.onReveal();
+    SelectedMenuEvent.fire(getEventBus(), Menus.OWNER);
+  }
+  
   @Override
   protected void save() {
     new UpdateOwnerCommand(getDataObjectModel()).dispatch(new UpdatedOwner() {

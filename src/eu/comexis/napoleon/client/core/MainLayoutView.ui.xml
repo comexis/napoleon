@@ -54,8 +54,13 @@
 			</g:HTMLPanel>
 		</g:north>
 
-		<g:west size='8'>
-			<g:SimplePanel styleName='{style.left}' ui:field="leftPanel"/>
+		<g:west size='12'>
+			<g:LayoutPanel styleName='{style.left}'>
+				<g:layer>
+					<g:StackLayoutPanel  ui:field="leftMenu" height="250px"/>
+				</g:layer>
+			</g:LayoutPanel>
+			
 		</g:west>
 
 		<g:center>

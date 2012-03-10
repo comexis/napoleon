@@ -18,7 +18,9 @@ import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
 import eu.comexis.napoleon.client.core.MainLayoutPresenter;
+import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
 import eu.comexis.napoleon.client.core.estate.RealEstateUpdateUiHandlers.HasRealEstateUpdateUiHandler;
+import eu.comexis.napoleon.client.events.SelectedMenuEvent;
 import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.rpc.callback.GotAllAssoc;
 import eu.comexis.napoleon.client.rpc.callback.GotAllCondo;
@@ -292,6 +294,12 @@ public class RealEstateUpdatePresenter extends
       realEstate.setType(TypeOfRealEstate.NONE);
       getView().setRealEstate(realEstate);
     }
+  }
+  
+  @Override
+  protected void onReveal() {
+    super.onReveal();
+    SelectedMenuEvent.fire(getEventBus(), Menus.REAL_ESTATE);
   }
 
   @Override

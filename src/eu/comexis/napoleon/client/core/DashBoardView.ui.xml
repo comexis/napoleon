@@ -20,22 +20,25 @@
 			left: 20%;
 		}
 	</ui:style>
+	
+	<ui:with type="eu.comexis.napoleon.client.resources.Literals" field="literals"/>
+	
 	<g:HTMLPanel>
 		<div class="{style.main}">
 			<a class="{style.item}" href="#ownerList">
-				<div>Propriétaires</div>
+				<div><ui:text from="{literals.menuOwner}" /></div>
 			</a>
 			<br/>
 			<a class="{style.item}" href="#tenantList">
-				<div>Locataires</div>
+				<div><ui:text from="{literals.menuTenant}" /></div>
 			</a>
 			<br/>
 			<a class="{style.item}" href="#realEstateList">
-				<div>Biens</div>
+				<div><ui:text from="{literals.menuRealEstate}" /></div>
 			</a>
 			<br/>
 			<a class="{style.item}" href="#leaseList">
-				<div>Locations</div>
+				<div><ui:text from="{literals.menuLease}" /></div>
 			</a>
 		</div>
 		

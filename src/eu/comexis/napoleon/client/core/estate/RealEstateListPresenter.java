@@ -10,6 +10,8 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 
 import eu.comexis.napoleon.client.core.AbstractListPresenter;
+import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
+import eu.comexis.napoleon.client.events.SelectedMenuEvent;
 import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.rpc.callback.GotAllRealEstate;
 import eu.comexis.napoleon.shared.command.estate.GetAllRealEstateCommand;
@@ -68,6 +70,12 @@ public class RealEstateListPresenter
       }
     });
 
+  }
+
+  @Override
+  protected void onReveal() {
+    super.onReveal();
+    SelectedMenuEvent.fire(getEventBus(), Menus.REAL_ESTATE);
   }
   
   @Override

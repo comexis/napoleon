@@ -39,4 +39,11 @@ public interface Css extends CssResource {
   public String messagePanelOuter();
 
   public String messagePanelInner();
+
+  public String leftMenuActionBegin();
+
+  public String leftMenuAction();
+
+  public String leftMenuSelected();
+
 }

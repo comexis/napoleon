@@ -11,10 +11,11 @@ import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 
 import eu.comexis.napoleon.client.core.AbstractListPresenter;
+import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
+import eu.comexis.napoleon.client.events.SelectedMenuEvent;
 import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.rpc.callback.GotAllLease;
 import eu.comexis.napoleon.shared.command.lease.GetAllLeaseCommand;
-import eu.comexis.napoleon.shared.model.Lease;
 import eu.comexis.napoleon.shared.model.simple.SimpleLease;
 
 public class LeaseListPresenter extends
@@ -80,5 +81,11 @@ public class LeaseListPresenter extends
     myRequest = myRequest.with(UUID_PARAMETER, data.getId());
     myRequest = myRequest.with(ESTATE_UUID_PARAMETER, data.getRealEstateId());
     super.getPlaceManager().revealPlace(myRequest);
+  }
+  
+  @Override
+  protected void onReveal() {
+    super.onReveal();
+    SelectedMenuEvent.fire(getEventBus(), Menus.LEASE);
   }
 }
