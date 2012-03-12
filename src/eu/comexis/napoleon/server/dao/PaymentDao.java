@@ -212,6 +212,9 @@ public class PaymentDao<T extends Payment> extends DAOBase{
       // si pas de paiement du locataire, alors pas de paiement proprio. Théoriquement on ne devrait pas passer dans ce code.
       return null;
     }
+    if (nextPaymentOwner.getPeriodEndDate().before(nextPaymentOwner.getPeriodStartDate())){
+      return null;
+    }
     // calcul du montant des loyers perçu dans la période et du nombre de périodes de loyer.
     // on prend toutes les perceptions qui sont dans la période
     Float sum = new Float("0");
