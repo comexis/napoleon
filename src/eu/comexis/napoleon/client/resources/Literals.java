@@ -114,6 +114,21 @@ public interface Literals extends ConstantsWithLookup {
   @DefaultStringValue("Kot")
   public String TypeOfRent_KOT();
   
+  @DefaultStringValue("Bureau")
+  public String TypeOfRent_OFFICE();
+  
+  @DefaultStringValue("Meublé")
+  public String TypeOfRent_MEUBLE();
+  
+  @DefaultStringValue("Résidence principale")
+  public String TypeOfRent_PRINCIPAL();
+  
+  @DefaultStringValue("Résidence secondaire")
+  public String TypeOfRent_SECONDAIRE();
+  
+  @DefaultStringValue("Commercial")
+  public String TypeOfRent_COMMERCIAL();
+  
   //AmountOfTimeUnit
   @DefaultStringValue("-")
   public String AmountOfTimeUnit_NONE();
