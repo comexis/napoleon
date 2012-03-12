@@ -174,6 +174,33 @@ public interface Literals extends ConstantsWithLookup {
 
   @DefaultStringValue("Créer un locataire")
   public String menuTenantNew();
+
+  @DefaultStringValue("Dashboard")
+  public String dashboardTitle();
+
+  @DefaultStringValue("Edition d'un locataire")
+  public String tenantUpdateTitle();
+
+  @DefaultStringValue("Détails d'un locataire")
+  public String tenantDetailsTitle();
+
+  @DefaultStringValue("Liste des locataires")
+  public String tenantListTitle();
+  
+  @DefaultStringValue("Création d'un locataire")
+  public String tenantNewTitle();
+  
+  @DefaultStringValue("Liste des propriétaires")
+  public String ownerListTitle();
+  
+  @DefaultStringValue("Création d'un propriétaire")
+  public String ownerNewTitle();
+  
+  @DefaultStringValue("Edition d'un propriétaire")
+  public String ownerUpdateTitle();
+
+  @DefaultStringValue("Détails d'un propriétaire")
+  public String ownerDetailsTitle();
   
   
   
