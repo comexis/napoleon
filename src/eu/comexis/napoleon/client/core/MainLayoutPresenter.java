@@ -14,12 +14,14 @@ import com.gwtplatform.mvp.client.proxy.RevealRootLayoutContentEvent;
 
 import eu.comexis.napoleon.client.events.SelectedMenuEvent;
 import eu.comexis.napoleon.client.events.SelectedMenuEvent.SelectedMenuHandler;
+import eu.comexis.napoleon.client.events.SetTitleEvent;
+import eu.comexis.napoleon.client.events.SetTitleEvent.SetTitleHandler;
 import eu.comexis.napoleon.client.utils.ApplicationHelper;
 import eu.comexis.napoleon.shared.model.ApplicationUser;
 import eu.comexis.napoleon.shared.model.Company;
 
 public class MainLayoutPresenter extends
-    Presenter<MainLayoutPresenter.MyView, MainLayoutPresenter.MyProxy> implements SelectedMenuHandler {
+    Presenter<MainLayoutPresenter.MyView, MainLayoutPresenter.MyProxy> implements SelectedMenuHandler, SetTitleHandler {
 
   @ProxyCodeSplit
   public interface MyProxy extends Proxy<MainLayoutPresenter> {
@@ -42,9 +44,12 @@ public class MainLayoutPresenter extends
     
     public void hideLeftMenu();
 
+    public void setTitle(String title);
+
   }
   
   private HandlerRegistration selectedMenuEventHandlerRegistration;
+  private HandlerRegistration setTitleHandlerRegistration;
 
   /**
    * Content slot are used in leaf presenters, inside their {@link #revealInParent} method.
@@ -66,15 +71,22 @@ public class MainLayoutPresenter extends
   protected void onBind() {
     super.onBind();
     selectedMenuEventHandlerRegistration = getEventBus().addHandler(SelectedMenuEvent.getType(), this);
+    setTitleHandlerRegistration = getEventBus().addHandler(SetTitleEvent.getType(), this);
   }
   
   @Override
   protected void onUnbind() {
-    // TODO Auto-generated method stub
     super.onUnbind();
     
-    if (selectedMenuEventHandlerRegistration != null)
-    selectedMenuEventHandlerRegistration.removeHandler();
+    if (selectedMenuEventHandlerRegistration != null){
+      selectedMenuEventHandlerRegistration.removeHandler();
+      selectedMenuEventHandlerRegistration = null;
+    }
+    
+    if (setTitleHandlerRegistration != null){
+      setTitleHandlerRegistration.removeHandler();
+      setTitleHandlerRegistration = null;
+    }
   }
 
   @Override
@@ -102,5 +114,11 @@ public class MainLayoutPresenter extends
       getView().hideLeftMenu();
     }
     
+  }
+
+  @Override
+  public void onSetTitle(SetTitleEvent event) {
+    String title = event.getTitle();
+    getView().setTitle(title);    
   }
 }

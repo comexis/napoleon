@@ -13,8 +13,8 @@ import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 
 import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
 import eu.comexis.napoleon.client.core.party.PartyDetailsPresenter;
-import eu.comexis.napoleon.client.events.SelectedMenuEvent;
 import eu.comexis.napoleon.client.place.NameTokens;
+import eu.comexis.napoleon.client.resources.Literals;
 import eu.comexis.napoleon.client.rpc.callback.GotOwner;
 import eu.comexis.napoleon.shared.command.owner.GetOwnerCommand;
 import eu.comexis.napoleon.shared.command.owner.UpdateOwnerCommand;
@@ -66,12 +66,6 @@ public class OwnerDetailsPresenter
     });
 
   }
-  
-  @Override
-  protected void onReveal() {
-    super.onReveal();
-    SelectedMenuEvent.fire(getEventBus(), Menus.OWNER);
-  }
 
   @Override
   protected void saveFile(FileDescriptor file) {
@@ -89,6 +83,16 @@ public class OwnerDetailsPresenter
     });
 
     
+  }
+  
+  @Override
+  protected Menus getMenu() {
+    return Menus.OWNER;
+  }
+  
+  @Override
+  protected String getTitle() {
+    return Literals.INSTANCE.ownerDetailsTitle();
   }
 
 }

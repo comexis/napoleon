@@ -8,7 +8,6 @@ import java.util.List;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
-import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
@@ -22,7 +21,7 @@ import eu.comexis.napoleon.client.resources.Literals;
 import eu.comexis.napoleon.shared.model.Identifiable;
 
 public abstract class AbstractListPresenter<T extends Identifiable, V extends AbstractListPresenter.MyView<T>, P extends Proxy<?>>
-    extends Presenter<V, P> implements ListUiHandlers<T> {
+    extends AbstractPresenter<V, P> implements ListUiHandlers<T> {
 
   public interface ListFilter<T>{
     public boolean filter(T data, String filter);
@@ -36,7 +35,6 @@ public abstract class AbstractListPresenter<T extends Identifiable, V extends Ab
     public void setData(List<T> data);
   }
 
-  private PlaceManager placeManager;
   private List<T> datas;
   private List<T> filteredDatas;
   private String filterValue;
@@ -44,9 +42,7 @@ public abstract class AbstractListPresenter<T extends Identifiable, V extends Ab
 
   @Inject
   public AbstractListPresenter(EventBus eventBus, V view, P proxy, final PlaceManager placeManager) {
-    super(eventBus, view, proxy);
-
-    this.placeManager = placeManager;
+    super(eventBus, view, proxy, placeManager);
     filter = createFilter();
   }
 
@@ -85,21 +81,18 @@ public abstract class AbstractListPresenter<T extends Identifiable, V extends Ab
     
   }
 
-  public PlaceManager getPlaceManager() {
-    return placeManager;
-  }
-  
+
   @Override
   public void onButtonBackToDashBoardClick() {
     PlaceRequest myRequest = new PlaceRequest(NameTokens.dashboard);
-    placeManager.revealPlace(myRequest);
+    getPlaceManager().revealPlace(myRequest);
   }
 
   @Override
   public void onButtonNewClick() {
     PlaceRequest myRequest = new PlaceRequest(getUpdateNameTokens());
     myRequest = myRequest.with(UUID_PARAMETER, "new");
-    placeManager.revealPlace(myRequest);
+    getPlaceManager().revealPlace(myRequest);
   }
 
   @Override
@@ -111,7 +104,7 @@ public abstract class AbstractListPresenter<T extends Identifiable, V extends Ab
     PlaceRequest myRequest = new PlaceRequest(getDetailsNameTokens());
     // add the id of the owner to load
     myRequest = myRequest.with(UUID_PARAMETER, data.getId());
-    placeManager.revealPlace(myRequest);
+    getPlaceManager().revealPlace(myRequest);
   }
 
   protected abstract ListFilter<T> createFilter();

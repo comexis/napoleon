@@ -14,17 +14,19 @@ import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
+import eu.comexis.napoleon.client.core.AbstractPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
 import eu.comexis.napoleon.client.core.lease.LeaseDetailUiHandlers.HasLeaseDetailUiHandlers;
 import eu.comexis.napoleon.client.events.SelectedMenuEvent;
 import eu.comexis.napoleon.client.place.NameTokens;
+import eu.comexis.napoleon.client.resources.Literals;
 import eu.comexis.napoleon.client.rpc.callback.GotLease;
 import eu.comexis.napoleon.shared.command.lease.GetLeaseCommand;
 import eu.comexis.napoleon.shared.model.Lease;
 
 public class LeaseDetailsPresenter extends
-    Presenter<LeaseDetailsPresenter.MyView, LeaseDetailsPresenter.MyProxy> implements
+    AbstractPresenter<LeaseDetailsPresenter.MyView, LeaseDetailsPresenter.MyProxy> implements
     LeaseDetailUiHandlers {
 
   @ProxyCodeSplit
@@ -124,12 +126,6 @@ public class LeaseDetailsPresenter extends
     });
 
   }
-  
-  @Override
-  protected void onReveal() {
-    super.onReveal();
-    SelectedMenuEvent.fire(getEventBus(), Menus.LEASE);
-  }
 
   @Override
   protected void revealInParent() {
@@ -140,6 +136,15 @@ public class LeaseDetailsPresenter extends
   public void onButtonPaymentClick() {
     // TODO Auto-generated method stub
     
+  }
+  
+  @Override
+  protected Menus getMenu() {
+    return Menus.LEASE;
+  }
+  
+  protected String getTitle() {
+    return Literals.INSTANCE.leaseDetailsTitle();
   }
 
 }

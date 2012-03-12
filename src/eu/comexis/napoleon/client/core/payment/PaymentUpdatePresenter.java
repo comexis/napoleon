@@ -6,17 +6,15 @@ import java.util.logging.Logger;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.logging.client.LogConfiguration;
 import com.google.inject.Inject;
-import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
+import eu.comexis.napoleon.client.core.AbstractPresenter;
 import eu.comexis.napoleon.client.core.HasPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter;
-import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
-import eu.comexis.napoleon.client.events.SelectedMenuEvent;
 import eu.comexis.napoleon.client.rpc.callback.GotLease;
 import eu.comexis.napoleon.shared.command.lease.GetLeaseCommand;
 import eu.comexis.napoleon.shared.model.Lease;
@@ -25,7 +23,7 @@ import eu.comexis.napoleon.shared.validation.PaymentValidator;
 import eu.comexis.napoleon.shared.validation.ValidationMessage;
 
 public abstract class PaymentUpdatePresenter<T extends Payment, V extends PaymentUpdatePresenter.MyView<T>, P extends Proxy<?>>
-    extends Presenter<V, P> implements PaymentUpdateUiHandlers {
+    extends AbstractPresenter<V, P> implements PaymentUpdateUiHandlers {
 
   public interface MyView<T extends Payment> extends View, HasPresenter<PaymentUpdateUiHandlers> {
     
@@ -159,12 +157,6 @@ public abstract class PaymentUpdatePresenter<T extends Payment, V extends Paymen
       requestData("next");
     }
 
-  }
-  
-  @Override
-  protected void onReveal() {
-    super.onReveal();
-    SelectedMenuEvent.fire(getEventBus(), Menus.PAYMENT);
   }
   
   protected void requestLease() {

@@ -14,20 +14,23 @@ import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 
 import eu.comexis.napoleon.client.core.AbstractListPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
-import eu.comexis.napoleon.client.events.SelectedMenuEvent;
 import eu.comexis.napoleon.client.place.NameTokens;
+import eu.comexis.napoleon.client.resources.Literals;
 import eu.comexis.napoleon.client.rpc.callback.GotAllPayment;
 import eu.comexis.napoleon.shared.command.payment.GetAllPaymentCommand;
 import eu.comexis.napoleon.shared.model.PaymentTenant;
 
 public class PaymentTenantListPresenter extends
     AbstractListPresenter<PaymentTenant, PaymentTenantListPresenter.MyView, PaymentTenantListPresenter.MyProxy> {
+  
   public static final String UUID_PARAMETER = "uuid";
   public static final String ESTATE_UUID_PARAMETER = "estate_uuid";
   public static final String LEASE_UUID_PARAMETER = "lease_uuid";
+  private static final Logger LOG = Logger.getLogger(PaymentTenantListPresenter.class.getName());
+  
   private String id;
   private String estateId;
-  private static final Logger LOG = Logger.getLogger(PaymentTenantListPresenter.class.getName());
+  
 
   @ProxyCodeSplit
   @NameToken(NameTokens.paymentTenantlist)
@@ -72,12 +75,6 @@ public class PaymentTenantListPresenter extends
   }
   
   @Override
-  protected void onReveal() {
-    super.onReveal();
-    SelectedMenuEvent.fire(getEventBus(), Menus.PAYMENT);
-  }
-  
-  @Override
   public void prepareFromRequest(PlaceRequest placeRequest) {
     super.prepareFromRequest(placeRequest);
     // In the next call, "view" is the default value,
@@ -108,8 +105,18 @@ public class PaymentTenantListPresenter extends
   }
 
   @Override
-  protected eu.comexis.napoleon.client.core.AbstractListPresenter.ListFilter<PaymentTenant> createFilter() {
+  protected ListFilter<PaymentTenant> createFilter() {
     // TODO Auto-generated method stub
     return null;
+  }
+
+  @Override
+  protected Menus getMenu() {
+    return Menus.LEASE;
+  }
+
+  @Override
+  protected String getTitle() {
+    return Literals.INSTANCE.paymentListTitle();
   }
 }

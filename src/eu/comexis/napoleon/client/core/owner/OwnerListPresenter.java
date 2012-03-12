@@ -11,8 +11,8 @@ import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 
 import eu.comexis.napoleon.client.core.AbstractListPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
-import eu.comexis.napoleon.client.events.SelectedMenuEvent;
 import eu.comexis.napoleon.client.place.NameTokens;
+import eu.comexis.napoleon.client.resources.Literals;
 import eu.comexis.napoleon.client.rpc.callback.GotAllOwner;
 import eu.comexis.napoleon.shared.command.owner.GetAllOwnerCommand;
 import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
@@ -65,13 +65,17 @@ public class OwnerListPresenter extends
   }
   
   @Override
-  protected void onReveal() {
-    super.onReveal();
-    SelectedMenuEvent.fire(getEventBus(), Menus.OWNER);
+  protected ListFilter<SimpleOwner> createFilter() {
+    return new OwnerListFilter();
   }
 
   @Override
-  protected ListFilter<SimpleOwner> createFilter() {
-    return new OwnerListFilter();
+  protected Menus getMenu() {
+    return Menus.OWNER;
+  }
+
+  @Override
+  protected String getTitle() {
+    return Literals.INSTANCE.ownerListTitle();
   }
 }

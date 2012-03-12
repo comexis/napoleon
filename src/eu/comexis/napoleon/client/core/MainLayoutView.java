@@ -58,6 +58,9 @@ public class MainLayoutView extends ViewImpl implements MainLayoutPresenter.MyVi
 
   @UiField
   Element userNameElement;
+  
+  @UiField 
+  Element title;
 
   private final Widget widget;
 
@@ -196,5 +199,10 @@ public class MainLayoutView extends ViewImpl implements MainLayoutPresenter.MyVi
   public void hideLeftMenu() {
     $(leftMenu).hide();
     
+  }
+  
+  @Override
+  public void setTitle(String title) {
+    this.title.setInnerHTML(title);
   }
 }

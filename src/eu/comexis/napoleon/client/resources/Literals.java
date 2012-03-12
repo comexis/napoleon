@@ -216,6 +216,39 @@ public interface Literals extends ConstantsWithLookup {
 
   @DefaultStringValue("Détails d'un propriétaire")
   public String ownerDetailsTitle();
+
+  @DefaultStringValue("Liste des paiements")
+  public String paymentListTitle();
+
+  @DefaultStringValue("Liste des locations")
+  public String leaseListTitle();
+
+  @DefaultStringValue("Liste des biens immobiliers")
+  public String realEstateListTitle();
+
+  @DefaultStringValue("Détails d'un bien immobilier")
+  public String realEstateDetailsTitle();
+
+  @DefaultStringValue("Création d'un bien immobilier")
+  public String realEstateNewTitle();
+
+  @DefaultStringValue("Edition d'un bien immobilier")
+  public String realEstateUpdateTitle();
+
+  @DefaultStringValue("Détails d'une location")
+  public String leaseDetailsTitle();
+
+  @DefaultStringValue("Edition d'une location")
+  public String leaseUpdateTitle();
+  
+  @DefaultStringValue("Création d'une location")
+  public String leaseNewTitle();
+
+  @DefaultStringValue("Edition d'un paiement")
+  public String paymentOwnerUpdateTitle();
+  
+  @DefaultStringValue("Edition d'un paiement")
+  public String paymentTenantUpdateTitle();
   
   
   

@@ -12,8 +12,8 @@ import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 
 import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
 import eu.comexis.napoleon.client.core.party.PartyUpdatePresenter;
-import eu.comexis.napoleon.client.events.SelectedMenuEvent;
 import eu.comexis.napoleon.client.place.NameTokens;
+import eu.comexis.napoleon.client.resources.Literals;
 import eu.comexis.napoleon.client.rpc.callback.GotTenant;
 import eu.comexis.napoleon.client.rpc.callback.UpdatedTenant;
 import eu.comexis.napoleon.shared.command.tenant.GetTenantCommand;
@@ -64,12 +64,7 @@ public class TenantUpdatePresenter extends
 
   }
   
-  @Override
-  protected void onReveal() {
-    super.onReveal();
-    SelectedMenuEvent.fire(getEventBus(), Menus.TENANT);
-  }
-
+ 
   @Override
   protected void save() {
     new UpdateTenantCommand(getDataObjectModel()).dispatch(new UpdatedTenant() {
@@ -95,5 +90,20 @@ public class TenantUpdatePresenter extends
   @Override
   protected String getListNameTokens() {
     return NameTokens.tenantlist;
+  }
+  
+  @Override
+  protected Menus getMenu() {
+    return Menus.TENANT;
+  }
+  
+  @Override
+  protected String getTitle() {
+    if (isNewOne()){
+      return  Literals.INSTANCE.tenantNewTitle();
+    }
+    
+    return Literals.INSTANCE.tenantUpdateTitle();
+    
   }
 }
