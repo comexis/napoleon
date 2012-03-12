@@ -25,7 +25,7 @@ public class OwnerUpdateView extends PartyUpdateView<Owner> implements OwnerUpda
 
     Templates INSTANCE = GWT.create(Templates.class);
 
-    @Template("<span class='{0}' style='width:100px'>Honoraires :</span><input id='feePlaceHolder'></input><input id='feeUnitPlaceHolder'></input>")
+    @Template("<span class='{0}' style='width:80px'>Honoraires:</span><input id='feePlaceHolder'></input><input id='feeUnitPlaceHolder'></input>")
     SafeHtml feeData(String detailCellInputLabelClass);
   }
 

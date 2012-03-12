@@ -45,5 +45,15 @@ public interface Css extends CssResource {
   public String leftMenuAction();
 
   public String leftMenuSelected();
+  
+  public String largeInput();
+
+  public String smallInput();
+  
+  public String autoLabel();
+  
+  public String largeLabel();
+  
+  
 
 }

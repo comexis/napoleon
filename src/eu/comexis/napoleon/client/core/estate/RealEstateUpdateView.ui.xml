@@ -19,52 +19,52 @@
 				<g:SuggestBox ui:field="condo" styleName="{res.css.detailCellInputText}" />
 			</div>
 
-			<div class="{res.css.detailRow}">
+			<div class="{res.css.detailRow} {res.css.separationRow}">
 				<span class="{res.css.detailCellInputLabel}">Syndic :</span>
 				<g:SuggestBox ui:field="association" styleName="{res.css.detailCellInputText}" />
 				<span class="{res.css.detailCellInputLabel}">Adresse :</span>
-				<g:TextBox ui:field="address" styleName="{res.css.detailCellInputText}" />
+				<g:TextBox ui:field="address" styleName="{res.css.detailCellInputText} {res.css.largeInput}" />
 			</div>
 
-			<div class="{res.css.detailRow}">
-				<span class="{res.css.detailCellInputLabel}">Téléphone :</span>
-				<g:TextBox ui:field="phoneNumber" styleName="{res.css.detailCellInputText}" />
-				<span class="{res.css.detailCellInputLabel}">GSM :</span>
-				<g:TextBox ui:field="mobileNumber" styleName="{res.css.detailCellInputText}" />
-				<span class="{res.css.detailCellInputLabel}">Mail :</span>
-				<g:TextBox ui:field="email" styleName="{res.css.detailCellInputText}" />
-			</div>
-
-			<div class="{res.css.detailRow}">
+			<div class="{res.css.detailRow} {res.css.separationRow}" >
 				<span class="{res.css.detailCellInputLabel}">Adresse du bien :</span>
-				<g:TextBox ui:field="addressRealEstate" styleName="{res.css.detailCellInputText}"
+				<g:TextBox ui:field="addressRealEstate" styleName="{res.css.detailCellInputText} {res.css.largeInput}"
 					name="addressRealEstate" />
-				<span class="{res.css.detailCellInputLabel}">N°:</span>
-				<g:TextBox ui:field="number" styleName="{res.css.detailCellInputText}"
+				<span class="{res.css.detailCellInputLabel} {res.css.autoLabel}">Numéro :</span>
+				<g:TextBox ui:field="number" styleName="{res.css.detailCellInputText} {res.css.smallInput}"
 					name="number" />
-				<span class="{res.css.detailCellInputLabel}">Boite :</span>
-				<g:TextBox ui:field="box" styleName="{res.css.detailCellInputText}" />
+				<span class="{res.css.detailCellInputLabel} {res.css.autoLabel}">Boite :</span>
+				<g:TextBox ui:field="box" styleName="{res.css.detailCellInputText} {res.css.smallInput}" />
 			</div>
 			<div class="{res.css.detailRow}">
-				<span class="{res.css.detailCellInputLabel}" style="width:80px">Pays :</span>
+				<span class="{res.css.detailCellInputLabel}">Pays :</span>
 				<g:SuggestBox ui:field="country" styleName="{res.css.detailCellInputText}" />
 				<span class="{res.css.detailCellInputLabel}">Code Postal :</span>
 				<g:SuggestBox ui:field="postalCode" styleName="{res.css.detailCellInputText}"
 					width="50px" />
-				<span class="{res.css.detailCellInputLabel}">Ville :</span>
+				<span class="{res.css.detailCellInputLabel}  {res.css.autoLabel}">Ville :</span>
 				<g:SuggestBox ui:field="city" styleName="{res.css.detailCellInputText}" />
 
 			</div>
+			
+			<div class="{res.css.detailRow} {res.css.separationRow}">
+				<span class="{res.css.detailCellInputLabel}">Téléphone :</span>
+				<g:TextBox ui:field="phoneNumber" styleName="{res.css.detailCellInputText}" />
+				<span class="{res.css.detailCellInputLabel}">GSM :</span>
+				<g:TextBox ui:field="mobileNumber" styleName="{res.css.detailCellInputText}" />
+				<span class="{res.css.detailCellInputLabel} {res.css.autoLabel}">Mail :</span>
+				<g:TextBox ui:field="email" styleName="{res.css.detailCellInputText}" />
+			</div>
 
-			<div class="{res.css.detailRow}">
+			<div class="{res.css.detailRow} {res.css.separationRow}" >
 				<span class="{res.css.detailCellInputLabel}">Quartier :</span>
 				<g:SuggestBox ui:field="square" styleName="{res.css.detailCellInputText}" />
 				<span class="{res.css.detailCellInputLabel}">Type de bien :</span>
 				<g:ListBox ui:field="type" styleName="{res.css.detailCellInputList}" />
-				<span class="{res.css.detailCellInputLabel}">Etat :</span>
+				<span class="{res.css.detailCellInputLabel} {res.css.autoLabel}">Etat :</span>
 				<g:ListBox ui:field="state" styleName="{res.css.detailCellInputList}" />
-				<span class="{res.css.detailCellInputLabel}">Superficie :</span>
-				<g:TextBox ui:field="dimension" styleName="{res.css.detailCellInputText}" />
+				<span class="{res.css.detailCellInputLabel} {res.css.autoLabel}">Superficie :</span>
+				<g:TextBox ui:field="dimension" styleName="{res.css.detailCellInputText} {res.css.smallInput}" /><span class="{res.css.detailCellLabel}" style="font-weight:normal">m<sup>2</sup></span>
 			</div>
 
 			<div class="{res.css.detailRow}">

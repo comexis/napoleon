@@ -14,70 +14,70 @@
 		<div class="{res.css.detailRow}">
 			<span class="{res.css.detailCellInputLabel}">Civilité :</span>
 			<g:ListBox ui:field="title" styleName="{res.css.detailCellInputList}" focus="true" name="title"/>
-			<span class="{res.css.detailCellInputLabel}">Nom :</span>
+			<span class="{res.css.detailCellInputLabel} {res.css.autoLabel}">Nom :</span>
 			<g:TextBox ui:field="name" styleName="{res.css.detailCellInputText}" name="name"/>
-			<span class="{res.css.detailCellInputLabel}">Prénom :</span>
+			<span class="{res.css.detailCellInputLabel} {res.css.autoLabel}">Prénom :</span>
 			<g:TextBox ui:field="firstName" styleName="{res.css.detailCellInputText}" name="firstName"/>
 		</div>
 
 		<g:HTMLPanel ui:field="additionnalData"/>
 		
 		<div class="{res.css.detailRow}">
-			<span class="{res.css.detailCellInputLabel}" style="width:100px">IBAN :</span>
+			<span class="{res.css.detailCellInputLabel}" >IBAN :</span>
 			<g:TextBox ui:field="iban" styleName="{res.css.detailCellInputText}" name="iban"/>
-			<span class="{res.css.detailCellInputLabel}">BIC :</span>
+			<span class="{res.css.detailCellInputLabel} {res.css.autoLabel}">BIC :</span>
 			<g:TextBox ui:field="bic" styleName="{res.css.detailCellInputText}" name="bic"/>
 		</div>
 
 		<div class="{res.css.detailRow} {res.css.separationRow}">
-			<span class="{res.css.detailCellInputLabel}" style="width:80px">Adresse :</span>
-			<g:TextBox ui:field="addresse" styleName="{res.css.detailCellInputText}" width="600px" name="addresse"/>
-			<span class="{res.css.detailCellInputLabel}" style="width:80px">N° :</span>
-			<g:TextBox ui:field="number" styleName="{res.css.detailCellInputText}" width="600px" name="number"/>
+			<span class="{res.css.detailCellInputLabel}" >Adresse :</span>
+			<g:TextBox ui:field="addresse" styleName="{res.css.detailCellInputText} {res.css.largeInput}" name="addresse"/>
+			<span class="{res.css.detailCellInputLabel} {res.css.autoLabel}" >Numéro :</span>
+			<g:TextBox ui:field="number" styleName="{res.css.detailCellInputText} {res.css.smallInput}" name="number"/>
 		</div>
 		<div class="{res.css.detailRow}">
-			<span class="{res.css.detailCellInputLabel}" style="width:80px">Pays :</span>
+			<span class="{res.css.detailCellInputLabel}" >Pays :</span>
 			<g:SuggestBox ui:field="country" styleName="{res.css.detailCellInputText}"/>
 			<span class="{res.css.detailCellInputLabel}">Code Postal :</span>
-			<g:SuggestBox ui:field="postalCode" styleName="{res.css.detailCellInputText}" width="50px"/>
-			<span class="{res.css.detailCellInputLabel}" >Ville :</span>
+			<g:SuggestBox ui:field="postalCode" styleName="{res.css.detailCellInputText}  {res.css.smallInput}"/>
+			<span class="{res.css.detailCellInputLabel} {res.css.autoLabel}" >Ville :</span>
 			<g:SuggestBox ui:field="city" styleName="{res.css.detailCellInputText}"/>
 			
 		</div>
 
 		<div class="{res.css.detailRow} {res.css.separationRow}">
-			<span class="{res.css.detailCellInputLabel}" style="width:80px">Téléphone :</span>
+			<span class="{res.css.detailCellInputLabel}" >Téléphone :</span>
 			<g:TextBox ui:field="phoneNumber" styleName="{res.css.detailCellInputText}" name="phoneNumber"/>
-			<span class="{res.css.detailCellInputLabel}">GSM :</span>
+			<span class="{res.css.detailCellInputLabel} {res.css.autoLabel}">GSM :</span>
 			<g:TextBox ui:field="mobileNumber" styleName="{res.css.detailCellInputText}" name="mobileNumber"/>
-			<span class="{res.css.detailCellInputLabel}">FAX :</span>
+			<span class="{res.css.detailCellInputLabel} {res.css.autoLabel}">FAX :</span>
 			<g:TextBox ui:field="fax" styleName="{res.css.detailCellInputText}" name="fax"/>
 		</div>
 		<div class="{res.css.detailRow}">
-			<span class="{res.css.detailCellInputLabel}" style="width:80px">Email :</span>
+			<span class="{res.css.detailCellInputLabel}" >Email :</span>
 			<g:TextBox ui:field="email" styleName="{res.css.detailCellInputText}" name="email"/>
 		</div>
 		
 		<div class="{res.css.detailRow} {res.css.separationRow}">
-			<span class="{res.css.detailCellInputLabel}" style="width:140px">Date de naissance :</span>
+			<span class="{res.css.detailCellInputLabel} {res.css.largeLabel}" >Date de naissance :</span>
 			<dp:DateBox ui:field="birthDayDate" styleName="{res.css.detailCellInputText}"/>
-			<span class="{res.css.detailCellInputLabel}" style="width:140px">Lieu de naissance :</span>
+			<span class="{res.css.detailCellInputLabel} {res.css.largeLabel}" >Lieu de naissance :</span>
 			<g:TextBox ui:field="placeOfBirth" styleName="{res.css.detailCellInputText}" name="placeOfBirth"/>
 		</div>
 		<div class="{res.css.detailRow}">
-			<span class="{res.css.detailCellInputLabel}" style="width:140px">Nationalité :</span>
+			<span class="{res.css.detailCellInputLabel} {res.css.largeLabel}" >Nationalité :</span>
 			<g:SuggestBox ui:field="nationality" styleName="{res.css.detailCellInputText}"/>
-			<span class="{res.css.detailCellInputLabel}" style="width:140px">Profession :</span>
+			<span class="{res.css.detailCellInputLabel} {res.css.largeLabel}" >Profession :</span>
 			<g:SuggestBox ui:field="job" styleName="{res.css.detailCellInputText}"/>
 		</div>
 		<div class="{res.css.detailRow}">
-			<span class="{res.css.detailCellInputLabel}" style="width:140px">Registre national :</span>
+			<span class="{res.css.detailCellInputLabel}  {res.css.largeLabel}">Registre national :</span>
 			<g:TextBox ui:field="nationalRegister" styleName="{res.css.detailCellInputText}" name="nationalRegister"/>
 		</div>
 		<div class="{res.css.detailRow}">
-			<span class="{res.css.detailCellInputLabel}" style="width:140px">Etat civil :</span>
+			<span class="{res.css.detailCellInputLabel} {res.css.largeLabel}" >Etat civil :</span>
 			<g:ListBox ui:field="maritalStatus" styleName="{res.css.detailCellInputList}" name="maritalStatus"/>
-			<span class="{res.css.detailCellInputLabel}">Régime matrimonial :</span>
+			<span class="{res.css.detailCellInputLabel} {res.css.autoLabel}">Régime matrimonial :</span>
 			<g:ListBox ui:field="matrimonialRegime" styleName="{res.css.detailCellInputList}" name="matrimonialRegime"/>
 		</div>
 		
