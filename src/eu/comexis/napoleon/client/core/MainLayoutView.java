@@ -175,7 +175,7 @@ public class MainLayoutView extends ViewImpl implements MainLayoutPresenter.MyVi
     leftMenu.add(getTenantActions(), l.menuTenant(), HEADER_SIZE);
     leftMenu.add(getRealEstateActions(), l.menuRealEstate(), HEADER_SIZE);
     leftMenu.add(getLeaseActions(), l.menuLease(), HEADER_SIZE);
-    leftMenu.add(getPaymentActions(), l.menuPayment(), HEADER_SIZE);
+    //leftMenu.add(getPaymentActions(), l.menuPayment(), HEADER_SIZE);
     
   }
 
