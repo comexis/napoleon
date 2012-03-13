@@ -14,7 +14,9 @@ import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
 import eu.comexis.napoleon.client.core.party.PartyDetailsPresenter;
 import eu.comexis.napoleon.client.events.SelectedMenuEvent;
+import eu.comexis.napoleon.client.events.SetTitleEvent;
 import eu.comexis.napoleon.client.place.NameTokens;
+import eu.comexis.napoleon.client.resources.Literals;
 import eu.comexis.napoleon.client.rpc.callback.GotTenant;
 import eu.comexis.napoleon.shared.command.tenant.GetTenantCommand;
 import eu.comexis.napoleon.shared.command.tenant.UpdateTenantCommand;
@@ -66,12 +68,6 @@ public class TenantDetailsPresenter extends
   }
   
   @Override
-  protected void onReveal() {
-    super.onReveal();
-    SelectedMenuEvent.fire(getEventBus(), Menus.TENANT);
-  }
-
-  @Override
   protected void saveFile(FileDescriptor file) {
     new UpdateTenantCommand(getData()).dispatch(new AsyncCallback<UpdateTenantResponse>() {
       
@@ -87,6 +83,16 @@ public class TenantDetailsPresenter extends
     });
 
     
+  }
+  
+  @Override
+  protected Menus getMenu() {
+    return Menus.TENANT;
+  }
+  
+  @Override
+  protected String getTitle() {
+    return Literals.INSTANCE.tenantDetailsTitle();
   }
 
 }

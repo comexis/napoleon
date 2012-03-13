@@ -14,8 +14,8 @@ import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 
 import eu.comexis.napoleon.client.core.AbstractListPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
-import eu.comexis.napoleon.client.events.SelectedMenuEvent;
 import eu.comexis.napoleon.client.place.NameTokens;
+import eu.comexis.napoleon.client.resources.Literals;
 import eu.comexis.napoleon.client.rpc.callback.GotAllPayment;
 import eu.comexis.napoleon.shared.command.payment.GetAllPaymentCommand;
 import eu.comexis.napoleon.shared.model.PaymentOwner;
@@ -62,11 +62,7 @@ public class PaymentOwnerListPresenter extends
     super.getPlaceManager().revealPlace(myRequest);
   }
 
-  @Override
-  protected void onReveal() {
-    super.onReveal();
-    SelectedMenuEvent.fire(getEventBus(), Menus.PAYMENT);
-  }
+  
   protected void requestData() {
     new GetAllPaymentCommand<PaymentOwner>(id,estateId,PaymentOwner.class.toString()).dispatch(new GotAllPayment<PaymentOwner>() {
       @Override
@@ -109,5 +105,15 @@ public class PaymentOwnerListPresenter extends
   protected eu.comexis.napoleon.client.core.AbstractListPresenter.ListFilter<PaymentOwner> createFilter() {
     // TODO Auto-generated method stub
     return null;
+  }
+
+  @Override
+  protected Menus getMenu() {
+    return Menus.LEASE;
+  }
+
+  @Override
+  protected String getTitle() {
+    return Literals.INSTANCE.paymentListTitle();
   }
 }

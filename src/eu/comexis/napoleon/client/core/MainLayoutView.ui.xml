@@ -26,11 +26,17 @@
 		}
 		
 		.left {
-			border-right: 1px #BAC3C8 solid;
-			padding:5px;
+			/*border-right: 1px #BAC3C8 solid;*/
+			margin:5px;
 		}
 		.center {
-			padding:5px;	
+			margin:5px;	
+		}
+		
+		.title{
+			font: 22px arial,sans-serif;
+			color: #333;
+			padding-left: 20px;
 		}
 	</ui:style>
 
@@ -54,7 +60,7 @@
 			</g:HTMLPanel>
 		</g:north>
 
-		<g:west size='12'>
+		<g:west size='14'>
 			<g:LayoutPanel styleName='{style.left}'>
 				<g:layer>
 					<g:StackLayoutPanel  ui:field="leftMenu" height="250px"/>
@@ -62,6 +68,11 @@
 			</g:LayoutPanel>
 			
 		</g:west>
+		<g:north size='4'>
+			<g:HTMLPanel >
+				<h1 ui:field="title" class='{style.title}'></h1>
+			</g:HTMLPanel>
+		</g:north>
 
 		<g:center>
 			<g:LayoutPanel styleName='{style.center}' ui:field="centerPanel" />

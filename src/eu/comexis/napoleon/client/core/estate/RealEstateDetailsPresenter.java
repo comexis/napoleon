@@ -5,7 +5,6 @@ import java.util.logging.Logger;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.logging.client.LogConfiguration;
 import com.google.inject.Inject;
-import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
@@ -14,17 +13,18 @@ import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
+import eu.comexis.napoleon.client.core.AbstractPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
 import eu.comexis.napoleon.client.core.estate.RealEstateDetailUiHandlers.HasRealEstateDetailUiHandlers;
-import eu.comexis.napoleon.client.events.SelectedMenuEvent;
 import eu.comexis.napoleon.client.place.NameTokens;
+import eu.comexis.napoleon.client.resources.Literals;
 import eu.comexis.napoleon.client.rpc.callback.GotRealEstate;
 import eu.comexis.napoleon.shared.command.estate.GetRealEstateCommand;
 import eu.comexis.napoleon.shared.model.RealEstate;
 
 public class RealEstateDetailsPresenter extends
-    Presenter<RealEstateDetailsPresenter.MyView, RealEstateDetailsPresenter.MyProxy> implements
+    AbstractPresenter<RealEstateDetailsPresenter.MyView, RealEstateDetailsPresenter.MyProxy> implements
     RealEstateDetailUiHandlers {
 
   @ProxyCodeSplit
@@ -104,16 +104,20 @@ public class RealEstateDetailsPresenter extends
     });
 
   }
-  
-  @Override
-  protected void onReveal() {
-    super.onReveal();
-    SelectedMenuEvent.fire(getEventBus(), Menus.REAL_ESTATE);
-  }
-
+ 
   @Override
   protected void revealInParent() {
     RevealContentEvent.fire(this, MainLayoutPresenter.MAIN_CONTENT, this);
+  }
+
+  @Override
+  protected Menus getMenu() {
+    return Menus.REAL_ESTATE;
+  }
+
+  @Override
+  protected String getTitle() {
+    return Literals.INSTANCE.realEstateDetailsTitle();
   }
 
 }

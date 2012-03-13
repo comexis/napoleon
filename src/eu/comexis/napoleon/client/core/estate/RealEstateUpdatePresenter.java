@@ -8,7 +8,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.logging.client.LogConfiguration;
 import com.google.inject.Inject;
-import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
@@ -17,11 +16,12 @@ import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
+import eu.comexis.napoleon.client.core.AbstractPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
 import eu.comexis.napoleon.client.core.estate.RealEstateUpdateUiHandlers.HasRealEstateUpdateUiHandler;
-import eu.comexis.napoleon.client.events.SelectedMenuEvent;
 import eu.comexis.napoleon.client.place.NameTokens;
+import eu.comexis.napoleon.client.resources.Literals;
 import eu.comexis.napoleon.client.rpc.callback.GotAllAssoc;
 import eu.comexis.napoleon.client.rpc.callback.GotAllCondo;
 import eu.comexis.napoleon.client.rpc.callback.GotAllCountries;
@@ -52,8 +52,8 @@ import eu.comexis.napoleon.shared.validation.RealEstateValidator;
 import eu.comexis.napoleon.shared.validation.ValidationMessage;
 
 public class RealEstateUpdatePresenter extends
-    Presenter<RealEstateUpdatePresenter.MyView, RealEstateUpdatePresenter.MyProxy> implements
-    RealEstateUpdateUiHandlers {
+    AbstractPresenter<RealEstateUpdatePresenter.MyView, RealEstateUpdatePresenter.MyProxy>
+    implements RealEstateUpdateUiHandlers {
 
   @ProxyCodeSplit
   @NameToken(NameTokens.updateRealEstate)
@@ -295,12 +295,6 @@ public class RealEstateUpdatePresenter extends
       getView().setRealEstate(realEstate);
     }
   }
-  
-  @Override
-  protected void onReveal() {
-    super.onReveal();
-    SelectedMenuEvent.fire(getEventBus(), Menus.REAL_ESTATE);
-  }
 
   @Override
   protected void revealInParent() {
@@ -333,5 +327,20 @@ public class RealEstateUpdatePresenter extends
         getView().fillCondoList(condoNames);
       }
     });
+  }
+
+  @Override
+  protected Menus getMenu() {
+    return Menus.REAL_ESTATE;
+  }
+
+  @Override
+  protected String getTitle() {
+    
+    if ("new".equals(id)) {
+      return Literals.INSTANCE.realEstateNewTitle();
+    }
+    return Literals.INSTANCE.realEstateUpdateTitle();
+
   }
 }

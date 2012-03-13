@@ -11,7 +11,9 @@ import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
 import eu.comexis.napoleon.client.core.party.PartyUpdatePresenter;
 import eu.comexis.napoleon.client.events.SelectedMenuEvent;
+import eu.comexis.napoleon.client.events.SetTitleEvent;
 import eu.comexis.napoleon.client.place.NameTokens;
+import eu.comexis.napoleon.client.resources.Literals;
 import eu.comexis.napoleon.client.rpc.callback.GotOwner;
 import eu.comexis.napoleon.client.rpc.callback.UpdatedOwner;
 import eu.comexis.napoleon.shared.command.owner.GetOwnerCommand;
@@ -21,16 +23,15 @@ import eu.comexis.napoleon.shared.validation.OwnerValidator;
 import eu.comexis.napoleon.shared.validation.PartyValidator;
 
 public class OwnerUpdatePresenter extends
-    PartyUpdatePresenter<Owner, OwnerUpdatePresenter.MyView, OwnerUpdatePresenter.MyProxy>{
+    PartyUpdatePresenter<Owner, OwnerUpdatePresenter.MyView, OwnerUpdatePresenter.MyProxy> {
 
   @ProxyCodeSplit
   @NameToken(NameTokens.updateOwner)
   public interface MyProxy extends ProxyPlace<OwnerUpdatePresenter> {
   }
-  
-  public interface MyView extends PartyUpdatePresenter.MyView<Owner>{ 
-  }
 
+  public interface MyView extends PartyUpdatePresenter.MyView<Owner> {
+  }
 
   @Inject
   public OwnerUpdatePresenter(final EventBus eventBus, final MyView view, final MyProxy proxy,
@@ -38,15 +39,14 @@ public class OwnerUpdatePresenter extends
     super(eventBus, view, proxy, placeManager);
   }
 
-
   @Override
   protected PartyValidator<Owner> createValidator() {
-   return new OwnerValidator();
+    return new OwnerValidator();
   }
 
   @Override
   protected Owner createNewDataModel() {
-   return new Owner();
+    return new Owner();
   }
 
   @Override
@@ -60,13 +60,20 @@ public class OwnerUpdatePresenter extends
     });
   }
 
-  
   @Override
   protected void onReveal() {
     super.onReveal();
     SelectedMenuEvent.fire(getEventBus(), Menus.OWNER);
+
+    String title = null;
+    if (isNewOne()) {
+      title = Literals.INSTANCE.ownerNewTitle();
+    } else {
+      title = Literals.INSTANCE.ownerUpdateTitle();
+    }
+    SetTitleEvent.fire(getEventBus(), title);
   }
-  
+
   @Override
   protected void save() {
     new UpdateOwnerCommand(getDataObjectModel()).dispatch(new UpdatedOwner() {
@@ -81,18 +88,30 @@ public class OwnerUpdatePresenter extends
         }
       }
     });
-    
-  }
 
+  }
 
   @Override
   protected String getDetailsNameTokens() {
     return NameTokens.owner;
   }
 
-
   @Override
   protected String getListNameTokens() {
     return NameTokens.ownerlist;
+  }
+  
+  @Override
+  protected Menus getMenu() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+  
+  @Override
+  protected String getTitle() {
+    if (isNewOne()) {
+      return  Literals.INSTANCE.ownerNewTitle();
+    } 
+    return Literals.INSTANCE.ownerUpdateTitle();
   }
 }

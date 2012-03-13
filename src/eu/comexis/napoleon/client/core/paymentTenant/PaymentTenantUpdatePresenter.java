@@ -8,8 +8,10 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 
+import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
 import eu.comexis.napoleon.client.core.payment.PaymentUpdatePresenter;
 import eu.comexis.napoleon.client.place.NameTokens;
+import eu.comexis.napoleon.client.resources.Literals;
 import eu.comexis.napoleon.client.rpc.callback.GotPayment;
 import eu.comexis.napoleon.client.rpc.callback.UpdatedPayment;
 import eu.comexis.napoleon.shared.command.payment.GetPaymentCommand;
@@ -84,6 +86,16 @@ public class PaymentTenantUpdatePresenter
   @Override
   protected String getListNameTokens() {
     return NameTokens.paymentTenantlist;
+  }
+  
+  @Override
+  protected Menus getMenu() {
+    return Menus.LEASE;
+  }
+  
+  @Override
+  protected String getTitle() {
+    return Literals.INSTANCE.paymentTenantUpdateTitle();
   }
 
 }

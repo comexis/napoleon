@@ -12,8 +12,8 @@ import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 
 import eu.comexis.napoleon.client.core.AbstractListPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
-import eu.comexis.napoleon.client.events.SelectedMenuEvent;
 import eu.comexis.napoleon.client.place.NameTokens;
+import eu.comexis.napoleon.client.resources.Literals;
 import eu.comexis.napoleon.client.rpc.callback.GotAllLease;
 import eu.comexis.napoleon.shared.command.lease.GetAllLeaseCommand;
 import eu.comexis.napoleon.shared.model.simple.SimpleLease;
@@ -83,9 +83,16 @@ public class LeaseListPresenter extends
     super.getPlaceManager().revealPlace(myRequest);
   }
   
+
   @Override
-  protected void onReveal() {
-    super.onReveal();
-    SelectedMenuEvent.fire(getEventBus(), Menus.LEASE);
+  protected Menus getMenu() {
+    return Menus.LEASE;
   }
+
+  @Override
+  protected String getTitle() {
+    return Literals.INSTANCE.leaseListTitle();
+  }
+  
+  
 }

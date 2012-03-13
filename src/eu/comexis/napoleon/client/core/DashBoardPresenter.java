@@ -10,7 +10,9 @@ import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
 import eu.comexis.napoleon.client.events.SelectedMenuEvent;
+import eu.comexis.napoleon.client.events.SetTitleEvent;
 import eu.comexis.napoleon.client.place.NameTokens;
+import eu.comexis.napoleon.client.resources.Literals;
 
 public class DashBoardPresenter extends
     Presenter<DashBoardPresenter.MyView, DashBoardPresenter.MyProxy> {
@@ -37,6 +39,7 @@ public class DashBoardPresenter extends
   protected void onReveal() {
     super.onReveal();
     SelectedMenuEvent.fire(getEventBus(), null);
+    SetTitleEvent.fire(getEventBus(), Literals.INSTANCE.dashboardTitle());
   }
 
   @Override

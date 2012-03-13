@@ -7,13 +7,13 @@ import java.util.logging.Logger;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.logging.client.LogConfiguration;
 import com.google.inject.Inject;
-import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
+import eu.comexis.napoleon.client.core.AbstractPresenter;
 import eu.comexis.napoleon.client.core.HasPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter;
 import eu.comexis.napoleon.client.rpc.callback.GotAllCountries;
@@ -31,7 +31,7 @@ import eu.comexis.napoleon.shared.validation.PartyValidator;
 import eu.comexis.napoleon.shared.validation.ValidationMessage;
 
 public abstract class PartyUpdatePresenter<T extends Party, V extends PartyUpdatePresenter.MyView<T>, P extends Proxy<?>> extends
-    Presenter<V, P> implements
+    AbstractPresenter<V, P> implements
     PartyUpdateUiHandlers {
 
   
@@ -62,6 +62,7 @@ public abstract class PartyUpdatePresenter<T extends Party, V extends PartyUpdat
   }
 
   public static final String UUID_PARAMETER = "uuid";
+  public static final String NEW_ID = "new";
 
   private static final Logger LOG = Logger.getLogger(PartyUpdatePresenter.class.getName());
 
@@ -186,6 +187,10 @@ public abstract class PartyUpdatePresenter<T extends Party, V extends PartyUpdat
   protected abstract String getDetailsNameTokens();
   
   protected abstract String getListNameTokens();
+  
+  protected boolean isNewOne(){
+    return NEW_ID.equals(id);
+  }
 
   @Override
   protected void onBind() {
@@ -203,7 +208,7 @@ public abstract class PartyUpdatePresenter<T extends Party, V extends PartyUpdat
   @Override
   protected void onReset() {
     super.onReset();
-    if (id != null && !"new".equals(id)) { // call the server to get the requested owner
+    if (id != null && !NEW_ID.equals(id)) { // call the server to get the requested owner
       requestData(id);
     } else {
       party = createNewDataModel();

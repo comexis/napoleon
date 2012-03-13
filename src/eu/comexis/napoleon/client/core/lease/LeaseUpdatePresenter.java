@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.logging.client.LogConfiguration;
 import com.google.inject.Inject;
-import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
@@ -15,11 +14,12 @@ import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
+import eu.comexis.napoleon.client.core.AbstractPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
 import eu.comexis.napoleon.client.core.lease.LeaseUpdateUiHandlers.HasLeaseUpdateUiHandler;
-import eu.comexis.napoleon.client.events.SelectedMenuEvent;
 import eu.comexis.napoleon.client.place.NameTokens;
+import eu.comexis.napoleon.client.resources.Literals;
 import eu.comexis.napoleon.client.rpc.callback.GotAllRealEstate;
 import eu.comexis.napoleon.client.rpc.callback.GotAllSuggest;
 import eu.comexis.napoleon.client.rpc.callback.GotAllTenant;
@@ -37,7 +37,7 @@ import eu.comexis.napoleon.shared.validation.LeaseValidator;
 import eu.comexis.napoleon.shared.validation.ValidationMessage;
 
 public class LeaseUpdatePresenter extends
-    Presenter<LeaseUpdatePresenter.MyView, LeaseUpdatePresenter.MyProxy> implements
+    AbstractPresenter<LeaseUpdatePresenter.MyView, LeaseUpdatePresenter.MyProxy> implements
     LeaseUpdateUiHandlers {
 
   @ProxyCodeSplit
@@ -185,12 +185,6 @@ public class LeaseUpdatePresenter extends
       getView().setLease(lease);
     }
   }
-
-  @Override
-  protected void onReveal() {
-    super.onReveal();
-    SelectedMenuEvent.fire(getEventBus(), Menus.LEASE);
-  }
   
   
   @Override
@@ -217,5 +211,18 @@ public class LeaseUpdatePresenter extends
         getView().fillAcademicYearList(suggests);
       }
     });
+  }
+  
+  @Override
+  protected Menus getMenu() {
+    return Menus.LEASE;
+  }
+  
+  @Override
+  protected String getTitle() {
+    if ("new".equals(id)) {
+      return Literals.INSTANCE.leaseNewTitle();
+    }
+    return Literals.INSTANCE.leaseUpdateTitle();
   }
 }

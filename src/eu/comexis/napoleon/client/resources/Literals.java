@@ -189,6 +189,66 @@ public interface Literals extends ConstantsWithLookup {
 
   @DefaultStringValue("Créer un locataire")
   public String menuTenantNew();
+
+  @DefaultStringValue("Dashboard")
+  public String dashboardTitle();
+
+  @DefaultStringValue("Edition d'un locataire")
+  public String tenantUpdateTitle();
+
+  @DefaultStringValue("Détails d'un locataire")
+  public String tenantDetailsTitle();
+
+  @DefaultStringValue("Liste des locataires")
+  public String tenantListTitle();
+  
+  @DefaultStringValue("Création d'un locataire")
+  public String tenantNewTitle();
+  
+  @DefaultStringValue("Liste des propriétaires")
+  public String ownerListTitle();
+  
+  @DefaultStringValue("Création d'un propriétaire")
+  public String ownerNewTitle();
+  
+  @DefaultStringValue("Edition d'un propriétaire")
+  public String ownerUpdateTitle();
+
+  @DefaultStringValue("Détails d'un propriétaire")
+  public String ownerDetailsTitle();
+
+  @DefaultStringValue("Liste des paiements")
+  public String paymentListTitle();
+
+  @DefaultStringValue("Liste des locations")
+  public String leaseListTitle();
+
+  @DefaultStringValue("Liste des biens immobiliers")
+  public String realEstateListTitle();
+
+  @DefaultStringValue("Détails d'un bien immobilier")
+  public String realEstateDetailsTitle();
+
+  @DefaultStringValue("Création d'un bien immobilier")
+  public String realEstateNewTitle();
+
+  @DefaultStringValue("Edition d'un bien immobilier")
+  public String realEstateUpdateTitle();
+
+  @DefaultStringValue("Détails d'une location")
+  public String leaseDetailsTitle();
+
+  @DefaultStringValue("Edition d'une location")
+  public String leaseUpdateTitle();
+  
+  @DefaultStringValue("Création d'une location")
+  public String leaseNewTitle();
+
+  @DefaultStringValue("Edition d'un paiement")
+  public String paymentOwnerUpdateTitle();
+  
+  @DefaultStringValue("Edition d'un paiement")
+  public String paymentTenantUpdateTitle();
   
   
   
