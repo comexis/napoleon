@@ -100,7 +100,7 @@ public class PaymentTenantListView extends AbstractListView<PaymentTenant> imple
       }
     });
 
-    table.addColumn(dateColumn, "Date payment");
+    table.addColumn(dateColumn, "Date paiement");
 
   }
   

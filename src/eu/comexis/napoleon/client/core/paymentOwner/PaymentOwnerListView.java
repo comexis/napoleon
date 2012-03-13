@@ -100,7 +100,7 @@ public class PaymentOwnerListView extends AbstractListView<PaymentOwner> impleme
       }
     });
 
-    table.addColumn(dateColumn, "Date payment");
+    table.addColumn(dateColumn, "Date paiement");
 
   }
   
