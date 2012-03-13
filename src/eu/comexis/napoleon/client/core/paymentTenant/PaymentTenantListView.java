@@ -83,7 +83,7 @@ public class PaymentTenantListView extends AbstractListView<PaymentTenant> imple
       }
     });
 
-    table.addColumn(amountColumn, "Loyer");
+    table.addColumn(amountColumn, "Montant");
     
     // Date.
     Column<PaymentTenant, String> dateColumn = new Column<PaymentTenant, String>(new TextCell()) {

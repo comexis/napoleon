@@ -138,7 +138,7 @@ public class PaymentDao<T extends Payment> extends DAOBase{
     qpo.ancestor(leaseKey);
     HashMap<String,PaymentListItem> allPayments = new HashMap<String,PaymentListItem>();
     String sDate = "";
-    for (PaymentTenant pt:qpt.list()){
+    for (PaymentTenant pt:qpt.order("periodStartDate").list()){
       PaymentListItem item = null;
       sDate = DATE_FORMAT.format(pt.getPeriodEndDate());
       if (allPayments.containsKey(sDate)){
