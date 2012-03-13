@@ -328,7 +328,9 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
       this.elsDate.setValue(l.getElsDate());
       this.rent.setValue(UiHelper.FloatToString(l.getRent()));
       this.fee.setValue(UiHelper.FloatToString(l.getFee()));
-      this.feeOwner.setValue(UiHelper.FloatToString(l.getRent() - l.getFee()));
+      if (l.getRent()!=null && l.getFee()!=null){
+        this.feeOwner.setValue(UiHelper.FloatToString(l.getRent() - l.getFee()));
+      }
       this.bookkeepingRef.setValue(l.getBookkeepingReference());
       UiHelper.selectTextItemBoxByValue(this.type, (l.getType() != null ? l.getType().name() : "-"));
       this.hasFurnituresRentalYes.setValue(l.getHasFurnituresRental()!=null ? l.getHasFurnituresRental(): false);

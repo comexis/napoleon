@@ -121,7 +121,7 @@ public class LeaseDetailsView extends ViewImpl implements LeaseDetailsPresenter.
 
     this.reference.setInnerText(l.getRealEstate().getReference());
     this.academicYear.setInnerText(l.getAcademicYear());
-    this.coocuppant.setInnerText(l.getCooccupant());
+    this.coocuppant.setInnerHTML(l.getCooccupant().replace("\n","<br/>"));
     this.startDate.setInnerText(UiHelper.displayDate(l.getStartDate()));
     this.endDate.setInnerText(UiHelper.displayDate(l.getEndDate()));
     this.tenantName.setInnerText(l.getTenant().getName());
@@ -141,6 +141,9 @@ public class LeaseDetailsView extends ViewImpl implements LeaseDetailsPresenter.
     this.cash.setInnerText((l.getDepositInCash()!=null && l.getDepositInCash().equals(true))? "Oui":"Non");
     this.bank.setInnerText((l.getDepositInCash()!=null && l.getDepositInCash().equals(false))? "Oui":"Non");
     this.bookkeepingRef.setInnerText(l.getBookkeepingReference());
+    this.iban.setInnerText(l.getIban());
+    this.bic.setInnerText(l.getBic());
+    this.furnituresAmount.setInnerText(UiHelper.FloatToString(l.getFurnituresAnnualAmount()));
   }
 
   @Override
