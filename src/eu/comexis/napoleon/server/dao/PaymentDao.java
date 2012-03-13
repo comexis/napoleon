@@ -124,6 +124,7 @@ public class PaymentDao<T extends Payment> extends DAOBase{
     }
   }
   public List<PaymentListItem> getPaymentDashboardForLease(String leaseId, String realEstateId, String companyId){
+    // TO BE COMPLETED
     DateTimeFormat DATE_FORMAT = DateTimeFormat.getFormat("yyyy/MM/dd");
     Key<Company> companyKey = new Key<Company>(Company.class, companyId);
     Key<RealEstate> estateKey = new Key<RealEstate>(companyKey,RealEstate.class, realEstateId);
@@ -162,22 +163,26 @@ public class PaymentDao<T extends Payment> extends DAOBase{
     Owner owner = ofy().get(estate.getOwnerKey());
     Query<PaymentOwner> q = ofy().query(PaymentOwner.class);
     q.ancestor(leaseKey);
+    // pas de possibilité de calcul si pas d'honoraire ni de loyer
     if (lease.getRent()==null || owner.getFee()==null){
       return null;
     }
-    PaymentOwner lastpo = null;
-    for (PaymentOwner po:q.list()){
+    // recherche du dernier versement proprio
+    PaymentOwner lastpo = q.order("-periodEndDate").get();
+    /*for (PaymentOwner po:q.list()){
       if (lastpo==null){
         lastpo = po;
       }
       if (lastpo!=null && po.getPeriodEndDate().after(lastpo.getPeriodEndDate())){
         lastpo = po;
       }
-    }
+    }*/
+    // recherche du premier et du dernier payment de loyer
     Query<PaymentTenant> q2 = ofy().query(PaymentTenant.class);
     q2.ancestor(leaseKey);
-    PaymentTenant lastpt = null;
-    PaymentTenant firstpt = null;
+    PaymentTenant lastpt = q2.order("-periodEndDate").get();
+    PaymentTenant firstpt = q2.order("periodStartDate").get();
+    /*
     for (PaymentTenant pt:q2.list()){
       if (lastpt==null){
         lastpt = pt;
@@ -191,7 +196,7 @@ public class PaymentDao<T extends Payment> extends DAOBase{
       if (firstpt!=null && pt.getPeriodStartDate().before(firstpt.getPeriodStartDate())){
         firstpt = pt;
       }
-    }
+    }*/
     PaymentOwner nextPaymentOwner = new PaymentOwner();
     if (lastpo!=null){
       Calendar cal = Calendar.getInstance();
@@ -218,7 +223,8 @@ public class PaymentDao<T extends Payment> extends DAOBase{
     // calcul du montant des loyers perçu dans la période et du nombre de périodes de loyer.
     // on prend toutes les perceptions qui sont dans la période
     Float sum = new Float("0");
-    Integer nbrPeriod = 0;
+    Long nbrPeriod = 0L;
+    q2 = ofy().query(PaymentTenant.class);
     q2.filter("periodStartDate >=", nextPaymentOwner.getPeriodStartDate());
     for (PaymentTenant pt:q2.list()){
       sum +=pt.getAmount();
@@ -232,7 +238,7 @@ public class PaymentDao<T extends Payment> extends DAOBase{
     if (owner.getUnit().equals(FeeUnit.RENT_PERCENTAGE)){
       dueToOwner = sum * (100 - owner.getFee().floatValue())/100;
     }else{
-      dueToOwner = nbrPeriod * owner.getFee().floatValue();
+      dueToOwner = sum - (nbrPeriod * owner.getFee().floatValue());
     }
     nextPaymentOwner.setRentWithoutFee(dueToOwner);
     // Calcul du solde (ajoute de l'ancien solde)
@@ -244,6 +250,7 @@ public class PaymentDao<T extends Payment> extends DAOBase{
     nextPaymentOwner.setLeaseKey(leaseKey);
     nextPaymentOwner.setEstateId(realEstateId);
     nextPaymentOwner.setLeaseId(leaseId);
+    nextPaymentOwner.setNbrPeriod(nbrPeriod);
     return nextPaymentOwner;
   }
   public PaymentTenant getNextPaymentTenantForLease(String leaseId, String realEstateId, String companyId){
@@ -251,23 +258,24 @@ public class PaymentDao<T extends Payment> extends DAOBase{
     Key<RealEstate> estateKey = new Key<RealEstate>(companyKey,RealEstate.class, realEstateId);
     Key<Lease> leaseKey = new Key<Lease>(estateKey,Lease.class, leaseId);
     Lease lease = ofy().get(leaseKey);
-    RealEstate estate = ofy().get(estateKey);
+    //RealEstate estate = ofy().get(estateKey);
     PaymentTenant nextPaymentTenant = new PaymentTenant();
     Query<PaymentTenant> q2 = ofy().query(PaymentTenant.class);
     q2.ancestor(leaseKey);
-    PaymentTenant lastpt = null;
+    
     if (lease.getRent()==null){
       return null;
     }
     // chercher le dernier loyer percu
-    for (PaymentTenant pt:q2.list()){
+    PaymentTenant lastpt = q2.order("-periodEndDate").get();
+    /*for (PaymentTenant pt:q2.list()){
       if (lastpt==null){
         lastpt = pt;
       }
       if (pt.getPeriodEndDate().after(lastpt.getPeriodEndDate())){
         lastpt = pt;
       }
-    }
+    }*/
     Calendar cal = Calendar.getInstance();
     // si pas encore de perception
     if (lastpt==null){
@@ -278,9 +286,10 @@ public class PaymentDao<T extends Payment> extends DAOBase{
       nextPaymentTenant.setPeriodStartDate(cal.getTime());
     }
     nextPaymentTenant.setAmount(lease.getRent());
-    // on ajoute 1 mois à la date de début
+    // on ajoute 1 mois à la date de début et on enleve 1 jour
     cal.setTime(nextPaymentTenant.getPeriodStartDate());
-    cal.add(Calendar.DAY_OF_MONTH, 28);
+    cal.add(Calendar.MONTH, 1);
+    cal.add(Calendar.DAY_OF_MONTH, -1);
     nextPaymentTenant.setPeriodEndDate(cal.getTime());    
     nextPaymentTenant.setLeaseKey(leaseKey);
     nextPaymentTenant.setEstateId(realEstateId);
