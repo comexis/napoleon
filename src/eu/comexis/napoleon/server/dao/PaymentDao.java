@@ -169,34 +169,13 @@ public class PaymentDao<T extends Payment> extends DAOBase{
     }
     // recherche du dernier versement proprio
     PaymentOwner lastpo = q.order("-periodEndDate").get();
-    /*for (PaymentOwner po:q.list()){
-      if (lastpo==null){
-        lastpo = po;
-      }
-      if (lastpo!=null && po.getPeriodEndDate().after(lastpo.getPeriodEndDate())){
-        lastpo = po;
-      }
-    }*/
     // recherche du premier et du dernier payment de loyer
     Query<PaymentTenant> q2 = ofy().query(PaymentTenant.class);
     q2.ancestor(leaseKey);
     PaymentTenant lastpt = q2.order("-periodEndDate").get();
+    q2 = ofy().query(PaymentTenant.class);
+    q2.ancestor(leaseKey);
     PaymentTenant firstpt = q2.order("periodStartDate").get();
-    /*
-    for (PaymentTenant pt:q2.list()){
-      if (lastpt==null){
-        lastpt = pt;
-      }
-      if (firstpt==null){
-        firstpt = pt;
-      }
-      if (lastpt!=null && pt.getPeriodEndDate().after(lastpt.getPeriodEndDate())){
-        lastpt = pt;
-      }
-      if (firstpt!=null && pt.getPeriodStartDate().before(firstpt.getPeriodStartDate())){
-        firstpt = pt;
-      }
-    }*/
     PaymentOwner nextPaymentOwner = new PaymentOwner();
     if (lastpo!=null){
       Calendar cal = Calendar.getInstance();
@@ -225,9 +204,12 @@ public class PaymentDao<T extends Payment> extends DAOBase{
     Float sum = new Float("0");
     Long nbrPeriod = 0L;
     q2 = ofy().query(PaymentTenant.class);
+    q2.ancestor(leaseKey);
     q2.filter("periodStartDate >=", nextPaymentOwner.getPeriodStartDate());
+    LOG.info("SUM:" + sum);
     for (PaymentTenant pt:q2.list()){
       sum +=pt.getAmount();
+      LOG.info("SUM:" + sum);
       nbrPeriod +=1; // todo, ne pas compter les periodes identiques.
     }
     // calcul du paiement
@@ -236,10 +218,11 @@ public class PaymentDao<T extends Payment> extends DAOBase{
     nextPaymentOwner.setFeeUnit(owner.getUnit());
     nextPaymentOwner.setFee(owner.getFee().floatValue());
     if (owner.getUnit().equals(FeeUnit.RENT_PERCENTAGE)){
-      dueToOwner = sum * (100 - owner.getFee().floatValue())/100;
+      dueToOwner = sum * ((100 - owner.getFee().floatValue())/100);
     }else{
       dueToOwner = sum - (nbrPeriod * owner.getFee().floatValue());
     }
+    LOG.info("Due to owner:" + dueToOwner);
     nextPaymentOwner.setRentWithoutFee(dueToOwner);
     // Calcul du solde (ajoute de l'ancien solde)
     if (lastpo!=null){
@@ -268,14 +251,6 @@ public class PaymentDao<T extends Payment> extends DAOBase{
     }
     // chercher le dernier loyer percu
     PaymentTenant lastpt = q2.order("-periodEndDate").get();
-    /*for (PaymentTenant pt:q2.list()){
-      if (lastpt==null){
-        lastpt = pt;
-      }
-      if (pt.getPeriodEndDate().after(lastpt.getPeriodEndDate())){
-        lastpt = pt;
-      }
-    }*/
     Calendar cal = Calendar.getInstance();
     // si pas encore de perception
     if (lastpt==null){
@@ -285,12 +260,21 @@ public class PaymentDao<T extends Payment> extends DAOBase{
       cal.add(Calendar.DAY_OF_MONTH, 1);
       nextPaymentTenant.setPeriodStartDate(cal.getTime());
     }
+    // si la date de début est supérieur à la date de fin de bail, alors, plus de payement possible.
+    if (nextPaymentTenant.getPeriodStartDate().after(lease.getEndDate())){
+      return null;
+    }
     nextPaymentTenant.setAmount(lease.getRent());
     // on ajoute 1 mois à la date de début et on enleve 1 jour
     cal.setTime(nextPaymentTenant.getPeriodStartDate());
     cal.add(Calendar.MONTH, 1);
     cal.add(Calendar.DAY_OF_MONTH, -1);
-    nextPaymentTenant.setPeriodEndDate(cal.getTime());    
+    nextPaymentTenant.setPeriodEndDate(cal.getTime()); 
+    // si la date de fin de période est supérieur à celle du bail, on ramène cette date de fin à la fin du bail
+    // cas des baux inférieurs à 1 mois
+    if (nextPaymentTenant.getPeriodEndDate().after(lease.getEndDate())){
+      nextPaymentTenant.setPeriodEndDate(lease.getEndDate());  
+    }
     nextPaymentTenant.setLeaseKey(leaseKey);
     nextPaymentTenant.setEstateId(realEstateId);
     nextPaymentTenant.setLeaseId(leaseId);
