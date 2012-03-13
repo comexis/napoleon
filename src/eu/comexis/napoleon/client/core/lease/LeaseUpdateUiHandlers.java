@@ -7,5 +7,7 @@ public interface LeaseUpdateUiHandlers {
   public void onButtonCancelClick();
 
   public void onButtonSaveClick();
+  
+  public void onRentChanged(Float rent);
 
 }

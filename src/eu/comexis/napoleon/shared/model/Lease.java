@@ -36,12 +36,22 @@ public class Lease implements IsSerializable {
   @Indexed
   private Key<Tenant> tenantKey;
   private Float rent;
+  private Float fee;
+  @NotSaved
+  private Float feeFromOwner;
+  private FeeUnit unit;
+
   private Date entranceDate;
+
   private Date leaveDate;
   private Date eleDate;
+
   private Date elsDate;
+
   private Float securityDeposit;
+
   private Date depositDate;
+
   private Boolean depositInCash;
   private String iban;
   private String bic;
@@ -59,17 +69,14 @@ public class Lease implements IsSerializable {
   private String cooccupant;
   @NotSaved
   private SimpleRealEstate realEstate;
-
   @NotSaved
   private SimpleTenant tenant;
-
   /**
 	 * 
 	 */
   public Lease() {
     // TODO Auto-generated constructor stub
   }
-
   public String getAcademicYear() {
     return academicYear;
   }
@@ -116,6 +123,14 @@ public class Lease implements IsSerializable {
 
   public Date getEntranceDate() {
     return entranceDate;
+  }
+
+  public Float getFee() {
+    return fee;
+  }
+
+  public Float getFeeFromOwner() {
+    return feeFromOwner;
   }
 
   public Float getFurnituresAnnualAmount() {
@@ -186,6 +201,10 @@ public class Lease implements IsSerializable {
     return type;
   }
 
+  public FeeUnit getUnit() {
+    return unit;
+  }
+
   public void setAcademicYear(String academicYear) {
     this.academicYear = academicYear;
   }
@@ -233,6 +252,14 @@ public class Lease implements IsSerializable {
 
   public void setEntranceDate(Date entranceDate) {
     this.entranceDate = entranceDate;
+  }
+
+  public void setFee(Float fee) {
+    this.fee = fee;
+  }
+
+  public void setFeeFromOwner(Float feeFromOwner) {
+    this.feeFromOwner = feeFromOwner;
   }
 
   public void setFurnituresAnnualAmount(Float furnituresAnnualAmount) {
@@ -301,5 +328,9 @@ public class Lease implements IsSerializable {
 
   public void setType(TypeOfRent type) {
     this.type = type;
+  }
+
+  public void setUnit(FeeUnit unit) {
+    this.unit = unit;
   }
 }

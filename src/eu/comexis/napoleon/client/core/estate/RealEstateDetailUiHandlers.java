@@ -8,4 +8,6 @@ public interface RealEstateDetailUiHandlers {
   void onButtonBackToListClick();
 
   void onButtonUpdateClick();
+  
+  void onButtonRentClick();
 }

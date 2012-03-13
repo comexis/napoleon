@@ -17,7 +17,6 @@ import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import eu.comexis.napoleon.client.core.AbstractPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
-import eu.comexis.napoleon.client.core.lease.LeaseUpdateUiHandlers.HasLeaseUpdateUiHandler;
 import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.resources.Literals;
 import eu.comexis.napoleon.client.rpc.callback.GotAllRealEstate;
@@ -30,12 +29,13 @@ import eu.comexis.napoleon.shared.command.lease.GetLeaseCommand;
 import eu.comexis.napoleon.shared.command.lease.UpdateLeaseCommand;
 import eu.comexis.napoleon.shared.command.suggest.GetAllSuggestCommand;
 import eu.comexis.napoleon.shared.command.tenant.GetAllTenantCommand;
+import eu.comexis.napoleon.shared.model.FeeUnit;
 import eu.comexis.napoleon.shared.model.Lease;
 import eu.comexis.napoleon.shared.model.simple.SimpleRealEstate;
 import eu.comexis.napoleon.shared.model.simple.SimpleTenant;
 import eu.comexis.napoleon.shared.validation.LeaseValidator;
 import eu.comexis.napoleon.shared.validation.ValidationMessage;
-
+import eu.comexis.napoleon.client.core.lease.LeaseUpdateUiHandlers.HasLeaseUpdateUiHandler;
 public class LeaseUpdatePresenter extends
     AbstractPresenter<LeaseUpdatePresenter.MyView, LeaseUpdatePresenter.MyProxy> implements
     LeaseUpdateUiHandlers {
@@ -52,6 +52,8 @@ public class LeaseUpdatePresenter extends
     public void reset();
 
     public void setLease(Lease l);
+    
+    public void setFee(Float fee);
 
     public Lease updateLease(Lease l);
     
@@ -101,7 +103,17 @@ public class LeaseUpdatePresenter extends
       goToDetails();
     }
   }
-
+  @Override
+  public void onRentChanged(Float rent) {
+    Float feeOwner = 0f;
+    Float fee = 0f;
+    if (lease.getUnit().equals(FeeUnit.RENT_PERCENTAGE)){
+      fee=rent * lease.getFeeFromOwner()/100;
+    }else{
+      fee=lease.getFeeFromOwner();
+    }
+    getView().setFee(fee);
+  }
   @Override
   public void onButtonSaveClick() {
     getView().updateLease(lease);
@@ -172,7 +184,7 @@ public class LeaseUpdatePresenter extends
   @Override
   protected void onReset() {
     super.onReset();
-    if (id != null && !"new".equals(id)) { // call the server to get the requested owner
+    if (id != null) { // call the server to get the requested owner
       new GetLeaseCommand(id,realEstateId).dispatch(new GotLease() {
         @Override
         public void got(Lease lease) {
@@ -180,9 +192,6 @@ public class LeaseUpdatePresenter extends
           getView().setLease(lease);
         }
       });
-    } else {
-      lease = new Lease();
-      getView().setLease(lease);
     }
   }
   

@@ -51,6 +51,13 @@ public class RealEstateDetailsPresenter extends
   }
 
   @Override
+  public void onButtonRentClick() {
+    PlaceRequest myRequest = new PlaceRequest(NameTokens.leaselist);
+    myRequest = myRequest.with(UUID_PARAMETER, RealEstateDetailsPresenter.this.realEstate.getId());
+    placeManager.revealPlace(myRequest);
+  }
+  
+  @Override
   public void onButtonBackToListClick() {
     PlaceRequest myRequest = new PlaceRequest(NameTokens.realEstatelist);
     placeManager.revealPlace(myRequest);

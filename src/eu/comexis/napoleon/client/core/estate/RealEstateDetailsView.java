@@ -84,6 +84,12 @@ public class RealEstateDetailsView extends ViewImpl implements RealEstateDetails
   public void onGoToListClicked(ClickEvent e) {
     presenter.onButtonBackToListClick();
   }
+  
+  @UiHandler("btnRent")
+  public void onGoToRentClicked(ClickEvent e) {
+    presenter.onButtonRentClick();
+  }
+ 
 
   @UiHandler("btnUpdate")
   public void onUpdateClicked(ClickEvent e) {

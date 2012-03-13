@@ -11,6 +11,9 @@ public class GetAllLeaseCommand implements Action<GetAllLeaseResponse> {
   public GetAllLeaseCommand() {
     // TODO Auto-generated constructor stub
   }
+  public GetAllLeaseCommand(String realEstateId) {
+    this.realEstateId = realEstateId;
+  }
 
   @Override
   public void dispatch(AsyncCallback<GetAllLeaseResponse> callback) {

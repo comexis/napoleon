@@ -127,8 +127,8 @@ public class LeaseDetailsView extends ViewImpl implements LeaseDetailsPresenter.
     this.tenantName.setInnerText(l.getTenant().getName());
     this.ownerName.setInnerText(l.getRealEstate().getOwner());
     this.type.setInnerText(l.getType().name());
-    //this.fee.setInnerText(l.get);
-    //this.feeOwner.setInnerText("");
+    this.fee.setInnerText(UiHelper.FloatToString(l.getFee()));
+    this.feeOwner.setInnerText(UiHelper.FloatToString(l.getRent() - l.getFee()));
     this.charges.setInnerText(UiHelper.FloatToString(l.getServiceCharges()));
     this.deposit.setInnerText(UiHelper.FloatToString(l.getSecurityDeposit()));
     this.rent.setInnerText(UiHelper.FloatToString(l.getRent()));
@@ -140,6 +140,7 @@ public class LeaseDetailsView extends ViewImpl implements LeaseDetailsPresenter.
     this.hasFurnituresRental.setInnerText((l.getHasFurnituresRental()!=null && l.getHasFurnituresRental().equals(true))?"Oui":"Non");
     this.cash.setInnerText((l.getDepositInCash()!=null && l.getDepositInCash().equals(true))? "Oui":"Non");
     this.bank.setInnerText((l.getDepositInCash()!=null && l.getDepositInCash().equals(false))? "Oui":"Non");
+    this.bookkeepingRef.setInnerText(l.getBookkeepingReference());
   }
 
   @Override

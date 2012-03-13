@@ -21,6 +21,7 @@ import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
 import eu.comexis.napoleon.client.utils.UiHelper;
+import eu.comexis.napoleon.shared.model.FeeUnit;
 import eu.comexis.napoleon.shared.model.Lease;
 import eu.comexis.napoleon.shared.model.TypeOfRent;
 import eu.comexis.napoleon.shared.model.simple.SimpleRealEstate;
@@ -153,7 +154,13 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
   }
   @UiHandler("rent")
   public void onChangeRent(ChangeEvent e) {
+    presenter.onRentChanged(UiHelper.stringToFloat(rent.getValue()));
     rent.setValue(UiHelper.FloatToString(UiHelper.stringToFloat(rent.getValue())));
+    feeOwner.setValue(UiHelper.FloatToString(UiHelper.stringToFloat(rent.getValue()) - UiHelper.stringToFloat(fee.getValue())));
+  }
+  @UiHandler("fee")
+  public void onChangeFee(ChangeEvent e) {
+    feeOwner.setValue(UiHelper.FloatToString(UiHelper.stringToFloat(rent.getValue()) - UiHelper.stringToFloat(fee.getValue())));
   }
   @UiHandler("deposit")
   public void onChangeDeposit(ChangeEvent e) {
@@ -259,7 +266,10 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
   public void onSave(ClickEvent e) {
     presenter.onButtonSaveClick();
   }
-
+  @Override
+  public void setFee(Float fee) {
+      this.fee.setValue(UiHelper.FloatToString(fee));
+  }
   @Override
   public void setLease(Lease l) {
     // cleanup
@@ -316,9 +326,9 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
       this.bic.setValue(l.getBic());
       this.eleDate.setValue(l.getEleDate());
       this.elsDate.setValue(l.getElsDate());
-      this.fee.setValue(""); // should be calculated from owner and rent
-      this.feeOwner.setValue(""); // should be calculated from owner and rent
       this.rent.setValue(UiHelper.FloatToString(l.getRent()));
+      this.fee.setValue(UiHelper.FloatToString(l.getFee()));
+      this.feeOwner.setValue(UiHelper.FloatToString(l.getRent() - l.getFee()));
       this.bookkeepingRef.setValue(l.getBookkeepingReference());
       UiHelper.selectTextItemBoxByValue(this.type, (l.getType() != null ? l.getType().name() : "-"));
       this.hasFurnituresRentalYes.setValue(l.getHasFurnituresRental()!=null ? l.getHasFurnituresRental(): false);
@@ -356,6 +366,8 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
     l.setEleDate(eleDate.getValue());
     l.setElsDate(elsDate.getValue());
     l.setRent(UiHelper.stringToFloat(rent.getValue()));
+    //l.setUnit(FeeUnit.LUMP_SUM);
+    l.setFee(UiHelper.stringToFloat(fee.getValue()));
     l.setBookkeepingReference(bookkeepingRef.getValue());
     l.setType(TypeOfRent.valueOf(type.getValue(type.getSelectedIndex())));
     l.setHasFurnituresRental(hasFurnituresRentalYes.getValue());
