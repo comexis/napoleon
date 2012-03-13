@@ -142,4 +142,8 @@ public class LeaseListView extends AbstractListView<SimpleLease> implements
   protected String getButtonNewLabel() {
     return "Nouvelle location";
   }
+  @Override
+  protected String getButtonBackLabel() {
+    return "Retour vers le dashboard";
+  }
 }

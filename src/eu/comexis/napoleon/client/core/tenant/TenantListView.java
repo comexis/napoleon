@@ -140,4 +140,8 @@ public class TenantListView extends AbstractListView<SimpleTenant> implements
   protected String getButtonNewLabel() {
     return "Nouveau locataire";
   }
+  @Override
+  protected String getButtonBackLabel() {
+    return "Retour vers la location";
+  }
 }

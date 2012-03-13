@@ -139,4 +139,8 @@ public class OwnerListView extends AbstractListView<SimpleOwner> implements
   protected String getButtonNewLabel() {
     return "Nouveau propriétaire";
   }
+  @Override
+  protected String getButtonBackLabel() {
+    return "Retour vers le dashboard";
+  }
 }

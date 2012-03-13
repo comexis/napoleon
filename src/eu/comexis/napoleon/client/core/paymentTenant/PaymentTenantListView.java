@@ -108,4 +108,8 @@ public class PaymentTenantListView extends AbstractListView<PaymentTenant> imple
   protected String getButtonNewLabel() {
     return "Nouveau paiement";
   }
+  @Override
+  protected String getButtonBackLabel() {
+    return "Retour vers la location";
+  }
 }

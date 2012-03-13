@@ -64,6 +64,13 @@ public class PaymentTenantListPresenter extends
     myRequest = myRequest.with(LEASE_UUID_PARAMETER, id);
     super.getPlaceManager().revealPlace(myRequest);
   }
+  @Override
+  public void onButtonBackToDashBoardClick() {
+    PlaceRequest myRequest = new PlaceRequest(NameTokens.lease);
+    myRequest = myRequest.with(UUID_PARAMETER,id);
+    myRequest = myRequest.with(ESTATE_UUID_PARAMETER, estateId);
+    getPlaceManager().revealPlace(myRequest);
+  }
 
   protected void requestData() {
     new GetAllPaymentCommand<PaymentTenant>(id,estateId,PaymentTenant.class.toString()).dispatch(new GotAllPayment<PaymentTenant>() {

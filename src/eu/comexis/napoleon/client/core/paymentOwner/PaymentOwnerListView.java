@@ -108,4 +108,8 @@ public class PaymentOwnerListView extends AbstractListView<PaymentOwner> impleme
   protected String getButtonNewLabel() {
     return "Nouveau paiement";
   }
+  @Override
+  protected String getButtonBackLabel() {
+    return "Retour à la location";
+  }
 }

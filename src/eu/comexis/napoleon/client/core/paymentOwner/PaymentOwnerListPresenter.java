@@ -61,7 +61,13 @@ public class PaymentOwnerListPresenter extends
     myRequest = myRequest.with(LEASE_UUID_PARAMETER, id);
     super.getPlaceManager().revealPlace(myRequest);
   }
-
+  @Override
+  public void onButtonBackToDashBoardClick() {
+    PlaceRequest myRequest = new PlaceRequest(NameTokens.lease);
+    myRequest = myRequest.with(UUID_PARAMETER,id);
+    myRequest = myRequest.with(ESTATE_UUID_PARAMETER, estateId);
+    getPlaceManager().revealPlace(myRequest);
+  }
   
   protected void requestData() {
     new GetAllPaymentCommand<PaymentOwner>(id,estateId,PaymentOwner.class.toString()).dispatch(new GotAllPayment<PaymentOwner>() {
