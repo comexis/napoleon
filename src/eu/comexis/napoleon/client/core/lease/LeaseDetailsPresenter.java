@@ -168,7 +168,7 @@ public class LeaseDetailsPresenter extends
 
       @Override
       public void got(Lease lease) {
-        LeaseDetailsPresenter.this.lease = lease;
+        setLease(lease);
         getView().setLease(lease);
       }
     });

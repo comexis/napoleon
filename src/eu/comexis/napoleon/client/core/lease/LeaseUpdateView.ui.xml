@@ -89,16 +89,10 @@
 			</div>
 			
 			<div class="{res.css.detailRow}">
-				<span class="{res.css.detailCellInputLabel}" style="width:100px">Mobilier :</span>
-				<g:RadioButton ui:field="hasFurnituresRentalYes" styleName="{res.css.detailCellInputList}"
-					name="hasFurnituresRental" text="Yes"/>
-				<g:RadioButton ui:field="hasFurnituresRentalNo" styleName="{res.css.detailCellInputList}"
-					name="hasFurnituresRental" text="No"/>
-				<span class="{res.css.detailCellInputLabel}" style="width:100px">Avec contrat :</span>
-				<g:RadioButton ui:field="hasFurnituresWithContractYes" styleName="{res.css.detailCellInputList}"
-					name="hasFurnituresWithContract" text="Yes"/>
-				<g:RadioButton ui:field="hasFurnituresWithContractNo" styleName="{res.css.detailCellInputList}"
-					name="hasFurnituresWithContract" text="No"/>
+				<g:CheckBox ui:field="hasFurnituresRental" styleName="{res.css.detailCellInputList}"
+					name="hasFurnituresRental" text="Mobilier"/>
+				<g:CheckBox ui:field="hasFurnituresWithContract" styleName="{res.css.detailCellInputList}"
+					name="hasFurnituresWithContract" text="Avec contrat"/>
 			</div>
 			<div class="{res.css.detailRow}">
 				<span class="{res.css.detailCellInputLabel}" style="width:160px">Somme annuelle (EUR) :</span>
@@ -106,11 +100,8 @@
 					name="furnituresAmount" />
 				<span class="{res.css.detailCellInputLabel}" style="width:140px">Date convenue:</span>
 				<dp:DateBox ui:field="furnituresDate" styleName="{res.css.detailCellInputText}"/>
-				<span class="{res.css.detailCellInputLabel}" style="width:140px">Paiement :</span>
-				<g:RadioButton ui:field="furnituresPaymentOKYes" styleName="{res.css.detailCellInputList}"
-					name="furnituresPayment" text="ok"/>
-				<g:RadioButton ui:field="furnituresPaymentOKNo" styleName="{res.css.detailCellInputList}"
-					name="furnituresPayment" text="Pas ok"/>
+				<g:CheckBox ui:field="furnituresPaymentOK" styleName="{res.css.detailCellInputList}"
+					name="furnituresPaymentOK" text="Paiement OK ?"/>
 			</div>
 			
 			<div class="{res.css.detailRow}">

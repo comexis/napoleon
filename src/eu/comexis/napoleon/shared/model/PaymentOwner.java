@@ -1,10 +1,8 @@
 package eu.comexis.napoleon.shared.model;
 
 import com.googlecode.objectify.annotation.Subclass;
-import com.googlecode.objectify.annotation.Unindexed;
 
-@Subclass
-@Unindexed
+@Subclass(unindexed=true)
 public class PaymentOwner extends Payment {
   private Float balance;
   private Float previousbalance;

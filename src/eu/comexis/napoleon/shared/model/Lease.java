@@ -4,7 +4,6 @@
 package eu.comexis.napoleon.shared.model;
 
 // import java.util.Calendar;// Not supported by GWT :-(
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
