@@ -81,10 +81,12 @@ public class LeaseDao extends DAOBase {
       se.setId(realEstate.getId());
       se.setOwner(o.getLastName());
       l.setRealEstate(se);
-      if (l.getFee()==null && o.getUnit().equals(FeeUnit.LUMP_SUM)){
+      if (l.getFee()==null && FeeUnit.LUMP_SUM.equals(o.getUnit())){
         l.setFee(o.getFee().floatValue());
       }
-      l.setFeeFromOwner(o.getFee().floatValue());
+      if (o.getFee() != null){
+        l.setFeeFromOwner(o.getFee().floatValue());
+      }
       l.setUnit(o.getUnit());
       if (l.getTenantKey()!=null){
         Tenant t = ofy().find(l.getTenantKey());
