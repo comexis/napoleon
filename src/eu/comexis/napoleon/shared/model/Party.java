@@ -50,7 +50,9 @@ public abstract class Party implements IsSerializable, Identifiable, HasFiles {
   private String status;
   private String street;
   private String number;
+  private String box;
   private Title title;
+
   @Indexed
   private Boolean flagActivated;
 
@@ -76,6 +78,10 @@ public abstract class Party implements IsSerializable, Identifiable, HasFiles {
 
   public String getBIC() {
     return bic;
+  }
+
+  public String getBox() {
+    return box;
   }
 
   public String getCity() {
@@ -202,6 +208,10 @@ public abstract class Party implements IsSerializable, Identifiable, HasFiles {
 
   public void setBIC(String value) {
     bic = value;
+  }
+
+  public void setBox(String box) {
+    this.box = box;
   }
 
   public void setCity(String value) {

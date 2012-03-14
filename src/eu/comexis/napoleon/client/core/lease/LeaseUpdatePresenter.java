@@ -105,7 +105,6 @@ public class LeaseUpdatePresenter extends
   }
   @Override
   public void onRentChanged(Float rent) {
-    Float feeOwner = 0f;
     Float fee = 0f;
     if (lease.getUnit().equals(FeeUnit.RENT_PERCENTAGE)){
       fee=rent * lease.getFeeFromOwner()/100;
@@ -161,7 +160,7 @@ public class LeaseUpdatePresenter extends
           myRequest = myRequest.with(ESTATE_UUID_PARAMETER, lease.getRealEstate().getId());
           placeManager.revealPlace(myRequest);
         } else {
-          getView().displayError("The lease cannot be save");
+          getView().displayError("The lease cannot be saved");
         }
       }
     });

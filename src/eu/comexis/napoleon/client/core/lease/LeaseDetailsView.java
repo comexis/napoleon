@@ -144,6 +144,7 @@ public class LeaseDetailsView extends ViewImpl implements LeaseDetailsPresenter.
     this.iban.setInnerText(l.getIban());
     this.bic.setInnerText(l.getBic());
     this.furnituresAmount.setInnerText(UiHelper.FloatToString(l.getFurnituresAnnualAmount()));
+    this.furnituresDate.setInnerText(UiHelper.displayDate(l.getFurnituresDate()));
   }
 
   @Override

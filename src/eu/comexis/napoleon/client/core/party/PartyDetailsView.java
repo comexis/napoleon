@@ -32,6 +32,8 @@ public abstract class PartyDetailsView<T extends Party> extends ViewImpl impleme
   @UiField
   Element number;
   @UiField
+  Element box;
+  @UiField
   Element city;
   @UiField
   Element postalCode;
@@ -142,7 +144,8 @@ public abstract class PartyDetailsView<T extends Party> extends ViewImpl impleme
         "MaritalStatus_", party.getMaritalStatus()) : "");
     matrimonialRegime.setInnerText(party.getMatrimonialRegime() != null ? UiHelper.translateEnum(
         "MatrimonialRegime_", party.getMatrimonialRegime()) : "");
-
+    box.setInnerText(party.getBox());
+    
   }
 
   @Override

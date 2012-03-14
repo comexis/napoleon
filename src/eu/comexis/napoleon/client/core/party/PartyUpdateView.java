@@ -46,6 +46,8 @@ public abstract class PartyUpdateView<T extends Party> extends ViewImpl implemen
   TextBox addresse;
   @UiField
   TextBox number;
+  @UiField
+  TextBox box;
   @UiField(provided = true)
   ListBox title;
   @UiField
@@ -276,6 +278,7 @@ public abstract class PartyUpdateView<T extends Party> extends ViewImpl implemen
     nationality.setText("");
     job.setText("");
     nationalRegister.setText("");
+    box.setText("");
     UiHelper.selectTextItemBoxByValue(maritalStatus, null, MaritalStatus.SINGLE);
     UiHelper.selectTextItemBoxByValue(matrimonialRegime, null, MatrimonialRegime.NONE);
     UiHelper.selectTextItemBoxByValue(title, Title.MR);
@@ -303,6 +306,7 @@ public abstract class PartyUpdateView<T extends Party> extends ViewImpl implemen
     presenter.onCountrySelect(country.getValue());
     addresse.setText(party.getStreet());
     number.setText(party.getNumber());
+    box.setText(party.getBox());
     postalCode.setText(party.getPostalCode());
     presenter.onPostalCodeSelect(postalCode.getValue());
     city.setValue(party.getCity());
@@ -335,6 +339,7 @@ public abstract class PartyUpdateView<T extends Party> extends ViewImpl implemen
     party.setPlaceOfBirth(placeOfBirth.getValue());
     party.setStreet(addresse.getValue());
     party.setNumber(number.getValue());
+    party.setBox(box.getValue());
     party.setPostalCode(postalCode.getValue());
     party.setCity(city.getValue());
     party.setCountry(country.getValue());
