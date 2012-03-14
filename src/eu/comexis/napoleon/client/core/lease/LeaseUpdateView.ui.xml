@@ -101,7 +101,7 @@
 				<span class="{res.css.detailCellInputLabel}" style="width:140px">Date convenue:</span>
 				<dp:DateBox ui:field="furnituresDate" styleName="{res.css.detailCellInputText}"/>
 				<g:CheckBox ui:field="furnituresPaymentOK" styleName="{res.css.detailCellInputList}"
-					name="furnituresPaymentOK" text="Paiement OK ?"/>
+					name="furnituresPaymentOK" text="Paiement OK"/>
 			</div>
 			
 			<div class="{res.css.detailRow}">

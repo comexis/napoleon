@@ -1,9 +1,15 @@
 package eu.comexis.napoleon.client.core.estate;
 
+import static eu.comexis.napoleon.client.Napoleon.ginjector;
+
 import java.util.logging.Logger;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.logging.client.LogConfiguration;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
@@ -14,24 +20,38 @@ import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
 import eu.comexis.napoleon.client.core.AbstractPresenter;
+import eu.comexis.napoleon.client.core.HasPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
-import eu.comexis.napoleon.client.core.estate.RealEstateDetailUiHandlers.HasRealEstateDetailUiHandlers;
+import eu.comexis.napoleon.client.core.estate.RealEstateDetailUiHandlers;
+import eu.comexis.napoleon.client.core.lease.LeaseDetailUiHandlers;
+import eu.comexis.napoleon.client.events.AddedFileEvent;
+import eu.comexis.napoleon.client.events.AddedFileEvent.AddedFileHandler;
 import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.resources.Literals;
 import eu.comexis.napoleon.client.rpc.callback.GotRealEstate;
+import eu.comexis.napoleon.client.widget.DocumentPanelPresenter;
+import eu.comexis.napoleon.client.widget.DocumentPanelView;
 import eu.comexis.napoleon.shared.command.estate.GetRealEstateCommand;
+import eu.comexis.napoleon.shared.command.estate.UpdateRealEstateCommand;
+import eu.comexis.napoleon.shared.command.estate.UpdateRealEstateResponse;
+import eu.comexis.napoleon.shared.command.lease.UpdateLeaseCommand;
+import eu.comexis.napoleon.shared.command.lease.UpdateLeaseResponse;
+import eu.comexis.napoleon.shared.model.FileDescriptor;
+import eu.comexis.napoleon.shared.model.HasFiles;
+import eu.comexis.napoleon.shared.model.Lease;
 import eu.comexis.napoleon.shared.model.RealEstate;
 
 public class RealEstateDetailsPresenter extends
     AbstractPresenter<RealEstateDetailsPresenter.MyView, RealEstateDetailsPresenter.MyProxy> implements
-    RealEstateDetailUiHandlers {
+    RealEstateDetailUiHandlers, AddedFileHandler {
 
   @ProxyCodeSplit
   @NameToken(NameTokens.realEstate)
   public interface MyProxy extends ProxyPlace<RealEstateDetailsPresenter> {
   }
-  public interface MyView extends View, HasRealEstateDetailUiHandlers {
+  public interface MyView extends View, HasPresenter<RealEstateDetailUiHandlers> {
+    public void addDocumentWidget(Widget w);
     public void setRealEstate(RealEstate e);
   }
 
@@ -41,6 +61,7 @@ public class RealEstateDetailsPresenter extends
 
   private PlaceManager placeManager;
   private String id;
+  private DocumentPanelPresenter filesPresenter;
   private RealEstate realEstate;
 
   @Inject
@@ -49,7 +70,14 @@ public class RealEstateDetailsPresenter extends
     super(eventBus, view, proxy);
     this.placeManager = placeManager;
   }
-
+  @Override
+  public void onAddedFile(AddedFileEvent event) {
+   HasFiles entity = event.getEntity();
+   if (realEstate.getId() != null && realEstate.getId().equals(entity.getId())){
+       saveFile(event.getFile());
+   }
+    
+  }
   @Override
   public void onButtonRentClick() {
     PlaceRequest myRequest = new PlaceRequest(NameTokens.leaselist);
@@ -93,8 +121,20 @@ public class RealEstateDetailsPresenter extends
   @Override
   protected void onBind() {
     super.onBind();
-
-    getView().setRealEstateDetailUiHandler(this);
+    
+    getEventBus().addHandler(AddedFileEvent.getType(), this);
+    
+    getView().setPresenter(this);
+    
+    
+    //TODO replace that
+    //filesPresenter = ginjector.getDocumentPanelPresenter().get();
+    DocumentPanelView.Binder binder = GWT.create(DocumentPanelView.Binder.class);
+    DocumentPanelView view = new DocumentPanelView(binder);
+    filesPresenter = new DocumentPanelPresenter(ginjector.getEventBus(), view);
+    filesPresenter.bind();
+    
+    getView().addDocumentWidget(filesPresenter.getWidget());
   }
 
   @Override
@@ -105,7 +145,7 @@ public class RealEstateDetailsPresenter extends
 
       @Override
       public void got(RealEstate realEstate) {
-        RealEstateDetailsPresenter.this.realEstate = realEstate;
+        setRealEstate(realEstate);
         getView().setRealEstate(realEstate);
       }
     });
@@ -116,7 +156,27 @@ public class RealEstateDetailsPresenter extends
   protected void revealInParent() {
     RevealContentEvent.fire(this, MainLayoutPresenter.MAIN_CONTENT, this);
   }
-
+  protected void saveFile(FileDescriptor file) {
+    new UpdateRealEstateCommand(getData()).dispatch(new AsyncCallback<UpdateRealEstateResponse>() {
+      
+      @Override
+      public void onSuccess(UpdateRealEstateResponse result) {}
+      
+      @Override
+      public void onFailure(Throwable caught) {
+        //TODO improve that
+        Window.alert("Impossible de lier le fichier à la location. Veuillez reessayer.");
+        
+      }
+    });
+  }
+  protected RealEstate getData() {
+    return realEstate;
+  }
+  protected void setRealEstate(RealEstate realEstate) {
+    this.realEstate = realEstate;
+    filesPresenter.setDocumentHolder(realEstate);
+  }
   @Override
   protected Menus getMenu() {
     return Menus.REAL_ESTATE;

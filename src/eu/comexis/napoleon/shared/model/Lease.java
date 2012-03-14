@@ -74,39 +74,25 @@ public class Lease implements IsSerializable , Identifiable,HasFiles{
   private SimpleTenant tenant;
   @Embedded
   private ArrayList<FileDescriptor> files;
-  @Override
-  public void addFile(FileDescriptor file) {
-    files.add(file);
-  }
-  @Override
-  public ArrayList<FileDescriptor> getFiles() {
-    return files;
-  }
-  @Override
-  public void removeFile(FileDescriptor file) {
-    files.remove(file);
-  }
-  public void setFiles(ArrayList<FileDescriptor> files) {
-    this.files = files;
-  }
   /**
 	 * 
 	 */
   public Lease() {
     files = new ArrayList<FileDescriptor>();
   }
+  @Override
+  public void addFile(FileDescriptor file) {
+    files.add(file);
+  }
   public String getAcademicYear() {
     return academicYear;
   }
-
   public String getBic() {
     return bic;
   }
-
   public String getBookkeepingReference() {
     return bookkeepingReference;
   }
-
   public String getCooccupant() {
     return cooccupant;
   }
@@ -149,6 +135,11 @@ public class Lease implements IsSerializable , Identifiable,HasFiles{
 
   public Float getFeeFromOwner() {
     return feeFromOwner;
+  }
+
+  @Override
+  public ArrayList<FileDescriptor> getFiles() {
+    return files;
   }
 
   public Float getFurnituresAnnualAmount() {
@@ -223,6 +214,11 @@ public class Lease implements IsSerializable , Identifiable,HasFiles{
     return unit;
   }
 
+  @Override
+  public void removeFile(FileDescriptor file) {
+    files.remove(file);
+  }
+
   public void setAcademicYear(String academicYear) {
     this.academicYear = academicYear;
   }
@@ -278,6 +274,10 @@ public class Lease implements IsSerializable , Identifiable,HasFiles{
 
   public void setFeeFromOwner(Float feeFromOwner) {
     this.feeFromOwner = feeFromOwner;
+  }
+
+  public void setFiles(ArrayList<FileDescriptor> files) {
+    this.files = files;
   }
 
   public void setFurnituresAnnualAmount(Float furnituresAnnualAmount) {
