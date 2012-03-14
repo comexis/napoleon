@@ -1,11 +1,16 @@
 package eu.comexis.napoleon.client.core.lease;
 
+import static eu.comexis.napoleon.client.Napoleon.ginjector;
+
 import java.util.logging.Logger;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.logging.client.LogConfiguration;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
@@ -15,25 +20,34 @@ import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
 import eu.comexis.napoleon.client.core.AbstractPresenter;
+import eu.comexis.napoleon.client.core.HasPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
-import eu.comexis.napoleon.client.core.lease.LeaseDetailUiHandlers.HasLeaseDetailUiHandlers;
-import eu.comexis.napoleon.client.events.SelectedMenuEvent;
+import eu.comexis.napoleon.client.core.lease.LeaseDetailUiHandlers;
+import eu.comexis.napoleon.client.events.AddedFileEvent;
+import eu.comexis.napoleon.client.events.AddedFileEvent.AddedFileHandler;
 import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.resources.Literals;
 import eu.comexis.napoleon.client.rpc.callback.GotLease;
+import eu.comexis.napoleon.client.widget.DocumentPanelPresenter;
+import eu.comexis.napoleon.client.widget.DocumentPanelView;
 import eu.comexis.napoleon.shared.command.lease.GetLeaseCommand;
+import eu.comexis.napoleon.shared.command.lease.UpdateLeaseCommand;
+import eu.comexis.napoleon.shared.command.lease.UpdateLeaseResponse;
+import eu.comexis.napoleon.shared.model.FileDescriptor;
+import eu.comexis.napoleon.shared.model.HasFiles;
 import eu.comexis.napoleon.shared.model.Lease;
 
 public class LeaseDetailsPresenter extends
     AbstractPresenter<LeaseDetailsPresenter.MyView, LeaseDetailsPresenter.MyProxy> implements
-    LeaseDetailUiHandlers {
+    LeaseDetailUiHandlers, AddedFileHandler {
 
   @ProxyCodeSplit
   @NameToken(NameTokens.lease)
   public interface MyProxy extends ProxyPlace<LeaseDetailsPresenter> {
   }
-  public interface MyView extends View, HasLeaseDetailUiHandlers {
+  public interface MyView extends View, HasPresenter<LeaseDetailUiHandlers>  {
+    public void addDocumentWidget(Widget w);
     public void setLease(Lease l);
   }
 
@@ -43,6 +57,7 @@ public class LeaseDetailsPresenter extends
   private static final Logger LOG = Logger.getLogger(LeaseDetailsPresenter.class.getName());
 
   private PlaceManager placeManager;
+  private DocumentPanelPresenter filesPresenter;
   private String id;
   private String realEstateId;
   private Lease lease;
@@ -55,19 +70,26 @@ public class LeaseDetailsPresenter extends
   }
 
   @Override
+  public void onAddedFile(AddedFileEvent event) {
+   HasFiles entity = event.getEntity();
+   if (lease.getId() != null && lease.getId().equals(entity.getId())){
+       saveFile(event.getFile());
+   }
+    
+  }
+  
+  @Override
   public void onButtonBackToListClick() {
     PlaceRequest myRequest = new PlaceRequest(NameTokens.leaselist);
     placeManager.revealPlace(myRequest);
   }
   
   @Override
-  public void onButtonPaymentTenantClick() {
-    PlaceRequest myRequest = new PlaceRequest(NameTokens.paymentTenantlist);
-    myRequest = myRequest.with(UUID_PARAMETER, LeaseDetailsPresenter.this.lease.getId());
-    myRequest = myRequest.with(ESTATE_UUID_PARAMETER, LeaseDetailsPresenter.this.lease.getRealEstate().getId());
-    placeManager.revealPlace(myRequest);
+  public void onButtonPaymentClick() {
+    // TODO Auto-generated method stub
+    
   }
-  
+
   @Override
   public void onButtonPaymentOwnerClick() {
     PlaceRequest myRequest = new PlaceRequest(NameTokens.paymentOwnerlist);
@@ -77,6 +99,13 @@ public class LeaseDetailsPresenter extends
   }
 
   @Override
+  public void onButtonPaymentTenantClick() {
+    PlaceRequest myRequest = new PlaceRequest(NameTokens.paymentTenantlist);
+    myRequest = myRequest.with(UUID_PARAMETER, LeaseDetailsPresenter.this.lease.getId());
+    myRequest = myRequest.with(ESTATE_UUID_PARAMETER, LeaseDetailsPresenter.this.lease.getRealEstate().getId());
+    placeManager.revealPlace(myRequest);
+  }
+  @Override
   public void onButtonUpdateClick() {
     PlaceRequest myRequest = new PlaceRequest(NameTokens.updateLease);
     // add the id of the realEstate to load
@@ -84,7 +113,6 @@ public class LeaseDetailsPresenter extends
     myRequest = myRequest.with(ESTATE_UUID_PARAMETER, LeaseDetailsPresenter.this.lease.getRealEstate().getId());
     placeManager.revealPlace(myRequest);
   }
-
   /**
    * Retrieve the id of the lease to show it
    */
@@ -106,12 +134,32 @@ public class LeaseDetailsPresenter extends
   }
 
   @Override
-  protected void onBind() {
-    super.onBind();
-
-    getView().setLeaseDetailUiHandler(this);
+  protected Menus getMenu() {
+    return Menus.LEASE;
   }
 
+  protected String getTitle() {
+    return Literals.INSTANCE.leaseDetailsTitle();
+  }
+
+  @Override
+  protected void onBind() {
+    super.onBind();
+    
+    getEventBus().addHandler(AddedFileEvent.getType(), this);
+    
+    getView().setPresenter(this);
+    
+    
+    //TODO replace that
+    //filesPresenter = ginjector.getDocumentPanelPresenter().get();
+    DocumentPanelView.Binder binder = GWT.create(DocumentPanelView.Binder.class);
+    DocumentPanelView view = new DocumentPanelView(binder);
+    filesPresenter = new DocumentPanelPresenter(ginjector.getEventBus(), view);
+    filesPresenter.bind();
+    
+    getView().addDocumentWidget(filesPresenter.getWidget());
+  }
   @Override
   protected void onReset() {
     super.onReset();
@@ -126,25 +174,31 @@ public class LeaseDetailsPresenter extends
     });
 
   }
-
   @Override
   protected void revealInParent() {
     RevealContentEvent.fire(this, MainLayoutPresenter.MAIN_CONTENT, this);
   }
-
-  @Override
-  public void onButtonPaymentClick() {
-    // TODO Auto-generated method stub
-    
+  protected void saveFile(FileDescriptor file) {
+    new UpdateLeaseCommand(getData()).dispatch(new AsyncCallback<UpdateLeaseResponse>() {
+      
+      @Override
+      public void onSuccess(UpdateLeaseResponse result) {}
+      
+      @Override
+      public void onFailure(Throwable caught) {
+        //TODO improve that
+        Window.alert("Impossible de lier le fichier à la location. Veuillez reessayer.");
+        
+      }
+    });
+  }
+  protected Lease getData() {
+    return lease;
   }
   
-  @Override
-  protected Menus getMenu() {
-    return Menus.LEASE;
-  }
-  
-  protected String getTitle() {
-    return Literals.INSTANCE.leaseDetailsTitle();
+  protected void setLease(Lease lease) {
+    this.lease = lease;
+    filesPresenter.setDocumentHolder(lease);
   }
 
 }

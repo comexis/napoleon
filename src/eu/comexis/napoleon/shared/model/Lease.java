@@ -5,8 +5,10 @@ package eu.comexis.napoleon.shared.model;
 
 // import java.util.Calendar;// Not supported by GWT :-(
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
+import javax.persistence.Embedded;
 import javax.persistence.Id;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
@@ -23,7 +25,7 @@ import eu.comexis.napoleon.shared.model.simple.SimpleTenant;
  * @author xavier Location
  */
 @Unindexed
-public class Lease implements IsSerializable {
+public class Lease implements IsSerializable , Identifiable,HasFiles{
 
   @Id
   private String id;
@@ -71,11 +73,28 @@ public class Lease implements IsSerializable {
   private SimpleRealEstate realEstate;
   @NotSaved
   private SimpleTenant tenant;
+  @Embedded
+  private ArrayList<FileDescriptor> files;
+  @Override
+  public void addFile(FileDescriptor file) {
+    files.add(file);
+  }
+  @Override
+  public ArrayList<FileDescriptor> getFiles() {
+    return files;
+  }
+  @Override
+  public void removeFile(FileDescriptor file) {
+    files.remove(file);
+  }
+  public void setFiles(ArrayList<FileDescriptor> files) {
+    this.files = files;
+  }
   /**
 	 * 
 	 */
   public Lease() {
-    // TODO Auto-generated constructor stub
+    files = new ArrayList<FileDescriptor>();
   }
   public String getAcademicYear() {
     return academicYear;

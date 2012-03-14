@@ -1,15 +1,18 @@
 package eu.comexis.napoleon.client.core.lease;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
+import eu.comexis.napoleon.client.core.lease.LeaseDetailUiHandlers;
 import eu.comexis.napoleon.client.utils.UiHelper;
 import eu.comexis.napoleon.shared.model.Lease;
 
@@ -17,7 +20,7 @@ public class LeaseDetailsView extends ViewImpl implements LeaseDetailsPresenter.
 
   public interface Binder extends UiBinder<Widget, LeaseDetailsView> {
   }
-
+  private static final Binder binder = GWT.create(Binder.class);
   private final Widget widget;
   private LeaseDetailUiHandlers presenter;
 
@@ -73,10 +76,11 @@ public class LeaseDetailsView extends ViewImpl implements LeaseDetailsPresenter.
   Element furnituresAmount;
   @UiField
   Element coocuppant;
+  @UiField
+  SimplePanel documentsPanel;
   
-
   @Inject
-  public LeaseDetailsView(final Binder binder) {
+  public LeaseDetailsView() {
     widget = binder.createAndBindUi(this);
   }
 
@@ -148,8 +152,12 @@ public class LeaseDetailsView extends ViewImpl implements LeaseDetailsPresenter.
   }
 
   @Override
-  public void setLeaseDetailUiHandler(LeaseDetailUiHandlers handler) {
+  public void setPresenter(LeaseDetailUiHandlers handler) {
     this.presenter = handler;
-
+  }
+  @Override
+  public void addDocumentWidget(Widget w) {
+    documentsPanel.add(w);
+    
   }
 }

@@ -8,9 +8,11 @@ import eu.comexis.napoleon.shared.model.Lease;
 
 public class UpdateLeaseCommand implements Action<UpdateLeaseResponse>{
   private Lease lease;
-
-  public UpdateLeaseCommand() {
-    // TODO Auto-generated constructor stub
+  public UpdateLeaseCommand(){
+    
+  }
+  public UpdateLeaseCommand(Lease lease) {
+    this.lease = lease;
   }
 
   public Lease getLease() {
