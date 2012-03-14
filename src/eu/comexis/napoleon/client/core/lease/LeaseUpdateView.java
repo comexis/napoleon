@@ -9,6 +9,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.RadioButton;
@@ -21,6 +22,7 @@ import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
 import eu.comexis.napoleon.client.utils.UiHelper;
+import eu.comexis.napoleon.shared.model.FeeUnit;
 import eu.comexis.napoleon.shared.model.Lease;
 import eu.comexis.napoleon.shared.model.TypeOfRent;
 import eu.comexis.napoleon.shared.model.simple.SimpleRealEstate;
@@ -74,17 +76,11 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
   @UiField
   TextBox bookkeepingRef;
   @UiField
-  RadioButton hasFurnituresRentalYes;
+  CheckBox hasFurnituresRental;
   @UiField
-  RadioButton hasFurnituresRentalNo;
+  CheckBox hasFurnituresWithContract;
   @UiField
-  RadioButton hasFurnituresWithContractYes;
-  @UiField
-  RadioButton hasFurnituresWithContractNo;
-  @UiField
-  RadioButton furnituresPaymentOKYes;
-  @UiField
-  RadioButton furnituresPaymentOKNo;
+  CheckBox furnituresPaymentOK;
   @UiField
   DateBox furnituresDate;
   @UiField
@@ -153,7 +149,13 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
   }
   @UiHandler("rent")
   public void onChangeRent(ChangeEvent e) {
+    presenter.onRentChanged(UiHelper.stringToFloat(rent.getValue()));
     rent.setValue(UiHelper.FloatToString(UiHelper.stringToFloat(rent.getValue())));
+    feeOwner.setValue(UiHelper.FloatToString(UiHelper.stringToFloat(rent.getValue()) - UiHelper.stringToFloat(fee.getValue())));
+  }
+  @UiHandler("fee")
+  public void onChangeFee(ChangeEvent e) {
+    feeOwner.setValue(UiHelper.FloatToString(UiHelper.stringToFloat(rent.getValue()) - UiHelper.stringToFloat(fee.getValue())));
   }
   @UiHandler("deposit")
   public void onChangeDeposit(ChangeEvent e) {
@@ -183,42 +185,26 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
       disableDepositBank();
     }
   }
-  @UiHandler("hasFurnituresRentalYes")
-  public void onChangehasFurnituresRentalYes(ClickEvent e) {
-    if (hasFurnituresRentalYes.getValue().equals(true)){
+  @UiHandler("hasFurnituresRental")
+  public void onChangehasFurnituresRental(ClickEvent e) {
+    if (hasFurnituresRental.getValue().equals(true)){
       enableFurniture();
     }else{
       disableFurniture();
     }
   }
-  @UiHandler("hasFurnituresRentalNo")
-  public void onChangehasFurnituresRentalNo(ClickEvent e) {
-    if (hasFurnituresRentalNo.getValue().equals(true)){
-      disableFurniture();
-    }else{
-      enableFurniture();
-    }
-  }
-  @UiHandler("hasFurnituresWithContractYes")
+  
+  @UiHandler("hasFurnituresWithContract")
   public void onChangeFurnituresWithContractYes(ClickEvent e) {
-    if (hasFurnituresWithContractYes.getValue().equals(true)){
+    if (hasFurnituresWithContract.getValue().equals(true)){
       enableFurnitureContract();
     }else{
       disableFurnitureContract();
     }
   }
   
-  @UiHandler("hasFurnituresWithContractNo")
-  public void onChangeFurnituresWithContractNo(ClickEvent e) {
-    if (hasFurnituresWithContractNo.getValue().equals(true)){
-      disableFurnitureContract();
-    }else{
-      enableFurnitureContract();
-    }
-  }
   private void enableFurniture(){
-    hasFurnituresWithContractYes.setEnabled(true);
-    hasFurnituresWithContractNo.setEnabled(true);
+    hasFurnituresWithContract.setEnabled(true);
     disableFurnitureContract();
   }
   private void enableDepositBank(){
@@ -232,8 +218,7 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
     this.bic.setEnabled(false);
   }
   private void disableFurniture(){
-    hasFurnituresWithContractYes.setEnabled(false);
-    hasFurnituresWithContractNo.setEnabled(false);
+    hasFurnituresWithContract.setEnabled(false);
     disableFurnitureContract();
   }
   private void disableFurnitureContract(){
@@ -241,14 +226,12 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
     furnituresAmount.setEnabled(false);
     furnituresDate.setValue(null);
     furnituresDate.setEnabled(false);
-    furnituresPaymentOKNo.setEnabled(false);
-    furnituresPaymentOKYes.setEnabled(false);
+    furnituresPaymentOK.setEnabled(false);
   }
   private void enableFurnitureContract(){
     furnituresAmount.setEnabled(true);
     furnituresDate.setEnabled(true);
-    furnituresPaymentOKNo.setEnabled(true);
-    furnituresPaymentOKYes.setEnabled(true);
+    furnituresPaymentOK.setEnabled(true);
   }
   @UiHandler("btnCancel")
   public void onCancel(ClickEvent e) {
@@ -259,7 +242,10 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
   public void onSave(ClickEvent e) {
     presenter.onButtonSaveClick();
   }
-
+  @Override
+  public void setFee(Float fee) {
+      this.fee.setValue(UiHelper.FloatToString(fee));
+  }
   @Override
   public void setLease(Lease l) {
     // cleanup
@@ -287,12 +273,9 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
     this.depositDate.setValue(null);
     UiHelper.selectTextItemBoxByValue(this.reference, "-");
     UiHelper.selectTextItemBoxByValue(this.tenantName, "-");
-    this.furnituresPaymentOKYes.setValue(false);
-    this.furnituresPaymentOKNo.setValue(true);
-    this.hasFurnituresWithContractYes.setValue(false);
-    this.hasFurnituresWithContractNo.setValue(true);
-    this.hasFurnituresRentalYes.setValue(false);
-    this.hasFurnituresRentalNo.setValue(true);
+    this.furnituresPaymentOK.setValue(false);
+    this.hasFurnituresWithContract.setValue(false);
+    this.hasFurnituresRental.setValue(false);
     this.depositInCashYes.setValue(true);
     this.depositInCashNo.setValue(false);
     disableDepositBank();
@@ -316,20 +299,22 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
       this.bic.setValue(l.getBic());
       this.eleDate.setValue(l.getEleDate());
       this.elsDate.setValue(l.getElsDate());
-      this.fee.setValue(""); // should be calculated from owner and rent
-      this.feeOwner.setValue(""); // should be calculated from owner and rent
       this.rent.setValue(UiHelper.FloatToString(l.getRent()));
+      this.fee.setValue(UiHelper.FloatToString(l.getFee()));
+      if (l.getRent()!=null && l.getFee()!=null){
+        this.feeOwner.setValue(UiHelper.FloatToString(l.getRent() - l.getFee()));
+      }
       this.bookkeepingRef.setValue(l.getBookkeepingReference());
       UiHelper.selectTextItemBoxByValue(this.type, (l.getType() != null ? l.getType().name() : "-"));
-      this.hasFurnituresRentalYes.setValue(l.getHasFurnituresRental()!=null ? l.getHasFurnituresRental(): false);
-      if (this.hasFurnituresRentalYes.getValue()){
+      this.hasFurnituresRental.setValue(l.getHasFurnituresRental()!=null ? l.getHasFurnituresRental(): false);
+      if (this.hasFurnituresRental.getValue()){
         enableFurniture();
       }
-      this.hasFurnituresWithContractYes.setValue(l.getHasFurnituresWithContract()!=null ? l.getHasFurnituresWithContract(): false);
-      if (this.hasFurnituresWithContractYes.getValue()){
+      this.hasFurnituresWithContract.setValue(l.getHasFurnituresWithContract()!=null ? l.getHasFurnituresWithContract(): false);
+      if (this.hasFurnituresWithContract.getValue()){
         enableFurnitureContract();
       }
-      this.furnituresPaymentOKYes.setValue(l.getFurnituresPaymentOK()!=null ? l.getFurnituresPaymentOK(): false);
+      this.furnituresPaymentOK.setValue(l.getFurnituresPaymentOK()!=null ? l.getFurnituresPaymentOK(): false);
       this.furnituresDate.setValue(l.getFurnituresDate());
       this.furnituresAmount.setValue(UiHelper.FloatToString(l.getFurnituresAnnualAmount()));
     }
@@ -356,11 +341,13 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
     l.setEleDate(eleDate.getValue());
     l.setElsDate(elsDate.getValue());
     l.setRent(UiHelper.stringToFloat(rent.getValue()));
+    //l.setUnit(FeeUnit.LUMP_SUM);
+    l.setFee(UiHelper.stringToFloat(fee.getValue()));
     l.setBookkeepingReference(bookkeepingRef.getValue());
     l.setType(TypeOfRent.valueOf(type.getValue(type.getSelectedIndex())));
-    l.setHasFurnituresRental(hasFurnituresRentalYes.getValue());
-    l.setHasFurnituresWithContract(hasFurnituresWithContractYes.getValue());
-    l.setFurnituresPaymentOK(furnituresPaymentOKYes.getValue());
+    l.setHasFurnituresRental(hasFurnituresRental.getValue());
+    l.setHasFurnituresWithContract(hasFurnituresWithContract.getValue());
+    l.setFurnituresPaymentOK(furnituresPaymentOK.getValue());
     l.setFurnituresDate(furnituresDate.getValue());
     l.setFurnituresAnnualAmount(UiHelper.stringToFloat(furnituresAmount.getValue()));
     l.setCooccupant(coocuppant.getValue());

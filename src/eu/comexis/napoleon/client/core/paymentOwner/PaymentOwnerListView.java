@@ -83,7 +83,7 @@ public class PaymentOwnerListView extends AbstractListView<PaymentOwner> impleme
       }
     });
 
-    table.addColumn(amountColumn, "Loyer");
+    table.addColumn(amountColumn, "Montant");
     
     // Date.
     Column<PaymentOwner, String> dateColumn = new Column<PaymentOwner, String>(new TextCell()) {
@@ -100,12 +100,16 @@ public class PaymentOwnerListView extends AbstractListView<PaymentOwner> impleme
       }
     });
 
-    table.addColumn(dateColumn, "Date payment");
+    table.addColumn(dateColumn, "Date paiement");
 
   }
   
   @Override
   protected String getButtonNewLabel() {
     return "Nouveau paiement";
+  }
+  @Override
+  protected String getButtonBackLabel() {
+    return "Retour à la location";
   }
 }

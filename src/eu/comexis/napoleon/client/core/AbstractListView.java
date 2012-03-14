@@ -42,6 +42,8 @@ public abstract class AbstractListView<T> extends ViewImpl implements
   SimplePager pager;
   @UiField
   Button btnNew;
+  @UiField
+  Button btnToDashBoard;
 
   // list containing the datas to display
   private ListDataProvider<T> dataProvider;
@@ -97,6 +99,7 @@ public abstract class AbstractListView<T> extends ViewImpl implements
   protected abstract ProvidesKey<T> getKeyProvider();
 
   protected abstract String getButtonNewLabel();
+  protected abstract String getButtonBackLabel();
 
   protected abstract void initTableColumns(SingleSelectionModel<T> selectionModel,
       ListHandler<T> sortHandler);
@@ -111,6 +114,7 @@ public abstract class AbstractListView<T> extends ViewImpl implements
     });
 
     btnNew.setText(getButtonNewLabel());
+    btnToDashBoard.setText(getButtonBackLabel());
 
   }
 

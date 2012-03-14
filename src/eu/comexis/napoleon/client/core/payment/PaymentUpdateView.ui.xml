@@ -8,8 +8,11 @@
 
 	<ui:with field='res' type='eu.comexis.napoleon.client.resources.Resources' />
 
-<g:ScrollPanel>
-	<g:HTMLPanel styleName="{res.css.detailTable}">
+<g:TabLayoutPanel barUnit="PX" barHeight="35">
+		<g:tab>
+			<g:header>Général</g:header>
+			<g:ScrollPanel>
+				<g:HTMLPanel styleName="{res.css.detailTable}">
 
 		<div class="{res.css.detailRow}">
 			<span class="{res.css.detailCellLabel}">Référence :</span>
@@ -77,5 +80,14 @@
 			<g:Button ui:field="btnCancel">Annuler</g:Button>
 		</div>
 	</g:HTMLPanel>
-	</g:ScrollPanel>
+			</g:ScrollPanel>
+		</g:tab>
+		<g:tab>
+			<g:header>Documents</g:header>
+			<g:ScrollPanel>
+				<g:SimplePanel ui:field="documentsPanel"
+					styleName="{res.css.detailRow} {res.css.separationRow}" />
+			</g:ScrollPanel>
+		</g:tab>
+	</g:TabLayoutPanel>
 </ui:UiBinder>

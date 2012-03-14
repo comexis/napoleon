@@ -1,15 +1,18 @@
 package eu.comexis.napoleon.client.core.lease;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
+import eu.comexis.napoleon.client.core.lease.LeaseDetailUiHandlers;
 import eu.comexis.napoleon.client.utils.UiHelper;
 import eu.comexis.napoleon.shared.model.Lease;
 
@@ -17,7 +20,7 @@ public class LeaseDetailsView extends ViewImpl implements LeaseDetailsPresenter.
 
   public interface Binder extends UiBinder<Widget, LeaseDetailsView> {
   }
-
+  private static final Binder binder = GWT.create(Binder.class);
   private final Widget widget;
   private LeaseDetailUiHandlers presenter;
 
@@ -73,10 +76,11 @@ public class LeaseDetailsView extends ViewImpl implements LeaseDetailsPresenter.
   Element furnituresAmount;
   @UiField
   Element coocuppant;
+  @UiField
+  SimplePanel documentsPanel;
   
-
   @Inject
-  public LeaseDetailsView(final Binder binder) {
+  public LeaseDetailsView() {
     widget = binder.createAndBindUi(this);
   }
 
@@ -121,14 +125,14 @@ public class LeaseDetailsView extends ViewImpl implements LeaseDetailsPresenter.
 
     this.reference.setInnerText(l.getRealEstate().getReference());
     this.academicYear.setInnerText(l.getAcademicYear());
-    this.coocuppant.setInnerText(l.getCooccupant());
+    this.coocuppant.setInnerHTML(l.getCooccupant().replace("\n","<br/>"));
     this.startDate.setInnerText(UiHelper.displayDate(l.getStartDate()));
     this.endDate.setInnerText(UiHelper.displayDate(l.getEndDate()));
     this.tenantName.setInnerText(l.getTenant().getName());
     this.ownerName.setInnerText(l.getRealEstate().getOwner());
     this.type.setInnerText(l.getType().name());
-    //this.fee.setInnerText(l.get);
-    //this.feeOwner.setInnerText("");
+    this.fee.setInnerText(UiHelper.FloatToString(l.getFee()));
+    this.feeOwner.setInnerText(UiHelper.FloatToString(l.getRent() - l.getFee()));
     this.charges.setInnerText(UiHelper.FloatToString(l.getServiceCharges()));
     this.deposit.setInnerText(UiHelper.FloatToString(l.getSecurityDeposit()));
     this.rent.setInnerText(UiHelper.FloatToString(l.getRent()));
@@ -140,11 +144,20 @@ public class LeaseDetailsView extends ViewImpl implements LeaseDetailsPresenter.
     this.hasFurnituresRental.setInnerText((l.getHasFurnituresRental()!=null && l.getHasFurnituresRental().equals(true))?"Oui":"Non");
     this.cash.setInnerText((l.getDepositInCash()!=null && l.getDepositInCash().equals(true))? "Oui":"Non");
     this.bank.setInnerText((l.getDepositInCash()!=null && l.getDepositInCash().equals(false))? "Oui":"Non");
+    this.bookkeepingRef.setInnerText(l.getBookkeepingReference());
+    this.iban.setInnerText(l.getIban());
+    this.bic.setInnerText(l.getBic());
+    this.furnituresAmount.setInnerText(UiHelper.FloatToString(l.getFurnituresAnnualAmount()));
+    this.furnituresDate.setInnerText(UiHelper.displayDate(l.getFurnituresDate()));
   }
 
   @Override
-  public void setLeaseDetailUiHandler(LeaseDetailUiHandlers handler) {
+  public void setPresenter(LeaseDetailUiHandlers handler) {
     this.presenter = handler;
-
+  }
+  @Override
+  public void addDocumentWidget(Widget w) {
+    documentsPanel.add(w);
+    
   }
 }

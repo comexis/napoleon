@@ -31,11 +31,6 @@
       <version>0.6</version>
     </dependency>
     <dependency>
-    	<groupId>com.google.guava</groupId>
-    	<artifactId>guava</artifactId>
-    	<version>10.0</version>
-    </dependency>
-    <dependency>
     	<groupId>com.gwtplatform</groupId>
     	<artifactId>gwtp-dispatch-client</artifactId>
     	<version>0.6</version>
@@ -80,5 +75,15 @@
      	<artifactId>commons-logging</artifactId>
      	<version>1.1.1</version>
      </dependency>
+     <dependency>
+    <groupId>com.google.guava</groupId>
+    <artifactId>guava</artifactId>
+    <version>10.0.1</version>
+</dependency>
+<dependency>
+    <groupId>com.google.guava</groupId>
+    <artifactId>guava-gwt</artifactId>
+    <version>10.0.1</version>
+</dependency>
   </dependencies>
 </project>

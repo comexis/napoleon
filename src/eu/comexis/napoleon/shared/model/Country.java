@@ -1,9 +1,7 @@
 package eu.comexis.napoleon.shared.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Id;
 

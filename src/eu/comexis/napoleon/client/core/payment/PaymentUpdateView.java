@@ -158,6 +158,8 @@ public class PaymentUpdateView<T extends Payment> extends ViewImpl implements
   @Override
   public void setData(T payment) {
     DateTimeFormat dateFormat = DateTimeFormat.getFormat("dd/MM/yyyy");
+    this.fromDate.setEnabled(true);
+    this.toDate.setEnabled(true);
     this.date.setFormat(new DateBox.DefaultFormat(dateFormat));
     this.fromDate.setFormat(new DateBox.DefaultFormat(dateFormat));
     this.toDate.setFormat(new DateBox.DefaultFormat(dateFormat));
@@ -199,6 +201,7 @@ public class PaymentUpdateView<T extends Payment> extends ViewImpl implements
       }
     }
     this.fromDate.setEnabled(false);
+    this.toDate.setEnabled(false);
   }
 
   @Override

@@ -163,4 +163,8 @@ public class RealEstateListView extends AbstractListView<SimpleRealEstate> imple
   protected String getButtonNewLabel() {
     return "Nouveau bien immobilier";
   }
+  @Override
+  protected String getButtonBackLabel() {
+    return "Retour vers le dashboard";
+  }
 }

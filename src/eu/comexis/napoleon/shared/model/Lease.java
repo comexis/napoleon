@@ -4,9 +4,10 @@
 package eu.comexis.napoleon.shared.model;
 
 // import java.util.Calendar;// Not supported by GWT :-(
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
+import javax.persistence.Embedded;
 import javax.persistence.Id;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
@@ -23,7 +24,7 @@ import eu.comexis.napoleon.shared.model.simple.SimpleTenant;
  * @author xavier Location
  */
 @Unindexed
-public class Lease implements IsSerializable {
+public class Lease implements IsSerializable , Identifiable,HasFiles{
 
   @Id
   private String id;
@@ -36,12 +37,22 @@ public class Lease implements IsSerializable {
   @Indexed
   private Key<Tenant> tenantKey;
   private Float rent;
+  private Float fee;
+  @NotSaved
+  private Float feeFromOwner;
+  private FeeUnit unit;
+
   private Date entranceDate;
+
   private Date leaveDate;
   private Date eleDate;
+
   private Date elsDate;
+
   private Float securityDeposit;
+
   private Date depositDate;
+
   private Boolean depositInCash;
   private String iban;
   private String bic;
@@ -59,29 +70,29 @@ public class Lease implements IsSerializable {
   private String cooccupant;
   @NotSaved
   private SimpleRealEstate realEstate;
-
   @NotSaved
   private SimpleTenant tenant;
-
+  @Embedded
+  private ArrayList<FileDescriptor> files;
   /**
 	 * 
 	 */
   public Lease() {
-    // TODO Auto-generated constructor stub
+    files = new ArrayList<FileDescriptor>();
   }
-
+  @Override
+  public void addFile(FileDescriptor file) {
+    files.add(file);
+  }
   public String getAcademicYear() {
     return academicYear;
   }
-
   public String getBic() {
     return bic;
   }
-
   public String getBookkeepingReference() {
     return bookkeepingReference;
   }
-
   public String getCooccupant() {
     return cooccupant;
   }
@@ -116,6 +127,19 @@ public class Lease implements IsSerializable {
 
   public Date getEntranceDate() {
     return entranceDate;
+  }
+
+  public Float getFee() {
+    return fee;
+  }
+
+  public Float getFeeFromOwner() {
+    return feeFromOwner;
+  }
+
+  @Override
+  public ArrayList<FileDescriptor> getFiles() {
+    return files;
   }
 
   public Float getFurnituresAnnualAmount() {
@@ -186,6 +210,15 @@ public class Lease implements IsSerializable {
     return type;
   }
 
+  public FeeUnit getUnit() {
+    return unit;
+  }
+
+  @Override
+  public void removeFile(FileDescriptor file) {
+    files.remove(file);
+  }
+
   public void setAcademicYear(String academicYear) {
     this.academicYear = academicYear;
   }
@@ -233,6 +266,18 @@ public class Lease implements IsSerializable {
 
   public void setEntranceDate(Date entranceDate) {
     this.entranceDate = entranceDate;
+  }
+
+  public void setFee(Float fee) {
+    this.fee = fee;
+  }
+
+  public void setFeeFromOwner(Float feeFromOwner) {
+    this.feeFromOwner = feeFromOwner;
+  }
+
+  public void setFiles(ArrayList<FileDescriptor> files) {
+    this.files = files;
   }
 
   public void setFurnituresAnnualAmount(Float furnituresAnnualAmount) {
@@ -301,5 +346,9 @@ public class Lease implements IsSerializable {
 
   public void setType(TypeOfRent type) {
     this.type = type;
+  }
+
+  public void setUnit(FeeUnit unit) {
+    this.unit = unit;
   }
 }

@@ -17,6 +17,7 @@ import com.googlecode.objectify.util.DAOBase;
 
 import eu.comexis.napoleon.shared.model.AcademicYear;
 import eu.comexis.napoleon.shared.model.Company;
+import eu.comexis.napoleon.shared.model.FeeUnit;
 import eu.comexis.napoleon.shared.model.Lease;
 import eu.comexis.napoleon.shared.model.Owner;
 import eu.comexis.napoleon.shared.model.RealEstate;
@@ -65,25 +66,38 @@ public class LeaseDao extends DAOBase {
   }
 
   public Lease getById(String leaseId, Key<RealEstate> estateKey) {
-    Lease l = ofy().find(new Key<Lease>(estateKey, Lease.class, leaseId));
+    Lease l = null;
+    if (leaseId.equals("new")){
+      l = new Lease();
+    }else{
+      l = ofy().find(new Key<Lease>(estateKey, Lease.class, leaseId));
+    }
     if (l != null) {
       RealEstate realEstate = ofy().find(estateKey);
       Owner o = ofy().find(realEstate.getOwnerKey());
+      
       SimpleRealEstate se = new SimpleRealEstate();
       se.setReference(realEstate.getReference());
       se.setId(realEstate.getId());
       se.setOwner(o.getLastName());
       l.setRealEstate(se);
-      Tenant t = ofy().find(l.getTenantKey());
-      SimpleTenant st = new SimpleTenant();
-      st.setId(t.getId());
-      st.setName(t.getLastName());
-      st.setAddress(t.getStreet());
-      st.setCity(t.getCity());
-      st.setPostalCode(t.getPostalCode());
-      st.setPhoneNumber(t.getPhoneNumber());
-      st.setMobileNumber(t.getMobilePhoneNumber());
-      l.setTenant(st);
+      if (l.getFee()==null && o.getUnit().equals(FeeUnit.LUMP_SUM)){
+        l.setFee(o.getFee().floatValue());
+      }
+      l.setFeeFromOwner(o.getFee().floatValue());
+      l.setUnit(o.getUnit());
+      if (l.getTenantKey()!=null){
+        Tenant t = ofy().find(l.getTenantKey());
+        SimpleTenant st = new SimpleTenant();
+        st.setId(t.getId());
+        st.setName(t.getLastName());
+        st.setAddress(t.getStreet());
+        st.setCity(t.getCity());
+        st.setPostalCode(t.getPostalCode());
+        st.setPhoneNumber(t.getPhoneNumber());
+        st.setMobileNumber(t.getMobilePhoneNumber());
+        l.setTenant(st);
+      }
     }
     return l;
   }

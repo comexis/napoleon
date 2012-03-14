@@ -30,10 +30,13 @@
 		</div>
 
 		<div class="{res.css.detailRow} {res.css.separationRow}">
+
 			<span class="{res.css.detailCellInputLabel}" >Adresse :</span>
 			<g:TextBox ui:field="addresse" styleName="{res.css.detailCellInputText} {res.css.largeInput}" name="addresse"/>
 			<span class="{res.css.detailCellInputLabel} {res.css.autoLabel}" >Numéro :</span>
 			<g:TextBox ui:field="number" styleName="{res.css.detailCellInputText} {res.css.smallInput}" name="number"/>
+			<span class="{res.css.detailCellInputLabel} {res.css.autoLabel}">Boite :</span>
+			<g:TextBox ui:field="box" styleName="{res.css.detailCellInputText} {res.css.smallInput}" name="number"/>
 		</div>
 		<div class="{res.css.detailRow}">
 			<span class="{res.css.detailCellInputLabel}" >Pays :</span>

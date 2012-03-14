@@ -89,18 +89,13 @@
 				<g:TextBox ui:field="bookkeepingRef" styleName="{res.css.detailCellInputText}"
 					name="bookkeepingRef" />
 			</div>
-			
+
 			<div class="{res.css.detailRow} {res.css.separationRow}">
-				<span class="{res.css.detailCellInputLabel}" >Mobilier :</span>
-				<g:RadioButton ui:field="hasFurnituresRentalYes" styleName="{res.css.detailCellInputLabel} {res.css.autoLabel} "
-					name="hasFurnituresRental" text="Yes"/>
-				<g:RadioButton ui:field="hasFurnituresRentalNo" styleName="{res.css.detailCellInputLabel} {res.css.autoLabel} "
-					name="hasFurnituresRental" text="No"/>
-				<span class="{res.css.detailCellInputLabel}" >Avec contrat :</span>
-				<g:RadioButton ui:field="hasFurnituresWithContractYes" styleName="{res.css.detailCellInputLabel} {res.css.autoLabel} "
-					name="hasFurnituresWithContract" text="Yes"/>
-				<g:RadioButton ui:field="hasFurnituresWithContractNo" styleName="{res.css.detailCellInputLabel} {res.css.autoLabel} "
-					name="hasFurnituresWithContract" text="No"/>
+
+				<g:CheckBox ui:field="hasFurnituresRental" styleName="{res.css.detailCellInputLabel} {res.css.autoLabel}"
+					name="hasFurnituresRental" text="Mobilier"/>
+				<g:CheckBox ui:field="hasFurnituresWithContract" styleName="{res.css.detailCellInputLabel}"
+					name="hasFurnituresWithContract" text="Avec contrat"/>
 			</div>
 			<div class="{res.css.detailRow}">
 				<span class="{res.css.detailCellInputLabel}">Somme annuelle :</span>
@@ -108,11 +103,8 @@
 					name="furnituresAmount" />
 				<span class="{res.css.detailCellInputLabel} {res.css.autoLabel} " ><span style="font-weight:normal">€&nbsp;&nbsp;</span>Date convenue:</span>
 				<dp:DateBox ui:field="furnituresDate" styleName="{res.css.detailCellInputText}"/>
-				<span class="{res.css.detailCellInputLabel} {res.css.autoLabel} ">Paiement :</span>
-				<g:RadioButton ui:field="furnituresPaymentOKYes" styleName="{res.css.detailCellInputLabel} {res.css.autoLabel} "
-					name="furnituresPayment" text="ok"/>
-				<g:RadioButton ui:field="furnituresPaymentOKNo" styleName="{res.css.detailCellInputLabel} {res.css.autoLabel} "
-					name="furnituresPayment" text="Pas ok"/>
+				<g:CheckBox ui:field="furnituresPaymentOK" styleName="{res.css.detailCellInputLabel} {res.css.autoLabel} "
+					name="furnituresPaymentOK" text="Paiement OK"/>
 			</div>
 			
 			<div class="{res.css.detailRow}">

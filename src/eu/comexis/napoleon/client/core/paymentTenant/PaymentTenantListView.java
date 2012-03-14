@@ -83,7 +83,7 @@ public class PaymentTenantListView extends AbstractListView<PaymentTenant> imple
       }
     });
 
-    table.addColumn(amountColumn, "Loyer");
+    table.addColumn(amountColumn, "Montant");
     
     // Date.
     Column<PaymentTenant, String> dateColumn = new Column<PaymentTenant, String>(new TextCell()) {
@@ -100,12 +100,16 @@ public class PaymentTenantListView extends AbstractListView<PaymentTenant> imple
       }
     });
 
-    table.addColumn(dateColumn, "Date payment");
+    table.addColumn(dateColumn, "Date paiement");
 
   }
   
   @Override
   protected String getButtonNewLabel() {
     return "Nouveau paiement";
+  }
+  @Override
+  protected String getButtonBackLabel() {
+    return "Retour vers la location";
   }
 }

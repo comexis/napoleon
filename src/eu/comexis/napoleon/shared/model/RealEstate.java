@@ -1,7 +1,9 @@
 package eu.comexis.napoleon.shared.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 
+import javax.persistence.Embedded;
 import javax.persistence.Id;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
@@ -17,7 +19,7 @@ import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
  * @author xavier Bien immobilier
  */
 @Unindexed
-public class RealEstate implements IsSerializable {
+public class RealEstate implements IsSerializable , Identifiable, HasFiles{
 
   @Id
   private String id;
@@ -72,14 +74,18 @@ public class RealEstate implements IsSerializable {
   private SimpleOwner owner;
 
   private String postalCode;
-
+  
+  @Embedded
+  private ArrayList<FileDescriptor> files;
   public RealEstate() {
   }
-
+  @Override
+  public void addFile(FileDescriptor file) {
+    files.add(file);
+  }
   public String getAssocAdresss() {
     return assocAdresss;
   }
-
   public String getAssocEmail() {
     return assocEmail;
   }
@@ -114,6 +120,11 @@ public class RealEstate implements IsSerializable {
 
   public String getDimension() {
     return dimension;
+  }
+
+  @Override
+  public ArrayList<FileDescriptor> getFiles() {
+    return files;
   }
 
   public Boolean getFlagActivated() {
@@ -168,6 +179,11 @@ public class RealEstate implements IsSerializable {
     return type;
   }
 
+  @Override
+  public void removeFile(FileDescriptor file) {
+    files.remove(file);
+  }
+
   public void setAssocAdresss(String assocAdresss) {
     this.assocAdresss = assocAdresss;
   }
@@ -206,6 +222,10 @@ public class RealEstate implements IsSerializable {
 
   public void setDimension(String dimension) {
     this.dimension = dimension;
+  }
+
+  public void setFiles(ArrayList<FileDescriptor> files) {
+    this.files = files;
   }
 
   public void setFlagActivated(Boolean flagActivated) {

@@ -15,6 +15,7 @@ import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import eu.comexis.napoleon.client.core.AbstractPresenter;
 import eu.comexis.napoleon.client.core.HasPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter;
+import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.rpc.callback.GotLease;
 import eu.comexis.napoleon.shared.command.lease.GetLeaseCommand;
 import eu.comexis.napoleon.shared.model.Lease;
@@ -68,6 +69,7 @@ public abstract class PaymentUpdatePresenter<T extends Payment, V extends Paymen
   public void onButtonCancelClick() {
     goToList();
   }
+  
 
   @Override
   public void onButtonSaveClick() {
@@ -91,15 +93,6 @@ public abstract class PaymentUpdatePresenter<T extends Payment, V extends Paymen
 
   protected abstract void save();
 
-  private void goToDetails() {
-    PlaceRequest myRequest = new PlaceRequest(getDetailsNameTokens());
-    // add the id of the owner to load
-    myRequest = myRequest.with(UUID_PARAMETER, this.id);
-    myRequest = myRequest.with(LEASE_UUID_PARAMETER, this.leaseId);
-    myRequest = myRequest.with(ESTATE_UUID_PARAMETER, this.estateId);
-    placeManager.revealPlace(myRequest);
-  }
-
   private void goToList() {
     PlaceRequest myRequest = new PlaceRequest(getListNameTokens());
     myRequest = myRequest.with(UUID_PARAMETER, this.leaseId);
@@ -107,6 +100,7 @@ public abstract class PaymentUpdatePresenter<T extends Payment, V extends Paymen
     placeManager.revealPlace(myRequest);
 
   }
+  
   /**
    * Retrieve the id of the owner to show it
    */
