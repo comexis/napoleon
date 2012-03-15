@@ -78,6 +78,7 @@ public class RealEstate implements IsSerializable , Identifiable, HasFiles{
   @Embedded
   private ArrayList<FileDescriptor> files;
   public RealEstate() {
+    files = new ArrayList<FileDescriptor>();
   }
   @Override
   public void addFile(FileDescriptor file) {
