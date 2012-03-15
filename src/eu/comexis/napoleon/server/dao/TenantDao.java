@@ -46,7 +46,8 @@ public class TenantDao extends NapoleonDao<Tenant> {
       o.setId(tenant.getId());
       o.setName(tenant.getLastName());
       o.setCity(tenant.getCity());
-      o.setAddress(tenant.getStreet());
+      o.setPostalCode(tenant.getPostalCode());
+      o.setAddress(tenant.getStreet() + ", " + tenant.getNumber() + (tenant.getBox()!=null ? " bte " + tenant.getBox():""));
       o.setMobileNumber(tenant.getMobilePhoneNumber());
       o.setPhoneNumber(tenant.getPhoneNumber());
       tenants.add(o);
