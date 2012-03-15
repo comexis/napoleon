@@ -126,7 +126,10 @@ public class PaymentDao<T extends Payment> extends DAOBase{
         LOG.info("Payment cannot be updated because there is already a payment for that period " + actualPayment.getId());
         return null;
       }
-    
+      // force all the time to be a noon to avoid CEST-GMT problem
+      payment.setPaymentDate(setTime(payment.getPaymentDate()));
+      payment.setPeriodStartDate(setTime(payment.getPeriodStartDate()));
+      payment.setPeriodEndDate(setTime(payment.getPeriodEndDate()));
       Key<T> paymentKey = ofy().put(payment);
       LOG.info("Payment has been updated");
       Lease l = ofy().get(payment.getLeaseKey());
@@ -139,6 +142,15 @@ public class PaymentDao<T extends Payment> extends DAOBase{
       LOG.fatal("Payment cannot be updated: ", e);
       return null;
     }
+  }
+  private Date setTime(Date date){
+    if (date!=null){
+      Calendar cal = Calendar.getInstance();
+      cal.setTime(date);
+      cal.set(Calendar.HOUR, 12);
+      date = cal.getTime();
+    }
+    return date;
   }
   public List<PaymentListItem> getPaymentDashboardForLease(String leaseId, String realEstateId, String companyId){
     // TO BE COMPLETED
