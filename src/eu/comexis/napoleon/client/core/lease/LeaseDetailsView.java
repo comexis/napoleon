@@ -130,7 +130,7 @@ public class LeaseDetailsView extends ViewImpl implements LeaseDetailsPresenter.
     this.endDate.setInnerText(UiHelper.displayDate(l.getEndDate()));
     this.tenantName.setInnerText(l.getTenant().getName());
     this.ownerName.setInnerText(l.getRealEstate().getOwner());
-    this.type.setInnerText(l.getType().name());
+    this.type.setInnerText(UiHelper.translateEnum("TypeOfRent_",l.getType()));
     this.fee.setInnerText(UiHelper.FloatToString(l.getFee()));
     this.feeOwner.setInnerText(UiHelper.FloatToString(l.getRent() - l.getFee()));
     this.charges.setInnerText(UiHelper.FloatToString(l.getServiceCharges()));
