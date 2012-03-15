@@ -94,7 +94,7 @@ public class PaymentDao<T extends Payment> extends DAOBase{
     return update(payment,companyKey);
   }
   public T update(T payment, Key<Company> companyKey) {
-    LOG.info("Update PaymentOwner");
+    LOG.info("Update Payment");
     try{
       String paymentId = payment.getId();
       Key<Lease> leaseKey = null;
