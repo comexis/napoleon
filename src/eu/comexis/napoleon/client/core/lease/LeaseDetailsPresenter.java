@@ -86,8 +86,10 @@ public class LeaseDetailsPresenter extends
   
   @Override
   public void onButtonPaymentClick() {
-    // TODO Auto-generated method stub
-    
+    PlaceRequest myRequest = new PlaceRequest(NameTokens.paymentBoardlist);
+    myRequest = myRequest.with(UUID_PARAMETER, LeaseDetailsPresenter.this.lease.getId());
+    myRequest = myRequest.with(ESTATE_UUID_PARAMETER, LeaseDetailsPresenter.this.lease.getRealEstate().getId());
+    placeManager.revealPlace(myRequest);
   }
 
   @Override

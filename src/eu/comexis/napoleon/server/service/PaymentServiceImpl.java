@@ -14,11 +14,14 @@ import eu.comexis.napoleon.shared.command.payment.GetAllPaymentCommand;
 import eu.comexis.napoleon.shared.command.payment.GetAllPaymentResponse;
 import eu.comexis.napoleon.shared.command.payment.GetPaymentCommand;
 import eu.comexis.napoleon.shared.command.payment.GetPaymentResponse;
+import eu.comexis.napoleon.shared.command.payment.GetPaymentsBoardCommand;
+import eu.comexis.napoleon.shared.command.payment.GetPaymentsBoardResponse;
 import eu.comexis.napoleon.shared.command.payment.UpdatePaymentCommand;
 import eu.comexis.napoleon.shared.command.payment.UpdatePaymentResponse;
 import eu.comexis.napoleon.shared.model.Payment;
 import eu.comexis.napoleon.shared.model.PaymentOwner;
 import eu.comexis.napoleon.shared.model.PaymentTenant;
+import eu.comexis.napoleon.shared.model.simple.PaymentListItem;
 
 @SuppressWarnings("serial")
 public class PaymentServiceImpl extends RemoteServiceServlet implements PaymentService{
@@ -65,6 +68,17 @@ public class PaymentServiceImpl extends RemoteServiceServlet implements PaymentS
     List<T> pts = ptDao.getPaymentsForLease(command.getLeaseId(),command.getEstateId(), companyId);
     
     response.setPayment(pts);
+    return response;
+  }
+  
+  @Override
+  public GetPaymentsBoardResponse execute(GetPaymentsBoardCommand command) {
+    GetPaymentsBoardResponse response = new GetPaymentsBoardResponse();
+    String companyId = UserManager.INSTANCE.getCompanyId();
+    PaymentDao<Payment> ptDao = new PaymentDao<Payment>();
+    List<PaymentListItem> pts = ptDao.getPaymentDashboardForLease(command.getLeaseId(),command.getEstateId(), companyId);
+    
+    response.setListPayments(pts);
     return response;
   }
 

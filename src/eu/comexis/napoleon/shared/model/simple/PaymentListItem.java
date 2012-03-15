@@ -4,7 +4,9 @@ import java.util.Date;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class PaymentListItem implements IsSerializable {
+import eu.comexis.napoleon.shared.model.Identifiable;
+
+public class PaymentListItem implements IsSerializable, Identifiable {
 
   private String paymentTenantId;
   private String paymentOwnerId;
@@ -117,5 +119,11 @@ public class PaymentListItem implements IsSerializable {
 
   public void setToDate(Date toDate) {
     this.toDate = toDate;
+  }
+
+  @Override
+  public String getId() {
+    // TODO Auto-generated method stub
+    return this.paymentTenantId;
   }
 }

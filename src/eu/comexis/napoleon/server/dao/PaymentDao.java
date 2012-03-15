@@ -1,5 +1,6 @@
 package eu.comexis.napoleon.server.dao;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -153,35 +154,47 @@ public class PaymentDao<T extends Payment> extends DAOBase{
     return date;
   }
   public List<PaymentListItem> getPaymentDashboardForLease(String leaseId, String realEstateId, String companyId){
-    // TO BE COMPLETED
     DateTimeFormat DATE_FORMAT = DateTimeFormat.getFormat("yyyy/MM/dd");
     Key<Company> companyKey = new Key<Company>(Company.class, companyId);
     Key<RealEstate> estateKey = new Key<RealEstate>(companyKey,RealEstate.class, realEstateId);
     Key<Lease> leaseKey = new Key<Lease>(estateKey,Lease.class, leaseId);
-    Lease lease = ofy().get(leaseKey);
-    RealEstate estate = ofy().get(estateKey);
-    Owner owner = ofy().get(estate.getOwnerKey());
     Query<PaymentTenant> qpt = ofy().query(PaymentTenant.class);
     qpt.ancestor(leaseKey);
     Query<PaymentOwner> qpo = ofy().query(PaymentOwner.class);
     qpo.ancestor(leaseKey);
     HashMap<String,PaymentListItem> allPayments = new HashMap<String,PaymentListItem>();
     String sDate = "";
-    for (PaymentTenant pt:qpt.order("periodStartDate").list()){
-      PaymentListItem item = null;
+    PaymentListItem item = null;
+    for (PaymentTenant pt:qpt.list()){
       sDate = DATE_FORMAT.format(pt.getPeriodEndDate());
-      if (allPayments.containsKey(sDate)){
-        item = allPayments.get(sDate);
-      }else{
-        item = new PaymentListItem();
-        allPayments.put(sDate, item);
-      }
+      item = new PaymentListItem();
       item.setFromDate(pt.getPeriodStartDate());
       item.setToDate(pt.getPeriodEndDate());
-      item.setRent(lease.getRent());
-      item.setFee(owner.getFee().floatValue());
+      item.setPaymentTenantDate(pt.getPaymentDate());
+      item.setRent(pt.getAmount());
+      allPayments.put(sDate, item);
     }
-    return null;
+    Float balance = 0f;
+    for (PaymentOwner po: qpo.order("PeriodEndDate").list()){
+      sDate = DATE_FORMAT.format(po.getPeriodEndDate());
+      item = allPayments.get(sDate);
+      item.setPaymentOwnerDate(po.getPaymentDate());
+      item.setPaidToOwner(po.getAmount());
+      item.setToBePaidToOwner(po.getRentWithoutFee());
+      item.setFee(po.getFee());
+      balance=po.getBalance();
+    }
+    // keep only the last balance
+    if (!sDate.isEmpty()){
+      item = allPayments.get(sDate);
+      item.setBalance(balance);
+    }
+    
+    List<PaymentListItem> paymentDashboard = new ArrayList<PaymentListItem>();
+    for (PaymentListItem itm: allPayments.values()){
+      paymentDashboard.add(itm);
+    }
+    return paymentDashboard;
   }
   public PaymentOwner getNextPaymentOwnerForLease(String leaseId, String realEstateId, String companyId){
     try{
