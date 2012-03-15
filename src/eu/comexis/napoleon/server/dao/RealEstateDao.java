@@ -216,6 +216,7 @@ public class RealEstateDao extends NapoleonDao<RealEstate> {
     o.setName(own.getLastName());
     o.setMobileNumber(own.getMobilePhoneNumber());
     o.setPhoneNumber(own.getPhoneNumber());
+    o.setEmail(own.getEmail());
     return o;
   }
   public ArrayList<SimpleRealEstate> getListSimpleRealEstatesForOwner(String companyId,String ownerId) {

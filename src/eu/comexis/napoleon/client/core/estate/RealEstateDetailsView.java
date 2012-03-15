@@ -127,7 +127,7 @@ public class RealEstateDetailsView extends ViewImpl implements RealEstateDetails
     ownerName.setInnerText(o.getName());
     ownerTel.setInnerText(o.getPhoneNumber());
     ownerGSM.setInnerText(o.getMobileNumber());
-    //ownerEmail.setInnerText(o.getEmail());
+    ownerEmail.setInnerText(o.getEmail());
     
   }
 
