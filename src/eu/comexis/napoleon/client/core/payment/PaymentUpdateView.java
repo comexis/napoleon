@@ -43,9 +43,9 @@ public class PaymentUpdateView<T extends Payment> extends ViewImpl implements
   @UiField
   DateBox date;
   @UiField
-  DateBox fromDate;
+  TextBox fromDate;
   @UiField
-  DateBox toDate;
+  TextBox toDate;
   @UiField
   RadioButton inCashYes;
   @UiField
@@ -161,8 +161,6 @@ public class PaymentUpdateView<T extends Payment> extends ViewImpl implements
     this.fromDate.setEnabled(true);
     this.toDate.setEnabled(true);
     this.date.setFormat(new DateBox.DefaultFormat(dateFormat));
-    this.fromDate.setFormat(new DateBox.DefaultFormat(dateFormat));
-    this.toDate.setFormat(new DateBox.DefaultFormat(dateFormat));
     this.date.setValue(null);
     this.fromDate.setValue(null);
     this.toDate.setValue(null);
@@ -179,8 +177,8 @@ public class PaymentUpdateView<T extends Payment> extends ViewImpl implements
     $("#moreDetailOwner").show();
     if (payment != null) {
       this.date.setValue(payment.getPaymentDate());
-      this.fromDate.setValue(payment.getPeriodStartDate());
-      this.toDate.setValue(payment.getPeriodEndDate());
+      this.fromDate.setValue(UiHelper.displayDate(payment.getPeriodStartDate()));
+      this.toDate.setValue(UiHelper.displayDate(payment.getPeriodEndDate()));
       this.amount.setValue(UiHelper.FloatToString(payment.getAmount()));
       try{
         this.account.setValue(((PaymentTenant)payment).getAccount()!=null ? ((PaymentTenant)payment).getAccount():"");
@@ -219,8 +217,6 @@ public class PaymentUpdateView<T extends Payment> extends ViewImpl implements
   public void updateData(T payment) {
     payment.setAmount(UiHelper.stringToFloat(amount.getValue()));
     payment.setPaymentDate(date.getValue());
-    payment.setPeriodStartDate(this.fromDate.getValue());
-    payment.setPeriodEndDate(this.toDate.getValue());
     try{
       ((PaymentTenant)payment).setPaymentInCash(inCashYes.getValue());
       ((PaymentTenant)payment).setNumber(number.getValue());

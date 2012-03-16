@@ -23,9 +23,9 @@
 		
 		<div class="{res.css.detailRow} {res.css.separationRow}">
 			<span class="{res.css.detailCellInputLabel}" style="width:100px">Periode du :</span>
-			<dp:DateBox ui:field="fromDate" styleName="{res.css.detailCellInputText}"/>
+			<g:TextBox ui:field="fromDate" styleName="{res.css.detailCellInputText}"/>
 			<span class="{res.css.detailCellInputLabel}" style="width:100px">au :</span>
-			<dp:DateBox ui:field="toDate" styleName="{res.css.detailCellInputText}"/>
+			<g:TextBox ui:field="toDate" styleName="{res.css.detailCellInputText}"/>
 		</div>
 		<div id="moreDetailOwner" class="{res.css.detailRow} {res.css.separationRow}">
 			<div class="{res.css.detailRow} {res.css.separationRow}">
