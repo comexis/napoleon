@@ -150,7 +150,7 @@ public class PaymentDao<T extends Payment> extends DAOBase{
     if (date!=null){
       Calendar cal = Calendar.getInstance();
       cal.setTime(date);
-      cal.set(Calendar.HOUR, 12);
+      cal.set(Calendar.HOUR_OF_DAY, 12);
       date = cal.getTime();
     }
     return date;
@@ -259,7 +259,7 @@ public class PaymentDao<T extends Payment> extends DAOBase{
         Calendar cal = Calendar.getInstance();
         cal.setTime(lastpo.getPeriodEndDate());
         cal.add(Calendar.DAY_OF_MONTH, 1);
-        nextPaymentOwner.setPeriodStartDate(setTime(cal.getTime()));
+        nextPaymentOwner.setPeriodStartDate(cal.getTime());
       }else{
         if (firstpt!=null){
           nextPaymentOwner.setPeriodStartDate(firstpt.getPeriodStartDate());
@@ -269,7 +269,7 @@ public class PaymentDao<T extends Payment> extends DAOBase{
         }
       }
       if (lastpt!=null){
-        nextPaymentOwner.setPeriodEndDate(setTime(lastpt.getPeriodEndDate()));
+        nextPaymentOwner.setPeriodEndDate(lastpt.getPeriodEndDate());
       }else{
         // si pas de paiement du locataire, alors pas de paiement proprio. Théoriquement on ne devrait pas passer dans ce code.
         return null;
@@ -344,11 +344,11 @@ public class PaymentDao<T extends Payment> extends DAOBase{
       Calendar cal = Calendar.getInstance();
       // si pas encore de perception
       if (lastpt==null){
-        nextPaymentTenant.setPeriodStartDate(setTime(lease.getStartDate()));
+        nextPaymentTenant.setPeriodStartDate(lease.getStartDate());
       }else{
         cal.setTime(lastpt.getPeriodEndDate());
         cal.add(Calendar.DAY_OF_MONTH, 1);
-        nextPaymentTenant.setPeriodStartDate(setTime(cal.getTime()));
+        nextPaymentTenant.setPeriodStartDate(cal.getTime());
       }
       // si la date de début est supérieur à la date de fin de bail, alors, plus de payement possible.
       if (nextPaymentTenant.getPeriodStartDate().after(lease.getEndDate())){
@@ -359,11 +359,11 @@ public class PaymentDao<T extends Payment> extends DAOBase{
       cal.setTime(nextPaymentTenant.getPeriodStartDate());
       cal.add(Calendar.MONTH, 1);
       cal.add(Calendar.DAY_OF_MONTH, -1);
-      nextPaymentTenant.setPeriodEndDate(setTime(cal.getTime())); 
+      nextPaymentTenant.setPeriodEndDate(cal.getTime()); 
       // si la date de fin de période est supérieur à celle du bail, on ramène cette date de fin à la fin du bail
       // cas des baux inférieurs à 1 mois
       if (nextPaymentTenant.getPeriodEndDate().after(lease.getEndDate())){
-        nextPaymentTenant.setPeriodEndDate(setTime(lease.getEndDate()));  
+        nextPaymentTenant.setPeriodEndDate(lease.getEndDate());  
       }
       nextPaymentTenant.setLeaseKey(leaseKey);
       nextPaymentTenant.setEstateId(realEstateId);
