@@ -15,6 +15,8 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
 import com.googlecode.objectify.util.DAOBase;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import eu.comexis.napoleon.shared.model.AcademicYear;
 import eu.comexis.napoleon.shared.model.ApplicationUser;
@@ -153,48 +155,81 @@ public class PaymentDao<T extends Payment> extends DAOBase{
     }
     return date;
   }
+  private Float getFee(Float rent, Float fee, FeeUnit unit){
+    if (unit.equals(FeeUnit.RENT_PERCENTAGE)){
+      return rent * fee/100;
+    }else{
+      return fee;
+    }
+  }
   public List<PaymentListItem> getPaymentDashboardForLease(String leaseId, String realEstateId, String companyId){
-    DateTimeFormat DATE_FORMAT = DateTimeFormat.getFormat("yyyy/MM/dd");
-    Key<Company> companyKey = new Key<Company>(Company.class, companyId);
-    Key<RealEstate> estateKey = new Key<RealEstate>(companyKey,RealEstate.class, realEstateId);
-    Key<Lease> leaseKey = new Key<Lease>(estateKey,Lease.class, leaseId);
-    Query<PaymentTenant> qpt = ofy().query(PaymentTenant.class);
-    qpt.ancestor(leaseKey);
-    Query<PaymentOwner> qpo = ofy().query(PaymentOwner.class);
-    qpo.ancestor(leaseKey);
-    HashMap<String,PaymentListItem> allPayments = new HashMap<String,PaymentListItem>();
-    String sDate = "";
-    PaymentListItem item = null;
-    for (PaymentTenant pt:qpt.list()){
-      sDate = DATE_FORMAT.format(pt.getPeriodEndDate());
-      item = new PaymentListItem();
-      item.setFromDate(pt.getPeriodStartDate());
-      item.setToDate(pt.getPeriodEndDate());
-      item.setPaymentTenantDate(pt.getPaymentDate());
-      item.setRent(pt.getAmount());
-      allPayments.put(sDate, item);
-    }
-    Float balance = 0f;
-    for (PaymentOwner po: qpo.order("PeriodEndDate").list()){
-      sDate = DATE_FORMAT.format(po.getPeriodEndDate());
-      item = allPayments.get(sDate);
-      item.setPaymentOwnerDate(po.getPaymentDate());
-      item.setPaidToOwner(po.getAmount());
-      item.setToBePaidToOwner(po.getRentWithoutFee());
-      item.setFee(po.getFee());
-      balance=po.getBalance();
-    }
-    // keep only the last balance
-    if (!sDate.isEmpty()){
-      item = allPayments.get(sDate);
-      item.setBalance(balance);
-    }
-    
-    List<PaymentListItem> paymentDashboard = new ArrayList<PaymentListItem>();
-    for (PaymentListItem itm: allPayments.values()){
-      paymentDashboard.add(itm);
-    }
-    return paymentDashboard;
+    LOG.info("Generate payments board");
+    try{
+      DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+      Key<Company> companyKey = new Key<Company>(Company.class, companyId);
+      Key<RealEstate> estateKey = new Key<RealEstate>(companyKey,RealEstate.class, realEstateId);
+      Key<Lease> leaseKey = new Key<Lease>(estateKey,Lease.class, leaseId);
+      
+      String sDate = "";
+      PaymentListItem item = null;
+      PaymentListItem itemPo = null;
+      
+      HashMap<String,PaymentListItem> allPaymentsProprio = new HashMap<String,PaymentListItem>();
+      Query<PaymentOwner> qpo = ofy().query(PaymentOwner.class);
+      qpo.ancestor(leaseKey);
+      for (PaymentOwner po: qpo.order("periodEndDate").list()){
+        sDate = dateFormat.format(po.getPeriodEndDate());
+        LOG.info("Paiement proprio: " + sDate);
+        item = new PaymentListItem();
+        item.setPaymentOwnerDate(po.getPaymentDate());
+        item.setPaidToOwner(po.getAmount());
+        item.setToBePaidToOwner(po.getRentWithoutFee() + (po.getPreviousbalance()!=null?po.getPreviousbalance():0f));
+        item.setBalance(po.getBalance());
+        allPaymentsProprio.put(sDate, item);
+        
+      }
+      
+      HashMap<String,PaymentListItem> allPayments = new HashMap<String,PaymentListItem>();
+      Query<PaymentTenant> qpt = ofy().query(PaymentTenant.class);
+      qpt.ancestor(leaseKey);
+      
+      Float balance = 0f;
+      Float fee = 0f;
+      for (PaymentTenant pt:qpt.order("periodEndDate").list()){
+        sDate = dateFormat.format(pt.getPeriodEndDate());
+        LOG.info("Paiement loyer: " + sDate);
+        fee = getFee(pt.getAmount(),pt.getFee(),pt.getFeeUnit());
+        balance +=pt.getAmount() - fee;
+        item = new PaymentListItem();
+        item.setFromDate(pt.getPeriodStartDate());
+        item.setToDate(pt.getPeriodEndDate());
+        item.setPaymentTenantDate(pt.getPaymentDate());
+        item.setRent(pt.getAmount());
+        item.setFee(getFee(pt.getAmount(),pt.getFee(),pt.getFeeUnit()));
+        item.setToBePaidToOwner(balance);
+        itemPo = allPaymentsProprio.get(sDate);
+        item.setBalance(balance);
+        if (itemPo!=null){
+          item.setPaymentOwnerDate(itemPo.getPaymentOwnerDate());
+          item.setPaidToOwner(itemPo.getPaidToOwner());
+          item.setToBePaidToOwner(itemPo.getToBePaidToOwner());
+          item.setBalance(itemPo.getBalance());
+          balance = itemPo.getBalance();
+        }
+        allPayments.put(sDate, item);
+      }
+      
+      
+      List<PaymentListItem> paymentDashboard = new ArrayList<PaymentListItem>();
+      for (PaymentListItem itm: allPayments.values()){
+        paymentDashboard.add(itm);
+      }
+      LOG.info("Board is generated");
+      return paymentDashboard;
+    } catch (Exception e) {
+      LOG.fatal("Cannot build payments board: ", e);
+      return null;
+    }  
   }
   public PaymentOwner getNextPaymentOwnerForLease(String leaseId, String realEstateId, String companyId){
     try{
@@ -251,6 +286,14 @@ public class PaymentDao<T extends Payment> extends DAOBase{
       q2.filter("periodStartDate >=", nextPaymentOwner.getPeriodStartDate());
       for (PaymentTenant pt:q2.list()){
         sum +=pt.getAmount();
+        // ajust the fee and rent to the actual values, if owner convention is changed.
+        if (pt.getFee()==null || pt.getFeeUnit()==null || !pt.getFee().equals(owner.getFee().floatValue()) || !pt.getFeeUnit().equals(owner.getUnit())){
+          // fee changed since last write
+          // update the fee
+          pt.setFee(owner.getFee().floatValue());
+          pt.setFeeUnit(owner.getUnit());
+          ofy().put(pt);
+        }
         nbrPeriod +=1; // todo, ne pas compter les periodes identiques.
       }
       // calcul du paiement
@@ -273,6 +316,7 @@ public class PaymentDao<T extends Payment> extends DAOBase{
       nextPaymentOwner.setLeaseKey(leaseKey);
       nextPaymentOwner.setEstateId(realEstateId);
       nextPaymentOwner.setLeaseId(leaseId);
+      nextPaymentOwner.setRent(sum);
       nextPaymentOwner.setNbrPeriod(nbrPeriod);
       return nextPaymentOwner;
     } catch (Exception e) {
@@ -286,7 +330,8 @@ public class PaymentDao<T extends Payment> extends DAOBase{
       Key<RealEstate> estateKey = new Key<RealEstate>(companyKey,RealEstate.class, realEstateId);
       Key<Lease> leaseKey = new Key<Lease>(estateKey,Lease.class, leaseId);
       Lease lease = ofy().get(leaseKey);
-      //RealEstate estate = ofy().get(estateKey);
+      RealEstate estate = ofy().get(estateKey);
+      Owner owner = ofy().get(estate.getOwnerKey());
       PaymentTenant nextPaymentTenant = new PaymentTenant();
       Query<PaymentTenant> q2 = ofy().query(PaymentTenant.class);
       q2.ancestor(leaseKey);
@@ -323,6 +368,10 @@ public class PaymentDao<T extends Payment> extends DAOBase{
       nextPaymentTenant.setLeaseKey(leaseKey);
       nextPaymentTenant.setEstateId(realEstateId);
       nextPaymentTenant.setLeaseId(leaseId);
+      // keep the values from lease and owner convention
+      nextPaymentTenant.setRent(lease.getRent());
+      nextPaymentTenant.setFee(owner.getFee().floatValue());
+      nextPaymentTenant.setFeeUnit(owner.getUnit());
       return nextPaymentTenant;
     } catch (Exception e) {
       LOG.fatal("Next payment cannot be given: ", e);

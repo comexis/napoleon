@@ -46,7 +46,7 @@ public class PaymentBoardListView extends AbstractListView<PaymentListItem> impl
     fromDateColumn.setSortable(true);
     sortHandler.setComparator(fromDateColumn, new SimpleTextComparator<PaymentListItem>() {
       public int compare(PaymentListItem o1, PaymentListItem o2) {
-        return compare(UiHelper.displayDate(o1.getFromDate()), UiHelper.displayDate(o2.getFromDate()));
+        return compare(UiHelper.formatDateForCompare(o1.getFromDate()), UiHelper.formatDateForCompare(o2.getFromDate()));
       }
     });
 
@@ -63,7 +63,7 @@ public class PaymentBoardListView extends AbstractListView<PaymentListItem> impl
     toDateColumn.setSortable(true);
     sortHandler.setComparator(toDateColumn, new SimpleTextComparator<PaymentListItem>() {
       public int compare(PaymentListItem o1, PaymentListItem o2) {
-        return compare(UiHelper.displayDate(o1.getToDate()), UiHelper.displayDate(o2.getToDate()));
+        return compare(UiHelper.formatDateForCompare(o1.getToDate()), UiHelper.formatDateForCompare(o2.getToDate()));
       }
     });
 
@@ -97,7 +97,7 @@ public class PaymentBoardListView extends AbstractListView<PaymentListItem> impl
     dateColumn.setSortable(true);
     sortHandler.setComparator(dateColumn, new SimpleTextComparator<PaymentListItem>() {
       public int compare(PaymentListItem o1, PaymentListItem o2) {
-        return compare(UiHelper.displayDate(o1.getPaymentTenantDate()), UiHelper.displayDate(o2.getPaymentTenantDate()));
+        return compare(UiHelper.formatDateForCompare(o1.getPaymentTenantDate()), UiHelper.formatDateForCompare(o2.getPaymentTenantDate()));
       }
     });
 
@@ -119,6 +119,23 @@ public class PaymentBoardListView extends AbstractListView<PaymentListItem> impl
     });
     
     table.addColumn(feeColumn, "Honoraires");
+    
+    // solde.
+    Column<PaymentListItem, String> balanceColumn = new Column<PaymentListItem, String>(new TextCell()) {
+      @Override
+      public String getValue(PaymentListItem object) {
+        return UiHelper.FloatToString(object.getBalance());
+      }
+    };
+
+    balanceColumn.setSortable(true);
+    sortHandler.setComparator(balanceColumn, new SimpleTextComparator<PaymentListItem>() {
+      public int compare(PaymentListItem o1, PaymentListItem o2) {
+        return compare(UiHelper.FloatToString(o1.getBalance()),UiHelper.FloatToString(o2.getBalance()));
+      }
+    });
+    
+    table.addColumn(balanceColumn, "Solde");
     
     // Du au proprio.
     Column<PaymentListItem, String> dueToOnwerColumn = new Column<PaymentListItem, String>(new TextCell()) {
@@ -165,7 +182,7 @@ public class PaymentBoardListView extends AbstractListView<PaymentListItem> impl
     dateVersColumn.setSortable(true);
     sortHandler.setComparator(dateVersColumn, new SimpleTextComparator<PaymentListItem>() {
       public int compare(PaymentListItem o1, PaymentListItem o2) {
-        return compare(UiHelper.displayDate(o1.getPaymentOwnerDate()), UiHelper.displayDate(o2.getPaymentOwnerDate()));
+        return compare(UiHelper.formatDateForCompare(o1.getPaymentOwnerDate()), UiHelper.formatDateForCompare(o2.getPaymentOwnerDate()));
       }
     });
 

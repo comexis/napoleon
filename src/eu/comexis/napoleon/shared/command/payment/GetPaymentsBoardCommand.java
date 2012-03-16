@@ -2,6 +2,7 @@ package eu.comexis.napoleon.shared.command.payment;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+import eu.comexis.napoleon.client.rpc.PaymentServiceAsync;
 import eu.comexis.napoleon.shared.command.Action;
 
 public class GetPaymentsBoardCommand implements Action<GetPaymentsBoardResponse> {
@@ -19,8 +20,7 @@ public class GetPaymentsBoardCommand implements Action<GetPaymentsBoardResponse>
 
   @Override
   public void dispatch(AsyncCallback<GetPaymentsBoardResponse> callback) {
-    // TODO Auto-generated method stub
-
+    PaymentServiceAsync.INSTANCE.execute(this, callback);
   }
 
   public String getEstateId() {

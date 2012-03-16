@@ -3,6 +3,7 @@ package eu.comexis.napoleon.client.core.paymentDashboard;
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.logging.client.LogConfiguration;
 import com.google.inject.Inject;

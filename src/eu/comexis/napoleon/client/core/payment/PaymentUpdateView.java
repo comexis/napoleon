@@ -191,11 +191,16 @@ public class PaymentUpdateView<T extends Payment> extends ViewImpl implements
         $("#moreDetailTenant").hide();
       }
       try{
+        PaymentOwner po = (PaymentOwner)payment;
         this.fee.setInnerText(UiHelper.FloatToString(((PaymentOwner)payment).getFee()) + " " + UiHelper.translateEnum("FeeUnit_", ((PaymentOwner)payment).getFeeUnit()));
         this.previousBalance.setInnerText(UiHelper.FloatToString(((PaymentOwner)payment).getPreviousbalance()));
-        this.dueToOwner.setInnerText(UiHelper.FloatToString(((PaymentOwner)payment).getBalance()));
-        this.balance.setValue(this.dueToOwner.getInnerText());
-        this.rentWithoutFee.setInnerText(UiHelper.FloatToString(((PaymentOwner)payment).getRentWithoutFee()));
+        Float fRentWithoutFee = po.getRentWithoutFee()!=null ? po.getRentWithoutFee() : 0f;
+        Float fPreviousBalance = po.getPreviousbalance()!=null ? po.getPreviousbalance() : 0f;
+        Float fAmount = po.getAmount()!=null ? po.getAmount() : 0f;
+        Float toOwner  = fRentWithoutFee+ fPreviousBalance;
+        this.dueToOwner.setInnerText(UiHelper.FloatToString(toOwner));
+        this.balance.setValue(UiHelper.FloatToString(toOwner - fAmount));
+        this.rentWithoutFee.setInnerText(UiHelper.FloatToString(fRentWithoutFee));
       }catch(Exception e){
         $("#moreDetailOwner").hide();
       }
