@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<datastore-indexes autoGenerate="true">
+	<datastore-index kind="Payment" ancestor="true" source="auto">
+        <property name="^i" direction="asc"/>
+        <property name="periodEndDate" direction="asc"/>
+    </datastore-index>
+</datastore-indexes>
