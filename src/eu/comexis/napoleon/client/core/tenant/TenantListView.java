@@ -66,7 +66,7 @@ public class TenantListView extends AbstractListView<SimpleTenant> implements
       }
     });
 
-    table.addColumn(addressColumn, "Adresse");
+    table.addColumn(addressColumn, "Adresse de domiciliation");
 
     // Postal Code.
     Column<SimpleTenant, String> cpColumn = new Column<SimpleTenant, String>(new TextCell()) {

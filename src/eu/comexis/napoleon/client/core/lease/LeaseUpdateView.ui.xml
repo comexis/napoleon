@@ -16,7 +16,7 @@
 				<g:ListBox ui:field="reference" styleName="{res.css.detailCellInputText}"
 					name="reference" />
 				<span class="{res.css.detailCellInputLabel} {res.css.autoLabel}">Année académique :</span>
-				<g:SuggestBox ui:field="academicYear" styleName="{res.css.detailCellInputText} {res.css.smallInput}" />
+				<g:SuggestBox ui:field="academicYear" styleName="{res.css.detailCellInputText}" />
 			</div>
 
 			<div class="{res.css.detailRow} {res.css.separationRow}">

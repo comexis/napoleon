@@ -32,6 +32,42 @@ public class Payment implements IsSerializable, Identifiable  {
   private String leaseId;
   @NotSaved
   private String estateId;
+  private Float rentWithoutFee;
+  private Float fee;
+  private Float rent;
+  private FeeUnit feeUnit;
+
+  public Float getRentWithoutFee() {
+    return rentWithoutFee;
+  }
+
+  public void setRentWithoutFee(Float rentWithoutFee) {
+    this.rentWithoutFee = rentWithoutFee;
+  }
+
+  public Float getFee() {
+    return fee;
+  }
+
+  public void setFee(Float fee) {
+    this.fee = fee;
+  }
+
+  public Float getRent() {
+    return rent;
+  }
+
+  public void setRent(Float rent) {
+    this.rent = rent;
+  }
+
+  public FeeUnit getFeeUnit() {
+    return feeUnit;
+  }
+
+  public void setFeeUnit(FeeUnit feeUnit) {
+    this.feeUnit = feeUnit;
+  }
 
   public Payment() {
     // TODO Auto-generated constructor stub

@@ -45,7 +45,7 @@ public class PaymentTenantListView extends AbstractListView<PaymentTenant> imple
     fromDateColumn.setSortable(true);
     sortHandler.setComparator(fromDateColumn, new SimpleTextComparator<PaymentTenant>() {
       public int compare(PaymentTenant o1, PaymentTenant o2) {
-        return compare(UiHelper.displayDate(o1.getPeriodStartDate()), UiHelper.displayDate(o2.getPeriodStartDate()));
+        return compare(UiHelper.formatDateForCompare(o1.getPeriodStartDate()), UiHelper.formatDateForCompare(o2.getPeriodStartDate()));
       }
     });
 
@@ -62,7 +62,7 @@ public class PaymentTenantListView extends AbstractListView<PaymentTenant> imple
     toDateColumn.setSortable(true);
     sortHandler.setComparator(toDateColumn, new SimpleTextComparator<PaymentTenant>() {
       public int compare(PaymentTenant o1, PaymentTenant o2) {
-        return compare(UiHelper.displayDate(o1.getPeriodEndDate()), UiHelper.displayDate(o2.getPeriodEndDate()));
+        return compare(UiHelper.formatDateForCompare(o1.getPeriodEndDate()), UiHelper.formatDateForCompare(o2.getPeriodEndDate()));
       }
     });
 
@@ -96,7 +96,7 @@ public class PaymentTenantListView extends AbstractListView<PaymentTenant> imple
     dateColumn.setSortable(true);
     sortHandler.setComparator(dateColumn, new SimpleTextComparator<PaymentTenant>() {
       public int compare(PaymentTenant o1, PaymentTenant o2) {
-        return compare(UiHelper.displayDate(o1.getPaymentDate()), UiHelper.displayDate(o2.getPaymentDate()));
+        return compare(UiHelper.formatDateForCompare(o1.getPaymentDate()), UiHelper.formatDateForCompare(o2.getPaymentDate()));
       }
     });
 

@@ -29,6 +29,8 @@ public interface Literals extends ConstantsWithLookup {
 
   @DefaultStringValue("Séparation des biens")
   public String MatrimonialRegime_SEPARATION();
+  
+  // MR, MRS, MISS,MRS_MR,MR_MRS,PHYS,MORALEPRIV,MORALEPUB,GESTION,PUB,PRIV,IE,COM,SCI,SCRI,SC,SPRLU, SPRL,SCRL,SA,ASBL;
 
   @DefaultStringValue("Monsieur")
   public String Title_MR();
@@ -38,6 +40,60 @@ public interface Literals extends ConstantsWithLookup {
 
   @DefaultStringValue("Mademoiselle")
   public String Title_MISS();
+  
+  @DefaultStringValue("Monsieur et Madame")
+  public String Title_MR_MRS();
+  
+  @DefaultStringValue("Madame et Monsieur")
+  public String Title_MRS_MR();
+  
+  @DefaultStringValue("Personne physique")
+  public String Title_PHYS();
+  
+  @DefaultStringValue("Personne morale de droit privé")
+  public String Title_MORALEPRIV();
+  
+  @DefaultStringValue("Personne morale de droit public")
+  public String Title_MORALEPUB();
+  
+  @DefaultStringValue("Gestionnaire")
+  public String Title_GESTION();
+  
+  @DefaultStringValue("Société publique")
+  public String Title_PUB();
+  
+  @DefaultStringValue("Société privée")
+  public String Title_PRIV();
+  
+  @DefaultStringValue("Institution européenne")
+  public String Title_IE();
+  
+  @DefaultStringValue("Commune")
+  public String Title_COM();
+  
+  @DefaultStringValue("S.C.I.")
+  public String Title_SCI();
+  
+  @DefaultStringValue("S.C.R.I.")
+  public String Title_SCRI();
+  
+  @DefaultStringValue("S.A.")
+  public String Title_SA();
+  
+  @DefaultStringValue("S.C.")
+  public String Title_SC();
+  
+  @DefaultStringValue("S.P.R.L.")
+  public String Title_SPRL();
+  
+  @DefaultStringValue("S.P.R.L.U.")
+  public String Title_SPRLU();
+  
+  @DefaultStringValue("S.C.R.L.")
+  public String Title_SCRL();
+  
+  @DefaultStringValue("A.S.B.L.")
+  public String Title_ASBL();
 
   @DefaultStringValue("M")
   public String Title_MR_short();

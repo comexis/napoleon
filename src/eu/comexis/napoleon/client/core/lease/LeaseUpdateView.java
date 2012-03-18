@@ -273,6 +273,7 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
     this.depositDate.setValue(null);
     UiHelper.selectTextItemBoxByValue(this.reference, "-");
     UiHelper.selectTextItemBoxByValue(this.tenantName, "-");
+    UiHelper.selectTextItemBoxByValue(this.type,"-");
     this.furnituresPaymentOK.setValue(false);
     this.hasFurnituresWithContract.setValue(false);
     this.hasFurnituresRental.setValue(false);

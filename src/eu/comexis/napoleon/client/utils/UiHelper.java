@@ -18,6 +18,7 @@ import eu.comexis.napoleon.shared.validation.ValidationMessage;
 public class UiHelper {
   
   private static DateTimeFormat DATE_FORMAT = DateTimeFormat.getFormat("dd/MM/yyyy");
+  private static DateTimeFormat COMPARE_DATE_FORMAT = DateTimeFormat.getFormat("yyyy.MM.dd");
 
   // static class
   private UiHelper() {
@@ -94,6 +95,13 @@ public class UiHelper {
     }
     
     return DATE_FORMAT.format(d);
+  }
+  public static String formatDateForCompare(Date d){
+    if (d == null){
+      return "";
+    }
+    
+    return COMPARE_DATE_FORMAT.format(d);
   }
   public static String formatLastName(String name){
     if (name!=null && !name.isEmpty()){
