@@ -89,8 +89,22 @@ public class DocumentPanelView extends ViewImpl implements DocumentPanelPresente
 
   @UiHandler("uploadButton")
   public void onUploadClicked(ClickEvent e) {
-    FileDescriptor file = new FileDescriptor(uploadBox.getFilename(), descriptionBox.getText());
+    String fileName = extractFileName();
+    FileDescriptor file = new FileDescriptor(fileName, descriptionBox.getText());
     presenter.onBeforeUpload(file);
+  }
+
+  private String extractFileName() {
+    String fileName = uploadBox.getFilename();
+    int index = fileName.lastIndexOf('/');
+    if (index < 0){
+      index = fileName.lastIndexOf('\\');
+    }
+    
+    if (index > 0){
+      fileName = fileName.substring(index +1);
+    }
+    return fileName;
   }
 
   @Override
@@ -109,7 +123,8 @@ public class DocumentPanelView extends ViewImpl implements DocumentPanelPresente
 
     if (files != null && !files.isEmpty()) {
       for (FileDescriptor file : files) {
-        String label = file.getDescription() != null ? file.getDescription() : file.getFileName();
+        String description = file.getDescription();
+        String label = description != null && description.length() != 0 ? description : file.getFileName();
         SafeUri href = getFileUri(file.getId(), parentId);
         builder.append(t.file(label, href, css.innerRealEstateList()));
       }
