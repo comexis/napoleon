@@ -6,12 +6,12 @@ import java.util.UUID;
 
 import com.googlecode.objectify.Key;
 
+import eu.comexis.napoleon.server.utils.ServerUtils;
 import eu.comexis.napoleon.shared.model.City;
 import eu.comexis.napoleon.shared.model.Company;
 import eu.comexis.napoleon.shared.model.Country;
 import eu.comexis.napoleon.shared.model.JobTitle;
 import eu.comexis.napoleon.shared.model.Nationality;
-import eu.comexis.napoleon.shared.model.Owner;
 import eu.comexis.napoleon.shared.model.Tenant;
 import eu.comexis.napoleon.shared.model.simple.SimpleTenant;
 
@@ -47,27 +47,30 @@ public class TenantDao extends NapoleonDao<Tenant> {
       o.setName(tenant.getLastName());
       o.setCity(tenant.getCity());
       o.setPostalCode(tenant.getPostalCode());
-      o.setAddress(tenant.getStreet() + ", " + tenant.getNumber() + (tenant.getBox()!=null ? " bte " + tenant.getBox():""));
+      o.setAddress(ServerUtils.buildPartyAddress(tenant));
       o.setMobileNumber(tenant.getMobilePhoneNumber());
       o.setPhoneNumber(tenant.getPhoneNumber());
       tenants.add(o);
     }
     return tenants;
   }
+
   @Override
   public Tenant update(Tenant tenant) {
-    if (tenant.getCompany() != null){
-      return update(tenant,tenant.getCompany());
-    }else{
+    if (tenant.getCompany() != null) {
+      return update(tenant, tenant.getCompany());
+    } else {
       // log error
       LOG.fatal("Parent Company is not set, cannot save tenant");
       return null;
     }
   }
+
   public Tenant update(Tenant tenant, String companyId) {
     Key<Company> companyKey = new Key<Company>(Company.class, companyId);
-    return update(tenant,companyKey);
+    return update(tenant, companyKey);
   }
+
   public Tenant update(Tenant tenant, Key<Company> companyKey) {
     String tenantId = tenant.getId();
     CountryDao countryData = new CountryDao();
@@ -85,18 +88,19 @@ public class TenantDao extends NapoleonDao<Tenant> {
       country.setName(tenant.getCountry());
       countryData.update(country);
     }
-    City city = countryData.getCityByFullName(country.getId(), tenant.getCity(),tenant.getPostalCode());
+    City city =
+        countryData.getCityByFullName(country.getId(), tenant.getCity(), tenant.getPostalCode());
     if (city == null) {
-      city = countryData.addCity(country.getId(), tenant.getCity(),tenant.getPostalCode());
+      city = countryData.addCity(country.getId(), tenant.getCity(), tenant.getPostalCode());
     }
-    if (tenant.getNationality()!= null && !tenant.getNationality().isEmpty()){
+    if (tenant.getNationality() != null && !tenant.getNationality().isEmpty()) {
       NationalityDao natDao = new NationalityDao();
       Nationality nat = new Nationality();
       nat.setName(tenant.getNationality());
       nat.setCompany(companyKey);
       natDao.update(nat);
     }
-    if (tenant.getJobTitle()!= null && !tenant.getJobTitle().isEmpty()){
+    if (tenant.getJobTitle() != null && !tenant.getJobTitle().isEmpty()) {
       JobTitleDao jobDao = new JobTitleDao();
       JobTitle job = new JobTitle();
       job.setName(tenant.getJobTitle());
@@ -105,4 +109,5 @@ public class TenantDao extends NapoleonDao<Tenant> {
     }
     return super.update(tenant);
   }
+
 }

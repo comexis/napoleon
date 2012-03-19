@@ -1,19 +1,18 @@
 package eu.comexis.napoleon.server.dao;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.UUID;
 
 import com.googlecode.objectify.Key;
 
+import eu.comexis.napoleon.server.utils.ServerUtils;
 import eu.comexis.napoleon.shared.model.City;
 import eu.comexis.napoleon.shared.model.Company;
 import eu.comexis.napoleon.shared.model.Country;
 import eu.comexis.napoleon.shared.model.JobTitle;
 import eu.comexis.napoleon.shared.model.Nationality;
 import eu.comexis.napoleon.shared.model.Owner;
-import eu.comexis.napoleon.shared.model.RealEstate;
 import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 
 public class OwnerDao extends NapoleonDao<Owner> {
@@ -48,27 +47,30 @@ public class OwnerDao extends NapoleonDao<Owner> {
       o.setName(owner.getLastName());
       o.setCity(owner.getCity());
       o.setPostalCode(owner.getPostalCode());
-      o.setAddress(owner.getStreet() + ", " + owner.getNumber() + (owner.getBox()!=null ? " bte " + owner.getBox():""));
+      o.setAddress(ServerUtils.buildPartyAddress(owner));
       o.setMobileNumber(owner.getMobilePhoneNumber());
       o.setPhoneNumber(owner.getPhoneNumber());
       owners.add(o);
     }
     return owners;
   }
+
   @Override
   public Owner update(Owner owner) {
-    if (owner.getCompany() != null){
-      return update(owner,owner.getCompany());
-    }else{
+    if (owner.getCompany() != null) {
+      return update(owner, owner.getCompany());
+    } else {
       // log error
       LOG.fatal("Parent Company is not set, cannot save owner");
       return null;
     }
   }
+
   public Owner update(Owner owner, String companyId) {
     Key<Company> companyKey = new Key<Company>(Company.class, companyId);
-    return update(owner,companyKey);
+    return update(owner, companyKey);
   }
+
   public Owner update(Owner owner, Key<Company> companyKey) {
     String ownerId = owner.getId();
     CountryDao countryData = new CountryDao();
@@ -86,18 +88,19 @@ public class OwnerDao extends NapoleonDao<Owner> {
       country.setName(owner.getCountry());
       countryData.update(country);
     }
-    City city = countryData.getCityByFullName(country.getId(), owner.getCity(),owner.getPostalCode());
+    City city =
+        countryData.getCityByFullName(country.getId(), owner.getCity(), owner.getPostalCode());
     if (city == null) {
-      city = countryData.addCity(country.getId(), owner.getCity(),owner.getPostalCode());
+      city = countryData.addCity(country.getId(), owner.getCity(), owner.getPostalCode());
     }
-    if (owner.getNationality()!= null && !owner.getNationality().isEmpty()){
+    if (owner.getNationality() != null && !owner.getNationality().isEmpty()) {
       NationalityDao natDao = new NationalityDao();
       Nationality nat = new Nationality();
       nat.setName(owner.getNationality());
       nat.setCompany(companyKey);
       natDao.update(nat);
     }
-    if (owner.getJobTitle()!= null && !owner.getJobTitle().isEmpty()){
+    if (owner.getJobTitle() != null && !owner.getJobTitle().isEmpty()) {
       JobTitleDao jobDao = new JobTitleDao();
       JobTitle job = new JobTitle();
       job.setName(owner.getJobTitle());
@@ -106,16 +109,18 @@ public class OwnerDao extends NapoleonDao<Owner> {
     }
     return super.update(owner);
   }
+
   @Override
-  public Owner getById(String ownerId,String companyId){
+  public Owner getById(String ownerId, String companyId) {
     Owner o = super.getById(ownerId, companyId);
     RealEstateDao eDao = new RealEstateDao();
     o.setEstates(eDao.getListSimpleRealEstatesForOwner(companyId, ownerId));
     return o;
   }
-  public Key<Owner> getOwnerKey(String ownerId,String companyId){
+
+  public Key<Owner> getOwnerKey(String ownerId, String companyId) {
     Key<Company> companyKey = new Key<Company>(Company.class, companyId);
-    Key<Owner> ownerKey = new Key<Owner>(companyKey,Owner.class, ownerId);
+    Key<Owner> ownerKey = new Key<Owner>(companyKey, Owner.class, ownerId);
     return ownerKey;
   }
 }
