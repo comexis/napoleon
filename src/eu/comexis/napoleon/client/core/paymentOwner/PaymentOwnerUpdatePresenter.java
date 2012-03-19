@@ -55,7 +55,6 @@ public class PaymentOwnerUpdatePresenter
           public void got(PaymentOwner payment) {
             if (payment!=null){
               setDataObjectModel(payment);
-              getView().setData(payment);
             }else{
               PaymentOwnerUpdatePresenter.this.onButtonCancelClick();
             }

@@ -36,6 +36,7 @@ import eu.comexis.napoleon.shared.model.simple.SimpleTenant;
 import eu.comexis.napoleon.shared.validation.LeaseValidator;
 import eu.comexis.napoleon.shared.validation.ValidationMessage;
 import eu.comexis.napoleon.client.core.lease.LeaseUpdateUiHandlers.HasLeaseUpdateUiHandler;
+
 public class LeaseUpdatePresenter extends
     AbstractPresenter<LeaseUpdatePresenter.MyView, LeaseUpdatePresenter.MyProxy> implements
     LeaseUpdateUiHandlers {
@@ -52,15 +53,15 @@ public class LeaseUpdatePresenter extends
     public void reset();
 
     public void setLease(Lease l);
-    
+
     public void setFee(Float fee);
 
     public Lease updateLease(Lease l);
-    
+
     public void fillEstateList(List<SimpleRealEstate> estates);
-    
+
     public void fillTenantList(List<SimpleTenant> tenants);
-    
+
     public void fillAcademicYearList(List<String> years);
   }
 
@@ -82,6 +83,7 @@ public class LeaseUpdatePresenter extends
     this.placeManager = placeManager;
     this.validator = new LeaseValidator();
   }
+
   private void goToDetails() {
     PlaceRequest myRequest = new PlaceRequest(NameTokens.lease);
     // add the id of the owner to load
@@ -95,36 +97,39 @@ public class LeaseUpdatePresenter extends
     placeManager.revealPlace(myRequest);
 
   }
+
   @Override
   public void onButtonCancelClick() {
-    if (lease == null || lease.getId() == null || lease.getId().length() == 0){
+    if (lease == null || lease.getId() == null || lease.getId().length() == 0) {
       goToList();
-    }else {
+    } else {
       goToDetails();
     }
   }
+
   @Override
   public void onRentChanged(Float rent) {
     Float fee = 0f;
-    if (lease.getUnit().equals(FeeUnit.RENT_PERCENTAGE)){
-      fee=rent * lease.getFeeFromOwner()/100;
-    }else{
-      fee=lease.getFeeFromOwner();
+    if (lease.getUnit().equals(FeeUnit.RENT_PERCENTAGE)) {
+      fee = rent * lease.getFeeFromOwner() / 100;
+    } else {
+      fee = lease.getFeeFromOwner();
     }
     getView().setFee(fee);
   }
+
   @Override
   public void onButtonSaveClick() {
     getView().updateLease(lease);
 
     List<ValidationMessage> validationMessages = validator.validate(lease);
-    
+
     if (validationMessages.isEmpty()) {
       saveLease();
     } else {
       getView().displayValidationMessage(validationMessages);
     }
-    
+
   }
 
   /**
@@ -184,17 +189,17 @@ public class LeaseUpdatePresenter extends
   protected void onReset() {
     super.onReset();
     if (id != null) { // call the server to get the requested owner
-      new GetLeaseCommand(id,realEstateId).dispatch(new GotLease() {
+      new GetLeaseCommand(id, realEstateId).dispatch(new GotLease() {
         @Override
         public void got(Lease lease) {
           LeaseUpdatePresenter.this.lease = lease;
           getView().setLease(lease);
+          doReveal();
         }
       });
     }
   }
-  
-  
+
   @Override
   protected void revealInParent() {
     RevealContentEvent.fire(this, MainLayoutPresenter.MAIN_CONTENT, this);
@@ -220,12 +225,12 @@ public class LeaseUpdatePresenter extends
       }
     });
   }
-  
+
   @Override
   protected Menus getMenu() {
     return Menus.LEASE;
   }
-  
+
   @Override
   protected String getTitle() {
     if ("new".equals(id)) {

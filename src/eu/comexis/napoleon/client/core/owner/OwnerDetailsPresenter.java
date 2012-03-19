@@ -61,7 +61,6 @@ public class OwnerDetailsPresenter
       @Override
       public void got(Owner owner) {
         setData(owner);
-        getView().setData(owner);
       }
     });
 

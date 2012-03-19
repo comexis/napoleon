@@ -171,7 +171,6 @@ public class LeaseDetailsPresenter extends
       @Override
       public void got(Lease lease) {
         setLease(lease);
-        getView().setLease(lease);
       }
     });
 
@@ -201,6 +200,8 @@ public class LeaseDetailsPresenter extends
   protected void setLease(Lease lease) {
     this.lease = lease;
     filesPresenter.setDocumentHolder(lease);
+    getView().setLease(lease);
+    doReveal();
   }
 
 }

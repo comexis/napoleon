@@ -58,7 +58,6 @@ public class TenantUpdatePresenter extends
       @Override
       public void got(Tenant tenant) {
         setDataObjectModel(tenant);
-        getView().setData(tenant);
       }
     });
 
