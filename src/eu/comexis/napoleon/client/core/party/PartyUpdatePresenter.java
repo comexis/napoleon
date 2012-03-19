@@ -211,8 +211,7 @@ public abstract class PartyUpdatePresenter<T extends Party, V extends PartyUpdat
     if (id != null && !NEW_ID.equals(id)) { // call the server to get the requested owner
       requestData(id);
     } else {
-      party = createNewDataModel();
-      getView().setData(party);
+      setDataObjectModel(createNewDataModel());
     }
 
   }
@@ -228,6 +227,8 @@ public abstract class PartyUpdatePresenter<T extends Party, V extends PartyUpdat
   
   protected void setDataObjectModel(T t){
     party = t;
+    getView().setData(t);
+    doReveal();
   }
   private void goToDetails() {
     PlaceRequest myRequest = new PlaceRequest(getDetailsNameTokens());

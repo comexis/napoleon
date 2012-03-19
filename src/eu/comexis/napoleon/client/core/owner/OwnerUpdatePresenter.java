@@ -55,7 +55,6 @@ public class OwnerUpdatePresenter extends
       @Override
       public void got(Owner owner) {
         setDataObjectModel(owner);
-        getView().setData(owner);
       }
     });
   }

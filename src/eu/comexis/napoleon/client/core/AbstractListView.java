@@ -25,8 +25,6 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
-import eu.comexis.napoleon.client.widget.LoadingDataIndicator;
-
 public abstract class AbstractListView<T> extends ViewImpl implements
     AbstractListPresenter.MyView<T> {
 

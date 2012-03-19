@@ -68,8 +68,7 @@ public abstract class PartyDetailsPresenter<T extends Party, V extends PartyDeta
     getEventBus().addHandler(AddedFileEvent.getType(), this);
     
     getView().setPresenter(this);
-    
-    
+     
     //TODO replace that
     //filesPresenter = ginjector.getDocumentPanelPresenter().get();
     DocumentPanelView.Binder binder = GWT.create(DocumentPanelView.Binder.class);
@@ -130,6 +129,8 @@ public abstract class PartyDetailsPresenter<T extends Party, V extends PartyDeta
   protected void setData(T party) {
     this.party = party;
     filesPresenter.setDocumentHolder(party);
+    getView().setData(party);
+    doReveal();
   }
   
   @Override

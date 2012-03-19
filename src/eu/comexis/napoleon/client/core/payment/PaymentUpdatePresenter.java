@@ -3,6 +3,7 @@ package eu.comexis.napoleon.client.core.payment;
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.logging.client.LogConfiguration;
 import com.google.inject.Inject;
@@ -15,7 +16,6 @@ import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import eu.comexis.napoleon.client.core.AbstractPresenter;
 import eu.comexis.napoleon.client.core.HasPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter;
-import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.rpc.callback.GotLease;
 import eu.comexis.napoleon.shared.command.lease.GetLeaseCommand;
 import eu.comexis.napoleon.shared.model.Lease;
@@ -27,7 +27,7 @@ public abstract class PaymentUpdatePresenter<T extends Payment, V extends Paymen
     extends AbstractPresenter<V, P> implements PaymentUpdateUiHandlers {
 
   public interface MyView<T extends Payment> extends View, HasPresenter<PaymentUpdateUiHandlers> {
-    
+
     public void displayError(String error);
 
     public void displayValidationMessage(List<ValidationMessage> validationMessages);
@@ -35,11 +35,11 @@ public abstract class PaymentUpdatePresenter<T extends Payment, V extends Paymen
     public void reset();
 
     public void setData(T o);
-    
+
     public void setLease(Lease l);
 
     public void updateData(T o);
-    
+
   }
 
   public static final String UUID_PARAMETER = "uuid";
@@ -69,7 +69,6 @@ public abstract class PaymentUpdatePresenter<T extends Payment, V extends Paymen
   public void onButtonCancelClick() {
     goToList();
   }
-  
 
   @Override
   public void onButtonSaveClick() {
@@ -100,7 +99,7 @@ public abstract class PaymentUpdatePresenter<T extends Payment, V extends Paymen
     placeManager.revealPlace(myRequest);
 
   }
-  
+
   /**
    * Retrieve the id of the owner to show it
    */
@@ -112,28 +111,30 @@ public abstract class PaymentUpdatePresenter<T extends Payment, V extends Paymen
     id = placeRequest.getParameter(UUID_PARAMETER, null);
     leaseId = placeRequest.getParameter(LEASE_UUID_PARAMETER, null);
     this.estateId = placeRequest.getParameter(ESTATE_UUID_PARAMETER, null);
-    
-    if (id == null || id.length() == 0 
-        || leaseId == null || leaseId.length()==0 
-        || estateId == null || estateId.length() ==0) {
+
+    if (id == null || id.length() == 0 || leaseId == null || leaseId.length() == 0
+        || estateId == null || estateId.length() == 0) {
+      GWT.log("blop2");
       if (LogConfiguration.loggingIsEnabled()) {
         LOG.severe("invalid id is null or empty");
       }
       placeManager.revealErrorPlace(placeRequest.getNameToken());
     }
   }
-  
-  protected abstract  T createNewDataModel();
-  protected T getDataObjectModel(){
+
+  protected abstract T createNewDataModel();
+
+  protected T getDataObjectModel() {
     return payment;
   }
+
   @Override
   protected void onBind() {
     super.onBind();
     getView().setPresenter(this);
     init();
   }
-  
+
   @Override
   protected void onHide() {
     super.onHide();
@@ -152,9 +153,9 @@ public abstract class PaymentUpdatePresenter<T extends Payment, V extends Paymen
     }
 
   }
-  
+
   protected void requestLease() {
-    new GetLeaseCommand(this.leaseId,this.estateId).dispatch(new GotLease() {
+    new GetLeaseCommand(this.leaseId, this.estateId).dispatch(new GotLease() {
       @Override
       public void got(Lease l) {
         setLease(l);
@@ -162,23 +163,28 @@ public abstract class PaymentUpdatePresenter<T extends Payment, V extends Paymen
       }
     });
   }
+
   protected abstract void requestData(String id);
-  
+
   @Override
   protected void revealInParent() {
     RevealContentEvent.fire(this, MainLayoutPresenter.MAIN_CONTENT, this);
   }
-  
-  protected void setDataObjectModel(T t){
+
+  protected void setDataObjectModel(T t) {
     payment = t;
     id = t.getId();
+    getView().setData(t);
+    
+    doReveal();
   }
-  protected void setLease(Lease l){
+
+  protected void setLease(Lease l) {
     lease = l;
     leaseId = l.getId();
     estateId = l.getRealEstate().getId();
   }
-  
+
   private void init() {
     //
   }

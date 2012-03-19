@@ -284,15 +284,14 @@ public class RealEstateUpdatePresenter extends
       new GetRealEstateCommand(id).dispatch(new GotRealEstate() {
         @Override
         public void got(RealEstate realEstate) {
-          RealEstateUpdatePresenter.this.realEstate = realEstate;
-          getView().setRealEstate(realEstate);
+          setRealEstate(realEstate);
         }
       });
     } else {
-      realEstate = new RealEstate();
+      RealEstate realEstate = new RealEstate();
       realEstate.setState(RealEstateState.NONE);
       realEstate.setType(TypeOfRealEstate.NONE);
-      getView().setRealEstate(realEstate);
+      setRealEstate(realEstate);
     }
   }
 
@@ -301,6 +300,13 @@ public class RealEstateUpdatePresenter extends
     RevealContentEvent.fire(this, MainLayoutPresenter.MAIN_CONTENT, this);
   }
 
+  private void setRealEstate(RealEstate re){
+    this.realEstate = re;
+    getView().setRealEstate(re);
+    doReveal();
+  }
+  
+  
   private void init() {
     new GetAllCountriesCommand().dispatch(new GotAllCountries() {
       @Override

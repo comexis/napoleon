@@ -23,8 +23,6 @@ import eu.comexis.napoleon.client.core.AbstractPresenter;
 import eu.comexis.napoleon.client.core.HasPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
-import eu.comexis.napoleon.client.core.estate.RealEstateDetailUiHandlers;
-import eu.comexis.napoleon.client.core.lease.LeaseDetailUiHandlers;
 import eu.comexis.napoleon.client.events.AddedFileEvent;
 import eu.comexis.napoleon.client.events.AddedFileEvent.AddedFileHandler;
 import eu.comexis.napoleon.client.place.NameTokens;
@@ -35,11 +33,8 @@ import eu.comexis.napoleon.client.widget.DocumentPanelView;
 import eu.comexis.napoleon.shared.command.estate.GetRealEstateCommand;
 import eu.comexis.napoleon.shared.command.estate.UpdateRealEstateCommand;
 import eu.comexis.napoleon.shared.command.estate.UpdateRealEstateResponse;
-import eu.comexis.napoleon.shared.command.lease.UpdateLeaseCommand;
-import eu.comexis.napoleon.shared.command.lease.UpdateLeaseResponse;
 import eu.comexis.napoleon.shared.model.FileDescriptor;
 import eu.comexis.napoleon.shared.model.HasFiles;
-import eu.comexis.napoleon.shared.model.Lease;
 import eu.comexis.napoleon.shared.model.RealEstate;
 
 public class RealEstateDetailsPresenter extends
@@ -146,7 +141,6 @@ public class RealEstateDetailsPresenter extends
       @Override
       public void got(RealEstate realEstate) {
         setRealEstate(realEstate);
-        getView().setRealEstate(realEstate);
       }
     });
 
@@ -176,6 +170,9 @@ public class RealEstateDetailsPresenter extends
   protected void setRealEstate(RealEstate realEstate) {
     this.realEstate = realEstate;
     filesPresenter.setDocumentHolder(realEstate);
+    getView().setRealEstate(realEstate);
+    
+    doReveal();
   }
   @Override
   protected Menus getMenu() {

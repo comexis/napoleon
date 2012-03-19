@@ -14,10 +14,7 @@ import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
-import eu.comexis.napoleon.client.events.DisplayMessageEvent;
-import eu.comexis.napoleon.client.events.HideMessageEvent;
 import eu.comexis.napoleon.client.place.NameTokens;
-import eu.comexis.napoleon.client.resources.Literals;
 import eu.comexis.napoleon.shared.model.Identifiable;
 
 public abstract class AbstractListPresenter<T extends Identifiable, V extends AbstractListPresenter.MyView<T>, P extends Proxy<?>>
@@ -128,7 +125,7 @@ public abstract class AbstractListPresenter<T extends Identifiable, V extends Ab
     getView().resetFocus();
     getView().dataIsLoading();
     
-    getEventBus().fireEvent(new DisplayMessageEvent(Literals.INSTANCE.dataLoading()));
+    //getEventBus().fireEvent(new DisplayMessageEvent(Literals.INSTANCE.dataLoading()));
 
     requestData();
     
@@ -137,6 +134,7 @@ public abstract class AbstractListPresenter<T extends Identifiable, V extends Ab
   }
 
   protected abstract void requestData();
+ 
   
   @Override
   protected void revealInParent() {
@@ -147,6 +145,7 @@ public abstract class AbstractListPresenter<T extends Identifiable, V extends Ab
     this.datas = datas;
     getView().setData(datas);
 
-    getEventBus().fireEvent(new HideMessageEvent());
+    
+    doReveal();
   }
 }

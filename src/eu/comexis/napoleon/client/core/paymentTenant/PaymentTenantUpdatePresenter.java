@@ -10,7 +10,6 @@ import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 
 import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
 import eu.comexis.napoleon.client.core.payment.PaymentUpdatePresenter;
-import eu.comexis.napoleon.client.core.paymentOwner.PaymentOwnerUpdatePresenter;
 import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.resources.Literals;
 import eu.comexis.napoleon.client.rpc.callback.GotPayment;
@@ -56,7 +55,6 @@ public class PaymentTenantUpdatePresenter
           public void got(PaymentTenant payment) {
             if (payment!=null){
               setDataObjectModel(payment);
-              getView().setData(payment);
             }else{
               PaymentTenantUpdatePresenter.this.onButtonCancelClick();
             }

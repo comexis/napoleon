@@ -13,8 +13,6 @@ import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 
 import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
 import eu.comexis.napoleon.client.core.party.PartyDetailsPresenter;
-import eu.comexis.napoleon.client.events.SelectedMenuEvent;
-import eu.comexis.napoleon.client.events.SetTitleEvent;
 import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.resources.Literals;
 import eu.comexis.napoleon.client.rpc.callback.GotTenant;
@@ -62,7 +60,6 @@ public class TenantDetailsPresenter extends
       @Override
       public void got(Tenant tenant) {
         setData(tenant);
-        getView().setData(tenant);
       }
     });
   }
