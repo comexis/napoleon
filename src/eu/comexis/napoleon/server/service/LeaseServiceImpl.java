@@ -8,7 +8,6 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import eu.comexis.napoleon.client.rpc.LeaseService;
 import eu.comexis.napoleon.server.dao.LeaseDao;
 import eu.comexis.napoleon.server.manager.UserManager;
-import eu.comexis.napoleon.shared.command.association.GetAllAssocResponse;
 import eu.comexis.napoleon.shared.command.lease.GetAllLeaseCommand;
 import eu.comexis.napoleon.shared.command.lease.GetAllLeaseResponse;
 import eu.comexis.napoleon.shared.command.lease.GetLeaseCommand;

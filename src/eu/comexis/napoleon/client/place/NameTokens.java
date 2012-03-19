@@ -15,6 +15,9 @@ public class NameTokens {
   public static final String leaselist = "leaseList";
   public static final String lease = "lease";
   public static final String updateLease = "updateLease";
+  public static final String expenselist = "expenseList";
+  public static final String expense = "lease";
+  public static final String updateExpense = "updateExpense";
   public static final String paymentTenant = "paymentTenant";
   public static final String paymentTenantlist = "paymentTenantList";
   public static final String updatePaymentTenant = "updatePaymentTenant";
@@ -29,9 +32,17 @@ public class NameTokens {
   public static String getLease() {
     return lease;
   }
+  
+  public static String getExpense() {
+    return expense;
+  }
 
   public static String getLeaselist() {
     return leaselist;
+  }
+  
+  public static String getExpenselist() {
+    return expenselist;
   }
 
   public static String getOwner() {
@@ -80,6 +91,10 @@ public class NameTokens {
 
   public static String getUpdatelease() {
     return updateLease;
+  }
+  
+  public static String getUpdateExpense() {
+    return updateExpense;
   }
 
   public static String getUpdateOwner() {

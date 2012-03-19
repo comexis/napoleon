@@ -43,9 +43,9 @@ public class PaymentUpdateView<T extends Payment> extends ViewImpl implements
   @UiField
   DateBox date;
   @UiField
-  TextBox fromDate;
+  DateBox fromDate;
   @UiField
-  TextBox toDate;
+  DateBox toDate;
   @UiField
   RadioButton inCashYes;
   @UiField
@@ -160,6 +160,8 @@ public class PaymentUpdateView<T extends Payment> extends ViewImpl implements
     DateTimeFormat dateFormat = DateTimeFormat.getFormat("dd/MM/yyyy");
     this.fromDate.setEnabled(true);
     this.toDate.setEnabled(true);
+    this.fromDate.setFormat(new DateBox.DefaultFormat(dateFormat));
+    this.toDate.setFormat(new DateBox.DefaultFormat(dateFormat));
     this.date.setFormat(new DateBox.DefaultFormat(dateFormat));
     this.date.setValue(null);
     this.fromDate.setValue(null);
@@ -177,8 +179,8 @@ public class PaymentUpdateView<T extends Payment> extends ViewImpl implements
     $("#moreDetailOwner").show();
     if (payment != null) {
       this.date.setValue(payment.getPaymentDate());
-      this.fromDate.setValue(UiHelper.displayDate(payment.getPeriodStartDate()));
-      this.toDate.setValue(UiHelper.displayDate(payment.getPeriodEndDate()));
+      this.fromDate.setValue(payment.getPeriodStartDate());
+      this.toDate.setValue(payment.getPeriodEndDate());
       this.amount.setValue(UiHelper.FloatToString(payment.getAmount()));
       try{
         this.account.setValue(((PaymentTenant)payment).getAccount()!=null ? ((PaymentTenant)payment).getAccount():"");

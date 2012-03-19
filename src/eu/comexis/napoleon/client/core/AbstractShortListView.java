@@ -1,13 +1,10 @@
 package eu.comexis.napoleon.client.core;
 
-import static com.google.gwt.query.client.GQuery.$;
-
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.InputElement;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.query.client.Function;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -25,32 +22,30 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
-public abstract class AbstractListView<T> extends ViewImpl implements
-    AbstractListPresenter.MyView<T> {
+public abstract class AbstractShortListView<T> extends ViewImpl implements
+    AbstractShortListPresenter.MyView<T> {
 
-  public interface Binder extends UiBinder<Widget, AbstractListView<?>> {
+  public interface Binder extends UiBinder<Widget, AbstractShortListView<?>> {
   }
 
   @UiField(provided = true)
   protected CellTable<T> table;
 
-  @UiField
-  InputElement filter;
   @UiField(provided = true)
   SimplePager pager;
   @UiField
   Button btnNew;
   @UiField
-  Button btnToDashBoard;
+  Button btnDelete;
 
   // list containing the datas to display
   private ListDataProvider<T> dataProvider;
 
-  private ListUiHandlers<T> presenter;
+  private ShortListUiHandlers<T> presenter;
   private final Widget widget;
 
   @Inject
-  public AbstractListView() {
+  public AbstractShortListView() {
     preInit();
     Binder binder = GWT.create(Binder.class);
     widget = binder.createAndBindUi(this);
@@ -70,9 +65,9 @@ public abstract class AbstractListView<T> extends ViewImpl implements
     table.setVisibleRangeAndClearData(table.getVisibleRange(), true);
   }
 
-  @UiHandler("btnToDashBoard")
-  public void onGoHomeClicked(ClickEvent e) {
-    presenter.onButtonBackToDashBoardClick();
+  @UiHandler("btnDelete")
+  public void onDeleteClicked(ClickEvent e) {
+    presenter.onButtonDeleteClick();
   }
 
   @UiHandler("btnNew")
@@ -89,7 +84,7 @@ public abstract class AbstractListView<T> extends ViewImpl implements
   }
 
   @Override
-  public void setPresenter(ListUiHandlers<T> handler) {
+  public void setPresenter(ShortListUiHandlers<T> handler) {
     this.presenter = handler;
 
   }
@@ -97,29 +92,16 @@ public abstract class AbstractListView<T> extends ViewImpl implements
   protected abstract ProvidesKey<T> getKeyProvider();
 
   protected abstract String getButtonNewLabel();
-  protected abstract String getButtonBackLabel();
+  protected abstract String getButtonDeleteLabel();
 
   protected abstract void initTableColumns(SingleSelectionModel<T> selectionModel,
       ListHandler<T> sortHandler);
 
   private void init() {
-    $(filter).keyup(new Function() {
-      @Override
-      public void f() {
-        String filterString = $(filter).val();
-        presenter.filter(filterString);
-      }
-    });
 
     btnNew.setText(getButtonNewLabel());
-    btnToDashBoard.setText(getButtonBackLabel());
+    btnDelete.setText(getButtonDeleteLabel());
 
-  }
-
-  @UiHandler("reset")
-  public void onResetFilter(ClickEvent e) {
-    presenter.filter(null);
-    $(filter).val("");
   }
 
   @SuppressWarnings("unchecked")

@@ -29,10 +29,8 @@
 					</td>
 				</tr>
 			</table>
-			<g:Button ui:field="btn1"></g:Button>
-			<g:Button ui:field="btn2"></g:Button>
-			<g:Button ui:field="btn3"></g:Button>
-			<g:Button ui:field="btn4"></g:Button>
+			<g:Button ui:field="btnNew"></g:Button>
+			<g:Button ui:field="btnDelete"></g:Button>
 		</g:HTMLPanel>
 	</g:ScrollPanel>
 
