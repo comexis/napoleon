@@ -19,10 +19,12 @@ import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
+import eu.comexis.napoleon.client.Napoleon;
 import eu.comexis.napoleon.client.core.AbstractPresenter;
 import eu.comexis.napoleon.client.core.HasPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
+import eu.comexis.napoleon.client.core.owner.OwnerDetailsPresenter;
 import eu.comexis.napoleon.client.events.AddedFileEvent;
 import eu.comexis.napoleon.client.events.AddedFileEvent.AddedFileHandler;
 import eu.comexis.napoleon.client.place.NameTokens;
@@ -48,6 +50,17 @@ public class RealEstateDetailsPresenter extends
   public interface MyView extends View, HasPresenter<RealEstateDetailUiHandlers> {
     public void addDocumentWidget(Widget w);
     public void setRealEstate(RealEstate e);
+    public void bind();
+    public void unbind();
+  }
+  
+  public static void show(String realEstateId) {
+    PlaceRequest myRequest = new PlaceRequest(NameTokens.realEstate);
+    // add the id of the owner to load
+    myRequest = myRequest.with(UUID_PARAMETER, realEstateId);
+    
+    Napoleon.ginjector.getPlaceManager().revealPlace(myRequest);
+    
   }
 
   public static final String UUID_PARAMETER = "uuid";
@@ -130,6 +143,14 @@ public class RealEstateDetailsPresenter extends
     filesPresenter.bind();
     
     getView().addDocumentWidget(filesPresenter.getWidget());
+    
+    getView().bind();
+  }
+  
+  @Override
+  protected void onUnbind() {
+    super.onUnbind();
+    getView().unbind();
   }
 
   @Override
@@ -182,6 +203,11 @@ public class RealEstateDetailsPresenter extends
   @Override
   protected String getTitle() {
     return Literals.INSTANCE.realEstateDetailsTitle();
+  }
+  
+  @Override
+  public void showOwner() {
+    OwnerDetailsPresenter.show(realEstate.getOwner().getId());
   }
 
 }

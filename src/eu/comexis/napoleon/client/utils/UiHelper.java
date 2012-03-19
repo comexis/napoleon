@@ -16,7 +16,7 @@ import eu.comexis.napoleon.client.widget.InformationDialog;
 import eu.comexis.napoleon.shared.validation.ValidationMessage;
 
 public class UiHelper {
-  
+
   private static DateTimeFormat DATE_FORMAT = DateTimeFormat.getFormat("dd/MM/yyyy");
   private static DateTimeFormat COMPARE_DATE_FORMAT = DateTimeFormat.getFormat("yyyy.MM.dd");
 
@@ -55,109 +55,116 @@ public class UiHelper {
       }
     }
   }
-  
+
   public static void selectTextItemBoxByValue(ListBox tb, Enum<?> value) {
-   selectTextItemBoxByValue(tb, value, null);
+    selectTextItemBoxByValue(tb, value, null);
   }
-  
+
   public static void selectTextItemBoxByValue(ListBox tb, Enum<?> value, Enum<?> defaultValue) {
-    if (value != null){
+    if (value != null) {
       selectTextItemBoxByValue(tb, value.name());
-    }else if (defaultValue != null){
+    } else if (defaultValue != null) {
       selectTextItemBoxByValue(tb, defaultValue.name());
     }
   }
-  
-  public static void displayValidationMessage(List<ValidationMessage> validationMessages, Widget w){
+
+  public static void displayValidationMessage(List<ValidationMessage> validationMessages, Widget w) {
     resetForm(w);
-    
+
     InformationDialog.get().showValidationMessages(validationMessages);
-    
-    for (ValidationMessage m : validationMessages){
-      String selector = "[name='"+m.getComponentId()+"' ]";
+
+    for (ValidationMessage m : validationMessages) {
+      String selector = "[name='" + m.getComponentId() + "' ]";
       $(selector, w).addClass(Resources.INSTANCE.css().fieldInError());
     }
   }
-  
-  
-  public static void resetForm(Widget w){
+
+  public static void resetForm(Widget w) {
     $("input, select", w).removeClass(Resources.INSTANCE.css().fieldInError());
   }
-  
+
   /**
-   * Give a string representation of a date for display purpose 
+   * Give a string representation of a date for display purpose
+   * 
    * @param d
    * @return
    */
-  public static String displayDate(Date d){
-    if (d == null){
+  public static String displayDate(Date d) {
+    if (d == null) {
       return "";
     }
-    
+
     return DATE_FORMAT.format(d);
   }
-  public static String formatDateForCompare(Date d){
-    if (d == null){
+
+  public static String formatDateForCompare(Date d) {
+    if (d == null) {
       return "";
     }
-    
+
     return COMPARE_DATE_FORMAT.format(d);
   }
-  public static String formatLastName(String name){
-    if (name!=null && !name.isEmpty()){
+
+  public static String formatLastName(String name) {
+    if (name != null && !name.isEmpty()) {
       return name.toUpperCase();
-    }else{
+    } else {
       return "";
     }
   }
-  public static String formatFirstName(String name){
+
+  public static String formatFirstName(String name) {
     return formatWordsFirstUpper(name);
   }
-  public static String formatSuggest(String name){
+
+  public static String formatSuggest(String name) {
     return formatWordsFirstUpper(name);
   }
-  public static String formatWordsFirstUpper(String name){
-    if (name!=null && !name.isEmpty()){
+
+  public static String formatWordsFirstUpper(String name) {
+    if (name != null && !name.isEmpty()) {
       String formatedName = "";
-      String [] parts=name.toLowerCase().split(" ");
-      for(int i=0; i < parts.length; i++){
-        parts[i] = parts[i].substring(0,1).toUpperCase() + parts[i].substring(1);
+      String[] parts = name.toLowerCase().split(" ");
+      for (int i = 0; i < parts.length; i++) {
+        parts[i] = parts[i].substring(0, 1).toUpperCase() + parts[i].substring(1);
         formatedName += parts[i] + " ";
       }
-      parts=formatedName.split("-");
+      parts = formatedName.split("-");
       formatedName = "";
-      for(int i=0; i < parts.length; i++){
-        parts[i] = parts[i].substring(0,1).toUpperCase() + parts[i].substring(1);
+      for (int i = 0; i < parts.length; i++) {
+        parts[i] = parts[i].substring(0, 1).toUpperCase() + parts[i].substring(1);
         formatedName += parts[i] + "-";
       }
-      return formatedName.substring(0,formatedName.length()-1);
-    }else{
+      return formatedName.substring(0, formatedName.length() - 1);
+    } else {
       return "";
     }
   }
-  public static Float stringToFloat(String value){
+
+  public static Float stringToFloat(String value) {
     Float fValue = new Float("0");
     value = value.replace(",", "#");
     value = value.replace(".", "");
     value = value.replace(" ", "");
     value = value.replace("#", ".");
-    try{
+    try {
       fValue = Float.parseFloat(value);
-    }catch(Exception e){
+    } catch (Exception e) {
       //
     }
     return fValue;
   }
-  public static String FloatToString(Float value){
+
+  public static String FloatToString(Float value) {
     NumberFormat fmt = NumberFormat.getFormat("#,##0.00");
-    //NumberFormat  dec = new NumberFormat("#,##0.00");
+    // NumberFormat dec = new NumberFormat("#,##0.00");
     String sValue = "0,00";
-    try{
-      //sValue = dec.format(value).replace(".", "#");
+    try {
+      // sValue = dec.format(value).replace(".", "#");
       sValue = fmt.format(value).replace(".", "#");
       sValue = sValue.replace(",", ".");
       sValue = sValue.replace("#", ",");
-    }catch(Exception e){
+    } catch (Exception e) {
       sValue = "0,00";
     }
     return sValue;

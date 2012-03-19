@@ -135,5 +135,11 @@ select{
 	color: orange;
 }
 
+.clickable{
+	cursor: pointer;
+}
 
+.clickable:HOVER {
+	color: orange;
+}
 

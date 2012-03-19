@@ -54,6 +54,7 @@ public interface Css extends CssResource {
   
   public String largeLabel();
   
+  public String clickable();
   
 
 }

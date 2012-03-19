@@ -65,6 +65,7 @@ public class RealEstate implements IsSerializable , Identifiable, HasFiles{
 
   // n° de téléphone du syndic
   private String assocPhoneNumber;
+  
   // n° de téléphone mobile (GSM) du syndic
   private String assocMobilePhoneNumber;
   @Indexed

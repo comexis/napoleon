@@ -62,6 +62,7 @@ public class RealEstateDao extends NapoleonDao<RealEstate> {
       e.setPostalCode(realEstate.getPostalCode());
       SimpleOwner o = getOwner(realEstate);
       e.setOwner(o.getName());
+      e.setOwnerId(o.getId());
       e.setMobile(o.getMobileNumber());
       e.setPhoneNumber(o.getPhoneNumber());
       realEstates.add(e);
@@ -232,6 +233,7 @@ public class RealEstateDao extends NapoleonDao<RealEstate> {
         se.setReference(e.getReference());
         se.setCity(e.getCity());
         se.setAddress(e.getStreet());
+        se.setOwnerId(ownerId);
         realEstates.add(se);
       }
       return realEstates;

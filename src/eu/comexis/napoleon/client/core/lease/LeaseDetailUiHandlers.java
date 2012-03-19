@@ -11,4 +11,10 @@ public interface LeaseDetailUiHandlers {
   void onButtonPaymentOwnerClick();
   
   void onButtonPaymentClick();
+
+  void showOwner();
+
+  void showReference();
+
+  void showTenant();
 }

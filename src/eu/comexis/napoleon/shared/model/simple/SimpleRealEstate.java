@@ -5,17 +5,17 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 import eu.comexis.napoleon.shared.model.Identifiable;
 
 public class SimpleRealEstate implements IsSerializable, Identifiable {
-  private String id;
-  private String clientId;
-  private String reference;
+  
   private String address;
-  private String postalCode;
   private String city;
-
-  private String owner;
-
-  private String phoneNumber;
+  private String clientId;
+  private String id;
   private String mobile;
+  private String owner;
+  private String ownerId;
+  private String phoneNumber;
+  private String postalCode;
+  private String reference;
 
   public String getAddress() {
     return address;
@@ -39,6 +39,10 @@ public class SimpleRealEstate implements IsSerializable, Identifiable {
 
   public String getOwner() {
     return owner;
+  }
+
+  public String getOwnerId() {
+    return ownerId;
   }
 
   public String getPhoneNumber() {
@@ -77,14 +81,18 @@ public class SimpleRealEstate implements IsSerializable, Identifiable {
     this.owner = owner;
   }
 
+  public void setOwnerId(String ownerId) {
+    this.ownerId = ownerId;
+  }
+
   public void setPhoneNumber(String phoneNumber) {
     this.phoneNumber = phoneNumber;
   }
-
+  
   public void setPostalCode(String postalCode) {
     this.postalCode = postalCode;
   }
-
+  
   public void setReference(String reference) {
     this.reference = reference;
   }

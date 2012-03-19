@@ -23,7 +23,9 @@ import eu.comexis.napoleon.client.core.AbstractPresenter;
 import eu.comexis.napoleon.client.core.HasPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
-import eu.comexis.napoleon.client.core.lease.LeaseDetailUiHandlers;
+import eu.comexis.napoleon.client.core.estate.RealEstateDetailsPresenter;
+import eu.comexis.napoleon.client.core.owner.OwnerDetailsPresenter;
+import eu.comexis.napoleon.client.core.tenant.TenantDetailsPresenter;
 import eu.comexis.napoleon.client.events.AddedFileEvent;
 import eu.comexis.napoleon.client.events.AddedFileEvent.AddedFileHandler;
 import eu.comexis.napoleon.client.place.NameTokens;
@@ -49,6 +51,8 @@ public class LeaseDetailsPresenter extends
   public interface MyView extends View, HasPresenter<LeaseDetailUiHandlers>  {
     public void addDocumentWidget(Widget w);
     public void setLease(Lease l);
+    public void bind();
+    public void unbind();
   }
 
   public static final String UUID_PARAMETER = "uuid";
@@ -161,7 +165,18 @@ public class LeaseDetailsPresenter extends
     filesPresenter.bind();
     
     getView().addDocumentWidget(filesPresenter.getWidget());
+    
+    getView().bind();
   }
+  
+  @Override
+  protected void onUnbind() {
+    super.onUnbind();
+    
+    getView().unbind();
+  }
+  
+  
   @Override
   protected void onReset() {
     super.onReset();
@@ -202,6 +217,22 @@ public class LeaseDetailsPresenter extends
     filesPresenter.setDocumentHolder(lease);
     getView().setLease(lease);
     doReveal();
+  }
+
+  @Override
+  public void showOwner() {
+    OwnerDetailsPresenter.show(lease.getRealEstate().getOwnerId());
+  }
+
+  @Override
+  public void showReference() {
+    RealEstateDetailsPresenter.show(lease.getRealEstate().getId());
+  }
+
+  @Override
+  public void showTenant() {
+    TenantDetailsPresenter.show(lease.getTenant().getId());
+    
   }
 
 }

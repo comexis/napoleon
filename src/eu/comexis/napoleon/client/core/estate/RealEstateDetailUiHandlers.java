@@ -7,4 +7,6 @@ public interface RealEstateDetailUiHandlers {
   void onButtonUpdateClick();
   
   void onButtonRentClick();
+  
+  public void showOwner();
 }
