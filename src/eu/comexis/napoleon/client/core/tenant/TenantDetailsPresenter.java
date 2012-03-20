@@ -1,5 +1,7 @@
 package eu.comexis.napoleon.client.core.tenant;
 
+import static eu.comexis.napoleon.client.core.party.PartyUpdatePresenter.UUID_PARAMETER;
+
 import java.util.logging.Logger;
 
 import com.google.gwt.event.shared.EventBus;
@@ -9,8 +11,10 @@ import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
+import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 
+import eu.comexis.napoleon.client.Napoleon;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
 import eu.comexis.napoleon.client.core.party.PartyDetailsPresenter;
 import eu.comexis.napoleon.client.place.NameTokens;
@@ -31,6 +35,15 @@ public class TenantDetailsPresenter extends
   }
   
   public interface MyView extends PartyDetailsPresenter.MyView<Tenant>{
+    
+  }
+  
+  public static void show(String tenantId) {
+    PlaceRequest myRequest = new PlaceRequest(NameTokens.tenant);
+    // add the id of the owner to load
+    myRequest = myRequest.with(UUID_PARAMETER, tenantId);
+    
+    Napoleon.ginjector.getPlaceManager().revealPlace(myRequest);
     
   }
 

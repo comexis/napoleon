@@ -170,6 +170,7 @@ public class ExpenseUpdatePresenter extends
       ExpenseUpdatePresenter.this.expense = new Expense();
       expense.setRealEstateId(realEstateId);
       getView().setExpense(null);
+      doReveal();
     }
   }
   

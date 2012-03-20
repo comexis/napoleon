@@ -83,6 +83,7 @@ public class ExpenseListPresenter extends
       @Override
       public void got(List<Expense> expenses) {
         setDatas(expenses);
+        doReveal();
       }
     });
   }

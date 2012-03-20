@@ -12,9 +12,14 @@
 		<g:HTMLPanel styleName="{res.css.detailTable}">
 
 			<div class="{res.css.detailRow}">
-				<span class="{res.css.detailCellInputLabel}">Référence :</span>
+				<span class="{res.css.detailCellInputLabel}">Références :</span>
 				<g:TextBox ui:field="reference" styleName="{res.css.detailCellInputText}"
 					name="reference" />
+				<span class="{res.css.detailCellInputLabel}">Montant :</span>
+				<g:TextBox ui:field="amount" styleName="{res.css.detailCellInputText}"
+					name="amount" />
+				<span class="{res.css.detailCellInputLabel}">Facture du :</span>
+				<dp:DateBox ui:field="dateInvoice" styleName="{res.css.detailCellInputText}"/>
 			</div>
 			
 			<div class="{res.css.detailRow}">

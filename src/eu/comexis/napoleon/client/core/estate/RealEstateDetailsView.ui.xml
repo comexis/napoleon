@@ -63,7 +63,7 @@
 
 			<div class="{res.css.detailRow}">
 				<span class="{res.css.detailCellLabel}">Propriétaire :</span>
-				<span ui:field="ownerName" class="{res.css.detailCellValue}" />
+				<span ui:field="ownerName" class="{res.css.detailCellValue}  {res.css.clickable}" />
 				<span class="{res.css.detailCellLabel}">Téléphone :</span>
 				<span ui:field="ownerTel" class="{res.css.detailCellValue}" />
 				<span class="{res.css.detailCellLabel}">GSM :</span>

@@ -1,11 +1,15 @@
 package eu.comexis.napoleon.client.core.estate;
 
+import static com.google.gwt.query.client.GQuery.$;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.query.client.Function;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -72,6 +76,20 @@ public class RealEstateDetailsView extends ViewImpl implements RealEstateDetails
   @Inject
   public RealEstateDetailsView() {
     widget = binder.createAndBindUi(this);
+  }
+  
+  public void bind() {
+    $(ownerName).click(new Function() {
+      @Override
+      public void f() {
+        presenter.showOwner();
+      }
+    });
+    
+  }
+  
+  public void unbind(){
+    $(ownerName).unbind(Event.ONCLICK);
   }
 
   @Override

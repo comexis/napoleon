@@ -39,6 +39,10 @@ public class ExpenseUpdateView extends ViewImpl implements ExpenseUpdatePresente
 
   @UiField
   TextBox reference;
+  @UiField
+  TextBox amount;
+  @UiField
+  DateBox dateInvoice;
   
 
   @Inject
@@ -83,11 +87,17 @@ public class ExpenseUpdateView extends ViewImpl implements ExpenseUpdatePresente
   public void setExpense(Expense l) {
     // cleanup
     // set date format
+    DateTimeFormat dateFormat = DateTimeFormat.getFormat("dd/MM/yyyy");
+    this.dateInvoice.setFormat(new DateBox.DefaultFormat(dateFormat));
     this.reference.setValue("");
+    this.amount.setValue("");
+    this.dateInvoice.setValue(null);
     
     
     if (l != null) {
       this.reference.setValue(l.getReference());
+      this.amount.setValue(UiHelper.FloatToString(l.getAmount()));
+      this.dateInvoice.setValue(l.getDateFacture());
     }
   }
 
@@ -99,6 +109,7 @@ public class ExpenseUpdateView extends ViewImpl implements ExpenseUpdatePresente
   @Override
   public Expense updateExpense(Expense l) {
     l.setReference(reference.getValue());
+    l.setAmount(UiHelper.stringToFloat(this.amount.getValue()));
     return l;
   }
 

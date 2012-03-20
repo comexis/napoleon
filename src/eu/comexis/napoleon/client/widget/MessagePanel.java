@@ -35,7 +35,7 @@ public enum MessagePanel implements DisplayMessageHandler, HideMessageHandler {
   private MessagePanel() {
     
     messagePopup = new DecoratedPopupPanel(false);
-    messagePopup.setAnimationEnabled(true);
+    messagePopup.setAnimationEnabled(false);
     messagePopup.setModal(false);
     messagePopup.addStyleName(Resources.INSTANCE.css().messagePanelOuter());
     inner = new HTML();

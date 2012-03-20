@@ -9,6 +9,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
@@ -26,6 +27,10 @@ public class ExpenseDetailsView extends ViewImpl implements ExpenseDetailsPresen
 
   @UiField
   Element reference;
+  @UiField
+  Element amount;
+  @UiField
+  Element dateInvoice;
   @UiField
   SimplePanel documentsPanel;
   
@@ -60,6 +65,8 @@ public class ExpenseDetailsView extends ViewImpl implements ExpenseDetailsPresen
     // TODO improve and continue
 
     this.reference.setInnerText(l.getReference());
+    this.amount.setInnerText(UiHelper.FloatToString(l.getAmount()));
+    this.dateInvoice.setInnerText(UiHelper.displayDate(l.getDateFacture()));
   }
 
   @Override

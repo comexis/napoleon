@@ -16,18 +16,18 @@
 
 					<div class="{res.css.detailRow}">
 						<span class="{res.css.detailCellLabel}">Référence :</span>
-						<span ui:field="reference" class="{res.css.detailCellValue}" />
+						<span ui:field="reference" class="{res.css.detailCellValue} {res.css.clickable}" />
 						<span class="{res.css.detailCellLabel}">Année académique :</span>
 						<span ui:field="academicYear" class="{res.css.detailCellValue}" />
 					</div>
 			<div class="{res.css.detailRow}">
 				<span class="{res.css.detailCellLabel}">Propriétaire :</span>
-				<span ui:field="ownerName" class="{res.css.detailCellValue}" />
+				<span ui:field="ownerName" class="{res.css.detailCellValue} {res.css.clickable}" />
 			</div>
 					
 			<div class="{res.css.detailRow}">
 				<span class="{res.css.detailCellLabel}">Locataire :</span>
-				<span ui:field="tenantName" class="{res.css.detailCellValue}" />
+				<span ui:field="tenantName" class="{res.css.detailCellValue} {res.css.clickable}" />
 				<span class="{res.css.detailCellLabel}">Cooccupant(s) :</span>
 				<span ui:field="coocuppant" class="{res.css.detailCellValue}" />	
 			</div>

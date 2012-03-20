@@ -150,6 +150,7 @@ public class ExpenseDetailsPresenter extends
       public void got(Expense expense) {
         setExpense(expense);
         getView().setExpense(expense);
+        doReveal();
       }
     });
 

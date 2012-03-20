@@ -94,6 +94,7 @@ public class LeaseListPresenter extends
       @Override
       public void got(List<SimpleLease> leases) {
         setDatas(leases);
+        doReveal();
       }
     });
   }

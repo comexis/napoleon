@@ -14,8 +14,12 @@
 			<g:ScrollPanel>
 				<g:HTMLPanel styleName="{res.css.detailTable}">
 					<div class="{res.css.detailRow}">
-						<span class="{res.css.detailCellLabel}">Référence :</span>
+						<span class="{res.css.detailCellLabel}">Références :</span>
 						<span ui:field="reference" class="{res.css.detailCellValue}" />
+						<span class="{res.css.detailCellLabel}">Montant :</span>
+						<span ui:field="amount" class="{res.css.detailCellValue}" />
+						<span class="{res.css.detailCellLabel}">Date facture :</span>
+						<span ui:field="dateInvoice" class="{res.css.detailCellValue}" />
 					</div>
 					<div>
 						<g:Button ui:field="btnUpdate">Editer</g:Button>
