@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import eu.comexis.napoleon.server.dao.ApplicationUserDao;
 import eu.comexis.napoleon.server.dao.CompanyDao;
 import eu.comexis.napoleon.server.dao.LeaseDao;
+import eu.comexis.napoleon.server.dao.NapoleonDao;
 import eu.comexis.napoleon.server.dao.OwnerDao;
 import eu.comexis.napoleon.server.dao.RealEstateDao;
 import eu.comexis.napoleon.server.dao.TenantDao;
@@ -37,28 +38,59 @@ public class InitDatastore extends HttpServlet {
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException,
       IOException {
 
-    deleteAll();
+    //deleteAll();
 
-    String companyId = createCompany();
+    //String companyId = createCompany();
 
-    createApplicationUsers(companyId);
+    //createApplicationUsers(companyId);
     
     //createApplicationUsersLive(companyId);
 
-    createOwners(companyId);
+    //createOwners(companyId);
 
-    createTenantDao(companyId);
+    //createTenantDao(companyId);
 
     //create300RealEstate(companyId);
     
-    createRealEstate(companyId);
+    //createRealEstate(companyId);
     
-    createLease(companyId);
+    //createLease(companyId);
 
-    printResults(companyId, resp);
+    //printResults(companyId, resp);
+    
+    createOtherUsers();
 
   }
   
+  private void createOtherUsers() {
+    ApplicationUserDao userData = new ApplicationUserDao();
+    
+    CompanyDao companyData = new CompanyDao();
+    Company c = companyData.getByName("Agence de l'aiglon");
+    String companyId = c.getId();
+    
+    // create user xavier.platiaux@gmail.com
+    
+    ApplicationUser u = userData.create(companyId);
+    u.setFirstName("Aiglon");
+    u.setLastName("sprl44");
+    u.setEmail("aiglonsprl44@gmail.com");
+    userData.update(u);
+    
+    
+    u = userData.create(companyId);
+    u.setFirstName("Nathalie");
+    u.setLastName("Pagnoulle");
+    u.setEmail("nathaliepagnoulle@gmail.com");
+    userData.update(u);
+    
+    u = userData.create(companyId);
+    u.setFirstName("Aiglon");
+    u.setLastName("Brockmans");
+    u.setEmail("aiglon.brockmans@gmail.com");
+    userData.update(u);
+  }
+
   private void createApplicationUsersLive(String companyId) {
 
     // create user xavier.platiaux@gmail.com
