@@ -149,8 +149,6 @@ public class ExpenseDetailsPresenter extends
       @Override
       public void got(Expense expense) {
         setExpense(expense);
-        getView().setExpense(expense);
-        doReveal();
       }
     });
 
@@ -180,6 +178,8 @@ public class ExpenseDetailsPresenter extends
   protected void setExpense(Expense expense) {
     this.expense = expense;
     filesPresenter.setDocumentHolder(expense);
+    getView().setExpense(expense);
+    doReveal();
   }
 
 }

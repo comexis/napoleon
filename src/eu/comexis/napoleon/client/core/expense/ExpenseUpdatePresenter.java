@@ -164,6 +164,7 @@ public class ExpenseUpdatePresenter extends
         public void got(Expense expense) {
           ExpenseUpdatePresenter.this.expense = expense;
           getView().setExpense(expense);
+          doReveal();
         }
       });
     }else{
