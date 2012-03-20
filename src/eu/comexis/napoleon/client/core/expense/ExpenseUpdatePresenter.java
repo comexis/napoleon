@@ -193,7 +193,7 @@ public class ExpenseUpdatePresenter extends
   
   @Override
   protected Menus getMenu() {
-    return Menus.LEASE;
+    return Menus.REAL_ESTATE;
   }
   
   @Override

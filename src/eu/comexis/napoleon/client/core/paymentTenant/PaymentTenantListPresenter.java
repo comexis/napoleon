@@ -119,7 +119,7 @@ public class PaymentTenantListPresenter extends
 
   @Override
   protected Menus getMenu() {
-    return Menus.LEASE;
+    return Menus.REAL_ESTATE;
   }
 
   @Override

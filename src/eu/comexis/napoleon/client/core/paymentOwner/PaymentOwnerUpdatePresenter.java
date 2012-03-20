@@ -93,7 +93,7 @@ public class PaymentOwnerUpdatePresenter
 
   @Override
   protected Menus getMenu() {
-    return Menus.LEASE;
+    return Menus.REAL_ESTATE;
   }
   
   @Override

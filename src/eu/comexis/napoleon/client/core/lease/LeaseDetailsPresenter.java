@@ -141,7 +141,7 @@ public class LeaseDetailsPresenter extends
 
   @Override
   protected Menus getMenu() {
-    return Menus.LEASE;
+    return Menus.REAL_ESTATE;
   }
 
   protected String getTitle() {

@@ -14,7 +14,6 @@ import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 
 import eu.comexis.napoleon.client.core.AbstractListPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
-import eu.comexis.napoleon.client.core.paymentOwner.PaymentOwnerListPresenter;
 import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.resources.Literals;
 import eu.comexis.napoleon.client.rpc.callback.GotAllLease;
@@ -119,7 +118,7 @@ public class LeaseListPresenter extends
 
   @Override
   protected Menus getMenu() {
-    return Menus.LEASE;
+    return Menus.REAL_ESTATE;
   }
 
   @Override
