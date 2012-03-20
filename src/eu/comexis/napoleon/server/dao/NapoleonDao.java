@@ -22,6 +22,7 @@ import eu.comexis.napoleon.shared.model.City;
 import eu.comexis.napoleon.shared.model.Company;
 import eu.comexis.napoleon.shared.model.Condo;
 import eu.comexis.napoleon.shared.model.Country;
+import eu.comexis.napoleon.shared.model.Expense;
 import eu.comexis.napoleon.shared.model.JobTitle;
 import eu.comexis.napoleon.shared.model.Lease;
 import eu.comexis.napoleon.shared.model.Nationality;
@@ -60,6 +61,7 @@ public class NapoleonDao<T> extends DAOBase {
     ObjectifyService.register(PaymentTenant.class);
     ObjectifyService.register(Lease.class);
     ObjectifyService.register(Company.class);
+    ObjectifyService.register(Expense.class);
   }
   protected Class<T> clazz;
 

@@ -8,5 +8,8 @@ public interface RealEstateDetailUiHandlers {
   
   void onButtonRentClick();
   
+  void onButtonExpenseClick();
+  
   public void showOwner();
+
 }

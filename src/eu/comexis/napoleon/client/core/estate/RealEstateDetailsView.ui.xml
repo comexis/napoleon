@@ -80,6 +80,7 @@
 				<g:Button ui:field="btnUpdate">Editer</g:Button>
 				<g:Button ui:field="btnDelete">Effacer</g:Button>
 				<g:Button ui:field="btnRent">Gestion des locations</g:Button>
+				<g:Button ui:field="btnExpense">Gestion des dépenses</g:Button>
 				<g:Button ui:field="btnToList">Retour vers la liste</g:Button>
 			</div>
 		</g:HTMLPanel>

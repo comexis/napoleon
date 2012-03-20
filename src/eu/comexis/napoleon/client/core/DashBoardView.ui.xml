@@ -36,10 +36,12 @@
 			<a class="{style.item}" href="#realEstateList">
 				<div><ui:text from="{literals.menuRealEstate}" /></div>
 			</a>
+			<!--  will be done later
 			<br/>
 			<a class="{style.item}" href="#leaseList">
 				<div><ui:text from="{literals.menuLease}" /></div>
 			</a>
+			-->
 		</div>
 		
 	</g:HTMLPanel>

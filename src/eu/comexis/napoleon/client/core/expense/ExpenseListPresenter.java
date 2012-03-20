@@ -1,4 +1,4 @@
-package eu.comexis.napoleon.client.core.lease;
+package eu.comexis.napoleon.client.core.expense;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -12,40 +12,31 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 
-import eu.comexis.napoleon.client.core.AbstractListPresenter;
+import eu.comexis.napoleon.client.core.AbstractShortListPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
-import eu.comexis.napoleon.client.core.paymentOwner.PaymentOwnerListPresenter;
 import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.resources.Literals;
-import eu.comexis.napoleon.client.rpc.callback.GotAllLease;
-import eu.comexis.napoleon.shared.command.lease.GetAllLeaseCommand;
-import eu.comexis.napoleon.shared.model.simple.SimpleLease;
+import eu.comexis.napoleon.client.rpc.callback.GotAllExpense;
+import eu.comexis.napoleon.shared.command.expense.GetAllExpenseCommand;
+import eu.comexis.napoleon.shared.model.Expense;
 
-public class LeaseListPresenter extends
-    AbstractListPresenter<SimpleLease, LeaseListPresenter.MyView, LeaseListPresenter.MyProxy> {
+public class ExpenseListPresenter extends
+    AbstractShortListPresenter<Expense, ExpenseListPresenter.MyView, ExpenseListPresenter.MyProxy> {
   private String estateId;
   public static final String UUID_PARAMETER = "uuid";
   public static final String ESTATE_UUID_PARAMETER = "estate_uuid";
-  private static final Logger LOG = Logger.getLogger(LeaseListPresenter.class.getName());
+  private static final Logger LOG = Logger.getLogger(ExpenseListPresenter.class.getName());
   
-  private static class leaseListFilter implements ListFilter<SimpleLease>{
-  
-    @Override
-    public boolean filter(SimpleLease lease, String filter) {
-      return !lease.getRealEstateRef().toLowerCase().startsWith(filter.toLowerCase());
-    }
-    
-  }
   @ProxyCodeSplit
-  @NameToken(NameTokens.leaselist)
-  public interface MyProxy extends ProxyPlace<LeaseListPresenter> {
+  @NameToken(NameTokens.expenselist)
+  public interface MyProxy extends ProxyPlace<ExpenseListPresenter> {
   }
 
-  public interface MyView extends AbstractListPresenter.MyView<SimpleLease> {
+  public interface MyView extends AbstractShortListPresenter.MyView<Expense> {
   }
 
   @Inject
-  public LeaseListPresenter(final EventBus eventBus, final MyView view, final MyProxy proxy,
+  public ExpenseListPresenter(final EventBus eventBus, final MyView view, final MyProxy proxy,
       final PlaceManager placeManager) {
     super(eventBus, view, proxy, placeManager);
 
@@ -53,12 +44,12 @@ public class LeaseListPresenter extends
 
   @Override
   protected String getDetailsNameTokens() {
-    return NameTokens.lease;
+    return NameTokens.expense;
   }
 
   @Override
   protected String getUpdateNameTokens() {
-    return NameTokens.updateLease;
+    return NameTokens.updateExpense;
   }
   @Override
   public void onButtonNewClick() {
@@ -69,10 +60,8 @@ public class LeaseListPresenter extends
   }
   
   @Override
-  public void onButtonBackToDashBoardClick() {
-    PlaceRequest myRequest = new PlaceRequest(NameTokens.realEstate);
-    myRequest = myRequest.with(UUID_PARAMETER,estateId);
-    getPlaceManager().revealPlace(myRequest);
+  public void onButtonDeleteClick() {
+    
   }
   
   @Override
@@ -90,21 +79,17 @@ public class LeaseListPresenter extends
     }
   }
   protected void requestData() {
-    new GetAllLeaseCommand(estateId).dispatch(new GotAllLease() {
+    new GetAllExpenseCommand(estateId).dispatch(new GotAllExpense() {
       @Override
-      public void got(List<SimpleLease> leases) {
-        setDatas(leases);
+      public void got(List<Expense> expenses) {
+        setDatas(expenses);
         doReveal();
       }
     });
   }
-
+  
   @Override
-  protected ListFilter<SimpleLease> createFilter() {
-    return new leaseListFilter();
-  }
-  @Override
-  public void onSelect(SimpleLease data) {
+  public void onSelect(Expense data) {
     if (data == null){
       return;
     }
@@ -124,7 +109,7 @@ public class LeaseListPresenter extends
 
   @Override
   protected String getTitle() {
-    return Literals.INSTANCE.leaseListTitle();
+    return Literals.INSTANCE.expenseListTitle();
   }
   
   

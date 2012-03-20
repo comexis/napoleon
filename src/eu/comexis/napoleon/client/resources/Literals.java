@@ -306,6 +306,18 @@ public interface Literals extends ConstantsWithLookup {
   @DefaultStringValue("Edition d'un paiement")
   public String paymentTenantUpdateTitle();
   
+  @DefaultStringValue("Liste des dépenses")
+  public String expenseListTitle();
+  
+  @DefaultStringValue("Détail de la dépense")
+  public String expenseDetailsTitle();
+  
+  @DefaultStringValue("Nouvelle dépense")
+  public String expenseNewTitle();
+  
+  @DefaultStringValue("Edition de la dépense")
+  public String expenseUpdateTitle();
+  
   
   
 }

@@ -9,6 +9,7 @@ import javax.persistence.Id;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.annotation.NotSaved;
 import com.googlecode.objectify.annotation.Parent;
 
 public class Expense implements IsSerializable , Identifiable, HasFiles{
@@ -25,8 +26,14 @@ public class Expense implements IsSerializable , Identifiable, HasFiles{
   private Float toBePaidByTenant;
   private Boolean isPaidByTenant;
   private Date datePaymentTenant;
+  private Key<Contractor> contractor;
+  private String contractorId;
+
   @Parent
   private Key<RealEstate> realEstateKey;
+
+  @NotSaved
+  private String realEstateId;
 
   @Embedded
   private ArrayList<FileDescriptor> files;
@@ -34,15 +41,21 @@ public class Expense implements IsSerializable , Identifiable, HasFiles{
   public Expense() {
     files = new ArrayList<FileDescriptor>();
   }
-
   @Override
   public void addFile(FileDescriptor file) {
     files.add(file);
     
   }
-
   public Float getAmount() {
     return amount;
+  }
+
+  public Key<Contractor> getContractor() {
+    return contractor;
+  }
+
+  public String getContractorId() {
+    return contractorId;
   }
 
   public Date getDateFacture() {
@@ -75,6 +88,10 @@ public class Expense implements IsSerializable , Identifiable, HasFiles{
     return isPaidByTenant;
   }
 
+  public String getRealEstateId() {
+    return realEstateId;
+  }
+
   public Key<RealEstate> getRealEstateKey() {
     return realEstateKey;
   }
@@ -101,6 +118,14 @@ public class Expense implements IsSerializable , Identifiable, HasFiles{
     this.amount = amount;
   }
 
+  public void setContractor(Key<Contractor> contractor) {
+    this.contractor = contractor;
+  }
+
+  public void setContractorId(String contractorId) {
+    this.contractorId = contractorId;
+  }
+
   public void setDateFacture(Date dateFacture) {
     this.dateFacture = dateFacture;
   }
@@ -116,12 +141,16 @@ public class Expense implements IsSerializable , Identifiable, HasFiles{
   public void setDatePrevenue(Date datePrevenue) {
     this.datePrevenue = datePrevenue;
   }
+
   public void setId(String id) {
     this.id = id;
   }
-
   public void setIsPaidByTenant(Boolean isPaidByTenant) {
     this.isPaidByTenant = isPaidByTenant;
+  }
+
+  public void setRealEstateId(String realEstateId) {
+    this.realEstateId = realEstateId;
   }
 
   public void setRealEstateKey(Key<RealEstate> realEstateKey) {

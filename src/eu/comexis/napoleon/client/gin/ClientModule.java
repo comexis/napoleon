@@ -13,6 +13,12 @@ import eu.comexis.napoleon.client.core.estate.RealEstateListPresenter;
 import eu.comexis.napoleon.client.core.estate.RealEstateListView;
 import eu.comexis.napoleon.client.core.estate.RealEstateUpdatePresenter;
 import eu.comexis.napoleon.client.core.estate.RealEstateUpdateView;
+import eu.comexis.napoleon.client.core.expense.ExpenseDetailsPresenter;
+import eu.comexis.napoleon.client.core.expense.ExpenseDetailsView;
+import eu.comexis.napoleon.client.core.expense.ExpenseListPresenter;
+import eu.comexis.napoleon.client.core.expense.ExpenseListView;
+import eu.comexis.napoleon.client.core.expense.ExpenseUpdatePresenter;
+import eu.comexis.napoleon.client.core.expense.ExpenseUpdateView;
 import eu.comexis.napoleon.client.core.lease.LeaseDetailsPresenter;
 import eu.comexis.napoleon.client.core.lease.LeaseDetailsView;
 import eu.comexis.napoleon.client.core.lease.LeaseListPresenter;
@@ -131,6 +137,18 @@ public class ClientModule extends AbstractPresenterModule {
     bindPresenter(RealEstateUpdatePresenter.class,
         RealEstateUpdatePresenter.MyView.class, RealEstateUpdateView.class,
         RealEstateUpdatePresenter.MyProxy.class);
+    
+    bindPresenter(ExpenseListPresenter.class,
+        ExpenseListPresenter.MyView.class, ExpenseListView.class,
+        ExpenseListPresenter.MyProxy.class);
+
+    bindPresenter(ExpenseDetailsPresenter.class,
+        ExpenseDetailsPresenter.MyView.class, ExpenseDetailsView.class,
+        ExpenseDetailsPresenter.MyProxy.class);
+    
+    bindPresenter(ExpenseUpdatePresenter.class,
+        ExpenseUpdatePresenter.MyView.class, ExpenseUpdateView.class,
+        ExpenseUpdatePresenter.MyProxy.class);
 
     bindPresenterWidget(DocumentPanelPresenter.class, DocumentPanelPresenter.MyView.class,
         DocumentPanelView.class);
