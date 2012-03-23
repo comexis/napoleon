@@ -59,6 +59,8 @@ public class PaymentUpdateView<T extends Payment> extends ViewImpl implements
   @UiField
   Element dueToOwner;
   @UiField
+  Element expense;
+  @UiField
   TextBox balance;
   @UiField
   Element fee;
@@ -182,27 +184,26 @@ public class PaymentUpdateView<T extends Payment> extends ViewImpl implements
       this.fromDate.setValue(payment.getPeriodStartDate());
       this.toDate.setValue(payment.getPeriodEndDate());
       this.amount.setValue(UiHelper.FloatToString(payment.getAmount()));
-      try{
+      if (payment.getClass().equals(PaymentTenant.class)){
         this.account.setValue(((PaymentTenant)payment).getAccount()!=null ? ((PaymentTenant)payment).getAccount():"");
         this.inCashYes.setValue(((PaymentTenant)payment).getPaymentInCash()!=null ? ((PaymentTenant)payment).getPaymentInCash(): false);
         this.number.setValue(((PaymentTenant)payment).getNumber()!=null ? ((PaymentTenant)payment).getNumber():"");
         this.communication.setValue(((PaymentTenant)payment).getCommunication()!=null ? ((PaymentTenant)payment).getCommunication():"");
-      }catch(Exception e){
-        $("#moreDetailTenant").hide();
-      }
-      try{
+        $("#moreDetailOwner").hide();
+      }else{
         PaymentOwner po = (PaymentOwner)payment;
         this.fee.setInnerText(UiHelper.FloatToString(((PaymentOwner)payment).getFee()) + " " + UiHelper.translateEnum("FeeUnit_", ((PaymentOwner)payment).getFeeUnit()));
         this.previousBalance.setInnerText(UiHelper.FloatToString(((PaymentOwner)payment).getPreviousbalance()));
         Float fRentWithoutFee = po.getRentWithoutFee()!=null ? po.getRentWithoutFee() : 0f;
         Float fPreviousBalance = po.getPreviousbalance()!=null ? po.getPreviousbalance() : 0f;
         Float fAmount = po.getAmount()!=null ? po.getAmount() : 0f;
-        Float toOwner  = fRentWithoutFee+ fPreviousBalance;
+        Float fExpense  = po.getExpense()!=null ? po.getExpense() : 0f;
+        Float toOwner  = fRentWithoutFee+ fPreviousBalance - fExpense;
         this.dueToOwner.setInnerText(UiHelper.FloatToString(toOwner));
         this.balance.setValue(UiHelper.FloatToString(toOwner - fAmount));
         this.rentWithoutFee.setInnerText(UiHelper.FloatToString(fRentWithoutFee));
-      }catch(Exception e){
-        $("#moreDetailOwner").hide();
+        this.expense.setInnerText(UiHelper.FloatToString(fExpense));
+        $("#moreDetailTenant").hide();
       }
     }
     this.fromDate.setEnabled(false);

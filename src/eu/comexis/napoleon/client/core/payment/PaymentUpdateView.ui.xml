@@ -45,6 +45,8 @@
 				<span ui:field="dueToOwner" class="{res.css.detailCellValue}" />
 				<span class="{res.css.detailCellInputLabel}" style="width:100px">Solde (EUR) :</span>
 				<g:TextBox ui:field="balance" styleName="{res.css.detailCellInputList}" name="balance" />
+				<span class="{res.css.detailCellInputLabel}" style="width:100px">Dépenses (EUR) :</span>
+				<span ui:field="expense" class="{res.css.detailCellValue}" />
 			</div>
 		</div>
 		<div class="{res.css.detailRow} {res.css.separationRow}">

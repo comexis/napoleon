@@ -1,6 +1,7 @@
 package eu.comexis.napoleon.server.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,6 +17,12 @@ import eu.comexis.napoleon.shared.model.Expense;
 import eu.comexis.napoleon.shared.model.RealEstate;
 
 public class ExpenseDao extends DAOBase {
+  public ExpenseDao(){
+    super();
+  }
+  public ExpenseDao(boolean transactional){
+    super(transactional);
+  }
   public static Log LOG = LogFactory.getLog(ExpenseDao.class);
   
   public List<Expense> getAllExpense(String companyId) {
@@ -47,7 +54,9 @@ public List<Expense> getAllExpense(String realEstateId,String companyId) {
   }
   return lstExp;
 }
+
 public Expense getById(String expenseId, String realEstateId, String companyId) {
+  //LOG.info("Get expense: id (" + expenseId + "), estate id (" + realEstateId + "), company (" + companyId + ")");
   Key<Company> companyKey = new Key<Company>(Company.class, companyId);
   Key<RealEstate> estateKey = new Key<RealEstate>(companyKey,RealEstate.class, realEstateId);
   Expense exp = ofy().find(new Key<Expense>(estateKey, Expense.class, expenseId));

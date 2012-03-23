@@ -25,6 +25,7 @@ import eu.comexis.napoleon.shared.model.City;
 import eu.comexis.napoleon.shared.model.Company;
 import eu.comexis.napoleon.shared.model.Condo;
 import eu.comexis.napoleon.shared.model.Country;
+import eu.comexis.napoleon.shared.model.Expense;
 import eu.comexis.napoleon.shared.model.FeeUnit;
 import eu.comexis.napoleon.shared.model.JobTitle;
 import eu.comexis.napoleon.shared.model.Lease;
@@ -136,10 +137,22 @@ public class PaymentDao<T extends Payment> extends DAOBase{
       Key<T> paymentKey = ofy().put(payment);
       LOG.info("Payment has been updated");
       Lease l = ofy().get(payment.getLeaseKey());
+      estateKey=l.getRealEstateKey();
       RealEstate e = ofy().get(l.getRealEstateKey());
       T pt = ofy().get(paymentKey);
       pt.setEstateId(e.getId());
       pt.setLeaseId(l.getId());
+      if (pt.getClass().equals(PaymentOwner.class)){
+        PaymentOwner po = (PaymentOwner)pt;
+        Query<Expense> q = ofy().query(Expense.class);
+        q.ancestor(estateKey);
+        for (Expense exp: getExpensesToBeCharged(payment.getEstateId(),companyKey)){
+          if (exp.getDateFacture()!=null){
+            exp.setChargedToOwnerPeriod(po.getPeriodEndDate());
+            ofy().put(exp);
+          }
+        }
+      }
       return pt;
     } catch (Exception e) {
       LOG.fatal("Payment cannot be updated: ", e);
@@ -182,9 +195,11 @@ public class PaymentDao<T extends Payment> extends DAOBase{
         LOG.info("Paiement proprio: " + sDate);
         item = new PaymentListItem();
         item.setPaymentOwnerDate(po.getPaymentDate());
-        item.setPaidToOwner(po.getAmount());
-        item.setToBePaidToOwner(po.getRentWithoutFee() + (po.getPreviousbalance()!=null?po.getPreviousbalance():0f));
-        item.setBalance(po.getBalance());
+        item.setPaidToOwner(po.getAmount()!=null?po.getAmount():0f);
+        item.setBalance(po.getBalance()!=null?po.getBalance():0f);
+        item.setToBePaidToOwner(item.getPaidToOwner()+ item.getBalance());
+        //item.setToBePaidToOwner(po.getRentWithoutFee() + (po.getPreviousbalance()!=null?po.getPreviousbalance():0f));
+        item.setExpenses(po.getExpense()!=null?po.getExpense():0f);
         allPaymentsProprio.put(sDate, item);
         
       }
@@ -209,16 +224,31 @@ public class PaymentDao<T extends Payment> extends DAOBase{
         item.setToBePaidToOwner(balance);
         itemPo = allPaymentsProprio.get(sDate);
         item.setBalance(balance);
+        item.setPaidToOwner(0f);
         if (itemPo!=null){
           item.setPaymentOwnerDate(itemPo.getPaymentOwnerDate());
           item.setPaidToOwner(itemPo.getPaidToOwner());
           item.setToBePaidToOwner(itemPo.getToBePaidToOwner());
           item.setBalance(itemPo.getBalance());
+          item.setExpenses(itemPo.getExpenses());
           balance = itemPo.getBalance();
         }
         allPayments.put(sDate, item);
       }
-      
+      // update the last record with the remaining expense to be charged to owner
+      item = allPayments.get(sDate);
+      if (item!=null){
+        Float totExp = 0f;
+        for (Expense e: getExpensesToBeCharged(realEstateId,companyId)){
+          if (e.getToBePaidByOwner()!=null){
+            totExp+=e.getToBePaidByOwner();
+          }
+        }
+        item.setExpenses((item.getExpenses()!=null ? item.getExpenses():0f) + totExp);
+        item.setBalance(item.getBalance() - totExp);
+        item.setToBePaidToOwner(item.getBalance() + item.getPaidToOwner());
+        allPayments.put(sDate, item);
+      }
       
       List<PaymentListItem> paymentDashboard = new ArrayList<PaymentListItem>();
       for (PaymentListItem itm: allPayments.values()){
@@ -307,22 +337,45 @@ public class PaymentDao<T extends Payment> extends DAOBase{
         dueToOwner = sum - (nbrPeriod * owner.getFee().floatValue());
       }
       nextPaymentOwner.setRentWithoutFee(dueToOwner);
-      // Calcul du solde (ajoute de l'ancien solde)
+      // Calcul du solde (ajoute de l'ancien solde) - dépenses
+      Float totExp = 0f;
+      for (Expense e: getExpensesToBeCharged(realEstateId,companyId)){
+          totExp+=e.getToBePaidByOwner();
+      }
+      nextPaymentOwner.setExpense(totExp);
       if (lastpo!=null){
         nextPaymentOwner.setPreviousbalance(lastpo.getBalance());
         dueToOwner += lastpo.getBalance();
       }
+      dueToOwner -= totExp;
       nextPaymentOwner.setBalance(dueToOwner);
       nextPaymentOwner.setLeaseKey(leaseKey);
       nextPaymentOwner.setEstateId(realEstateId);
       nextPaymentOwner.setLeaseId(leaseId);
       nextPaymentOwner.setRent(sum);
       nextPaymentOwner.setNbrPeriod(nbrPeriod);
+      
       return nextPaymentOwner;
     } catch (Exception e) {
       LOG.fatal("Next payment cannot be given: ", e);
       return null;
     }
+  }
+  public List<Expense> getExpensesToBeCharged(String realEstateId,Key<Company> companyKey) {
+    Key<RealEstate> estateKey = new Key<RealEstate>(companyKey,RealEstate.class, realEstateId);
+    Query<Expense> q = ofy().query(Expense.class);
+    q.ancestor(estateKey);
+    ArrayList<Expense> lstExpToCharge = new ArrayList<Expense>();
+    for (Expense e: q.filter("chargedToOwnerPeriod", null).list()){
+      if (e.getDateFacture()!=null){
+        lstExpToCharge.add(e);
+      }
+    }
+    return lstExpToCharge;
+  }
+  public List<Expense> getExpensesToBeCharged(String realEstateId, String companyId) {
+    Key<Company> companyKey = new Key<Company>(Company.class, companyId);
+    return getExpensesToBeCharged(realEstateId,companyKey);
   }
   public PaymentTenant getNextPaymentTenantForLease(String leaseId, String realEstateId, String companyId){
     try{

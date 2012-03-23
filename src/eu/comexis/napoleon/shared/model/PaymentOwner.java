@@ -6,7 +6,15 @@ import com.googlecode.objectify.annotation.Subclass;
 public class PaymentOwner extends Payment {
   private Float balance;
   private Float previousbalance;
+  private Float expense;
   
+
+  public Float getExpense() {
+    return expense;
+  }
+  public void setExpense(Float expense) {
+    this.expense = expense;
+  }
 
   private Long nbrPeriod;
 

@@ -45,6 +45,8 @@
 						<span class="{res.css.detailCellLabel}">Pays :</span>
 						<span ui:field="country" class="{res.css.detailCellValue}" />
 					</div>
+					<div ui:field="addressAdditionnalData">
+					</div>
 					<div class="{res.css.detailRow}">
 						<span class="{res.css.detailCellLabel}">Téléphone :</span>
 						<span ui:field="phoneNumber" class="{res.css.detailCellValue}" />

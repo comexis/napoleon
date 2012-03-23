@@ -81,9 +81,8 @@ public class ExpenseListPresenter extends
   protected void requestData() {
     new GetAllExpenseCommand(estateId).dispatch(new GotAllExpense() {
       @Override
-      public void got(List<Expense> expenses) {
-        setDatas(expenses);
-        doReveal();
+      public void got(String title,List<Expense> expenses) {
+        setDatas(title, expenses);
       }
     });
   }

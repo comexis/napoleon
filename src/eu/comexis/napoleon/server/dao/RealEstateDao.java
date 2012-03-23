@@ -54,20 +54,24 @@ public class RealEstateDao extends NapoleonDao<RealEstate> {
     ArrayList<SimpleRealEstate> realEstates = new ArrayList<SimpleRealEstate>();
     while (iterator.hasNext()) {
       RealEstate realEstate = iterator.next();
-      SimpleRealEstate e = new SimpleRealEstate();
-      e.setId(realEstate.getId());
-      e.setReference(realEstate.getReference());
-      e.setCity(realEstate.getCity());
-      e.setAddress(realEstate.getStreet() + ", " + realEstate.getNumber() + (realEstate.getBox()!=null ? " bte " + realEstate.getBox():""));
-      e.setPostalCode(realEstate.getPostalCode());
-      SimpleOwner o = getOwner(realEstate);
-      e.setOwner(o.getName());
-      e.setOwnerId(o.getId());
-      e.setMobile(o.getMobileNumber());
-      e.setPhoneNumber(o.getPhoneNumber());
+      SimpleRealEstate e = getSimpleRealEstate(realEstate);
       realEstates.add(e);
     }
     return realEstates;
+  }
+  public SimpleRealEstate getSimpleRealEstate(RealEstate e){
+    SimpleRealEstate se = new SimpleRealEstate();
+    se.setId(e.getId());
+    se.setReference(e.getReference());
+    se.setCity(e.getCity());
+    se.setAddress(e.getStreet() + ", " + e.getNumber() + (e.getBox()!=null ? " bte " + e.getBox():""));
+    se.setPostalCode(e.getPostalCode());
+    SimpleOwner o = getOwner(e);
+    se.setOwner(o.getName());
+    se.setOwnerId(o.getId());
+    se.setMobile(o.getMobileNumber());
+    se.setPhoneNumber(o.getPhoneNumber());
+    return se;
   }
   @Override
   public RealEstate update(RealEstate realEstate) {
@@ -241,6 +245,7 @@ public class RealEstateDao extends NapoleonDao<RealEstate> {
       return null;
     }
   }
+  
   @Override
   public RealEstate getById(String estateId,String companyId){
     RealEstate e = super.getById(estateId, companyId);

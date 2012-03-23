@@ -3,7 +3,7 @@ package eu.comexis.napoleon.client.core;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.InputElement;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -37,6 +37,8 @@ public abstract class AbstractShortListView<T> extends ViewImpl implements
   Button btnNew;
   @UiField
   Button btnDelete;
+  @UiField
+  Element parentTitle;
 
   // list containing the datas to display
   private ListDataProvider<T> dataProvider;
@@ -76,11 +78,15 @@ public abstract class AbstractShortListView<T> extends ViewImpl implements
   }
 
   @Override
-  public void setData(List<T> datas) {
+  public void setData(String title,List<T> datas) {
+    parentTitle.setInnerText(title);
     dataProvider.getList().clear();
     dataProvider.getList().addAll(datas);
     dataProvider.refresh();
 
+  }
+  public void setListTitle(String title){
+    parentTitle.setInnerText(title);
   }
 
   @Override

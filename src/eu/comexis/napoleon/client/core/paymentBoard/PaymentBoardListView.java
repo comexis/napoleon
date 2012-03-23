@@ -6,13 +6,12 @@ import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
 
-import eu.comexis.napoleon.client.core.AbstractListView;
+import eu.comexis.napoleon.client.core.AbstractShortListView;
 import eu.comexis.napoleon.client.utils.SimpleTextComparator;
 import eu.comexis.napoleon.client.utils.UiHelper;
-import eu.comexis.napoleon.shared.model.PaymentTenant;
 import eu.comexis.napoleon.shared.model.simple.PaymentListItem;
 
-public class PaymentBoardListView extends AbstractListView<PaymentListItem> implements
+public class PaymentBoardListView extends AbstractShortListView<PaymentListItem> implements
   PaymentBoardListPresenter.MyView {
 
   // key provider object implementation for SimpleLease object
@@ -60,12 +59,12 @@ public class PaymentBoardListView extends AbstractListView<PaymentListItem> impl
       }
     };
 
-    toDateColumn.setSortable(true);
+    /*toDateColumn.setSortable(true);
     sortHandler.setComparator(toDateColumn, new SimpleTextComparator<PaymentListItem>() {
       public int compare(PaymentListItem o1, PaymentListItem o2) {
         return compare(UiHelper.formatDateForCompare(o1.getToDate()), UiHelper.formatDateForCompare(o2.getToDate()));
       }
-    });
+    });*/
 
     table.addColumn(toDateColumn, "Au");
     
@@ -77,12 +76,12 @@ public class PaymentBoardListView extends AbstractListView<PaymentListItem> impl
       }
     };
 
-    amountColumn.setSortable(true);
+    /*amountColumn.setSortable(true);
     sortHandler.setComparator(amountColumn, new SimpleTextComparator<PaymentListItem>() {
       public int compare(PaymentListItem o1, PaymentListItem o2) {
         return compare(UiHelper.FloatToString(o1.getRent()),UiHelper.FloatToString(o2.getRent()));
       }
-    });
+    });*/
 
     table.addColumn(amountColumn, "Loyer");
     
@@ -94,12 +93,12 @@ public class PaymentBoardListView extends AbstractListView<PaymentListItem> impl
       }
     };
 
-    dateColumn.setSortable(true);
+    /*dateColumn.setSortable(true);
     sortHandler.setComparator(dateColumn, new SimpleTextComparator<PaymentListItem>() {
       public int compare(PaymentListItem o1, PaymentListItem o2) {
         return compare(UiHelper.formatDateForCompare(o1.getPaymentTenantDate()), UiHelper.formatDateForCompare(o2.getPaymentTenantDate()));
       }
-    });
+    });*/
 
     table.addColumn(dateColumn, "Date paiement");
     
@@ -111,12 +110,12 @@ public class PaymentBoardListView extends AbstractListView<PaymentListItem> impl
       }
     };
 
-    feeColumn.setSortable(true);
+    /*feeColumn.setSortable(true);
     sortHandler.setComparator(feeColumn, new SimpleTextComparator<PaymentListItem>() {
       public int compare(PaymentListItem o1, PaymentListItem o2) {
         return compare(UiHelper.FloatToString(o1.getFee()),UiHelper.FloatToString(o2.getFee()));
       }
-    });
+    });*/
     
     table.addColumn(feeColumn, "Honoraires");
     
@@ -128,14 +127,31 @@ public class PaymentBoardListView extends AbstractListView<PaymentListItem> impl
       }
     };
 
-    balanceColumn.setSortable(true);
+    /*balanceColumn.setSortable(true);
     sortHandler.setComparator(balanceColumn, new SimpleTextComparator<PaymentListItem>() {
       public int compare(PaymentListItem o1, PaymentListItem o2) {
         return compare(UiHelper.FloatToString(o1.getBalance()),UiHelper.FloatToString(o2.getBalance()));
       }
-    });
+    });*/
     
     table.addColumn(balanceColumn, "Solde");
+    
+    // expense.
+    Column<PaymentListItem, String> expenseColumn = new Column<PaymentListItem, String>(new TextCell()) {
+      @Override
+      public String getValue(PaymentListItem object) {
+        return UiHelper.FloatToString(object.getExpenses());
+      }
+    };
+
+    /*expenseColumn.setSortable(true);
+    sortHandler.setComparator(expenseColumn, new SimpleTextComparator<PaymentListItem>() {
+      public int compare(PaymentListItem o1, PaymentListItem o2) {
+        return compare(UiHelper.FloatToString(o1.getExpenses()),UiHelper.FloatToString(o2.getExpenses()));
+      }
+    });*/
+    
+    table.addColumn(expenseColumn, "Dépenses");
     
     // Du au proprio.
     Column<PaymentListItem, String> dueToOnwerColumn = new Column<PaymentListItem, String>(new TextCell()) {
@@ -145,12 +161,12 @@ public class PaymentBoardListView extends AbstractListView<PaymentListItem> impl
       }
     };
 
-    dueToOnwerColumn.setSortable(true);
+    /*dueToOnwerColumn.setSortable(true);
     sortHandler.setComparator(dueToOnwerColumn, new SimpleTextComparator<PaymentListItem>() {
       public int compare(PaymentListItem o1, PaymentListItem o2) {
         return compare(UiHelper.FloatToString(o1.getToBePaidToOwner()),UiHelper.FloatToString(o2.getToBePaidToOwner()));
       }
-    });
+    });*/
     
     table.addColumn(dueToOnwerColumn, "Dû au propriétaire");
     
@@ -162,12 +178,12 @@ public class PaymentBoardListView extends AbstractListView<PaymentListItem> impl
       }
     };
 
-    givenToOnwerColumn.setSortable(true);
+    /*givenToOnwerColumn.setSortable(true);
     sortHandler.setComparator(givenToOnwerColumn, new SimpleTextComparator<PaymentListItem>() {
       public int compare(PaymentListItem o1, PaymentListItem o2) {
         return compare(UiHelper.FloatToString(o1.getPaidToOwner()),UiHelper.FloatToString(o2.getPaidToOwner()));
       }
-    });
+    });*/
     
     table.addColumn(givenToOnwerColumn, "Versé au propriétaire");
     
@@ -179,12 +195,12 @@ public class PaymentBoardListView extends AbstractListView<PaymentListItem> impl
       }
     };
 
-    dateVersColumn.setSortable(true);
+    /*dateVersColumn.setSortable(true);
     sortHandler.setComparator(dateVersColumn, new SimpleTextComparator<PaymentListItem>() {
       public int compare(PaymentListItem o1, PaymentListItem o2) {
         return compare(UiHelper.formatDateForCompare(o1.getPaymentOwnerDate()), UiHelper.formatDateForCompare(o2.getPaymentOwnerDate()));
       }
-    });
+    });*/
 
     table.addColumn(dateVersColumn, "Date de versement");
   }
@@ -194,7 +210,7 @@ public class PaymentBoardListView extends AbstractListView<PaymentListItem> impl
     return "Nouveau paiement";
   }
   @Override
-  protected String getButtonBackLabel() {
-    return "Retour vers la location";
+  protected String getButtonDeleteLabel() {
+    return "Supprimer le paiement sélectionné";
   }
 }

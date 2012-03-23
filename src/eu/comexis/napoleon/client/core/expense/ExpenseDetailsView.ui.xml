@@ -21,6 +21,10 @@
 						<span class="{res.css.detailCellLabel}">Date facture :</span>
 						<span ui:field="dateInvoice" class="{res.css.detailCellValue}" />
 					</div>
+					
+					<div class="{res.css.separationRow}" style="clear: both;">
+
+					</div>
 					<div>
 						<g:Button ui:field="btnUpdate">Editer</g:Button>
 						<g:Button ui:field="btnDelete">Effacer</g:Button>

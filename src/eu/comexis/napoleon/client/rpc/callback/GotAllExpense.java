@@ -7,11 +7,11 @@ import eu.comexis.napoleon.shared.model.Expense;
 
 public abstract class GotAllExpense extends AbstractCallback<GetAllExpenseResponse>{
 
-  public abstract void got(List<Expense> leaseList);
+  public abstract void got(String title,List<Expense> leaseList);
 
   @Override
   public void onSuccess(GetAllExpenseResponse result) {
-    got(result.getListExpense());
+    got(result.getTitle(),result.getListExpense());
   }
 
 }

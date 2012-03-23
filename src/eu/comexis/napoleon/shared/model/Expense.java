@@ -12,12 +12,11 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.NotSaved;
 import com.googlecode.objectify.annotation.Parent;
 
-public class Expense implements IsSerializable , Identifiable, HasFiles{
+public class Expense implements IsSerializable, Identifiable, HasFiles {
 
   @Id
   private String id;
   private Date datePrevenue;
-  //private TypeIntervention datePrevenue;
   private Date dateIntervention;
   private Date dateFacture;
   private String reference;
@@ -28,10 +27,10 @@ public class Expense implements IsSerializable , Identifiable, HasFiles{
   private Date datePaymentTenant;
   private Key<Contractor> contractor;
   private String contractorId;
+  private Date chargedToOwnerPeriod;
 
   @Parent
   private Key<RealEstate> realEstateKey;
-
   @NotSaved
   private String realEstateId;
 
@@ -41,13 +40,19 @@ public class Expense implements IsSerializable , Identifiable, HasFiles{
   public Expense() {
     files = new ArrayList<FileDescriptor>();
   }
+
   @Override
   public void addFile(FileDescriptor file) {
     files.add(file);
-    
+
   }
+
   public Float getAmount() {
     return amount;
+  }
+
+  public Date getChargedToOwnerPeriod() {
+    return chargedToOwnerPeriod;
   }
 
   public Key<Contractor> getContractor() {
@@ -111,11 +116,15 @@ public class Expense implements IsSerializable , Identifiable, HasFiles{
   @Override
   public void removeFile(FileDescriptor file) {
     files.remove(file);
-    
+
   }
 
   public void setAmount(Float amount) {
     this.amount = amount;
+  }
+
+  public void setChargedToOwnerPeriod(Date chargedToOwnerPeriod) {
+    this.chargedToOwnerPeriod = chargedToOwnerPeriod;
   }
 
   public void setContractor(Key<Contractor> contractor) {
@@ -145,6 +154,7 @@ public class Expense implements IsSerializable , Identifiable, HasFiles{
   public void setId(String id) {
     this.id = id;
   }
+
   public void setIsPaidByTenant(Boolean isPaidByTenant) {
     this.isPaidByTenant = isPaidByTenant;
   }

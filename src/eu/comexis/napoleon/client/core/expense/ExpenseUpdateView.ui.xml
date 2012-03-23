@@ -23,6 +23,15 @@
 			</div>
 			
 			<div class="{res.css.detailRow}">
+				<span class="{res.css.detailCellInputLabel}">Montant à payer par le propriétaire :</span>
+				<g:TextBox ui:field="toBePaidByOwner" styleName="{res.css.detailCellInputText}"
+					name="toBePaidByOwner" />
+				<span class="{res.css.detailCellInputLabel}">Montant à payer par le locataire :</span>
+				<g:TextBox ui:field="toBePaidByTenant" styleName="{res.css.detailCellInputText}"
+					name="toBePaidByTenant" />
+			</div>
+			
+			<div class="{res.css.detailRow}">
 				
 			</div>
 

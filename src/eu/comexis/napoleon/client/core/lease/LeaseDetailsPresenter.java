@@ -1,6 +1,7 @@
 package eu.comexis.napoleon.client.core.lease;
 
 import static eu.comexis.napoleon.client.Napoleon.ginjector;
+import static eu.comexis.napoleon.client.core.party.PartyUpdatePresenter.UUID_PARAMETER;
 
 import java.util.logging.Logger;
 
@@ -19,6 +20,7 @@ import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
+import eu.comexis.napoleon.client.Napoleon;
 import eu.comexis.napoleon.client.core.AbstractPresenter;
 import eu.comexis.napoleon.client.core.HasPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter;
@@ -232,6 +234,15 @@ public class LeaseDetailsPresenter extends
   @Override
   public void showTenant() {
     TenantDetailsPresenter.show(lease.getTenant().getId());
+    
+  }
+  public static void show(String id, String realEstateId) {
+    PlaceRequest myRequest = new PlaceRequest(NameTokens.lease);
+    // add the id of the owner to load
+    myRequest = myRequest.with(UUID_PARAMETER, id);
+    myRequest = myRequest.with(ESTATE_UUID_PARAMETER, realEstateId);
+    
+    Napoleon.ginjector.getPlaceManager().revealPlace(myRequest);
     
   }
 

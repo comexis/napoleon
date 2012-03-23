@@ -3,6 +3,7 @@ package eu.comexis.napoleon.client.core.party;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.logging.client.LogConfiguration;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -46,6 +47,8 @@ public abstract class PartyDetailsView<T extends Party> extends ViewImpl impleme
   Element birthDay;
   @UiField
   Element bottomAdditionnalData;
+  @UiField
+  Element addressAdditionnalData;
   @UiField
   Element email;
   @UiField
@@ -117,6 +120,9 @@ public abstract class PartyDetailsView<T extends Party> extends ViewImpl impleme
   protected void setBottomAdditionnalData(SafeHtml data) {
     bottomAdditionnalData.setInnerHTML(data.asString());
 
+  }
+  protected void setAddressAdditionnalData(SafeHtml data) {
+    addressAdditionnalData.setInnerHTML(data.asString());
   }
 
   @Override

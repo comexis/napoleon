@@ -259,6 +259,22 @@ public class LeaseDao extends DAOBase {
       return null;
     }
   }
+  public RealEstate getRealEstateRentBy(String tenantId, String companyId){
+    // get today's date
+    Calendar cal = Calendar.getInstance();
+    Date toDay = cal.getTime();
+    Key<Company> companyKey = new Key<Company>(Company.class, companyId);
+    Key<Tenant> tenantKey = new Key<Tenant>(companyKey,Tenant.class, tenantId);
+    Query<Lease> q = ofy().query(Lease.class);
+    q.ancestor(companyKey);
+    LOG.info("Search lease for tenantId " + tenantId + " date " + toDay);
+    Lease l = q.filter("tenantKey", tenantKey).filter("endDate >=",toDay).get();  
+    if (l!=null){
+      LOG.info("Found key is " + l.getRealEstateKey());
+      return ofy().find(l.getRealEstateKey());
+    }
+    return null;
+  }
   private Date setTime(Date date){
     if (date!=null){
       Calendar cal = Calendar.getInstance();

@@ -6,6 +6,7 @@ import eu.comexis.napoleon.shared.command.Response;
 import eu.comexis.napoleon.shared.model.simple.PaymentListItem;
 
 public class GetPaymentsBoardResponse implements Response {
+  private String title = "";
   private List<PaymentListItem> listPayments;
 
   public GetPaymentsBoardResponse() {
@@ -16,8 +17,16 @@ public class GetPaymentsBoardResponse implements Response {
     return listPayments;
   }
 
+  public String getTitle() {
+    return title;
+  }
+
   public void setListPayments(List<PaymentListItem> listPayments) {
     this.listPayments = listPayments;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
   }
 
 }

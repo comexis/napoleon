@@ -42,6 +42,10 @@ public class ExpenseUpdateView extends ViewImpl implements ExpenseUpdatePresente
   @UiField
   TextBox amount;
   @UiField
+  TextBox toBePaidByOwner;
+  @UiField
+  TextBox toBePaidByTenant;
+  @UiField
   DateBox dateInvoice;
   
 
@@ -92,12 +96,16 @@ public class ExpenseUpdateView extends ViewImpl implements ExpenseUpdatePresente
     this.reference.setValue("");
     this.amount.setValue("");
     this.dateInvoice.setValue(null);
+    this.toBePaidByOwner.setValue("");
+    this.toBePaidByTenant.setValue("");
     
     
     if (l != null) {
       this.reference.setValue(l.getReference());
       this.amount.setValue(UiHelper.FloatToString(l.getAmount()));
       this.dateInvoice.setValue(l.getDateFacture());
+      this.toBePaidByOwner.setValue(UiHelper.FloatToString(l.getToBePaidByOwner()));
+      this.toBePaidByTenant.setValue(UiHelper.FloatToString(l.getToBePaidByTenant()));
     }
   }
 
@@ -110,6 +118,9 @@ public class ExpenseUpdateView extends ViewImpl implements ExpenseUpdatePresente
   public Expense updateExpense(Expense l) {
     l.setReference(reference.getValue());
     l.setAmount(UiHelper.stringToFloat(this.amount.getValue()));
+    l.setToBePaidByOwner(UiHelper.stringToFloat(this.toBePaidByOwner.getValue()));
+    l.setToBePaidByTenant(UiHelper.stringToFloat(this.toBePaidByTenant.getValue()));
+    l.setDateFacture(this.dateInvoice.getValue());
     return l;
   }
 

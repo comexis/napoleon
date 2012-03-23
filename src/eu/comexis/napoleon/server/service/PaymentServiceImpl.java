@@ -8,6 +8,7 @@ import org.apache.commons.logging.LogFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import eu.comexis.napoleon.client.rpc.PaymentService;
+import eu.comexis.napoleon.server.dao.LeaseDao;
 import eu.comexis.napoleon.server.dao.PaymentDao;
 import eu.comexis.napoleon.server.manager.UserManager;
 import eu.comexis.napoleon.shared.command.payment.GetAllPaymentCommand;
@@ -18,6 +19,7 @@ import eu.comexis.napoleon.shared.command.payment.GetPaymentsBoardCommand;
 import eu.comexis.napoleon.shared.command.payment.GetPaymentsBoardResponse;
 import eu.comexis.napoleon.shared.command.payment.UpdatePaymentCommand;
 import eu.comexis.napoleon.shared.command.payment.UpdatePaymentResponse;
+import eu.comexis.napoleon.shared.model.Lease;
 import eu.comexis.napoleon.shared.model.Payment;
 import eu.comexis.napoleon.shared.model.PaymentOwner;
 import eu.comexis.napoleon.shared.model.PaymentTenant;
@@ -76,8 +78,10 @@ public class PaymentServiceImpl extends RemoteServiceServlet implements PaymentS
     GetPaymentsBoardResponse response = new GetPaymentsBoardResponse();
     String companyId = UserManager.INSTANCE.getCompanyId();
     PaymentDao<Payment> ptDao = new PaymentDao<Payment>();
+    LeaseDao lDao = new LeaseDao();
+    Lease l = lDao.getById(command.getLeaseId(),command.getEstateId(), companyId);
     List<PaymentListItem> pts = ptDao.getPaymentDashboardForLease(command.getLeaseId(),command.getEstateId(), companyId);
-    
+    response.setTitle(l.getRealEstate().getReference() + " " + l.getAcademicYear() + " " + l.getTenant().getName());
     response.setListPayments(pts);
     return response;
   }

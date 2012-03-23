@@ -3,7 +3,6 @@ package eu.comexis.napoleon.client.core.paymentBoard;
 import java.util.List;
 import java.util.logging.Logger;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.logging.client.LogConfiguration;
 import com.google.inject.Inject;
@@ -14,18 +13,16 @@ import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 
 import eu.comexis.napoleon.client.core.AbstractListPresenter;
+import eu.comexis.napoleon.client.core.AbstractShortListPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
 import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.resources.Literals;
-import eu.comexis.napoleon.client.rpc.callback.GotAllPayment;
 import eu.comexis.napoleon.client.rpc.callback.GotPaymentsBoard;
-import eu.comexis.napoleon.shared.command.payment.GetAllPaymentCommand;
 import eu.comexis.napoleon.shared.command.payment.GetPaymentsBoardCommand;
-import eu.comexis.napoleon.shared.model.PaymentTenant;
 import eu.comexis.napoleon.shared.model.simple.PaymentListItem;
 
 public class PaymentBoardListPresenter extends
-    AbstractListPresenter<PaymentListItem, PaymentBoardListPresenter.MyView, PaymentBoardListPresenter.MyProxy> {
+    AbstractShortListPresenter<PaymentListItem, PaymentBoardListPresenter.MyView, PaymentBoardListPresenter.MyProxy> {
   
   public static final String UUID_PARAMETER = "uuid";
   public static final String ESTATE_UUID_PARAMETER = "estate_uuid";
@@ -41,7 +38,7 @@ public class PaymentBoardListPresenter extends
   public interface MyProxy extends ProxyPlace<PaymentBoardListPresenter> {
   }
 
-  public interface MyView extends AbstractListPresenter.MyView<PaymentListItem> {
+  public interface MyView extends AbstractShortListPresenter.MyView<PaymentListItem> {
   }
 
   @Inject
@@ -50,20 +47,12 @@ public class PaymentBoardListPresenter extends
     super(eventBus, view, proxy, placeManager);
 
   }
-  
-  @Override
-  public void onButtonBackToDashBoardClick() {
-    PlaceRequest myRequest = new PlaceRequest(NameTokens.lease);
-    myRequest = myRequest.with(UUID_PARAMETER,id);
-    myRequest = myRequest.with(ESTATE_UUID_PARAMETER, estateId);
-    getPlaceManager().revealPlace(myRequest);
-  }
 
   protected void requestData() {
     new GetPaymentsBoardCommand(id,estateId).dispatch(new GotPaymentsBoard() {
       @Override
-      public void got(List<PaymentListItem> payments) {
-        setDatas(payments);
+      public void got(String title,List<PaymentListItem> payments) {
+        setDatas(title,payments);
       }
     });
   }
@@ -93,12 +82,6 @@ public class PaymentBoardListPresenter extends
   @Override
   protected String getTitle() {
     return Literals.INSTANCE.paymentListTitle();
-  }
-
-  @Override
-  protected eu.comexis.napoleon.client.core.AbstractListPresenter.ListFilter<PaymentListItem> createFilter() {
-    // TODO Auto-generated method stub
-    return null;
   }
 
   @Override

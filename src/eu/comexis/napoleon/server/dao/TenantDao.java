@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.UUID;
 
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.Query;
 
 import eu.comexis.napoleon.server.utils.ServerUtils;
 import eu.comexis.napoleon.shared.model.City;
@@ -12,7 +13,10 @@ import eu.comexis.napoleon.shared.model.Company;
 import eu.comexis.napoleon.shared.model.Country;
 import eu.comexis.napoleon.shared.model.JobTitle;
 import eu.comexis.napoleon.shared.model.Nationality;
+import eu.comexis.napoleon.shared.model.Owner;
+import eu.comexis.napoleon.shared.model.RealEstate;
 import eu.comexis.napoleon.shared.model.Tenant;
+import eu.comexis.napoleon.shared.model.simple.SimpleRealEstate;
 import eu.comexis.napoleon.shared.model.simple.SimpleTenant;
 
 public class TenantDao extends NapoleonDao<Tenant> {
@@ -109,5 +113,16 @@ public class TenantDao extends NapoleonDao<Tenant> {
     }
     return super.update(tenant);
   }
-
+  @Override
+  public Tenant getById(String tenantId, String companyId) {
+    Tenant t = super.getById(tenantId, companyId);
+    RealEstateDao eDao = new RealEstateDao();
+    LeaseDao lDao = new LeaseDao();
+    RealEstate e = lDao.getRealEstateRentBy(tenantId, companyId);
+    if (e!=null){
+      SimpleRealEstate se = eDao.getSimpleRealEstate(e);
+      t.setRealEstate(se);
+    }
+    return t;
+  }
 }

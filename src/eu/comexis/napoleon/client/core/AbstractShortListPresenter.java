@@ -26,7 +26,7 @@ public abstract class AbstractShortListPresenter<T extends Identifiable, V exten
 
     public void resetFocus();
     
-    public void setData(List<T> data);
+    public void setData(String title,List<T> data);
   }
 
   private List<T> datas;
@@ -94,10 +94,11 @@ public abstract class AbstractShortListPresenter<T extends Identifiable, V exten
     RevealContentEvent.fire(this, MainLayoutPresenter.MAIN_CONTENT, this);
   }
 
-  protected void setDatas(List<T> datas) {
+  protected void setDatas(String title,List<T> datas) {
     this.datas = datas;
-    getView().setData(datas);
+    getView().setData(title,datas);
 
     getEventBus().fireEvent(new HideMessageEvent());
+    doReveal();
   }
 }

@@ -16,7 +16,7 @@ public class NameTokens {
   public static final String lease = "lease";
   public static final String updateLease = "updateLease";
   public static final String expenselist = "expenseList";
-  public static final String expense = "lease";
+  public static final String expense = "expense";
   public static final String updateExpense = "updateExpense";
   public static final String paymentTenant = "paymentTenant";
   public static final String paymentTenantlist = "paymentTenantList";

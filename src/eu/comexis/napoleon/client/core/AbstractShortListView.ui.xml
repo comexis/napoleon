@@ -20,6 +20,11 @@
 			<table style="width:100%">
 				<tr>
 					<td align='center'>
+						<span ui:field="parentTitle"/>
+					</td>
+				</tr>
+				<tr>
+					<td align='center'>
 						<c:CellTable ui:field='table' styleName="{style.datagrid}"></c:CellTable>
 					</td>
 				</tr>
