@@ -249,8 +249,8 @@ public class LeaseDao extends DAOBase {
       ayDao.update(year);
     }
     try {
-      lease.setStartDate(setTime(lease.getStartDate()));
-      lease.setEndDate(setTime(lease.getEndDate()));
+      //lease.setStartDate(setTime(lease.getStartDate()));
+      //lease.setEndDate(setTime(lease.getEndDate()));
       Key<Lease> leaseKey = ofy().put(lease);
       LOG.info("Lease has been updated");
       return getById(lease.getId(),lease.getRealEstateKey());
@@ -275,7 +275,7 @@ public class LeaseDao extends DAOBase {
     }
     return null;
   }
-  private Date setTime(Date date){
+/* private Date setTime(Date date){
     if (date!=null){
       Calendar cal = Calendar.getInstance();
       cal.setTime(date);
@@ -283,5 +283,5 @@ public class LeaseDao extends DAOBase {
       date = cal.getTime();
     }
     return date;
-  }
+  }*/
 }
