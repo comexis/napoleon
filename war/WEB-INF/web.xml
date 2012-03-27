@@ -126,6 +126,16 @@
 		<url-pattern>/napoleon/expense</url-pattern>
 	</servlet-mapping>
 	
+	<servlet>
+		<servlet-name>contractorServlet</servlet-name>
+		<servlet-class>eu.comexis.napoleon.server.service.ContractorServiceImpl</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>contractorServlet</servlet-name>
+		<url-pattern>/napoleon/contractor</url-pattern>
+	</servlet-mapping>
+	
 
 	<!-- Add this to your web.xml to enable remote API on Java. -->
 	<servlet>
