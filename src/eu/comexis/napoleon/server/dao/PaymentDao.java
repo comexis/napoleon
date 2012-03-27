@@ -147,7 +147,7 @@ public class PaymentDao<T extends Payment> extends DAOBase{
         Query<Expense> q = ofy().query(Expense.class);
         q.ancestor(estateKey);
         for (Expense exp: getExpensesToBeCharged(payment.getEstateId(),companyKey)){
-          if (exp.getDateFacture()!=null){
+          if (exp.getDateInvoice()!=null){
             exp.setChargedToOwnerPeriod(po.getPeriodEndDate());
             ofy().put(exp);
           }
@@ -367,7 +367,7 @@ public class PaymentDao<T extends Payment> extends DAOBase{
     q.ancestor(estateKey);
     ArrayList<Expense> lstExpToCharge = new ArrayList<Expense>();
     for (Expense e: q.filter("chargedToOwnerPeriod", null).list()){
-      if (e.getDateFacture()!=null){
+      if (e.getDateInvoice()!=null){
         lstExpToCharge.add(e);
       }
     }

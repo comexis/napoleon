@@ -1,7 +1,6 @@
 package eu.comexis.napoleon.server.dao;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,8 +12,11 @@ import com.googlecode.objectify.Query;
 import com.googlecode.objectify.util.DAOBase;
 
 import eu.comexis.napoleon.shared.model.Company;
+import eu.comexis.napoleon.shared.model.Contractor;
 import eu.comexis.napoleon.shared.model.Expense;
+import eu.comexis.napoleon.shared.model.Owner;
 import eu.comexis.napoleon.shared.model.RealEstate;
+import eu.comexis.napoleon.shared.model.TypeOfWork;
 
 public class ExpenseDao extends DAOBase {
   public ExpenseDao(){
@@ -24,7 +26,13 @@ public class ExpenseDao extends DAOBase {
     super(transactional);
   }
   public static Log LOG = LogFactory.getLog(ExpenseDao.class);
-  
+  public Expense create(String companyId, String realEstateId) {
+    Key<Company> companyKey = new Key<Company>(Company.class, companyId);
+    Key<RealEstate> estateKey = new Key<RealEstate>(companyKey,RealEstate.class, realEstateId);
+    Expense expense = new Expense();
+    expense.setRealEstateKey(estateKey);
+    return expense;
+  }
   public List<Expense> getAllExpense(String companyId) {
     // create the list to return
     List<Expense> leaseList = new ArrayList<Expense>();
@@ -61,6 +69,8 @@ public Expense getById(String expenseId, String realEstateId, String companyId) 
   Key<RealEstate> estateKey = new Key<RealEstate>(companyKey,RealEstate.class, realEstateId);
   Expense exp = ofy().find(new Key<Expense>(estateKey, Expense.class, expenseId));
   exp.setRealEstateId(realEstateId);
+  Contractor contractor = ofy().find(exp.getContractorKey());
+  exp.setContractor(contractor);
   return exp;
 }
 public Expense update(Expense expense,String companyId) {
@@ -88,6 +98,23 @@ public Expense update(Expense expense,String companyId) {
     }
   }else{
     estateKey =expense.getRealEstateKey();
+  }
+  if (expense.getTypeOfWork() != null && !expense.getTypeOfWork().isEmpty()) {
+    TypeOfWorkDao wrkDao = new TypeOfWorkDao();
+    TypeOfWork work = new TypeOfWork();
+    work.setName(expense.getTypeOfWork());
+    work.setCompany(companyKey);
+    wrkDao.update(work);
+  }
+  if (expense.getContractor() != null) {
+    // save the contractor and set the foreign key
+    ContractorDao ctorDao = new ContractorDao();
+    Contractor contractor =  expense.getContractor();
+    contractor.setCompany(companyKey);
+    contractor.addSkill(expense.getTypeOfWork());
+    ctorDao.update(contractor);
+    Key<Contractor> contractorKey = new Key<Contractor>(companyKey,Contractor.class, contractor.getName());
+    expense.setContractorKey(contractorKey);
   }
   try {
     ofy().put(expense);

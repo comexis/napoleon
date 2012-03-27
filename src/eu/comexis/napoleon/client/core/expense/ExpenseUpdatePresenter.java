@@ -1,5 +1,6 @@
 package eu.comexis.napoleon.client.core.expense;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -20,11 +21,20 @@ import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
 import eu.comexis.napoleon.client.core.expense.ExpenseUpdateUiHandlers.HasExpenseUpdateUiHandler;
 import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.resources.Literals;
+import eu.comexis.napoleon.client.rpc.callback.GotAllContractor;
+import eu.comexis.napoleon.client.rpc.callback.GotAllSuggest;
+import eu.comexis.napoleon.client.rpc.callback.GotAllTenant;
 import eu.comexis.napoleon.client.rpc.callback.GotExpense;
 import eu.comexis.napoleon.client.rpc.callback.UpdatedExpense;
+import eu.comexis.napoleon.shared.command.contractor.GetAllContractorCommand;
 import eu.comexis.napoleon.shared.command.expense.GetExpenseCommand;
 import eu.comexis.napoleon.shared.command.expense.UpdateExpenseCommand;
+import eu.comexis.napoleon.shared.command.suggest.GetAllSuggestCommand;
+import eu.comexis.napoleon.shared.command.tenant.GetAllTenantCommand;
+import eu.comexis.napoleon.shared.model.Contractor;
 import eu.comexis.napoleon.shared.model.Expense;
+import eu.comexis.napoleon.shared.model.RealEstate;
+import eu.comexis.napoleon.shared.model.simple.SimpleTenant;
 import eu.comexis.napoleon.shared.validation.ExpenseValidator;
 import eu.comexis.napoleon.shared.validation.ValidationMessage;
 public class ExpenseUpdatePresenter extends
@@ -46,6 +56,12 @@ public class ExpenseUpdatePresenter extends
 
     public Expense updateExpense(Expense l);
     
+    public void fillTypeWorkList(List<String> works);
+    
+    public void fillContractorList(List<Contractor> contractors);
+    
+    public void setEstate(RealEstate e);
+    
   }
 
   public static final String UUID_PARAMETER = "uuid";
@@ -58,7 +74,8 @@ public class ExpenseUpdatePresenter extends
   private String realEstateId;
   private Expense expense;
   private ExpenseValidator validator;
-
+  
+  
   @Inject
   public ExpenseUpdatePresenter(final EventBus eventBus, final MyView view, final MyProxy proxy,
       final PlaceManager placeManager) {
@@ -66,6 +83,7 @@ public class ExpenseUpdatePresenter extends
     this.placeManager = placeManager;
     this.validator = new ExpenseValidator();
   }
+  
   private void goToDetails() {
     PlaceRequest myRequest = new PlaceRequest(NameTokens.expense);
     // add the id of the owner to load
@@ -158,20 +176,16 @@ public class ExpenseUpdatePresenter extends
   @Override
   protected void onReset() {
     super.onReset();
-    if (id != null && !id.equals("new")) { // call the server to get the requested owner
+    if (id != null) { // call the server to get the requested owner
       new GetExpenseCommand(id,realEstateId).dispatch(new GotExpense() {
         @Override
-        public void got(Expense expense) {
+        public void got(Expense expense, RealEstate estate) {
           ExpenseUpdatePresenter.this.expense = expense;
           getView().setExpense(expense);
+          getView().setEstate(estate);
           doReveal();
         }
       });
-    }else{
-      ExpenseUpdatePresenter.this.expense = new Expense();
-      expense.setRealEstateId(realEstateId);
-      getView().setExpense(null);
-      doReveal();
     }
   }
   
@@ -182,12 +196,18 @@ public class ExpenseUpdatePresenter extends
   }
 
   private void init() {
-    /*new GetAllContractorCommand(skill).dispatch(new GotAllTenant() {
+    new GetAllSuggestCommand("TypeOfWork").dispatch(new GotAllSuggest() {
+      @Override
+      public void got(List<String> suggests) {
+        getView().fillTypeWorkList(suggests);
+      }
+    });
+    new GetAllContractorCommand().dispatch(new GotAllContractor() {
       @Override
       public void got(List<Contractor> contractors) {
         getView().fillContractorList(contractors);
       }
-    });*/
+    });
     
   }
   

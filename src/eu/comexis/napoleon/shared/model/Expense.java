@@ -12,31 +12,37 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.NotSaved;
 import com.googlecode.objectify.annotation.Parent;
 
+import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
+import eu.comexis.napoleon.shared.model.simple.SimpleRealEstate;
+
 public class Expense implements IsSerializable, Identifiable, HasFiles {
 
   @Id
   private String id;
-  private Date datePrevenue;
-  private Date dateIntervention;
-  private Date dateFacture;
+  private Date dateInform;
+  private Date dateWork;
+  private Date dateInvoice;
   private String reference;
   private Float amount;
   private Float toBePaidByOwner;
   private Float toBePaidByTenant;
   private Boolean isPaidByTenant;
   private Date datePaymentTenant;
-  private Key<Contractor> contractor;
-  private String contractorId;
+  private Key<Contractor> contractorKey;
+  @NotSaved
+  private Contractor contractor;
   private Date chargedToOwnerPeriod;
+
+  private String typeOfWork;
 
   @Parent
   private Key<RealEstate> realEstateKey;
+
   @NotSaved
   private String realEstateId;
 
   @Embedded
   private ArrayList<FileDescriptor> files;
-
   public Expense() {
     files = new ArrayList<FileDescriptor>();
   }
@@ -54,29 +60,29 @@ public class Expense implements IsSerializable, Identifiable, HasFiles {
   public Date getChargedToOwnerPeriod() {
     return chargedToOwnerPeriod;
   }
-
-  public Key<Contractor> getContractor() {
+  public Contractor getContractor() {
     return contractor;
   }
 
-  public String getContractorId() {
-    return contractorId;
+  public Key<Contractor> getContractorKey() {
+    return contractorKey;
   }
 
-  public Date getDateFacture() {
-    return dateFacture;
+  public Date getDateInform() {
+    return dateInform;
   }
 
-  public Date getDateIntervention() {
-    return dateIntervention;
+  public Date getDateInvoice() {
+    return dateInvoice;
   }
 
   public Date getDatePaymentTenant() {
     return datePaymentTenant;
   }
 
-  public Date getDatePrevenue() {
-    return datePrevenue;
+
+  public Date getDateWork() {
+    return dateWork;
   }
 
   @Override
@@ -113,6 +119,10 @@ public class Expense implements IsSerializable, Identifiable, HasFiles {
     return toBePaidByTenant;
   }
 
+  public String getTypeOfWork() {
+    return typeOfWork;
+  }
+
   @Override
   public void removeFile(FileDescriptor file) {
     files.remove(file);
@@ -127,28 +137,28 @@ public class Expense implements IsSerializable, Identifiable, HasFiles {
     this.chargedToOwnerPeriod = chargedToOwnerPeriod;
   }
 
-  public void setContractor(Key<Contractor> contractor) {
+  public void setContractor(Contractor contractor) {
     this.contractor = contractor;
   }
 
-  public void setContractorId(String contractorId) {
-    this.contractorId = contractorId;
+  public void setContractorKey(Key<Contractor> contractorKey) {
+    this.contractorKey = contractorKey;
   }
 
-  public void setDateFacture(Date dateFacture) {
-    this.dateFacture = dateFacture;
+  public void setDateInform(Date dateInform) {
+    this.dateInform = dateInform;
   }
 
-  public void setDateIntervention(Date dateIntervention) {
-    this.dateIntervention = dateIntervention;
+  public void setDateInvoice(Date dateInvoice) {
+    this.dateInvoice = dateInvoice;
   }
 
   public void setDatePaymentTenant(Date datePaymentTenant) {
     this.datePaymentTenant = datePaymentTenant;
   }
 
-  public void setDatePrevenue(Date datePrevenue) {
-    this.datePrevenue = datePrevenue;
+  public void setDateWork(Date dateWork) {
+    this.dateWork = dateWork;
   }
 
   public void setId(String id) {
@@ -177,6 +187,10 @@ public class Expense implements IsSerializable, Identifiable, HasFiles {
 
   public void setToBePaidByTenant(Float toBePaidByTenant) {
     this.toBePaidByTenant = toBePaidByTenant;
+  }
+
+  public void setTypeOfWork(String typeOfWork) {
+    this.typeOfWork = typeOfWork;
   }
 
 }

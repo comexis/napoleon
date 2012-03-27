@@ -25,6 +25,7 @@ public class NameTokens {
   public static final String paymentOwnerlist = "paymentOwnerList";
   public static final String updatePaymentOwner = "updatePaymentOwner";
   public static final String paymentBoardlist = "paymentBoardList";
+  public static final String contractorlist = "contractorlist";
   public static String getDashboard() {
     return dashboard;
   }
@@ -39,6 +40,10 @@ public class NameTokens {
 
   public static String getLeaselist() {
     return leaselist;
+  }
+  
+  public static String getContractorlist() {
+    return contractorlist;
   }
   
   public static String getExpenselist() {

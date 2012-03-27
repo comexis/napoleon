@@ -66,7 +66,7 @@ public class ExpenseDetailsView extends ViewImpl implements ExpenseDetailsPresen
 
     this.reference.setInnerText(l.getReference());
     this.amount.setInnerText(UiHelper.FloatToString(l.getAmount()));
-    this.dateInvoice.setInnerText(UiHelper.displayDate(l.getDateFacture()));
+    this.dateInvoice.setInnerText(UiHelper.displayDate(l.getDateInvoice()));
   }
 
   @Override

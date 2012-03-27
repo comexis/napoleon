@@ -36,6 +36,7 @@ import eu.comexis.napoleon.shared.command.expense.UpdateExpenseResponse;
 import eu.comexis.napoleon.shared.model.Expense;
 import eu.comexis.napoleon.shared.model.FileDescriptor;
 import eu.comexis.napoleon.shared.model.HasFiles;
+import eu.comexis.napoleon.shared.model.RealEstate;
 
 public class ExpenseDetailsPresenter extends
     AbstractPresenter<ExpenseDetailsPresenter.MyView, ExpenseDetailsPresenter.MyProxy> implements
@@ -147,7 +148,7 @@ public class ExpenseDetailsPresenter extends
     new GetExpenseCommand(id, realEstateId).dispatch(new GotExpense() {
 
       @Override
-      public void got(Expense expense) {
+      public void got(Expense expense,RealEstate estate) {
         setExpense(expense);
       }
     });

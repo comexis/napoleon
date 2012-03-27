@@ -6,11 +6,10 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import eu.comexis.napoleon.client.rpc.SuggestService;
 import eu.comexis.napoleon.server.dao.AcademicYearDao;
-import eu.comexis.napoleon.server.dao.HomeownerAssocDao;
 import eu.comexis.napoleon.server.dao.JobTitleDao;
 import eu.comexis.napoleon.server.dao.NationalityDao;
+import eu.comexis.napoleon.server.dao.TypeOfWorkDao;
 import eu.comexis.napoleon.server.manager.UserManager;
-import eu.comexis.napoleon.shared.command.association.GetAllAssocResponse;
 import eu.comexis.napoleon.shared.command.suggest.GetAllSuggestCommand;
 import eu.comexis.napoleon.shared.command.suggest.GetAllSuggestResponse;
 
@@ -34,6 +33,9 @@ public class SuggestServiceImpl extends RemoteServiceServlet implements SuggestS
     }else if (command.getName().equals("AcademicYear")){
       AcademicYearDao ayDao = new AcademicYearDao();
       lst = ayDao.getNames(companyId);
+    }else if (command.getName().equals("TypeOfWork")){
+      TypeOfWorkDao twDao = new TypeOfWorkDao();
+      lst = twDao.getNames(companyId);
     }
     GetAllSuggestResponse response = new GetAllSuggestResponse();
     response.setSuggestList(lst);

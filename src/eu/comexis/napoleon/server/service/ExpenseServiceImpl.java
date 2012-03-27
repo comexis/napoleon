@@ -29,9 +29,17 @@ public class ExpenseServiceImpl extends RemoteServiceServlet implements ExpenseS
   public GetExpenseResponse execute(GetExpenseCommand command) {
     ExpenseDao dao = new ExpenseDao();
     String companyId = UserManager.INSTANCE.getCompanyId();
-    Expense expense = dao.getById(command.getId(), command.getRealEstateId(), companyId);
+    Expense expense = null;
+    if (command.getId().equals("new")){
+      expense = dao.create(companyId, command.getRealEstateId());
+    }else{
+      expense = dao.getById(command.getId(), command.getRealEstateId(), companyId);
+    }
+    RealEstateDao eDao = new RealEstateDao();
+    RealEstate e = eDao.getById(command.getRealEstateId(), companyId);
     GetExpenseResponse response = new GetExpenseResponse();
     response.setExpense(expense);
+    response.setEstate(e);
     return response;
   }
 

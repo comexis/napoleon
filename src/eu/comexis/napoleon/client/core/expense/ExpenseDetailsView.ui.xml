@@ -20,6 +20,22 @@
 						<span ui:field="amount" class="{res.css.detailCellValue}" />
 						<span class="{res.css.detailCellLabel}">Date facture :</span>
 						<span ui:field="dateInvoice" class="{res.css.detailCellValue}" />
+						<span class="{res.css.detailCellLabel}">Date d'intervention :</span>
+						<span ui:field="dateWork" class="{res.css.detailCellValue}" />
+					</div>
+					
+					<div class="{res.css.detailRow}">
+						<span class="{res.css.detailCellLabel}">Propriétaire prevenu le :</span>
+						<span ui:field="dateInform" class="{res.css.detailCellValue}" />
+						<span class="{res.css.detailCellLabel}">Type d'intervention :</span>
+						<span ui:field="typeWork" class="{res.css.detailCellValue}" />
+					</div>
+					
+					<div class="{res.css.detailRow}">
+						<span class="{res.css.detailCellLabel}">Montant imputable au propriétaire :</span>
+						<span ui:field="toBePaidByOwner" class="{res.css.detailCellValue}" />
+						<span class="{res.css.detailCellLabel}">Montant imputable au locataire :</span>
+						<span ui:field="toBePaidByTenant" class="{res.css.detailCellValue}" />
 					</div>
 					
 					<div class="{res.css.separationRow}" style="clear: both;">
