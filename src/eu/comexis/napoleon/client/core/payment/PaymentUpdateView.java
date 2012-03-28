@@ -207,7 +207,7 @@ public class PaymentUpdateView<T extends Payment> extends ViewImpl implements
       }
     }
     this.fromDate.setEnabled(false);
-    this.toDate.setEnabled(false);
+    this.toDate.setEnabled(true);
   }
 
   @Override
@@ -220,6 +220,8 @@ public class PaymentUpdateView<T extends Payment> extends ViewImpl implements
   public void updateData(T payment) {
     payment.setAmount(UiHelper.stringToFloat(amount.getValue()));
     payment.setPaymentDate(date.getValue());
+    payment.setPeriodEndDate(this.toDate.getValue());
+    payment.setPeriodStartDate(this.fromDate.getValue());
     try{
       ((PaymentTenant)payment).setPaymentInCash(inCashYes.getValue());
       ((PaymentTenant)payment).setNumber(number.getValue());

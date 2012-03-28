@@ -14,6 +14,7 @@ import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 
 import eu.comexis.napoleon.client.core.AbstractShortListPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
+import eu.comexis.napoleon.client.core.estate.RealEstateDetailsPresenter;
 import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.resources.Literals;
 import eu.comexis.napoleon.client.rpc.callback.GotAllExpense;
@@ -110,6 +111,9 @@ public class ExpenseListPresenter extends
   protected String getTitle() {
     return Literals.INSTANCE.expenseListTitle();
   }
-  
+  @Override
+  public void showParent() {
+    RealEstateDetailsPresenter.show(estateId);
+  }
   
 }

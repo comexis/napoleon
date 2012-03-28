@@ -121,7 +121,6 @@ public class LeaseUpdatePresenter extends
   @Override
   public void onButtonSaveClick() {
     getView().updateLease(lease);
-
     List<ValidationMessage> validationMessages = validator.validate(lease);
 
     if (validationMessages.isEmpty()) {

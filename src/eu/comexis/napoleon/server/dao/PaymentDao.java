@@ -131,9 +131,9 @@ public class PaymentDao<T extends Payment> extends DAOBase{
         return null;
       }
       // force all the time to be at noon to avoid CEST-GMT problem
-      /*payment.setPaymentDate(setTime(payment.getPaymentDate()));
+      payment.setPaymentDate(setTime(payment.getPaymentDate()));
       payment.setPeriodStartDate(setTime(payment.getPeriodStartDate()));
-      payment.setPeriodEndDate(setTime(payment.getPeriodEndDate()));*/
+      payment.setPeriodEndDate(setTime(payment.getPeriodEndDate()));
       Key<T> paymentKey = ofy().put(payment);
       LOG.info("Payment has been updated");
       Lease l = ofy().get(payment.getLeaseKey());
@@ -163,6 +163,7 @@ public class PaymentDao<T extends Payment> extends DAOBase{
     if (date!=null){
       Calendar cal = Calendar.getInstance();
       cal.setTime(date);
+      cal.add(Calendar.HOUR_OF_DAY, 12);
       cal.set(Calendar.HOUR_OF_DAY, 12);
       date = cal.getTime();
     }

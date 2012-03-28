@@ -27,6 +27,8 @@ public abstract class AbstractShortListPresenter<T extends Identifiable, V exten
     public void resetFocus();
     
     public void setData(String title,List<T> data);
+    
+    public void hideButtons(Boolean visible);
   }
 
   private List<T> datas;

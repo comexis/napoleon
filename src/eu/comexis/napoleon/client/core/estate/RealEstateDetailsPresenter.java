@@ -1,6 +1,7 @@
 package eu.comexis.napoleon.client.core.estate;
 
 import static eu.comexis.napoleon.client.Napoleon.ginjector;
+import static eu.comexis.napoleon.client.core.party.PartyUpdatePresenter.UUID_PARAMETER;
 
 import java.util.logging.Logger;
 
