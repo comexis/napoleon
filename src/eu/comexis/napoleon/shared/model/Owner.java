@@ -73,4 +73,5 @@ public class Owner extends Party implements IsSerializable {
   public void setUnit(FeeUnit unit) {
     this.unit = unit;
   }
+  
 }

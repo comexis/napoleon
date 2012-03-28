@@ -281,7 +281,7 @@ public class RealEstate implements IsSerializable , Identifiable, HasFiles{
   public void setType(TypeOfRealEstate type) {
     this.type = type;
   }
-  public String getFullAddress(){
-    return this.street + ", " + this.number + " bte " + this.box + " " + this.postalCode + " " + this.city + " (" + this.country + ")";
+  public String getFullAddressLine(){
+    return this.street + ", " + this.number + (this.box!=null && !this.box.isEmpty()? " bte " + this.box:"");
   }
 }

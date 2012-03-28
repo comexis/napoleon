@@ -31,6 +31,7 @@ public class ExpenseDao extends DAOBase {
     Key<RealEstate> estateKey = new Key<RealEstate>(companyKey,RealEstate.class, realEstateId);
     Expense expense = new Expense();
     expense.setRealEstateKey(estateKey);
+    expense.setRealEstateId(realEstateId);
     return expense;
   }
   public List<Expense> getAllExpense(String companyId) {
@@ -64,13 +65,15 @@ public List<Expense> getAllExpense(String realEstateId,String companyId) {
 }
 
 public Expense getById(String expenseId, String realEstateId, String companyId) {
-  //LOG.info("Get expense: id (" + expenseId + "), estate id (" + realEstateId + "), company (" + companyId + ")");
+  LOG.info("Get expense: id (" + expenseId + "), estate id (" + realEstateId + "), company (" + companyId + ")");
   Key<Company> companyKey = new Key<Company>(Company.class, companyId);
   Key<RealEstate> estateKey = new Key<RealEstate>(companyKey,RealEstate.class, realEstateId);
   Expense exp = ofy().find(new Key<Expense>(estateKey, Expense.class, expenseId));
   exp.setRealEstateId(realEstateId);
-  Contractor contractor = ofy().find(exp.getContractorKey());
-  exp.setContractor(contractor);
+  if (exp.getContractorKey()!=null){
+    Contractor contractor = ofy().find(exp.getContractorKey());
+    exp.setContractor(contractor);
+  }
   return exp;
 }
 public Expense update(Expense expense,String companyId) {

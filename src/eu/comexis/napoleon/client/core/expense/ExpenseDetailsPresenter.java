@@ -49,6 +49,7 @@ public class ExpenseDetailsPresenter extends
   public interface MyView extends View, HasPresenter<ExpenseDetailUiHandlers>  {
     public void addDocumentWidget(Widget w);
     public void setExpense(Expense l);
+    public void setEstate(RealEstate e);
   }
 
   public static final String UUID_PARAMETER = "uuid";
@@ -149,7 +150,7 @@ public class ExpenseDetailsPresenter extends
 
       @Override
       public void got(Expense expense,RealEstate estate) {
-        setExpense(expense);
+        setExpense(expense,estate);
       }
     });
 
@@ -176,10 +177,11 @@ public class ExpenseDetailsPresenter extends
     return expense;
   }
   
-  protected void setExpense(Expense expense) {
+  protected void setExpense(Expense expense,RealEstate estate) {
     this.expense = expense;
     filesPresenter.setDocumentHolder(expense);
     getView().setExpense(expense);
+    getView().setEstate(estate);
     doReveal();
   }
 
