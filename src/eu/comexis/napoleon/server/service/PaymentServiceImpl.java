@@ -62,11 +62,14 @@ public class PaymentServiceImpl extends RemoteServiceServlet implements PaymentS
     GetAllPaymentResponse<T> response = new GetAllPaymentResponse<T>();
     String companyId = UserManager.INSTANCE.getCompanyId();
     PaymentDao<T> ptDao = new PaymentDao<T>();
+    LeaseDao lDao = new LeaseDao();
+    Lease l = lDao.getById(command.getLeaseId(),command.getEstateId(), companyId);
     if (command.getType().equals(PaymentTenant.class.toString())){
       ptDao.setClazz((Class<T>)PaymentTenant.class);
     }else if (command.getType().equals(PaymentOwner.class.toString())){
       ptDao.setClazz((Class<T>)PaymentOwner.class);
     }
+    response.setTitle(l.getRealEstate().getReference() + " " + l.getAcademicYear() + " " + l.getTenant().getName());
     List<T> pts = ptDao.getPaymentsForLease(command.getLeaseId(),command.getEstateId(), companyId);
     
     response.setPayment(pts);

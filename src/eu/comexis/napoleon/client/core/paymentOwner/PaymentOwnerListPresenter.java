@@ -12,8 +12,9 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 
-import eu.comexis.napoleon.client.core.AbstractListPresenter;
+import eu.comexis.napoleon.client.core.AbstractShortListPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
+import eu.comexis.napoleon.client.core.lease.LeaseDetailsPresenter;
 import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.resources.Literals;
 import eu.comexis.napoleon.client.rpc.callback.GotAllPayment;
@@ -21,7 +22,7 @@ import eu.comexis.napoleon.shared.command.payment.GetAllPaymentCommand;
 import eu.comexis.napoleon.shared.model.PaymentOwner;
 
 public class PaymentOwnerListPresenter extends
-    AbstractListPresenter<PaymentOwner, PaymentOwnerListPresenter.MyView, PaymentOwnerListPresenter.MyProxy> {
+    AbstractShortListPresenter<PaymentOwner, PaymentOwnerListPresenter.MyView, PaymentOwnerListPresenter.MyProxy> {
   public static final String UUID_PARAMETER = "uuid";
   public static final String ESTATE_UUID_PARAMETER = "estate_uuid";
   public static final String LEASE_UUID_PARAMETER = "lease_uuid";
@@ -34,7 +35,7 @@ public class PaymentOwnerListPresenter extends
   public interface MyProxy extends ProxyPlace<PaymentOwnerListPresenter> {
   }
 
-  public interface MyView extends AbstractListPresenter.MyView<PaymentOwner> {
+  public interface MyView extends AbstractShortListPresenter.MyView<PaymentOwner> {
   }
 
   @Inject
@@ -62,18 +63,15 @@ public class PaymentOwnerListPresenter extends
     super.getPlaceManager().revealPlace(myRequest);
   }
   @Override
-  public void onButtonBackToDashBoardClick() {
-    PlaceRequest myRequest = new PlaceRequest(NameTokens.lease);
-    myRequest = myRequest.with(UUID_PARAMETER,id);
-    myRequest = myRequest.with(ESTATE_UUID_PARAMETER, estateId);
-    getPlaceManager().revealPlace(myRequest);
+  public void onButtonDeleteClick() {
+    //
   }
   
   protected void requestData() {
     new GetAllPaymentCommand<PaymentOwner>(id,estateId,PaymentOwner.class.toString()).dispatch(new GotAllPayment<PaymentOwner>() {
       @Override
-      public void got(List<PaymentOwner> payments) {
-        setDatas(payments);
+      public void got(String title,List<PaymentOwner> payments) {
+        setDatas(title,payments);
       }
     });
   }
@@ -108,12 +106,6 @@ public class PaymentOwnerListPresenter extends
   }
 
   @Override
-  protected eu.comexis.napoleon.client.core.AbstractListPresenter.ListFilter<PaymentOwner> createFilter() {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
   protected Menus getMenu() {
     return Menus.REAL_ESTATE;
   }
@@ -121,5 +113,9 @@ public class PaymentOwnerListPresenter extends
   @Override
   protected String getTitle() {
     return Literals.INSTANCE.paymentListTitle();
+  }
+  @Override
+  public void showParent() {
+    LeaseDetailsPresenter.show(id, estateId);
   }
 }

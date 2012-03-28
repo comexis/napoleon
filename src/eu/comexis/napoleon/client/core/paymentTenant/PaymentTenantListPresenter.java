@@ -12,8 +12,9 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 
-import eu.comexis.napoleon.client.core.AbstractListPresenter;
+import eu.comexis.napoleon.client.core.AbstractShortListPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
+import eu.comexis.napoleon.client.core.lease.LeaseDetailsPresenter;
 import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.resources.Literals;
 import eu.comexis.napoleon.client.rpc.callback.GotAllPayment;
@@ -21,7 +22,7 @@ import eu.comexis.napoleon.shared.command.payment.GetAllPaymentCommand;
 import eu.comexis.napoleon.shared.model.PaymentTenant;
 
 public class PaymentTenantListPresenter extends
-    AbstractListPresenter<PaymentTenant, PaymentTenantListPresenter.MyView, PaymentTenantListPresenter.MyProxy> {
+    AbstractShortListPresenter<PaymentTenant, PaymentTenantListPresenter.MyView, PaymentTenantListPresenter.MyProxy> {
   
   public static final String UUID_PARAMETER = "uuid";
   public static final String ESTATE_UUID_PARAMETER = "estate_uuid";
@@ -37,7 +38,7 @@ public class PaymentTenantListPresenter extends
   public interface MyProxy extends ProxyPlace<PaymentTenantListPresenter> {
   }
 
-  public interface MyView extends AbstractListPresenter.MyView<PaymentTenant> {
+  public interface MyView extends AbstractShortListPresenter.MyView<PaymentTenant> {
   }
 
   @Inject
@@ -65,18 +66,15 @@ public class PaymentTenantListPresenter extends
     super.getPlaceManager().revealPlace(myRequest);
   }
   @Override
-  public void onButtonBackToDashBoardClick() {
-    PlaceRequest myRequest = new PlaceRequest(NameTokens.lease);
-    myRequest = myRequest.with(UUID_PARAMETER,id);
-    myRequest = myRequest.with(ESTATE_UUID_PARAMETER, estateId);
-    getPlaceManager().revealPlace(myRequest);
+  public void onButtonDeleteClick() {
+    //
   }
 
   protected void requestData() {
     new GetAllPaymentCommand<PaymentTenant>(id,estateId,PaymentTenant.class.toString()).dispatch(new GotAllPayment<PaymentTenant>() {
       @Override
-      public void got(List<PaymentTenant> payments) {
-        setDatas(payments);
+      public void got(String title,List<PaymentTenant> payments) {
+        setDatas(title,payments);
       }
     });
   }
@@ -112,12 +110,6 @@ public class PaymentTenantListPresenter extends
   }
 
   @Override
-  protected ListFilter<PaymentTenant> createFilter() {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
   protected Menus getMenu() {
     return Menus.REAL_ESTATE;
   }
@@ -125,5 +117,9 @@ public class PaymentTenantListPresenter extends
   @Override
   protected String getTitle() {
     return Literals.INSTANCE.paymentListTitle();
+  }
+  @Override
+  public void showParent() {
+    LeaseDetailsPresenter.show(id, estateId);
   }
 }

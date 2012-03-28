@@ -7,6 +7,15 @@ import eu.comexis.napoleon.shared.model.Payment;
 
 public class GetAllPaymentResponse<T extends Payment> implements Response {
   private List<T> payments;
+  private String title = "";
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
+  }
 
   public List<T> getPayment() {
     return payments;
