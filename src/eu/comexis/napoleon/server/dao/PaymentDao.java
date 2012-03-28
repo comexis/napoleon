@@ -130,10 +130,10 @@ public class PaymentDao<T extends Payment> extends DAOBase{
         LOG.info("Payment cannot be updated because there is already a payment for that period " + actualPayment.getId());
         return null;
       }
-      // force all the time to be a noon to avoid CEST-GMT problem
-      payment.setPaymentDate(setTime(payment.getPaymentDate()));
+      // force all the time to be at noon to avoid CEST-GMT problem
+      /*payment.setPaymentDate(setTime(payment.getPaymentDate()));
       payment.setPeriodStartDate(setTime(payment.getPeriodStartDate()));
-      payment.setPeriodEndDate(setTime(payment.getPeriodEndDate()));
+      payment.setPeriodEndDate(setTime(payment.getPeriodEndDate()));*/
       Key<T> paymentKey = ofy().put(payment);
       LOG.info("Payment has been updated");
       Lease l = ofy().get(payment.getLeaseKey());

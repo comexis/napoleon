@@ -346,7 +346,11 @@ public class ExpenseUpdateView extends ViewImpl implements ExpenseUpdatePresente
       }
       contractor.addItem("-", "-");
     }
-    UiHelper.selectTextItemBoxByValue(this.contractor, contractorName.getValue());
+    if (contractorName.getValue().isEmpty()){
+      UiHelper.selectTextItemBoxByValue(this.contractor, "-");
+    }else{
+      UiHelper.selectTextItemBoxByValue(this.contractor, contractorName.getValue());
+    }
   }
 
   private void init() {
