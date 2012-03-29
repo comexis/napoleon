@@ -2,14 +2,21 @@ package eu.comexis.napoleon.client.utils;
 
 import static com.google.gwt.query.client.GQuery.$;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
+import com.google.gwt.safehtml.client.SafeHtmlTemplates;
+import com.google.gwt.safehtml.client.SafeHtmlTemplates.Template;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
+import eu.comexis.napoleon.client.core.expense.ExpenseUpdateView.Templates;
 import eu.comexis.napoleon.client.resources.Literals;
 import eu.comexis.napoleon.client.resources.Resources;
 import eu.comexis.napoleon.client.widget.InformationDialog;
@@ -19,7 +26,18 @@ public class UiHelper {
 
   private static DateTimeFormat DATE_FORMAT = DateTimeFormat.getFormat("dd/MM/yyyy");
   private static DateTimeFormat COMPARE_DATE_FORMAT = DateTimeFormat.getFormat("yyyy.MM.dd");
+  
+  public interface Templates extends SafeHtmlTemplates {
 
+    Templates INSTANCE = GWT.create(Templates.class);
+
+    @Template("{0}<br/>{1} {2}")
+    SafeHtml address(String street, String postalCode, String city);
+
+    @Template("<a href='mailto:{0}'>{1}</a>")
+    SafeHtml mailto(String email,String text);
+  }
+  
   // static class
   private UiHelper() {
   }
@@ -168,5 +186,11 @@ public class UiHelper {
       sValue = "0,00";
     }
     return sValue;
+  }
+  public static String getMailto(String addresses, String text){
+    Templates t = Templates.INSTANCE;
+    SafeHtmlBuilder builder = new SafeHtmlBuilder();
+    builder.append(t.mailto(addresses,text));
+    return builder.toSafeHtml().asString();
   }
 }

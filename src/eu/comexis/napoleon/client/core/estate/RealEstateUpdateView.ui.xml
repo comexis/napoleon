@@ -25,6 +25,15 @@
 				<span class="{res.css.detailCellInputLabel}">Adresse :</span>
 				<g:TextBox ui:field="address" styleName="{res.css.detailCellInputText} {res.css.largeInput}" />
 			</div>
+			
+			<div class="{res.css.detailRow} {res.css.separationRow}">
+				<span class="{res.css.detailCellInputLabel}">Téléphone :</span>
+				<g:TextBox ui:field="phoneNumber" styleName="{res.css.detailCellInputText}" />
+				<span class="{res.css.detailCellInputLabel}">GSM :</span>
+				<g:TextBox ui:field="mobileNumber" styleName="{res.css.detailCellInputText}" />
+				<span class="{res.css.detailCellInputLabel} {res.css.autoLabel}">Mail :</span>
+				<g:TextBox ui:field="email" styleName="{res.css.detailCellInputText}" />
+			</div>
 
 			<div class="{res.css.detailRow} {res.css.separationRow}" >
 				<span class="{res.css.detailCellInputLabel}">Adresse du bien :</span>
@@ -47,14 +56,7 @@
 
 			</div>
 			
-			<div class="{res.css.detailRow} {res.css.separationRow}">
-				<span class="{res.css.detailCellInputLabel}">Téléphone :</span>
-				<g:TextBox ui:field="phoneNumber" styleName="{res.css.detailCellInputText}" />
-				<span class="{res.css.detailCellInputLabel}">GSM :</span>
-				<g:TextBox ui:field="mobileNumber" styleName="{res.css.detailCellInputText}" />
-				<span class="{res.css.detailCellInputLabel} {res.css.autoLabel}">Mail :</span>
-				<g:TextBox ui:field="email" styleName="{res.css.detailCellInputText}" />
-			</div>
+			
 
 			<div class="{res.css.detailRow} {res.css.separationRow}" >
 				<span class="{res.css.detailCellInputLabel}">Quartier :</span>

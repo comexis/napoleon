@@ -291,6 +291,9 @@ public class RealEstateUpdatePresenter extends
       RealEstate realEstate = new RealEstate();
       realEstate.setState(RealEstateState.NONE);
       realEstate.setType(TypeOfRealEstate.NONE);
+      realEstate.setCity("Louvain-La-Neuve");
+      realEstate.setPostalCode("1348");
+      realEstate.setCountry("Belgique");
       setRealEstate(realEstate);
     }
   }

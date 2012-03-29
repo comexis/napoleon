@@ -281,7 +281,7 @@ public abstract class PartyUpdateView<T extends Party> extends ViewImpl implemen
     box.setText("");
     UiHelper.selectTextItemBoxByValue(maritalStatus, null, MaritalStatus.SINGLE);
     UiHelper.selectTextItemBoxByValue(matrimonialRegime, null, MatrimonialRegime.NONE);
-    UiHelper.selectTextItemBoxByValue(title, Title.MR);
+    UiHelper.selectTextItemBoxByValue(title, Title.NONE);
   }
   @Override
   public void setData(T party) {

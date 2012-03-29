@@ -14,11 +14,23 @@ public interface Literals extends ConstantsWithLookup {
   @DefaultStringValue("Célibataire")
   public String MaritalStatus_SINGLE();
 
-  @DefaultStringValue("Marié")
+  @DefaultStringValue("Marié(e)")
   public String MaritalStatus_MARRIED();
 
-  @DefaultStringValue("Cohabitant")
+  @DefaultStringValue("Cohabitant(e) légal")
   public String MaritalStatus_COHABITATION();
+  
+  @DefaultStringValue("Divorsé(e)")
+  public String MaritalStatus_DIVORCE();
+  
+  @DefaultStringValue("Séparé(e)")
+  public String MaritalStatus_SEPARED();
+  
+  @DefaultStringValue("Veu(f/ve)")
+  public String MaritalStatus_WIDOW();
+  
+  @DefaultStringValue("Inconnu")
+  public String MaritalStatus_NONE();
 
   // MatrimonialRegime enum
   @DefaultStringValue("Aucun")
@@ -91,6 +103,9 @@ public interface Literals extends ConstantsWithLookup {
   
   @DefaultStringValue("S.C.R.L.")
   public String Title_SCRL();
+  
+  @DefaultStringValue("-")
+  public String Title_NONE();
   
   @DefaultStringValue("A.S.B.L.")
   public String Title_ASBL();
