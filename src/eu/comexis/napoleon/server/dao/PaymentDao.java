@@ -211,8 +211,10 @@ public class PaymentDao<T extends Payment> extends DAOBase{
       
       Float balance = 0f;
       Float fee = 0f;
+      ArrayList<String> orderedDateList = new ArrayList<String>();
       for (PaymentTenant pt:qpt.order("periodEndDate").list()){
         sDate = dateFormat.format(pt.getPeriodEndDate());
+        orderedDateList.add(sDate); // keep date in order
         LOG.info("Paiement loyer: " + sDate);
         fee = getFee(pt.getAmount(),pt.getFee(),pt.getFeeUnit());
         balance +=pt.getAmount() - fee;
@@ -252,8 +254,11 @@ public class PaymentDao<T extends Payment> extends DAOBase{
       }
       
       List<PaymentListItem> paymentDashboard = new ArrayList<PaymentListItem>();
-      for (PaymentListItem itm: allPayments.values()){
+      /*for (PaymentListItem itm: allPayments.values()){
         paymentDashboard.add(itm);
+      }*/
+      for (String sDte:orderedDateList){
+        paymentDashboard.add(allPayments.get(sDte));
       }
       LOG.info("Board is generated");
       return paymentDashboard;
