@@ -5,6 +5,15 @@ import eu.comexis.napoleon.shared.model.Lease;
 
 public class UpdateLeaseResponse implements Response {
   private Lease lease;
+  private String errorMsg;
+
+  public String getErrorMsg() {
+    return errorMsg;
+  }
+
+  public void setErrorMsg(String errorMsg) {
+    this.errorMsg = errorMsg;
+  }
 
   public Lease getLease() {
     return lease;

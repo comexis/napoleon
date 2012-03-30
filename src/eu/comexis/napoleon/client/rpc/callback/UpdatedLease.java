@@ -9,10 +9,10 @@ public abstract class UpdatedLease extends AbstractCallback<UpdateLeaseResponse>
     // TODO Auto-generated constructor stub
   }
 
-  public abstract void got(Lease lease);
+  public abstract void got(Lease lease, String errorMsg);
 
   @Override
   public void onSuccess(UpdateLeaseResponse result) {
-    got(result.getLease());
+    got(result.getLease(),result.getErrorMsg());
   }
 }

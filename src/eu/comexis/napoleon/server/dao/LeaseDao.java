@@ -171,12 +171,23 @@ public class LeaseDao extends DAOBase {
     }
     return null;
   }
-  public Lease bookkeepRefAlreadyUsed(String id,Key<RealEstate> estateKey, String accademicYear,String bookkeepRef){
+  /*public Lease bookkeepRefAlreadyUsed(String id,Key<RealEstate> estateKey, String accademicYear,String bookkeepRef){
     Query<Lease> q = ofy().query(Lease.class);
     q.ancestor(estateKey);
     List<Lease> leases = q.filter("bookkeepingReference =", bookkeepRef).list();
     for (Lease l:leases){
       if (!l.getId().equals(id) && accademicYear.equals(l.getAcademicYear())){
+        return l;
+      }
+    }
+    return null;
+  }*/
+  public Lease bookkeepRefAlreadyUsed(Key<Company> companyKey, String accademicYear,String bookkeepRef){
+    Query<Lease> q = ofy().query(Lease.class);
+    q.ancestor(companyKey);
+    List<Lease> leases = q.filter("bookkeepingReference =", bookkeepRef).list();
+    for (Lease l:leases){
+      if (accademicYear.equals(l.getAcademicYear())){
         return l;
       }
     }
@@ -208,11 +219,11 @@ public class LeaseDao extends DAOBase {
     Key<Company> companyKey = new Key<Company>(Company.class, companyId);
     return listAll(companyKey);
   }
-  public Lease update(Lease lease,String companyId) {
+  public Lease update(Lease lease,String companyId) throws Exception {
     Key<Company> companyKey = new Key<Company>(Company.class, companyId);
     return update(lease,companyKey);
   }
-  public Lease update(Lease lease,Key<Company> companyKey) {
+  public Lease update(Lease lease,Key<Company> companyKey) throws Exception {
     LOG.info("Update Lease");
     String leaseId = lease.getId();
     Key<RealEstate> estateKey = null;
@@ -232,7 +243,7 @@ public class LeaseDao extends DAOBase {
         
       } else {
         LOG.fatal("Lease cannot be updated, missing parent RealEstate");
-        return null;
+        throw new Exception("La location n'a pas de réference sur le bien");
       }
     }else{
       estateKey =lease.getRealEstateKey();
@@ -240,12 +251,12 @@ public class LeaseDao extends DAOBase {
     Lease actualLease =isAlreadyRented(lease.getId(),estateKey,lease.getStartDate(),lease.getEndDate());
     if (actualLease!=null){
       LOG.info("Lease cannot be updated because the real estate is already rented by " + actualLease.getId());
-      return null;
+      throw new Exception("Le bien est déjà loué pour la période " + actualLease.getStartDate() + " - " + actualLease.getEndDate());
     }
-    Lease sameBkpRefLease = bookkeepRefAlreadyUsed(lease.getId(),estateKey, lease.getAcademicYear(),lease.getBookkeepingReference());
+    Lease sameBkpRefLease = bookkeepRefAlreadyUsed(companyKey, lease.getAcademicYear(),lease.getBookkeepingReference());
     if (sameBkpRefLease!=null){
       LOG.info("Lease cannot be updated because the bookkeeping réference is already used for the same academic year " + sameBkpRefLease.getId());
-      return null;
+      throw new Exception("La réference comptable '" + lease.getBookkeepingReference() + "' est déjà utilisée pour l'année académique " + lease.getAcademicYear());
     }
     // set tenant
     //if (lease.getTenantKey() == null) {
@@ -254,7 +265,7 @@ public class LeaseDao extends DAOBase {
         lease.setTenantKey(tenantKey);
       } else {
         LOG.error("Lease cannot be updated, missing tenant");
-        return null;
+        throw new Exception("La location n'a pas de locataire");
       }
     //}
     if (lease.getAcademicYear()!=null && !lease.getAcademicYear().isEmpty()){
@@ -272,7 +283,7 @@ public class LeaseDao extends DAOBase {
       return getById(lease.getId(),lease.getRealEstateKey());
     } catch (Exception e) {
       LOG.fatal("Lease cannot be updated: ", e);
-      return null;
+      throw new Exception("Oups, il y a un problème !");
     }
   }
   public RealEstate getRealEstateRentBy(String tenantId, String companyId){

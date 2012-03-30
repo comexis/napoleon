@@ -52,10 +52,11 @@ public class PaymentTenantUpdatePresenter
     new GetPaymentCommand<PaymentTenant>(id, this.leaseId, this.estateId,PaymentTenant.class.toString())
         .dispatch(new GotPayment<PaymentTenant>() {
           @Override
-          public void got(PaymentTenant payment) {
+          public void got(PaymentTenant payment,String msg) {
             if (payment!=null){
               setDataObjectModel(payment);
             }else{
+              getView().displayError("msg");
               PaymentTenantUpdatePresenter.this.onButtonCancelClick();
             }
           }
@@ -67,14 +68,14 @@ public class PaymentTenantUpdatePresenter
     new UpdatePaymentCommand<PaymentTenant>(getDataObjectModel(),PaymentTenant.class.toString())
         .dispatch(new UpdatedPayment<PaymentTenant>() {
           @Override
-          public void updated(PaymentTenant payment) {
+          public void updated(PaymentTenant payment,String msg) {
             if (payment != null) {
               PlaceRequest myRequest = new PlaceRequest(NameTokens.paymentTenantlist);
               myRequest = myRequest.with(UUID_PARAMETER, payment.getLeaseId());
               myRequest = myRequest.with(ESTATE_UUID_PARAMETER, payment.getEstateId());
               placeManager.revealPlace(myRequest);
             } else {
-              getView().displayError("The payment cannot be save");
+              getView().displayError("msg");
             }
           }
         });

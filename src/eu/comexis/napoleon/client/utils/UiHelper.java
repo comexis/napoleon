@@ -190,7 +190,11 @@ public class UiHelper {
   public static String getMailto(String addresses, String text){
     Templates t = Templates.INSTANCE;
     SafeHtmlBuilder builder = new SafeHtmlBuilder();
-    builder.append(t.mailto(addresses,text));
-    return builder.toSafeHtml().asString();
+    if (addresses!=null){
+      builder.append(t.mailto(addresses,text));
+      return builder.toSafeHtml().asString();
+    }else{
+      return "";
+    }
   }
 }

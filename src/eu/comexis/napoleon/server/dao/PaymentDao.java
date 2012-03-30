@@ -61,7 +61,7 @@ public class PaymentDao<T extends Payment> extends DAOBase{
     LOG.info("Get list payment (" + clazz + ") for lease " + leaseId);
     Query<T> q = ofy().query(clazz);
     q.ancestor(leaseKey);
-    List<T> payments = q.list();
+    List<T> payments = q.order("periodEndDate").list();
     return payments;
   }
   public static Log LOG = LogFactory.getLog(PaymentDao.class);
@@ -93,13 +93,12 @@ public class PaymentDao<T extends Payment> extends DAOBase{
     }
     return null;
   }
-  public T update(T payment,String companyId) {
+  public T update(T payment,String companyId) throws Exception {
     Key<Company> companyKey = new Key<Company>(Company.class, companyId);
     return update(payment,companyKey);
   }
-  public T update(T payment, Key<Company> companyKey) {
+  public T update(T payment, Key<Company> companyKey) throws Exception {
     LOG.info("Update Payment");
-    try{
       String paymentId = payment.getId();
       Key<Lease> leaseKey = null;
       Key<RealEstate> estateKey = null;
@@ -120,7 +119,7 @@ public class PaymentDao<T extends Payment> extends DAOBase{
           
         } else {
           LOG.fatal("Lease cannot be updated, missing parent RealEstate");
-          return null;
+          throw new Exception("Oups, problème:-(");
         }
       }else{
         leaseKey =payment.getLeaseKey();
@@ -128,7 +127,7 @@ public class PaymentDao<T extends Payment> extends DAOBase{
       T actualPayment =isAlreadyPaid(payment.getId(),leaseKey,payment.getPeriodStartDate(),payment.getPeriodEndDate());
       if (actualPayment!=null){
         LOG.info("Payment cannot be updated because there is already a payment for that period " + actualPayment.getId());
-        return null;
+        throw new Exception("Il y a déjà un piement sur cette période");
       }
       // force all the time to be at noon to avoid CEST-GMT problem
       payment.setPaymentDate(setTime(payment.getPaymentDate()));
@@ -154,10 +153,6 @@ public class PaymentDao<T extends Payment> extends DAOBase{
         }
       }
       return pt;
-    } catch (Exception e) {
-      LOG.fatal("Payment cannot be updated: ", e);
-      return null;
-    }
   }
   private Date setTime(Date date){
     if (date!=null){
@@ -267,8 +262,7 @@ public class PaymentDao<T extends Payment> extends DAOBase{
       return null;
     }  
   }
-  public PaymentOwner getNextPaymentOwnerForLease(String leaseId, String realEstateId, String companyId){
-    try{
+  public PaymentOwner getNextPaymentOwnerForLease(String leaseId, String realEstateId, String companyId) throws Exception{
       Key<Company> companyKey = new Key<Company>(Company.class, companyId);
       Key<RealEstate> estateKey = new Key<RealEstate>(companyKey,RealEstate.class, realEstateId);
       Key<Lease> leaseKey = new Key<Lease>(estateKey,Lease.class, leaseId);
@@ -301,17 +295,17 @@ public class PaymentDao<T extends Payment> extends DAOBase{
           nextPaymentOwner.setPeriodStartDate(firstpt.getPeriodStartDate());
         }else{
           // si pas de paiement du locataire, alors pas de paiement proprio
-          return null;
+          throw new Exception("Il n'y a pas encore de paiement locataire à verser au propriétaire");
         }
       }
       if (lastpt!=null){
         nextPaymentOwner.setPeriodEndDate(lastpt.getPeriodEndDate());
       }else{
         // si pas de paiement du locataire, alors pas de paiement proprio. Théoriquement on ne devrait pas passer dans ce code.
-        return null;
+        throw new Exception("Il n'y a pas encore de paiement locataire à verser au propriétaire");
       }
       if (nextPaymentOwner.getPeriodEndDate().before(nextPaymentOwner.getPeriodStartDate())){
-        return null;
+        throw new Exception("Oups, problème:-(");
       }
       // calcul du montant des loyers perçu dans la période et du nombre de périodes de loyer.
       // on prend toutes les perceptions qui sont dans la période
@@ -362,10 +356,7 @@ public class PaymentDao<T extends Payment> extends DAOBase{
       nextPaymentOwner.setNbrPeriod(nbrPeriod);
       
       return nextPaymentOwner;
-    } catch (Exception e) {
-      LOG.fatal("Next payment cannot be given: ", e);
-      return null;
-    }
+
   }
   public List<Expense> getExpensesToBeCharged(String realEstateId,Key<Company> companyKey) {
     Key<RealEstate> estateKey = new Key<RealEstate>(companyKey,RealEstate.class, realEstateId);
@@ -383,8 +374,7 @@ public class PaymentDao<T extends Payment> extends DAOBase{
     Key<Company> companyKey = new Key<Company>(Company.class, companyId);
     return getExpensesToBeCharged(realEstateId,companyKey);
   }
-  public PaymentTenant getNextPaymentTenantForLease(String leaseId, String realEstateId, String companyId){
-    try{
+  public PaymentTenant getNextPaymentTenantForLease(String leaseId, String realEstateId, String companyId) throws Exception{
       Key<Company> companyKey = new Key<Company>(Company.class, companyId);
       Key<RealEstate> estateKey = new Key<RealEstate>(companyKey,RealEstate.class, realEstateId);
       Key<Lease> leaseKey = new Key<Lease>(estateKey,Lease.class, leaseId);
@@ -396,7 +386,7 @@ public class PaymentDao<T extends Payment> extends DAOBase{
       q2.ancestor(leaseKey);
       
       if (lease.getRent()==null){
-        return null;
+        throw new Exception("Oups, problème:-(");
       }
       // chercher le dernier loyer percu
       PaymentTenant lastpt = q2.order("-periodEndDate").get();
@@ -411,7 +401,7 @@ public class PaymentDao<T extends Payment> extends DAOBase{
       }
       // si la date de début est supérieur à la date de fin de bail, alors, plus de payement possible.
       if (nextPaymentTenant.getPeriodStartDate().after(lease.getEndDate())){
-        return null;
+        throw new Exception("Tous les paiements sont déjà été enregistrés pour cette location");
       }
       nextPaymentTenant.setAmount(lease.getRent());
       // on ajoute 1 mois à la date de début et on enleve 1 jour
@@ -432,9 +422,5 @@ public class PaymentDao<T extends Payment> extends DAOBase{
       nextPaymentTenant.setFee(owner.getFee().floatValue());
       nextPaymentTenant.setFeeUnit(owner.getUnit());
       return nextPaymentTenant;
-    } catch (Exception e) {
-      LOG.fatal("Next payment cannot be given: ", e);
-      return null;
-    }
   }
 }

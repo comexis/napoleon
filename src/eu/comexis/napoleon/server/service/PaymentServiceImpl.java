@@ -35,6 +35,7 @@ public class PaymentServiceImpl extends RemoteServiceServlet implements PaymentS
   @Override
   public <T extends Payment> GetPaymentResponse<T> execute(GetPaymentCommand<T> command) {
     PaymentDao<T> ptDao = new PaymentDao<T>();
+    String errorMsg = "";
     if (command.getType().equals(PaymentTenant.class.toString())){
       ptDao.setClazz((Class<T>)PaymentTenant.class);
     }else if (command.getType().equals(PaymentOwner.class.toString())){
@@ -43,16 +44,21 @@ public class PaymentServiceImpl extends RemoteServiceServlet implements PaymentS
     String companyId = UserManager.INSTANCE.getCompanyId();
     T pt = null;
     if (command.getPaymentId().equals("next")){
-      if (command.getType().equals(PaymentTenant.class.toString())){
-        pt = (T)ptDao.getNextPaymentTenantForLease(command.getLeaseId(), command.getEstateId(), companyId);
-      }else if(command.getType().equals(PaymentOwner.class.toString())){
-        pt = (T)ptDao.getNextPaymentOwnerForLease(command.getLeaseId(), command.getEstateId(), companyId);
+      try{
+        if (command.getType().equals(PaymentTenant.class.toString())){
+          pt = (T)ptDao.getNextPaymentTenantForLease(command.getLeaseId(), command.getEstateId(), companyId);
+        }else if(command.getType().equals(PaymentOwner.class.toString())){
+          pt = (T)ptDao.getNextPaymentOwnerForLease(command.getLeaseId(), command.getEstateId(), companyId);
+        }
+      }catch(Exception e){
+        errorMsg = e.getMessage();
       }
     }else{
       pt = ptDao.getById(command.getPaymentId(),command.getLeaseId(),command.getEstateId(), companyId);
     }
     GetPaymentResponse<T> response = new GetPaymentResponse<T>();
     response.setPayment(pt);
+    response.setErrorMsg(errorMsg);
     return response;
   }
   
@@ -92,6 +98,7 @@ public class PaymentServiceImpl extends RemoteServiceServlet implements PaymentS
   @Override
   public <T extends Payment> UpdatePaymentResponse<T> execute(UpdatePaymentCommand<T> command) {
     // TODO Auto-generated method stub
+    String errorMsg = "";
     PaymentDao<T> ptDao = new PaymentDao<T>();
     T pt = command.getPayment();
     if (command.getType().equals(PaymentTenant.class.toString())){
@@ -100,10 +107,14 @@ public class PaymentServiceImpl extends RemoteServiceServlet implements PaymentS
       ptDao.setClazz((Class<T>)PaymentOwner.class);
     }
     String companyId = UserManager.INSTANCE.getCompanyId();
-    
-    pt = ptDao.update(pt,companyId);
+    try{
+      pt = ptDao.update(pt,companyId);
+    }catch(Exception e){
+      errorMsg=e.getMessage();
+    }
     UpdatePaymentResponse<T> response = new UpdatePaymentResponse<T>();
     response.setPayment(pt);
+    response.setErrorMsg(errorMsg);
     return response;
   }
 

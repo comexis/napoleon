@@ -52,9 +52,13 @@ public class LeaseServiceImpl extends RemoteServiceServlet implements LeaseServi
   public UpdateLeaseResponse execute(UpdateLeaseCommand command) {
     String companyId = UserManager.INSTANCE.getCompanyId();
     LeaseDao dao = new LeaseDao();
-    Lease lease = dao.update(command.getLease(),companyId);
     UpdateLeaseResponse response = new UpdateLeaseResponse();
-    response.setLease(lease);
+    try{
+      Lease lease = dao.update(command.getLease(),companyId);
+      response.setLease(lease);
+    }catch(Exception e){
+      response.setErrorMsg(e.getMessage());
+    }
     return response;
   }
 
