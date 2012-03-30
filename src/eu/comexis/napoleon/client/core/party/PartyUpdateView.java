@@ -279,7 +279,7 @@ public abstract class PartyUpdateView<T extends Party> extends ViewImpl implemen
     job.setText("");
     nationalRegister.setText("");
     box.setText("");
-    UiHelper.selectTextItemBoxByValue(maritalStatus, null, MaritalStatus.SINGLE);
+    UiHelper.selectTextItemBoxByValue(maritalStatus, null, MaritalStatus.NONE);
     UiHelper.selectTextItemBoxByValue(matrimonialRegime, null, MatrimonialRegime.NONE);
     UiHelper.selectTextItemBoxByValue(title, Title.NONE);
   }

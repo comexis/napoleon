@@ -20,7 +20,7 @@ public interface Literals extends ConstantsWithLookup {
   @DefaultStringValue("Cohabitant(e) légal")
   public String MaritalStatus_COHABITATION();
   
-  @DefaultStringValue("Divorsé(e)")
+  @DefaultStringValue("Divorcé(e)")
   public String MaritalStatus_DIVORCE();
   
   @DefaultStringValue("Séparé(e)")

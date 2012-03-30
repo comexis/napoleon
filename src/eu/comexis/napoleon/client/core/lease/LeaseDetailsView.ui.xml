@@ -112,9 +112,9 @@
 						<g:Button ui:field="btnUpdate">Editer</g:Button>
 						<g:Button ui:field="btnDelete">Effacer</g:Button>
 						<g:Button ui:field="btnToList">Retour vers la liste</g:Button>
-						<g:Button ui:field="btnPaymentTenant">Gestion des perceptions du loyer</g:Button>
-						<g:Button ui:field="btnPaymentOwner">Gestion des versements au propriétaire</g:Button>
-						<g:Button ui:field="btnPayment">Gestion des paiements</g:Button>
+						<g:Button ui:field="btnPaymentTenant">Perceptions loyer</g:Button>
+						<g:Button ui:field="btnPaymentOwner">Versements propriétaire</g:Button>
+						<g:Button ui:field="btnPayment">Tableau des paiements</g:Button>
 					</div>
 				</g:HTMLPanel>
 			</g:ScrollPanel>

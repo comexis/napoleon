@@ -171,6 +171,17 @@ public class LeaseDao extends DAOBase {
     }
     return null;
   }
+  public Lease bookkeepRefAlreadyUsed(String id,Key<RealEstate> estateKey, String accademicYear,String bookkeepRef){
+    Query<Lease> q = ofy().query(Lease.class);
+    q.ancestor(estateKey);
+    List<Lease> leases = q.filter("bookkeepingReference =", bookkeepRef).list();
+    for (Lease l:leases){
+      if (!l.getId().equals(id) && accademicYear.equals(l.getAcademicYear())){
+        return l;
+      }
+    }
+    return null;
+  }
 
   public Lease isAlreadyRented(String id,String realEstateId, Date startDate, Date endDate) {
     Key<RealEstate> estateKey = new Key<RealEstate>(RealEstate.class, realEstateId);
@@ -229,6 +240,11 @@ public class LeaseDao extends DAOBase {
     Lease actualLease =isAlreadyRented(lease.getId(),estateKey,lease.getStartDate(),lease.getEndDate());
     if (actualLease!=null){
       LOG.info("Lease cannot be updated because the real estate is already rented by " + actualLease.getId());
+      return null;
+    }
+    Lease sameBkpRefLease = bookkeepRefAlreadyUsed(lease.getId(),estateKey, lease.getAcademicYear(),lease.getBookkeepingReference());
+    if (sameBkpRefLease!=null){
+      LOG.info("Lease cannot be updated because the bookkeeping réference is already used for the same academic year " + sameBkpRefLease.getId());
       return null;
     }
     // set tenant
