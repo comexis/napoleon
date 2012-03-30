@@ -16,6 +16,7 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Query;
 import com.googlecode.objectify.util.DAOBase;
 
+import eu.comexis.napoleon.server.utils.NapoleonDaoException;
 import eu.comexis.napoleon.shared.model.AcademicYear;
 import eu.comexis.napoleon.shared.model.Company;
 import eu.comexis.napoleon.shared.model.FeeUnit;
@@ -219,11 +220,11 @@ public class LeaseDao extends DAOBase {
     Key<Company> companyKey = new Key<Company>(Company.class, companyId);
     return listAll(companyKey);
   }
-  public Lease update(Lease lease,String companyId) throws Exception {
+  public Lease update(Lease lease,String companyId) throws NapoleonDaoException {
     Key<Company> companyKey = new Key<Company>(Company.class, companyId);
     return update(lease,companyKey);
   }
-  public Lease update(Lease lease,Key<Company> companyKey) throws Exception {
+  public Lease update(Lease lease,Key<Company> companyKey) throws NapoleonDaoException {
     LOG.info("Update Lease");
     String leaseId = lease.getId();
     Key<RealEstate> estateKey = null;
@@ -243,7 +244,7 @@ public class LeaseDao extends DAOBase {
         
       } else {
         LOG.fatal("Lease cannot be updated, missing parent RealEstate");
-        throw new Exception("La location n'a pas de réference sur le bien");
+        throw new NapoleonDaoException("La location n'a pas de réference sur le bien");
       }
     }else{
       estateKey =lease.getRealEstateKey();
@@ -251,12 +252,12 @@ public class LeaseDao extends DAOBase {
     Lease actualLease =isAlreadyRented(lease.getId(),estateKey,lease.getStartDate(),lease.getEndDate());
     if (actualLease!=null){
       LOG.info("Lease cannot be updated because the real estate is already rented by " + actualLease.getId());
-      throw new Exception("Le bien est déjà loué pour la période " + actualLease.getStartDate() + " - " + actualLease.getEndDate());
+      throw new NapoleonDaoException("Le bien est déjà loué pour la période " + actualLease.getStartDate() + " - " + actualLease.getEndDate());
     }
     Lease sameBkpRefLease = bookkeepRefAlreadyUsed(companyKey, lease.getAcademicYear(),lease.getBookkeepingReference());
     if (sameBkpRefLease!=null){
       LOG.info("Lease cannot be updated because the bookkeeping réference is already used for the same academic year " + sameBkpRefLease.getId());
-      throw new Exception("La réference comptable '" + lease.getBookkeepingReference() + "' est déjà utilisée pour l'année académique " + lease.getAcademicYear());
+      throw new NapoleonDaoException("La réference comptable '" + lease.getBookkeepingReference() + "' est déjà utilisée pour l'année académique " + lease.getAcademicYear());
     }
     // set tenant
     //if (lease.getTenantKey() == null) {
@@ -265,7 +266,7 @@ public class LeaseDao extends DAOBase {
         lease.setTenantKey(tenantKey);
       } else {
         LOG.error("Lease cannot be updated, missing tenant");
-        throw new Exception("La location n'a pas de locataire");
+        throw new NapoleonDaoException("La location n'a pas de locataire");
       }
     //}
     if (lease.getAcademicYear()!=null && !lease.getAcademicYear().isEmpty()){
@@ -283,7 +284,7 @@ public class LeaseDao extends DAOBase {
       return getById(lease.getId(),lease.getRealEstateKey());
     } catch (Exception e) {
       LOG.fatal("Lease cannot be updated: ", e);
-      throw new Exception("Oups, il y a un problème !");
+      throw new NapoleonDaoException();
     }
   }
   public RealEstate getRealEstateRentBy(String tenantId, String companyId){

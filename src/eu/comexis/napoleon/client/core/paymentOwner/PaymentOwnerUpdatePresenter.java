@@ -56,7 +56,7 @@ public class PaymentOwnerUpdatePresenter
             if (payment!=null){
               setDataObjectModel(payment);
             }else{
-              getView().displayError("msg");
+              getView().displayError(msg);
               PaymentOwnerUpdatePresenter.this.onButtonCancelClick();
             }
           }

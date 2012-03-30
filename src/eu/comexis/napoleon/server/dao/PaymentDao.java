@@ -18,6 +18,7 @@ import com.googlecode.objectify.util.DAOBase;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+import eu.comexis.napoleon.server.utils.NapoleonDaoException;
 import eu.comexis.napoleon.shared.model.AcademicYear;
 import eu.comexis.napoleon.shared.model.ApplicationUser;
 import eu.comexis.napoleon.shared.model.Association;
@@ -93,11 +94,11 @@ public class PaymentDao<T extends Payment> extends DAOBase{
     }
     return null;
   }
-  public T update(T payment,String companyId) throws Exception {
+  public T update(T payment,String companyId) throws NapoleonDaoException {
     Key<Company> companyKey = new Key<Company>(Company.class, companyId);
     return update(payment,companyKey);
   }
-  public T update(T payment, Key<Company> companyKey) throws Exception {
+  public T update(T payment, Key<Company> companyKey) throws NapoleonDaoException {
     LOG.info("Update Payment");
       String paymentId = payment.getId();
       Key<Lease> leaseKey = null;
@@ -119,7 +120,7 @@ public class PaymentDao<T extends Payment> extends DAOBase{
           
         } else {
           LOG.fatal("Lease cannot be updated, missing parent RealEstate");
-          throw new Exception("Oups, problème:-(");
+          throw new NapoleonDaoException("Oups, problème:-(");
         }
       }else{
         leaseKey =payment.getLeaseKey();
@@ -127,7 +128,7 @@ public class PaymentDao<T extends Payment> extends DAOBase{
       T actualPayment =isAlreadyPaid(payment.getId(),leaseKey,payment.getPeriodStartDate(),payment.getPeriodEndDate());
       if (actualPayment!=null){
         LOG.info("Payment cannot be updated because there is already a payment for that period " + actualPayment.getId());
-        throw new Exception("Il y a déjà un piement sur cette période");
+        throw new NapoleonDaoException("Il y a déjà un paiement sur cette période");
       }
       // force all the time to be at noon to avoid CEST-GMT problem
       payment.setPaymentDate(setTime(payment.getPaymentDate()));
@@ -262,7 +263,7 @@ public class PaymentDao<T extends Payment> extends DAOBase{
       return null;
     }  
   }
-  public PaymentOwner getNextPaymentOwnerForLease(String leaseId, String realEstateId, String companyId) throws Exception{
+  public PaymentOwner getNextPaymentOwnerForLease(String leaseId, String realEstateId, String companyId) throws NapoleonDaoException{
       Key<Company> companyKey = new Key<Company>(Company.class, companyId);
       Key<RealEstate> estateKey = new Key<RealEstate>(companyKey,RealEstate.class, realEstateId);
       Key<Lease> leaseKey = new Key<Lease>(estateKey,Lease.class, leaseId);
@@ -295,17 +296,20 @@ public class PaymentDao<T extends Payment> extends DAOBase{
           nextPaymentOwner.setPeriodStartDate(firstpt.getPeriodStartDate());
         }else{
           // si pas de paiement du locataire, alors pas de paiement proprio
-          throw new Exception("Il n'y a pas encore de paiement locataire à verser au propriétaire");
+          //noPaymentToPayToOwner
+          throw new NapoleonDaoException("Il n'y a pas encore de paiement locataire à verser au propriétaire");
         }
       }
       if (lastpt!=null){
         nextPaymentOwner.setPeriodEndDate(lastpt.getPeriodEndDate());
       }else{
         // si pas de paiement du locataire, alors pas de paiement proprio. Théoriquement on ne devrait pas passer dans ce code.
-        throw new Exception("Il n'y a pas encore de paiement locataire à verser au propriétaire");
+        //noPaymentToPayToOwner
+        throw new NapoleonDaoException("Il n'y a pas encore de paiement locataire à verser au propriétaire");
       }
       if (nextPaymentOwner.getPeriodEndDate().before(nextPaymentOwner.getPeriodStartDate())){
-        throw new Exception("Oups, problème:-(");
+        //noPaymentToPayToOwner
+        throw new NapoleonDaoException("Il n'y a pas encore de paiement locataire à verser au propriétaire");
       }
       // calcul du montant des loyers perçu dans la période et du nombre de périodes de loyer.
       // on prend toutes les perceptions qui sont dans la période
@@ -374,7 +378,7 @@ public class PaymentDao<T extends Payment> extends DAOBase{
     Key<Company> companyKey = new Key<Company>(Company.class, companyId);
     return getExpensesToBeCharged(realEstateId,companyKey);
   }
-  public PaymentTenant getNextPaymentTenantForLease(String leaseId, String realEstateId, String companyId) throws Exception{
+  public PaymentTenant getNextPaymentTenantForLease(String leaseId, String realEstateId, String companyId) throws NapoleonDaoException{
       Key<Company> companyKey = new Key<Company>(Company.class, companyId);
       Key<RealEstate> estateKey = new Key<RealEstate>(companyKey,RealEstate.class, realEstateId);
       Key<Lease> leaseKey = new Key<Lease>(estateKey,Lease.class, leaseId);
@@ -386,7 +390,8 @@ public class PaymentDao<T extends Payment> extends DAOBase{
       q2.ancestor(leaseKey);
       
       if (lease.getRent()==null){
-        throw new Exception("Oups, problème:-(");
+        //Oups
+        throw new NapoleonDaoException();
       }
       // chercher le dernier loyer percu
       PaymentTenant lastpt = q2.order("-periodEndDate").get();
@@ -401,7 +406,8 @@ public class PaymentDao<T extends Payment> extends DAOBase{
       }
       // si la date de début est supérieur à la date de fin de bail, alors, plus de payement possible.
       if (nextPaymentTenant.getPeriodStartDate().after(lease.getEndDate())){
-        throw new Exception("Tous les paiements sont déjà été enregistrés pour cette location");
+        //noMorePayments
+        throw new NapoleonDaoException("Tous les paiements ont déjà été enregistrés pour cette location");
       }
       nextPaymentTenant.setAmount(lease.getRent());
       // on ajoute 1 mois à la date de début et on enleve 1 jour

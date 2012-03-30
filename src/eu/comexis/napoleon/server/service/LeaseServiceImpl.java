@@ -3,11 +3,15 @@ package eu.comexis.napoleon.server.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import eu.comexis.napoleon.client.rpc.LeaseService;
 import eu.comexis.napoleon.server.dao.LeaseDao;
 import eu.comexis.napoleon.server.manager.UserManager;
+import eu.comexis.napoleon.server.utils.NapoleonDaoException;
 import eu.comexis.napoleon.shared.command.lease.GetAllLeaseCommand;
 import eu.comexis.napoleon.shared.command.lease.GetAllLeaseResponse;
 import eu.comexis.napoleon.shared.command.lease.GetLeaseCommand;
@@ -18,7 +22,7 @@ import eu.comexis.napoleon.shared.model.Lease;
 import eu.comexis.napoleon.shared.model.simple.SimpleLease;
 
 public class LeaseServiceImpl extends RemoteServiceServlet implements LeaseService{
-
+  public static Log LOG = LogFactory.getLog(LeaseServiceImpl.class);
   public LeaseServiceImpl() {
     // TODO Auto-generated constructor stub
   }
@@ -51,13 +55,17 @@ public class LeaseServiceImpl extends RemoteServiceServlet implements LeaseServi
   @Override
   public UpdateLeaseResponse execute(UpdateLeaseCommand command) {
     String companyId = UserManager.INSTANCE.getCompanyId();
-    LeaseDao dao = new LeaseDao();
     UpdateLeaseResponse response = new UpdateLeaseResponse();
     try{
+      LeaseDao dao = new LeaseDao();
       Lease lease = dao.update(command.getLease(),companyId);
       response.setLease(lease);
-    }catch(Exception e){
+    }catch(NapoleonDaoException e){
+      LOG.info("Dao Error: " + e.getMessage());
       response.setErrorMsg(e.getMessage());
+    }catch(Exception e){
+      LOG.error("Error: cannot update payment " + e);
+      response.setErrorMsg("Oups, une erreur s'est produite");
     }
     return response;
   }

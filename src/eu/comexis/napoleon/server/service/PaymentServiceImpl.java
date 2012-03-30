@@ -11,6 +11,7 @@ import eu.comexis.napoleon.client.rpc.PaymentService;
 import eu.comexis.napoleon.server.dao.LeaseDao;
 import eu.comexis.napoleon.server.dao.PaymentDao;
 import eu.comexis.napoleon.server.manager.UserManager;
+import eu.comexis.napoleon.server.utils.NapoleonDaoException;
 import eu.comexis.napoleon.shared.command.payment.GetAllPaymentCommand;
 import eu.comexis.napoleon.shared.command.payment.GetAllPaymentResponse;
 import eu.comexis.napoleon.shared.command.payment.GetPaymentCommand;
@@ -50,8 +51,11 @@ public class PaymentServiceImpl extends RemoteServiceServlet implements PaymentS
         }else if(command.getType().equals(PaymentOwner.class.toString())){
           pt = (T)ptDao.getNextPaymentOwnerForLease(command.getLeaseId(), command.getEstateId(), companyId);
         }
-      }catch(Exception e){
+      }catch(NapoleonDaoException e){
         errorMsg = e.getMessage();
+      }catch(Exception e){
+        LOG.error("Error: cannot update payment " + e);
+        errorMsg="Oups, une erreur s'est produite";
       }
     }else{
       pt = ptDao.getById(command.getPaymentId(),command.getLeaseId(),command.getEstateId(), companyId);
@@ -109,8 +113,11 @@ public class PaymentServiceImpl extends RemoteServiceServlet implements PaymentS
     String companyId = UserManager.INSTANCE.getCompanyId();
     try{
       pt = ptDao.update(pt,companyId);
-    }catch(Exception e){
+    }catch(NapoleonDaoException e){
       errorMsg=e.getMessage();
+    }catch(Exception e){
+      LOG.error("Error: cannot update payment " + e);
+      errorMsg="Oups, une erreur s'est produite";
     }
     UpdatePaymentResponse<T> response = new UpdatePaymentResponse<T>();
     response.setPayment(pt);
