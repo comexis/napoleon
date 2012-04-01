@@ -1,5 +1,7 @@
 package eu.comexis.napoleon.server.dao;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -10,34 +12,21 @@ import java.util.UUID;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
 import com.googlecode.objectify.util.DAOBase;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 import eu.comexis.napoleon.server.utils.NapoleonDaoException;
-import eu.comexis.napoleon.shared.model.AcademicYear;
-import eu.comexis.napoleon.shared.model.ApplicationUser;
-import eu.comexis.napoleon.shared.model.Association;
-import eu.comexis.napoleon.shared.model.City;
 import eu.comexis.napoleon.shared.model.Company;
-import eu.comexis.napoleon.shared.model.Condo;
-import eu.comexis.napoleon.shared.model.Country;
 import eu.comexis.napoleon.shared.model.Expense;
 import eu.comexis.napoleon.shared.model.FeeUnit;
-import eu.comexis.napoleon.shared.model.JobTitle;
 import eu.comexis.napoleon.shared.model.Lease;
-import eu.comexis.napoleon.shared.model.Nationality;
 import eu.comexis.napoleon.shared.model.Owner;
-import eu.comexis.napoleon.shared.model.Ownership;
 import eu.comexis.napoleon.shared.model.Payment;
 import eu.comexis.napoleon.shared.model.PaymentOwner;
 import eu.comexis.napoleon.shared.model.PaymentTenant;
 import eu.comexis.napoleon.shared.model.RealEstate;
-import eu.comexis.napoleon.shared.model.Tenant;
 import eu.comexis.napoleon.shared.model.simple.PaymentListItem;
 
 public class PaymentDao<T extends Payment> extends DAOBase{
@@ -402,6 +391,7 @@ public class PaymentDao<T extends Payment> extends DAOBase{
       }else{
         cal.setTime(lastpt.getPeriodEndDate());
         cal.add(Calendar.DAY_OF_MONTH, 1);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
         nextPaymentTenant.setPeriodStartDate(cal.getTime());
       }
       // si la date de début est supérieur à la date de fin de bail, alors, plus de payement possible.
@@ -409,10 +399,12 @@ public class PaymentDao<T extends Payment> extends DAOBase{
         //noMorePayments
         throw new NapoleonDaoException("Tous les paiements ont déjà été enregistrés pour cette location");
       }
+      
       nextPaymentTenant.setAmount(lease.getRent());
-      // on ajoute 1 mois à la date de début et on enleve 1 jour
+      // on se place a la fin du mois courant (on se place au debut du mois suivant et on retire un jour)
       cal.setTime(nextPaymentTenant.getPeriodStartDate());
       cal.add(Calendar.MONTH, 1);
+      cal.set(Calendar.DAY_OF_MONTH, 1);
       cal.add(Calendar.DAY_OF_MONTH, -1);
       nextPaymentTenant.setPeriodEndDate(cal.getTime()); 
       // si la date de fin de période est supérieur à celle du bail, on ramène cette date de fin à la fin du bail
@@ -425,7 +417,7 @@ public class PaymentDao<T extends Payment> extends DAOBase{
       nextPaymentTenant.setLeaseId(leaseId);
       // keep the values from lease and owner convention
       nextPaymentTenant.setRent(lease.getRent());
-      nextPaymentTenant.setFee(owner.getFee().floatValue());
+      nextPaymentTenant.setFee(owner.getFee() != null ? owner.getFee().floatValue() : 0);
       nextPaymentTenant.setFeeUnit(owner.getUnit());
       return nextPaymentTenant;
   }
