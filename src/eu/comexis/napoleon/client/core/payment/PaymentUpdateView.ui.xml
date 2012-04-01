@@ -22,9 +22,9 @@
 		</div>
 		
 		<div class="{res.css.detailRow} {res.css.separationRow}">
-			<span class="{res.css.detailCellInputLabel}" style="width:100px">Periode du :</span>
+			<span class="{res.css.detailCellInputLabel}">Periode du :</span>
 			<dp:DateBox ui:field="fromDate" styleName="{res.css.detailCellInputText}"/>
-			<span class="{res.css.detailCellInputLabel}" style="width:100px">au :</span>
+			<span class="{res.css.detailCellInputLabel}">au :</span>
 			<dp:DateBox ui:field="toDate" styleName="{res.css.detailCellInputText}"/>
 		</div>
 		<div id="moreDetailOwner" class="{res.css.detailRow} {res.css.separationRow}">
@@ -35,39 +35,39 @@
 				<span ui:field="fee" class="{res.css.detailCellValue}" />
 			</div>
 			<div class="{res.css.detailRow} {res.css.separationRow}">
-				<span class="{res.css.detailCellLabel}">Loyers - honoraires (EUR) :</span>
+				<span class="{res.css.detailCellLabel}">Loyers - honoraires (€) :</span>
 				<span ui:field="rentWithoutFee" class="{res.css.detailCellValue}" />
-				<span class="{res.css.detailCellLabel}">Ancien solde (EUR) :</span>
+				<span class="{res.css.detailCellLabel}">Ancien solde (€) :</span>
 				<span ui:field="previousBalance" class="{res.css.detailCellValue}" />
 			</div>
 			<div class="{res.css.detailRow} {res.css.separationRow}">
-				<span class="{res.css.detailCellLabel}">Montant à payer au propriétaire (EUR) :</span>
+				<span class="{res.css.detailCellLabel}">Montant à payer au propriétaire (€) :</span>
 				<span ui:field="dueToOwner" class="{res.css.detailCellValue}" />
-				<span class="{res.css.detailCellInputLabel}" style="width:100px">Solde (EUR) :</span>
+				<span class="{res.css.detailCellInputLabel}">Solde (€) :</span>
 				<g:TextBox ui:field="balance" styleName="{res.css.detailCellInputList}" name="balance" />
-				<span class="{res.css.detailCellInputLabel}" style="width:100px">Dépenses (EUR) :</span>
+				<span class="{res.css.detailCellInputLabel}" >Dépenses (€) :</span>
 				<span ui:field="expense" class="{res.css.detailCellValue}" />
 			</div>
 		</div>
 		<div class="{res.css.detailRow} {res.css.separationRow}">
-				<span class="{res.css.detailCellInputLabel}" style="width:100px">Date :</span>
+				<span class="{res.css.detailCellInputLabel}" >Date :</span>
 				<dp:DateBox ui:field="date" styleName="{res.css.detailCellInputText}"/>
-				<span class="{res.css.detailCellInputLabel}" style="width:100px">Montant (EUR) :</span>
-				<g:TextBox ui:field="amount" styleName="{res.css.detailCellInputList}" name="amount" />
+				<span class="{res.css.detailCellInputLabel}" >Montant (€) :</span>
+				<g:TextBox ui:field="amount" styleName="{res.css.detailCellInputText}" name="amount" />
 			</div>
 		<div id="moreDetailTenant" class="{res.css.detailRow} {res.css.separationRow}">
 			<div class="{res.css.detailRow} {res.css.separationRow}">
-				<span class="{res.css.detailCellInputLabel}" style="width:100px">Compte agence:</span>
+				<span class="{res.css.detailCellInputLabel} {res.css.autoLabel}" >Compte agence:</span>
 				<g:SuggestBox ui:field="account" styleName="{res.css.detailCellInputText}"/>
 			</div>
 			<div class="{res.css.detailRow} {res.css.separationRow}">
-				<g:RadioButton ui:field="inCashYes" styleName="{res.css.detailCellInputList}"
+				<g:RadioButton ui:field="inCashYes" styleName="{res.css.detailCellInputLabel}"
 						name="inCash" text="Cash"/>
-				<g:RadioButton ui:field="inCashNo" styleName="{res.css.detailCellInputList}"
+				<g:RadioButton ui:field="inCashNo" styleName="{res.css.detailCellInputLabel}"
 						name="inCash" text="Virement"/>
-				<span class="{res.css.detailCellInputLabel}" style="width:100px">N° :</span>
+				<span class="{res.css.detailCellInputLabel} {res.css.autoLabel}" >N° :</span>
 				<g:TextBox ui:field="number" styleName="{res.css.detailCellInputText}"/>
-				<span class="{res.css.detailCellInputLabel}" style="width:100px">Communication :</span>
+				<span class="{res.css.detailCellInputLabel} {res.css.autoLabel}" >Communication :</span>
 				<g:TextBox ui:field="communication" styleName="{res.css.detailCellInputText}"/>
 			</div>
 		</div>
