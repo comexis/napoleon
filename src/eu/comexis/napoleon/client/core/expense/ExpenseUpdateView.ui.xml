@@ -59,7 +59,7 @@
 				<span class="{res.css.detailCellInputLabel}">A charge du locataire :</span>
 				<g:TextBox ui:field="toBePaidByTenant" styleName="{res.css.detailCellInputText}"
 					name="toBePaidByTenant" />
-				<g:CheckBox ui:field="paidByTenant" styleName="{res.css.detailCellInputList}"
+				<g:CheckBox ui:field="paidByTenant" styleName="{res.css.detailCellInputLabel}"
 						name="paidByTenant" text="Soldé"/>
 				<dp:DateBox ui:field="datePaidByTenant" styleName="{res.css.detailCellInputText}"/>
 			</div>
@@ -67,7 +67,7 @@
 			<div class="{res.css.detailRow}">
 				<span class="{res.css.detailCellInputLabel}">Fournisseur :</span>
 				<g:ListBox ui:field="contractor" styleName="{res.css.detailCellInputText}"/>
-				<g:CheckBox ui:field="filtered" styleName="{res.css.detailCellInputList}"
+				<g:CheckBox ui:field="filtered" styleName="{res.css.detailCellInputLabel}"
 						name="filtered" text="filtrer par type d'intervention"/>
 			</div>
 			<div class="{res.css.detailRow}">
