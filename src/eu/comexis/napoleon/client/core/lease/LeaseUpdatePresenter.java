@@ -110,7 +110,7 @@ public class LeaseUpdatePresenter extends
   @Override
   public void onRentChanged(Float rent) {
     Float fee = 0f;
-    if (lease.getUnit().equals(FeeUnit.RENT_PERCENTAGE)) {
+    if (FeeUnit.RENT_PERCENTAGE.equals(lease.getUnit())) {
       fee = rent * lease.getFeeFromOwner() / 100;
     } else {
       fee = lease.getFeeFromOwner();
