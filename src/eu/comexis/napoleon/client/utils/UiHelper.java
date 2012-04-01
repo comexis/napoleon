@@ -10,6 +10,9 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.i18n.client.TimeZone;
 import com.google.gwt.i18n.client.constants.TimeZoneConstants;
+import com.google.gwt.safehtml.client.SafeHtmlTemplates;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -24,6 +27,19 @@ public class UiHelper {
   private static DateTimeFormat COMPARE_DATE_FORMAT = DateTimeFormat.getFormat("yyyy.MM.dd");
   private static TimeZoneConstants TIME_ZONE = GWT.create(TimeZoneConstants.class);
 
+  
+  public interface Templates extends SafeHtmlTemplates {
+
+
+    Templates INSTANCE = GWT.create(Templates.class);
+
+    @Template("{0}<br/>{1} {2}")
+    SafeHtml address(String street, String postalCode, String city);
+
+    @Template("<a href='mailto:{0}'>{1}</a>")
+    SafeHtml mailto(String email,String text);
+  }
+  
   // static class
   private UiHelper() {
   }
@@ -172,5 +188,15 @@ public class UiHelper {
       sValue = "0,00";
     }
     return sValue;
+  }
+  public static String getMailto(String addresses, String text){
+    Templates t = Templates.INSTANCE;
+    SafeHtmlBuilder builder = new SafeHtmlBuilder();
+    if (addresses!=null){
+      builder.append(t.mailto(addresses,text));
+      return builder.toSafeHtml().asString();
+    }else{
+      return "";
+    }
   }
 }

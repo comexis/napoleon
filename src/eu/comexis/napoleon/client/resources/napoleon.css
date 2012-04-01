@@ -39,6 +39,10 @@ select{
 	width: 150px;
 }
 
+.detailShortCellLabel {
+	width: 100px;
+}
+
 .detailCellInputLabel {
 	padding-top: 5px;
 	width:100px

@@ -5,6 +5,8 @@
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
+	
+	<ui:with field='res' type='eu.comexis.napoleon.client.resources.Resources' />
 
 	<ui:style>
 		.datagrid {
@@ -20,7 +22,7 @@
 			<table style="width:100%">
 				<tr>
 					<td align='center'>
-						<span ui:field="parentTitle"/>
+						<span ui:field="parentTitle" class="{res.css.detailCellValue} {res.css.clickable}"/>
 					</td>
 				</tr>
 				<tr>

@@ -63,9 +63,11 @@ public class Lease implements IsSerializable , Identifiable,HasFiles{
   private Boolean furnituresPaymentOK;
   private TypeOfRent type;
   private Float serviceCharges;
+  @Indexed
   private String bookkeepingReference;
   private Long duration;
   private AmountOfTimeUnit durationUnit;
+  @Indexed
   private String academicYear;
   private String cooccupant;
   @NotSaved

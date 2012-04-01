@@ -1,6 +1,9 @@
 package eu.comexis.napoleon.client.core.paymentBoard;
 
+import static com.google.gwt.query.client.GQuery.$;
+
 import com.google.gwt.cell.client.TextCell;
+import com.google.gwt.query.client.Function;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.view.client.ProvidesKey;
@@ -207,10 +210,10 @@ public class PaymentBoardListView extends AbstractShortListView<PaymentListItem>
   
   @Override
   protected String getButtonNewLabel() {
-    return "Nouveau paiement";
+    return "-"; // pas utilisée
   }
   @Override
   protected String getButtonDeleteLabel() {
-    return "Supprimer le paiement sélectionné";
+    return "-"; // pas utilisée
   }
 }

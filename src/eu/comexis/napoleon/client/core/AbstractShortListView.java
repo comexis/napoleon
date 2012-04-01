@@ -1,10 +1,13 @@
 package eu.comexis.napoleon.client.core;
 
+import static com.google.gwt.query.client.GQuery.$;
+
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.query.client.Function;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -13,6 +16,7 @@ import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
@@ -55,10 +59,26 @@ public abstract class AbstractShortListView<T> extends ViewImpl implements
     init();
 
   }
-
+  public void bind() {
+    $(parentTitle).click(new Function() {
+      @Override
+      public void f() {
+        presenter.showParent();
+      }
+    });
+    
+  }
+  public void unbind(){
+    $(parentTitle).unbind(Event.ONCLICK);
+  }
   @Override
   public Widget asWidget() {
     return widget;
+  }
+  @Override
+  public void hideButtons(Boolean visible){
+    this.btnDelete.setVisible(visible);
+    this.btnNew.setVisible(visible);
   }
 
   @Override

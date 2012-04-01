@@ -2,6 +2,9 @@ package eu.comexis.napoleon.client.core.estate;
 
 import static com.google.gwt.query.client.GQuery.$;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -138,7 +141,7 @@ public class RealEstateDetailsView extends ViewImpl implements RealEstateDetails
     address.setInnerText(e.getAssocAdresss());
     tel.setInnerText(e.getAssocPhoneNumber());
     gsm.setInnerText(e.getAssocMobilePhoneNumber());
-    email.setInnerText(e.getAssocEmail());
+    email.setInnerHTML(UiHelper.getMailto(e.getAssocEmail(),e.getAssocEmail()));
     addresseRealEstate.setInnerText(e.getStreet());
     postalCode.setInnerText(e.getPostalCode());
     city.setInnerText(e.getCity());
@@ -150,7 +153,7 @@ public class RealEstateDetailsView extends ViewImpl implements RealEstateDetails
     ownerName.setInnerText(o.getName());
     ownerTel.setInnerText(o.getPhoneNumber());
     ownerGSM.setInnerText(o.getMobileNumber());
-    ownerEmail.setInnerText(o.getEmail());
+    ownerEmail.setInnerHTML(UiHelper.getMailto(o.getEmail(),o.getEmail()));
     
   }
 

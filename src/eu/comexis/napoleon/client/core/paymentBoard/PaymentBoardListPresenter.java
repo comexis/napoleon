@@ -12,9 +12,9 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 
-import eu.comexis.napoleon.client.core.AbstractListPresenter;
 import eu.comexis.napoleon.client.core.AbstractShortListPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
+import eu.comexis.napoleon.client.core.lease.LeaseDetailsPresenter;
 import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.resources.Literals;
 import eu.comexis.napoleon.client.rpc.callback.GotPaymentsBoard;
@@ -55,6 +55,7 @@ public class PaymentBoardListPresenter extends
         setDatas(title,payments);
       }
     });
+    this.getView().hideButtons(false);
   }
   
   @Override
@@ -88,6 +89,10 @@ public class PaymentBoardListPresenter extends
   protected String getDetailsNameTokens() {
     // TODO Auto-generated method stub
     return null;
+  }
+  @Override
+  public void showParent() {
+    LeaseDetailsPresenter.show(id, estateId);
   }
 
   @Override

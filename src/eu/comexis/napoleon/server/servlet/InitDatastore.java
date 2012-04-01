@@ -301,7 +301,7 @@ public class InitDatastore extends HttpServlet {
     l.setStartDate(cal1.getTime());
     cal1.set(2012, Calendar.JUNE, 30, 00, 00);
     l.setEndDate(cal1.getTime());
-    lDao.update(l,companyId);
+    //lDao.update(l,companyId);
   }
 
   private void createTenantDao(String companyId) {

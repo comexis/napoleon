@@ -6,10 +6,10 @@ import eu.comexis.napoleon.shared.command.payment.GetAllPaymentResponse;
 import eu.comexis.napoleon.shared.model.Payment;
 
 public abstract class GotAllPayment <T extends Payment> extends AbstractCallback<GetAllPaymentResponse<T>>{
-  public abstract void got(List<T> payments);
+  public abstract void got(String title,List<T> payments);
   @Override
   public void onSuccess(GetAllPaymentResponse<T> result) {
-    got(result.getPayment());
+    got(result.getTitle(),result.getPayment());
   }
 
 }

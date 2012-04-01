@@ -27,6 +27,7 @@
 				<td>
 					<div class="{style.filesList}">
 						<h3>Liste de fichiers</h3>
+						
 						<div ui:field="fileList"></div>
 					</div>
 				</td>

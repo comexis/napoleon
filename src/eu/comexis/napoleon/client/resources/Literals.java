@@ -9,16 +9,37 @@ public interface Literals extends ConstantsWithLookup {
 
   @DefaultStringValue("Chargement des données...")
   public String dataLoading();
+  
+  @DefaultStringValue("Oups, il y a un problème. Veuillez contacter le responsable de l'application")
+  public String oups();
+  
+  @DefaultStringValue("Tous les paiements ont déjà été enregistrés pour cette location")
+  public String noMorePayments();
+  
+  @DefaultStringValue("Il n'y a pas encore de paiement locataire à verser au propriétaire")
+  public String noPaymentToPayToOwner();
 
   // MaritalStatus enum
   @DefaultStringValue("Célibataire")
   public String MaritalStatus_SINGLE();
 
-  @DefaultStringValue("Marié")
+  @DefaultStringValue("Marié(e)")
   public String MaritalStatus_MARRIED();
 
-  @DefaultStringValue("Cohabitant")
+  @DefaultStringValue("Cohabitant(e) légal")
   public String MaritalStatus_COHABITATION();
+  
+  @DefaultStringValue("Divorcé(e)")
+  public String MaritalStatus_DIVORCE();
+  
+  @DefaultStringValue("Séparé(e)")
+  public String MaritalStatus_SEPARED();
+  
+  @DefaultStringValue("Veu(f/ve)")
+  public String MaritalStatus_WIDOW();
+  
+  @DefaultStringValue("Inconnu")
+  public String MaritalStatus_NONE();
 
   // MatrimonialRegime enum
   @DefaultStringValue("Aucun")
@@ -91,6 +112,9 @@ public interface Literals extends ConstantsWithLookup {
   
   @DefaultStringValue("S.C.R.L.")
   public String Title_SCRL();
+  
+  @DefaultStringValue("-")
+  public String Title_NONE();
   
   @DefaultStringValue("A.S.B.L.")
   public String Title_ASBL();

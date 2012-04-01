@@ -14,6 +14,33 @@
 			<g:ScrollPanel>
 				<g:HTMLPanel styleName="{res.css.detailTable}">
 					<div class="{res.css.detailRow}">
+						<span class="{res.css.detailCellLabel}">Référence du bien :</span>
+						<span ui:field="estateRef" class="{res.css.detailCellValue}" />
+						<span ui:field="estateAddress" class="{res.css.detailCellValue}" />
+					</div>
+					
+					<div class="{res.css.detailRow}">
+						<span class="{res.css.detailCellLabel}">Propriétaire :</span>
+						<span ui:field="ownerName" class="{res.css.detailCellValue}" />
+						<span ui:field="ownerAddress" class="{res.css.detailCellValue}" />
+					</div>
+					<div class="{res.css.detailRow}">
+						<span class="{res.css.detailCellLabel}">Tel :</span>
+						<span ui:field="ownerTel" class="{res.css.detailCellValue}" />
+						<span class="{res.css.detailCellLabel}">GSM :</span>
+						<span ui:field="ownerGSM" class="{res.css.detailCellValue}" />
+						<span class="{res.css.detailCellLabel}">Mail :</span>
+						<span ui:field="ownerMail" class="{res.css.detailCellValue}"/>
+					</div>
+					
+					<div class="{res.css.detailRow}">
+						<span class="{res.css.detailCellLabel}">Propriétaire prevenu le :</span>
+						<span ui:field="dateInform" class="{res.css.detailCellValue}" />
+						<span class="{res.css.detailCellLabel}">Type d'intervention :</span>
+						<span ui:field="typeWork" class="{res.css.detailCellValue}" />
+					</div>
+					
+					<div class="{res.css.detailRow}">
 						<span class="{res.css.detailCellLabel}">Références :</span>
 						<span ui:field="reference" class="{res.css.detailCellValue}" />
 						<span class="{res.css.detailCellLabel}">Montant :</span>
@@ -25,17 +52,26 @@
 					</div>
 					
 					<div class="{res.css.detailRow}">
-						<span class="{res.css.detailCellLabel}">Propriétaire prevenu le :</span>
-						<span ui:field="dateInform" class="{res.css.detailCellValue}" />
-						<span class="{res.css.detailCellLabel}">Type d'intervention :</span>
-						<span ui:field="typeWork" class="{res.css.detailCellValue}" />
-					</div>
-					
-					<div class="{res.css.detailRow}">
 						<span class="{res.css.detailCellLabel}">Montant imputable au propriétaire :</span>
 						<span ui:field="toBePaidByOwner" class="{res.css.detailCellValue}" />
 						<span class="{res.css.detailCellLabel}">Montant imputable au locataire :</span>
 						<span ui:field="toBePaidByTenant" class="{res.css.detailCellValue}" />
+					</div>
+					<div class="{res.css.detailRow}">
+						<span class="{res.css.detailCellLabel}">Soldé :</span>
+						<span ui:field="paidByTenant" class="{res.css.detailCellValue}" />
+						<span class="{res.css.detailCellLabel}">Date :</span>
+						<span ui:field="datePaidByTenant" class="{res.css.detailCellValue}" />
+					</div>
+					<div class="{res.css.detailRow}">
+						<span class="{res.css.detailCellLabel}">Fournisseur :</span>
+						<span ui:field="contractorName" class="{res.css.detailCellValue}" />
+						<span class="{res.css.detailCellLabel}">Téléphone :</span>
+						<span ui:field="contractorTel" class="{res.css.detailCellValue}" />
+						<span class="{res.css.detailCellLabel}">GSM :</span>
+						<span ui:field="contractorGSM" class="{res.css.detailCellValue}" />
+						<span class="{res.css.detailCellLabel}">Compte :</span>
+						<span ui:field="contractorAccount" class="{res.css.detailCellValue}" />
 					</div>
 					
 					<div class="{res.css.separationRow}" style="clear: both;">

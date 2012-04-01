@@ -8,6 +8,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
 
 import eu.comexis.napoleon.client.core.AbstractShortListView;
 import eu.comexis.napoleon.client.utils.SimpleTextComparator;
+import eu.comexis.napoleon.client.utils.UiHelper;
 import eu.comexis.napoleon.shared.model.Expense;
 
 public class ExpenseListView extends AbstractShortListView<Expense> implements
@@ -49,8 +50,85 @@ public class ExpenseListView extends AbstractShortListView<Expense> implements
     });
 
     table.addColumn(nameColumn, "Référence");
+    
+    // Amount.
+    Column<Expense, String> amountColumn = new Column<Expense, String>(new TextCell()) {
+      @Override
+      public String getValue(Expense object) {
+        return UiHelper.FloatToString(object.getAmount());
+      }
+    };
 
-  }
+    amountColumn.setSortable(true);
+    sortHandler.setComparator(amountColumn, new SimpleTextComparator<Expense>() {
+      public int compare(Expense o1, Expense o2) {
+        return compare(UiHelper.FloatToString(o1.getAmount()), UiHelper.FloatToString(o2.getAmount()));
+      }
+    });
+
+    table.addColumn(amountColumn, "Montant");
+    
+    // DateFacture.
+    Column<Expense, String> dateInvoiceColumn = new Column<Expense, String>(new TextCell()) {
+      @Override
+      public String getValue(Expense object) {
+        return UiHelper.displayDate(object.getDateInvoice());
+      }
+    };
+
+    dateInvoiceColumn.setSortable(true);
+    sortHandler.setComparator(dateInvoiceColumn, new SimpleTextComparator<Expense>() {
+      public int compare(Expense o1, Expense o2) {
+        return compare(UiHelper.formatDateForCompare(o1.getDateInvoice()), UiHelper.formatDateForCompare(o2.getDateInvoice()));
+      }
+    });
+
+    table.addColumn(dateInvoiceColumn, "Date facture");
+    
+    // Date imputé au proprio.
+    Column<Expense, String> dateChargedToOwnerColumn = new Column<Expense, String>(new TextCell()) {
+      @Override
+      public String getValue(Expense object) {
+        if (object.getToBePaidByOwner()!=0){
+          return UiHelper.displayDate(object.getChargedToOwnerPeriod());
+        }else{
+          return "n/a";
+        }
+      }
+    };
+
+    dateChargedToOwnerColumn.setSortable(true);
+    sortHandler.setComparator(dateChargedToOwnerColumn, new SimpleTextComparator<Expense>() {
+      public int compare(Expense o1, Expense o2) {
+        return compare(UiHelper.formatDateForCompare(o1.getChargedToOwnerPeriod()), UiHelper.formatDateForCompare(o2.getChargedToOwnerPeriod()));
+      }
+    });
+
+    table.addColumn(dateChargedToOwnerColumn, "Déduit le");
+
+  
+  //Date payé par le locataire
+  Column<Expense, String> datePaidByTenantColumn = new Column<Expense, String>(new TextCell()) {
+    @Override
+    public String getValue(Expense object) {
+      if (object.getToBePaidByTenant()!=0){
+        return UiHelper.displayDate(object.getDatePaymentTenant());
+      }else{
+        return "n/a";
+      }
+    }
+  };
+
+  datePaidByTenantColumn.setSortable(true);
+  sortHandler.setComparator(datePaidByTenantColumn, new SimpleTextComparator<Expense>() {
+    public int compare(Expense o1, Expense o2) {
+      return compare(UiHelper.formatDateForCompare(o1.getDatePaymentTenant()), UiHelper.formatDateForCompare(o2.getDatePaymentTenant()));
+    }
+  });
+
+  table.addColumn(datePaidByTenantColumn, "Soldé le");
+
+}
   
   @Override
   protected String getButtonNewLabel() {

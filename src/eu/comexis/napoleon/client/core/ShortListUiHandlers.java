@@ -23,5 +23,7 @@ public interface ShortListUiHandlers<T> {
   public void onButtonNewClick();
 
   public void onSelect(T selectedRealEstate);
+  
+  public void showParent();
 
 }

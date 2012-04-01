@@ -317,5 +317,7 @@ public abstract class Party implements IsSerializable, Identifiable, HasFiles {
   public void setTitle(Title value) {
     title = value;
   }
-
+  public String getFullAddressLine(){
+    return this.street + ", " + this.number + (this.box!=null && !this.box.isEmpty()? " bte " + this.box:"");
+  }
 }

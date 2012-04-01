@@ -45,6 +45,6 @@
 	<set-property name="gwt.logging.enabled" value="FALSE"/> 
 	
 	
-	<!-- To disable for production
-	<set-property name="user.agent" value="safari" />  -->
+	<!-- To disable for production 
+	<set-property name="user.agent" value="safari" /> -->
 </module>

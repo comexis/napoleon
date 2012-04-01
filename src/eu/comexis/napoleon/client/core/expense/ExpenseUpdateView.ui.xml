@@ -10,17 +10,19 @@
 
 	<g:ScrollPanel>
 		<g:HTMLPanel styleName="{res.css.detailTable}">
+			
 			<div class="{res.css.detailRow}">
-				<span class="{res.css.detailCellLabel}">Reference :</span>
+				<span class="{res.css.detailCellLabel}">Référence du bien :</span>
 				<span ui:field="estateRef" class="{res.css.detailCellValue}" />
-				<span class="{res.css.detailCellLabel}">Adresse :</span>
 				<span ui:field="estateAddress" class="{res.css.detailCellValue}" />
 			</div>
+			
 			<div class="{res.css.detailRow}">
 				<span class="{res.css.detailCellLabel}">Propriétaire :</span>
 				<span ui:field="ownerName" class="{res.css.detailCellValue}" />
-				<span class="{res.css.detailCellLabel}">Adresse :</span>
 				<span ui:field="ownerAddress" class="{res.css.detailCellValue}" />
+			</div>
+			<div class="{res.css.detailRow}">
 				<span class="{res.css.detailCellLabel}">Tel :</span>
 				<span ui:field="ownerTel" class="{res.css.detailCellValue}" />
 				<span class="{res.css.detailCellLabel}">GSM :</span>
@@ -28,6 +30,7 @@
 				<span class="{res.css.detailCellLabel}">Mail :</span>
 				<span ui:field="ownerMail" class="{res.css.detailCellValue}"/>
 			</div>
+			
 			<div class="{res.css.detailRow}">
 				<span class="{res.css.detailCellInputLabel}">Références :</span>
 				<g:TextBox ui:field="reference" styleName="{res.css.detailCellInputText}"
@@ -43,7 +46,7 @@
 			</div>
 			
 			<div class="{res.css.detailRow}">
-				<span class="{res.css.detailCellInputLabel}">Montant :</span>
+				<span class="{res.css.detailCellInputLabel}">Montant €:</span>
 				<g:TextBox ui:field="amount" styleName="{res.css.detailCellInputText}"
 					name="amount" />
 				<span class="{res.css.detailCellInputLabel}">Facture du :</span>
@@ -53,21 +56,20 @@
 			</div>
 			
 			<div class="{res.css.detailRow}">
-				<span class="{res.css.detailCellInputLabel}">A charge du propriétaire :</span>
+				<span class="{res.css.detailCellInputLabel}">A charge du propriétaire €:</span>
 				<g:TextBox ui:field="toBePaidByOwner" styleName="{res.css.detailCellInputText}"
 					name="toBePaidByOwner" />
-				<span class="{res.css.detailCellInputLabel}">A charge du locataire :</span>
+				<span class="{res.css.detailCellInputLabel}">A charge du locataire €:</span>
 				<g:TextBox ui:field="toBePaidByTenant" styleName="{res.css.detailCellInputText}"
 					name="toBePaidByTenant" />
-				<g:CheckBox ui:field="paidByTenant" styleName="{res.css.detailCellInputLabel}"
-						name="paidByTenant" text="Soldé"/>
+				<g:CheckBox ui:field="paidByTenant" styleName="{res.css.detailCellInputLabel} {res.css.autoLabel}"
+						name="paidByTenant" text="Soldé"/>	
 				<dp:DateBox ui:field="datePaidByTenant" styleName="{res.css.detailCellInputText}"/>
 			</div>
-			
 			<div class="{res.css.detailRow}">
 				<span class="{res.css.detailCellInputLabel}">Fournisseur :</span>
 				<g:ListBox ui:field="contractor" styleName="{res.css.detailCellInputText}"/>
-				<g:CheckBox ui:field="filtered" styleName="{res.css.detailCellInputLabel}"
+				<g:CheckBox ui:field="filtered" styleName="{res.css.detailCellInputLabel} {res.css.autoLabel}"
 						name="filtered" text="filtrer par type d'intervention"/>
 			</div>
 			<div class="{res.css.detailRow}">

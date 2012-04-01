@@ -121,7 +121,6 @@ public class LeaseUpdatePresenter extends
   @Override
   public void onButtonSaveClick() {
     getView().updateLease(lease);
-
     List<ValidationMessage> validationMessages = validator.validate(lease);
 
     if (validationMessages.isEmpty()) {
@@ -158,14 +157,14 @@ public class LeaseUpdatePresenter extends
     cmd.setLease(lease);
     cmd.dispatch(new UpdatedLease() {
       @Override
-      public void got(Lease lease) {
+      public void got(Lease lease,String erroMsg) {
         if (lease != null) {
           PlaceRequest myRequest = new PlaceRequest(NameTokens.lease);
           myRequest = myRequest.with(UUID_PARAMETER, lease.getId());
           myRequest = myRequest.with(ESTATE_UUID_PARAMETER, lease.getRealEstate().getId());
           placeManager.revealPlace(myRequest);
         } else {
-          getView().displayError("The lease cannot be saved");
+          getView().displayError(erroMsg);
         }
       }
     });

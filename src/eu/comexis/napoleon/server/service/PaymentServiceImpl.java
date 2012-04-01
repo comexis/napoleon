@@ -11,6 +11,7 @@ import eu.comexis.napoleon.client.rpc.PaymentService;
 import eu.comexis.napoleon.server.dao.LeaseDao;
 import eu.comexis.napoleon.server.dao.PaymentDao;
 import eu.comexis.napoleon.server.manager.UserManager;
+import eu.comexis.napoleon.server.utils.NapoleonDaoException;
 import eu.comexis.napoleon.shared.command.payment.GetAllPaymentCommand;
 import eu.comexis.napoleon.shared.command.payment.GetAllPaymentResponse;
 import eu.comexis.napoleon.shared.command.payment.GetPaymentCommand;
@@ -35,6 +36,7 @@ public class PaymentServiceImpl extends RemoteServiceServlet implements PaymentS
   @Override
   public <T extends Payment> GetPaymentResponse<T> execute(GetPaymentCommand<T> command) {
     PaymentDao<T> ptDao = new PaymentDao<T>();
+    String errorMsg = "";
     if (command.getType().equals(PaymentTenant.class.toString())){
       ptDao.setClazz((Class<T>)PaymentTenant.class);
     }else if (command.getType().equals(PaymentOwner.class.toString())){
@@ -43,16 +45,24 @@ public class PaymentServiceImpl extends RemoteServiceServlet implements PaymentS
     String companyId = UserManager.INSTANCE.getCompanyId();
     T pt = null;
     if (command.getPaymentId().equals("next")){
-      if (command.getType().equals(PaymentTenant.class.toString())){
-        pt = (T)ptDao.getNextPaymentTenantForLease(command.getLeaseId(), command.getEstateId(), companyId);
-      }else if(command.getType().equals(PaymentOwner.class.toString())){
-        pt = (T)ptDao.getNextPaymentOwnerForLease(command.getLeaseId(), command.getEstateId(), companyId);
+      try{
+        if (command.getType().equals(PaymentTenant.class.toString())){
+          pt = (T)ptDao.getNextPaymentTenantForLease(command.getLeaseId(), command.getEstateId(), companyId);
+        }else if(command.getType().equals(PaymentOwner.class.toString())){
+          pt = (T)ptDao.getNextPaymentOwnerForLease(command.getLeaseId(), command.getEstateId(), companyId);
+        }
+      }catch(NapoleonDaoException e){
+        errorMsg = e.getMessage();
+      }catch(Exception e){
+        LOG.error("Error: cannot update payment " + e);
+        errorMsg="Oups, une erreur s'est produite";
       }
     }else{
       pt = ptDao.getById(command.getPaymentId(),command.getLeaseId(),command.getEstateId(), companyId);
     }
     GetPaymentResponse<T> response = new GetPaymentResponse<T>();
     response.setPayment(pt);
+    response.setErrorMsg(errorMsg);
     return response;
   }
   
@@ -62,11 +72,14 @@ public class PaymentServiceImpl extends RemoteServiceServlet implements PaymentS
     GetAllPaymentResponse<T> response = new GetAllPaymentResponse<T>();
     String companyId = UserManager.INSTANCE.getCompanyId();
     PaymentDao<T> ptDao = new PaymentDao<T>();
+    LeaseDao lDao = new LeaseDao();
+    Lease l = lDao.getById(command.getLeaseId(),command.getEstateId(), companyId);
     if (command.getType().equals(PaymentTenant.class.toString())){
       ptDao.setClazz((Class<T>)PaymentTenant.class);
     }else if (command.getType().equals(PaymentOwner.class.toString())){
       ptDao.setClazz((Class<T>)PaymentOwner.class);
     }
+    response.setTitle(l.getRealEstate().getReference() + " " + l.getAcademicYear() + " " + l.getTenant().getName());
     List<T> pts = ptDao.getPaymentsForLease(command.getLeaseId(),command.getEstateId(), companyId);
     
     response.setPayment(pts);
@@ -89,6 +102,7 @@ public class PaymentServiceImpl extends RemoteServiceServlet implements PaymentS
   @Override
   public <T extends Payment> UpdatePaymentResponse<T> execute(UpdatePaymentCommand<T> command) {
     // TODO Auto-generated method stub
+    String errorMsg = "";
     PaymentDao<T> ptDao = new PaymentDao<T>();
     T pt = command.getPayment();
     if (command.getType().equals(PaymentTenant.class.toString())){
@@ -97,10 +111,17 @@ public class PaymentServiceImpl extends RemoteServiceServlet implements PaymentS
       ptDao.setClazz((Class<T>)PaymentOwner.class);
     }
     String companyId = UserManager.INSTANCE.getCompanyId();
-    
-    pt = ptDao.update(pt,companyId);
+    try{
+      pt = ptDao.update(pt,companyId);
+    }catch(NapoleonDaoException e){
+      errorMsg=e.getMessage();
+    }catch(Exception e){
+      LOG.error("Error: cannot update payment " + e);
+      errorMsg="Oups, une erreur s'est produite";
+    }
     UpdatePaymentResponse<T> response = new UpdatePaymentResponse<T>();
     response.setPayment(pt);
+    response.setErrorMsg(errorMsg);
     return response;
   }
 

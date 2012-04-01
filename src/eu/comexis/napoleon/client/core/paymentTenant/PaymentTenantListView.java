@@ -6,12 +6,12 @@ import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
 
-import eu.comexis.napoleon.client.core.AbstractListView;
+import eu.comexis.napoleon.client.core.AbstractShortListView;
 import eu.comexis.napoleon.client.utils.SimpleTextComparator;
 import eu.comexis.napoleon.client.utils.UiHelper;
 import eu.comexis.napoleon.shared.model.PaymentTenant;
 
-public class PaymentTenantListView extends AbstractListView<PaymentTenant> implements
+public class PaymentTenantListView extends AbstractShortListView<PaymentTenant> implements
   PaymentTenantListPresenter.MyView {
 
   // key provider object implementation for SimpleLease object
@@ -109,7 +109,7 @@ public class PaymentTenantListView extends AbstractListView<PaymentTenant> imple
     return "Nouveau paiement";
   }
   @Override
-  protected String getButtonBackLabel() {
-    return "Retour vers la location";
+  protected String getButtonDeleteLabel() {
+    return "Supprimer";
   }
 }

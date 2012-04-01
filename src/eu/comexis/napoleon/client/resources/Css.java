@@ -14,6 +14,8 @@ public interface Css extends CssResource {
 
   public String detailCellLabel();
   
+  public String detailShortCellLabel();
+  
   public String detailCellInputText();
   
   public String detailCellInputList();
