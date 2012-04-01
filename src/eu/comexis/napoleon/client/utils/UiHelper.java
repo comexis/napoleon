@@ -5,8 +5,11 @@ import static com.google.gwt.query.client.GQuery.$;
 import java.util.Date;
 import java.util.List;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
+import com.google.gwt.i18n.client.TimeZone;
+import com.google.gwt.i18n.client.constants.TimeZoneConstants;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -19,6 +22,7 @@ public class UiHelper {
 
   private static DateTimeFormat DATE_FORMAT = DateTimeFormat.getFormat("dd/MM/yyyy");
   private static DateTimeFormat COMPARE_DATE_FORMAT = DateTimeFormat.getFormat("yyyy.MM.dd");
+  private static TimeZoneConstants TIME_ZONE = GWT.create(TimeZoneConstants.class);
 
   // static class
   private UiHelper() {
@@ -94,7 +98,7 @@ public class UiHelper {
       return "";
     }
 
-    return DATE_FORMAT.format(d);
+    return DATE_FORMAT.format(d, TimeZone.createTimeZone(TIME_ZONE.europeBrussels()));
   }
 
   public static String formatDateForCompare(Date d) {
