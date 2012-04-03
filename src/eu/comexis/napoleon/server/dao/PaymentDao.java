@@ -391,7 +391,6 @@ public class PaymentDao<T extends Payment> extends DAOBase{
       }else{
         cal.setTime(lastpt.getPeriodEndDate());
         cal.add(Calendar.DAY_OF_MONTH, 1);
-        cal.set(Calendar.DAY_OF_MONTH, 1);
         nextPaymentTenant.setPeriodStartDate(cal.getTime());
       }
       // si la date de début est supérieur à la date de fin de bail, alors, plus de payement possible.
@@ -404,7 +403,6 @@ public class PaymentDao<T extends Payment> extends DAOBase{
       // on se place a la fin du mois courant (on se place au debut du mois suivant et on retire un jour)
       cal.setTime(nextPaymentTenant.getPeriodStartDate());
       cal.add(Calendar.MONTH, 1);
-      cal.set(Calendar.DAY_OF_MONTH, 1);
       cal.add(Calendar.DAY_OF_MONTH, -1);
       nextPaymentTenant.setPeriodEndDate(cal.getTime()); 
       // si la date de fin de période est supérieur à celle du bail, on ramène cette date de fin à la fin du bail
