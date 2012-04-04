@@ -21,4 +21,9 @@
         <property name="endDate" direction="asc"/>
     </datastore-index>
     
+    <datastore-index kind="Lease" ancestor="true" source="manual">
+        <property name="tenantKey" direction="asc"/>
+        <property name="endDate" direction="asc"/>
+    </datastore-index>
+    
 </datastore-indexes>
