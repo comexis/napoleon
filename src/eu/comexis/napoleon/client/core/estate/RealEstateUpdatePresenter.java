@@ -268,7 +268,7 @@ public class RealEstateUpdatePresenter extends
   protected void onBind() {
     super.onBind();
     getView().setRealEstateUpdateUiHandler(this);
-    init();
+    
   }
 
   @Override
@@ -296,6 +296,8 @@ public class RealEstateUpdatePresenter extends
       realEstate.setCountry("Belgique");
       setRealEstate(realEstate);
     }
+    
+    init();
   }
 
   @Override
