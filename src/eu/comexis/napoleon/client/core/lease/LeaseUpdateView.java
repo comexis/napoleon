@@ -2,6 +2,7 @@ package eu.comexis.napoleon.client.core.lease;
 
 import java.util.List;
 
+import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -22,10 +23,8 @@ import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
 import eu.comexis.napoleon.client.utils.UiHelper;
-import eu.comexis.napoleon.shared.model.FeeUnit;
 import eu.comexis.napoleon.shared.model.Lease;
 import eu.comexis.napoleon.shared.model.TypeOfRent;
-import eu.comexis.napoleon.shared.model.simple.SimpleRealEstate;
 import eu.comexis.napoleon.shared.model.simple.SimpleTenant;
 import eu.comexis.napoleon.shared.validation.ValidationMessage;
 
@@ -38,7 +37,7 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
   private LeaseUpdateUiHandlers presenter;
 
   @UiField
-  ListBox reference;
+  SpanElement reference;
   @UiField
   SuggestBox academicYear;
   @UiField
@@ -135,16 +134,6 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
       t.setId(tenantId);
     }
     return t;
-  }
-
-  public SimpleRealEstate getEstate() {
-    SimpleRealEstate e = null;
-    String estateId = reference.getValue(reference.getSelectedIndex());
-    if (!estateId.equals("-")) {
-      e = new SimpleRealEstate();
-      e.setId(estateId);
-    }
-    return e;
   }
 
   @UiHandler("rent")
@@ -277,7 +266,6 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
     this.depositDate.setFormat(new DateBox.DefaultFormat(dateFormat));
     this.furnituresDate.setFormat(new DateBox.DefaultFormat(dateFormat));
     this.coocuppant.setValue("");
-    this.reference.setEnabled(true);
     this.academicYear.setText("");
     this.startDate.setValue(null);
     this.endDate.setValue(null);
@@ -289,7 +277,7 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
     this.eleDate.setValue(null);
     this.elsDate.setValue(null);
     this.depositDate.setValue(null);
-    UiHelper.selectTextItemBoxByValue(this.reference, "-");
+    this.reference.setInnerHTML("");
     UiHelper.selectTextItemBoxByValue(this.tenantName, "-");
     UiHelper.selectTextItemBoxByValue(this.type, "-");
     this.furnituresPaymentOK.setValue(false);
@@ -301,17 +289,13 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
     disableFurniture();
 
     if (l != null) {
-      UiHelper.selectTextItemBoxByValue(this.reference, ((l.getRealEstate() != null && l
-          .getRealEstate().getId() != null) ? l.getRealEstate().getId() : "-"));
+      this.reference.setInnerText(l.getRealEstate().getReference());
       UiHelper.selectTextItemBoxByValue(this.tenantName, ((l.getTenant() != null && l.getTenant()
           .getId() != null) ? l.getTenant().getId() : "-"));
       this.coocuppant.setValue(l.getCooccupant());
       this.academicYear.setText(l.getAcademicYear());
       this.startDate.setValue(l.getStartDate());
       this.endDate.setValue(l.getEndDate());
-      if (!reference.getValue(reference.getSelectedIndex()).equals("-")) {
-        this.reference.setEnabled(false);
-      }
       this.charges.setValue(UiHelper.FloatToString(l.getServiceCharges()));
       this.deposit.setValue(UiHelper.FloatToString(l.getSecurityDeposit()));
       this.depositDate.setValue(l.getDepositDate());
@@ -354,7 +338,6 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
   public Lease updateLease(Lease l) {
     l.setAcademicYear(academicYear.getValue());
     l.setTenant(getTenant());
-    l.setRealEstate(getEstate());
     l.setStartDate(startDate.getValue());
     l.setEndDate(endDate.getValue());
     l.setServiceCharges(UiHelper.stringToFloat(charges.getValue()));
@@ -386,16 +369,6 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
   @Override
   public void reset() {
     UiHelper.resetForm(asWidget());
-  }
-
-  @Override
-  public void fillEstateList(List<SimpleRealEstate> estates) {
-    reference.clear();
-    for (SimpleRealEstate e : estates) {
-      reference.addItem(e.getReference(), e.getId());
-    }
-    reference.addItem("-", "-");
-
   }
 
   @Override
