@@ -155,6 +155,9 @@ public class LeaseDetailsView extends ViewImpl implements LeaseDetailsPresenter.
 
   @Override
   public void setLease(Lease l) {
+    if (l == null){
+      return;
+    }
     // TODO improve and continue
 
     this.reference.setInnerText(l.getRealEstate().getReference());
@@ -166,7 +169,9 @@ public class LeaseDetailsView extends ViewImpl implements LeaseDetailsPresenter.
     this.ownerName.setInnerText(l.getRealEstate().getOwner());
     this.type.setInnerText(UiHelper.translateEnum("TypeOfRent_", l.getType()));
     this.fee.setInnerText(UiHelper.FloatToString(l.getFee()));
-    this.feeOwner.setInnerText(UiHelper.FloatToString(l.getRent() - l.getFee()));
+    float rent = l.getRent() != null ? l.getRent() : 0;
+    float fee = l.getFee() != null ? l.getFee() : 0;
+    this.feeOwner.setInnerText(UiHelper.FloatToString(rent - fee));
     this.charges.setInnerText(UiHelper.FloatToString(l.getServiceCharges()));
     this.deposit.setInnerText(UiHelper.FloatToString(l.getSecurityDeposit()));
     this.rent.setInnerText(UiHelper.FloatToString(l.getRent()));
