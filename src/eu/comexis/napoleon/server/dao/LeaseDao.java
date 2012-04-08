@@ -35,7 +35,6 @@ import eu.comexis.napoleon.shared.model.simple.SimpleTenant;
 public class LeaseDao extends DAOBase {
   public static Log LOG = LogFactory.getLog(LeaseDao.class);
 
-
   public LeaseDao() {
     // TODO Auto-generated constructor stub
   }
@@ -69,29 +68,29 @@ public class LeaseDao extends DAOBase {
 
   public Lease getById(String leaseId, Key<RealEstate> estateKey) {
     Lease l = null;
-    if (leaseId.equals("new")){
+    if (leaseId.equals("new")) {
       l = new Lease();
-    }else{
+    } else {
       l = ofy().find(new Key<Lease>(estateKey, Lease.class, leaseId));
     }
     if (l != null) {
       RealEstate realEstate = ofy().find(estateKey);
       Owner o = ofy().find(realEstate.getOwnerKey());
-      
+
       SimpleRealEstate se = new SimpleRealEstate();
       se.setReference(realEstate.getReference());
       se.setId(realEstate.getId());
       se.setOwner(o.getLastName());
       se.setOwnerId(o.getId());
       l.setRealEstate(se);
-      if (l.getFee()==null && FeeUnit.LUMP_SUM.equals(o.getUnit())){
+      if (l.getFee() == null && FeeUnit.LUMP_SUM.equals(o.getUnit())) {
         l.setFee(o.getFee().floatValue());
       }
-      if (o.getFee() != null){
+      if (o.getFee() != null) {
         l.setFeeFromOwner(o.getFee().floatValue());
       }
       l.setUnit(o.getUnit());
-      if (l.getTenantKey()!=null){
+      if (l.getTenantKey() != null) {
         Tenant t = ofy().find(l.getTenantKey());
         SimpleTenant st = new SimpleTenant();
         st.setId(t.getId());
@@ -109,7 +108,7 @@ public class LeaseDao extends DAOBase {
 
   public Lease getById(String leaseId, String realEstateId, String companyId) {
     Key<Company> companyKey = new Key<Company>(Company.class, companyId);
-    Key<RealEstate> estateKey = new Key<RealEstate>(companyKey,RealEstate.class, realEstateId);
+    Key<RealEstate> estateKey = new Key<RealEstate>(companyKey, RealEstate.class, realEstateId);
     return getById(leaseId, estateKey);
   }
 
@@ -161,43 +160,41 @@ public class LeaseDao extends DAOBase {
     return ofy().get(l.getTenantKey());
   }
 
-  public Lease isAlreadyRented(String id,Key<RealEstate> estateKey, Date startDate, Date endDate) {
+  public Lease isAlreadyRented(String id, Key<RealEstate> estateKey, Date startDate, Date endDate) {
     Query<Lease> q = ofy().query(Lease.class);
     q.ancestor(estateKey);
     List<Lease> leases = q.filter("endDate >=", startDate).order("endDate").list();
-    for (Lease l:leases){
-      if (!l.getId().equals(id) && l.getStartDate().compareTo(endDate) <= 0){
-        return l;
-      }
-    }
-    return null;
-  }
-  /*public Lease bookkeepRefAlreadyUsed(String id,Key<RealEstate> estateKey, String accademicYear,String bookkeepRef){
-    Query<Lease> q = ofy().query(Lease.class);
-    q.ancestor(estateKey);
-    List<Lease> leases = q.filter("bookkeepingReference =", bookkeepRef).list();
-    for (Lease l:leases){
-      if (!l.getId().equals(id) && accademicYear.equals(l.getAcademicYear())){
-        return l;
-      }
-    }
-    return null;
-  }*/
-  public Lease bookkeepRefAlreadyUsed(Key<Company> companyKey, String accademicYear,String bookkeepRef){
-    Query<Lease> q = ofy().query(Lease.class);
-    q.ancestor(companyKey);
-    List<Lease> leases = q.filter("bookkeepingReference =", bookkeepRef).list();
-    for (Lease l:leases){
-      if (accademicYear.equals(l.getAcademicYear())){
+    for (Lease l : leases) {
+      if (!l.getId().equals(id) && l.getStartDate().compareTo(endDate) <= 0) {
         return l;
       }
     }
     return null;
   }
 
-  public Lease isAlreadyRented(String id,String realEstateId, Date startDate, Date endDate) {
+  /*
+   * public Lease bookkeepRefAlreadyUsed(String id,Key<RealEstate> estateKey, String
+   * accademicYear,String bookkeepRef){ Query<Lease> q = ofy().query(Lease.class);
+   * q.ancestor(estateKey); List<Lease> leases = q.filter("bookkeepingReference =",
+   * bookkeepRef).list(); for (Lease l:leases){ if (!l.getId().equals(id) &&
+   * accademicYear.equals(l.getAcademicYear())){ return l; } } return null; }
+   */
+  public Lease bookkeepRefAlreadyUsed(Key<Company> companyKey, String accademicYear,
+      String bookkeepRef) {
+    Query<Lease> q = ofy().query(Lease.class);
+    q.ancestor(companyKey);
+    List<Lease> leases = q.filter("bookkeepingReference =", bookkeepRef).list();
+    for (Lease l : leases) {
+      if (accademicYear.equals(l.getAcademicYear())) {
+        return l;
+      }
+    }
+    return null;
+  }
+
+  public Lease isAlreadyRented(String id, String realEstateId, Date startDate, Date endDate) {
     Key<RealEstate> estateKey = new Key<RealEstate>(RealEstate.class, realEstateId);
-    return isAlreadyRented(id,estateKey, startDate, endDate);
+    return isAlreadyRented(id, estateKey, startDate, endDate);
   }
 
   public List<Lease> listAll(Key<Company> companyKey) {
@@ -220,16 +217,18 @@ public class LeaseDao extends DAOBase {
     Key<Company> companyKey = new Key<Company>(Company.class, companyId);
     return listAll(companyKey);
   }
-  public Lease update(Lease lease,String companyId) throws NapoleonDaoException {
+
+  public Lease update(Lease lease, String companyId) throws NapoleonDaoException {
     Key<Company> companyKey = new Key<Company>(Company.class, companyId);
-    return update(lease,companyKey);
+    return update(lease, companyKey);
   }
-  public Lease update(Lease lease,Key<Company> companyKey) throws NapoleonDaoException {
+
+  public Lease update(Lease lease, Key<Company> companyKey) throws NapoleonDaoException {
     LOG.info("Update Lease");
     String leaseId = lease.getId();
     Key<RealEstate> estateKey = null;
     // create unique id if new entity
-    
+
     if (leaseId == null || leaseId.length() == 0) {
       UUID uuid = UUID.randomUUID();
       System.out.println("Creating Uuid " + uuid.toString());
@@ -239,37 +238,43 @@ public class LeaseDao extends DAOBase {
     if (lease.getRealEstateKey() == null) {
       if (lease.getRealEstate() != null) {
         estateKey =
-            new Key<RealEstate>(companyKey,RealEstate.class, lease.getRealEstate().getId());
+            new Key<RealEstate>(companyKey, RealEstate.class, lease.getRealEstate().getId());
         lease.setRealEstateKey(estateKey);
-        
+
       } else {
         LOG.fatal("Lease cannot be updated, missing parent RealEstate");
         throw new NapoleonDaoException("La location n'a pas de réference sur le bien");
       }
-    }else{
-      estateKey =lease.getRealEstateKey();
+    } else {
+      estateKey = lease.getRealEstateKey();
     }
-    Lease actualLease =isAlreadyRented(lease.getId(),estateKey,lease.getStartDate(),lease.getEndDate());
-    if (actualLease!=null){
-      LOG.info("Lease cannot be updated because the real estate is already rented by " + actualLease.getId());
-      throw new NapoleonDaoException("Le bien est déjà loué pour la période " + actualLease.getStartDate() + " - " + actualLease.getEndDate());
+    Lease actualLease =
+        isAlreadyRented(lease.getId(), estateKey, lease.getStartDate(), lease.getEndDate());
+    if (actualLease != null) {
+      LOG.info("Lease cannot be updated because the real estate is already rented by "
+          + actualLease.getId());
+      throw new NapoleonDaoException("Le bien est déjà loué pour la période "
+          + actualLease.getStartDate() + " - " + actualLease.getEndDate());
     }
-    Lease sameBkpRefLease = bookkeepRefAlreadyUsed(companyKey, lease.getAcademicYear(),lease.getBookkeepingReference());
-    if (sameBkpRefLease!=null){
-      LOG.info("Lease cannot be updated because the bookkeeping réference is already used for the same academic year " + sameBkpRefLease.getId());
-      throw new NapoleonDaoException("La réference comptable '" + lease.getBookkeepingReference() + "' est déjà utilisée pour l'année académique " + lease.getAcademicYear());
+    Lease sameBkpRefLease =
+        bookkeepRefAlreadyUsed(companyKey, lease.getAcademicYear(), lease.getBookkeepingReference());
+    if (sameBkpRefLease != null && !sameBkpRefLease.getId().equals(lease.getId())) {
+      LOG.info("Lease cannot be updated because the bookkeeping réference is already used for the same academic year "
+          + sameBkpRefLease.getId());
+      throw new NapoleonDaoException("La réference comptable '" + lease.getBookkeepingReference()
+          + "' est déjà utilisée pour l'année académique " + lease.getAcademicYear());
     }
     // set tenant
-    //if (lease.getTenantKey() == null) {
-      if (lease.getTenant() != null) {
-        Key<Tenant> tenantKey = new Key<Tenant>(companyKey,Tenant.class, lease.getTenant().getId());
-        lease.setTenantKey(tenantKey);
-      } else {
-        LOG.error("Lease cannot be updated, missing tenant");
-        throw new NapoleonDaoException("La location n'a pas de locataire");
-      }
-    //}
-    if (lease.getAcademicYear()!=null && !lease.getAcademicYear().isEmpty()){
+    // if (lease.getTenantKey() == null) {
+    if (lease.getTenant() != null) {
+      Key<Tenant> tenantKey = new Key<Tenant>(companyKey, Tenant.class, lease.getTenant().getId());
+      lease.setTenantKey(tenantKey);
+    } else {
+      LOG.error("Lease cannot be updated, missing tenant");
+      throw new NapoleonDaoException("La location n'a pas de locataire");
+    }
+    // }
+    if (lease.getAcademicYear() != null && !lease.getAcademicYear().isEmpty()) {
       AcademicYearDao ayDao = new AcademicYearDao();
       AcademicYear year = new AcademicYear();
       year.setCompany(companyKey);
@@ -281,30 +286,32 @@ public class LeaseDao extends DAOBase {
       lease.setEndDate(setTime(lease.getEndDate()));
       Key<Lease> leaseKey = ofy().put(lease);
       LOG.info("Lease has been updated");
-      return getById(lease.getId(),lease.getRealEstateKey());
+      return getById(lease.getId(), lease.getRealEstateKey());
     } catch (Exception e) {
       LOG.fatal("Lease cannot be updated: ", e);
       throw new NapoleonDaoException();
     }
   }
-  public RealEstate getRealEstateRentBy(String tenantId, String companyId){
+
+  public RealEstate getRealEstateRentBy(String tenantId, String companyId) {
     // get today's date
     Calendar cal = Calendar.getInstance();
     Date toDay = cal.getTime();
     Key<Company> companyKey = new Key<Company>(Company.class, companyId);
-    Key<Tenant> tenantKey = new Key<Tenant>(companyKey,Tenant.class, tenantId);
+    Key<Tenant> tenantKey = new Key<Tenant>(companyKey, Tenant.class, tenantId);
     Query<Lease> q = ofy().query(Lease.class);
     q.ancestor(companyKey);
     LOG.info("Search lease for tenantId " + tenantId + " date " + toDay);
-    Lease l = q.filter("tenantKey", tenantKey).filter("endDate >=",toDay).get();  
-    if (l!=null){
+    Lease l = q.filter("tenantKey", tenantKey).filter("endDate >=", toDay).get();
+    if (l != null) {
       LOG.info("Found key is " + l.getRealEstateKey());
       return ofy().find(l.getRealEstateKey());
     }
     return null;
   }
-  private Date setTime(Date date){
-    if (date!=null){
+
+  private Date setTime(Date date) {
+    if (date != null) {
       Calendar cal = Calendar.getInstance();
       cal.setTime(date);
       cal.add(Calendar.HOUR_OF_DAY, 12);
