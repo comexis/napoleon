@@ -71,7 +71,7 @@ public class UiHelper {
     for (int i = 0; i < tb.getItemCount(); i++) {
       if (tb.getValue(i).equals(value)) {
         tb.setSelectedIndex(i);
-        break;
+        return;
       }
     }
   }

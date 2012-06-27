@@ -44,6 +44,7 @@ public abstract class Party implements IsSerializable, Identifiable, HasFiles {
   private String mobilePhoneNumber;
   private String nationality;
   private String nationalRegisterNumber;
+  private String vatNumber;
   private String phoneNumber;
   private String placeOfBirth;
   private String postalCode;
@@ -163,6 +164,10 @@ public abstract class Party implements IsSerializable, Identifiable, HasFiles {
 
   public String getNationalRegisterNumber() {
     return nationalRegisterNumber;
+  }
+  
+  public String getVatNumber() {
+	    return vatNumber;
   }
 
   public String getNumber() {
@@ -288,6 +293,10 @@ public abstract class Party implements IsSerializable, Identifiable, HasFiles {
 
   public void setNationalRegisterNumber(String value) {
     nationalRegisterNumber = value;
+  }
+  
+  public void setVatNumber(String value) {
+	    vatNumber = value;
   }
 
   public void setNumber(String number) {

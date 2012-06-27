@@ -65,7 +65,7 @@ public abstract class PartyUpdateView<T extends Party> extends ViewImpl implemen
   @UiField
   TextBox firstName;
   @UiField
-  TextBox iban;
+  SuggestBox iban;
   @UiField
   SuggestBox job;
   @UiField(provided = true)
@@ -80,6 +80,8 @@ public abstract class PartyUpdateView<T extends Party> extends ViewImpl implemen
   SuggestBox nationality;
   @UiField
   TextBox nationalRegister;
+  @UiField
+  TextBox vatNumber;
   @UiField
   TextBox phoneNumber;
   @UiField
@@ -174,6 +176,17 @@ public abstract class PartyUpdateView<T extends Party> extends ViewImpl implemen
       }
     }
   }
+  
+  @Override
+  public void fillIbanList(List<String> ibans) {
+	MultiWordSuggestOracle oracle = (MultiWordSuggestOracle) iban.getSuggestOracle();
+		oracle.clear();
+		if (ibans != null) {
+		for (String sIban : ibans) {
+				oracle.add(sIban);
+		}
+	}
+  }	
 
   @Override
   public String getSelectedCountry() {
@@ -197,6 +210,7 @@ public abstract class PartyUpdateView<T extends Party> extends ViewImpl implemen
     postalCode.getTextBox().setName("postalCode");
     nationality.getTextBox().setName("nationality");
     job.getTextBox().setName("job");
+    iban.getTextBox().setName("iban");
     birthDayDate.getTextBox().setName("birthDayDate");
   }
   
@@ -278,6 +292,7 @@ public abstract class PartyUpdateView<T extends Party> extends ViewImpl implemen
     nationality.setText("");
     job.setText("");
     nationalRegister.setText("");
+    vatNumber.setText("");
     box.setText("");
     UiHelper.selectTextItemBoxByValue(maritalStatus, null, MaritalStatus.NONE);
     UiHelper.selectTextItemBoxByValue(matrimonialRegime, null, MatrimonialRegime.NONE);
@@ -313,6 +328,7 @@ public abstract class PartyUpdateView<T extends Party> extends ViewImpl implemen
     nationality.setText(party.getNationality());
     job.setText(party.getJobTitle());
     nationalRegister.setText(party.getNationalRegisterNumber());
+    vatNumber.setText(party.getVatNumber());
 
     UiHelper.selectTextItemBoxByValue(maritalStatus, party.getMaritalStatus(), MaritalStatus.SINGLE);
     UiHelper.selectTextItemBoxByValue(matrimonialRegime, party.getMatrimonialRegime(), MatrimonialRegime.NONE);
@@ -346,6 +362,7 @@ public abstract class PartyUpdateView<T extends Party> extends ViewImpl implemen
     party.setJobTitle(job.getValue());
     party.setNationality(nationality.getValue());
     party.setNationalRegisterNumber(nationalRegister.getValue());
+    party.setVatNumber(vatNumber.getValue());
     party.setMaritalStatus(MaritalStatus.fromStringToEnum(maritalStatus.getValue(maritalStatus
         .getSelectedIndex())));
     party.setMatrimonialRegime(MatrimonialRegime.fromStringToEnum(matrimonialRegime

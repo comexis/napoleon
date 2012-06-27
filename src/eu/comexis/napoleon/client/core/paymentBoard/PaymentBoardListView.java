@@ -88,6 +88,23 @@ public class PaymentBoardListView extends AbstractShortListView<PaymentListItem>
 
     table.addColumn(amountColumn, "Loyer");
     
+    // Charges.
+    Column<PaymentListItem, String> chargesColumn = new Column<PaymentListItem, String>(new TextCell()) {
+      @Override
+      public String getValue(PaymentListItem object) {
+        return UiHelper.FloatToString(object.getCharges());
+      }
+    };
+
+    /*amountColumn.setSortable(true);
+    sortHandler.setComparator(amountColumn, new SimpleTextComparator<PaymentListItem>() {
+      public int compare(PaymentListItem o1, PaymentListItem o2) {
+        return compare(UiHelper.FloatToString(o1.getCharges()),UiHelper.FloatToString(o2.getChagres()));
+      }
+    });*/
+
+    table.addColumn(chargesColumn, "Charges");
+    
     // Date.
     Column<PaymentListItem, String> dateColumn = new Column<PaymentListItem, String>(new TextCell()) {
       @Override

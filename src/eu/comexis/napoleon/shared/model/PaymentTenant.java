@@ -8,6 +8,7 @@ public class PaymentTenant extends Payment {
   private Boolean paymentInCash;
   private String number;
   private String communication;
+
   public PaymentTenant() {
     super();
   }
@@ -28,6 +29,6 @@ public class PaymentTenant extends Payment {
   }
   public void setPaymentInCash(Boolean paymentInCash) {
     this.paymentInCash = paymentInCash;
-  }
+  }    
 
 }

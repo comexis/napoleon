@@ -13,8 +13,7 @@
 
 			<div class="{res.css.detailRow}">
 				<span class="{res.css.detailCellInputLabel}">Référence :</span>
-				<g:ListBox ui:field="reference" styleName="{res.css.detailCellInputText}"
-					name="reference" />
+				<span ui:field="reference" class="{res.css.detailCellValue}" />
 				<span class="{res.css.detailCellInputLabel} {res.css.autoLabel}">Année académique :</span>
 				<g:SuggestBox ui:field="academicYear" styleName="{res.css.detailCellInputText}" />
 			</div>
@@ -64,14 +63,22 @@
 			<div class="{res.css.detailRow}">
 				<g:RadioButton ui:field="depositInCashYes" styleName="{res.css.detailCellInputLabel}"
 					name="depositInCash" text="Cash"/>
+			</div>
+			<div class="{res.css.detailRow}">
 				<g:RadioButton ui:field="depositInCashNo" styleName="{res.css.detailCellInputLabel}"
-					name="depositInCash" text="Banque"/>
+					name="depositInCash" text="Compte bloqué"/>
 				<span class="{res.css.detailCellInputLabel}" >IBAN :</span>
-				<g:TextBox ui:field="iban" styleName="{res.css.detailCellInputText}"
-					name="iban" />
+				<g:TextBox ui:field="ibanOwner" styleName="{res.css.detailCellInputText}" name="ibanOwner"/>
 				<span class="{res.css.detailCellInputLabel}" >BIC :</span>
-				<g:TextBox ui:field="bic" styleName="{res.css.detailCellInputText}"
-					name="bic" />
+				<g:TextBox ui:field="bicOwner" styleName="{res.css.detailCellInputText}" name="bicOwner" />
+			</div>
+			<div class="{res.css.detailRow}">
+				<g:RadioButton ui:field="depositAgency" styleName="{res.css.detailCellInputLabel}"
+					name="depositInCash" text="Compte Agence"/>
+				<span class="{res.css.detailCellInputLabel}" >IBAN :</span>
+				<g:SuggestBox ui:field="iban" styleName="{res.css.detailCellInputText}"/>
+				<span class="{res.css.detailCellInputLabel}" >BIC :</span>
+				<g:TextBox ui:field="bic" styleName="{res.css.detailCellInputText}" name="bic" />
 			</div>
 			
 			<div class="{res.css.detailRow} {res.css.separationRow}">

@@ -87,6 +87,7 @@ public class LeaseDetailsPresenter extends
   @Override
   public void onButtonBackToListClick() {
     PlaceRequest myRequest = new PlaceRequest(NameTokens.leaselist);
+    myRequest = myRequest.with(UUID_PARAMETER, LeaseDetailsPresenter.this.lease.getRealEstate().getId());
     placeManager.revealPlace(myRequest);
   }
   

@@ -16,8 +16,10 @@ import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import eu.comexis.napoleon.client.core.AbstractPresenter;
 import eu.comexis.napoleon.client.core.HasPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter;
+import eu.comexis.napoleon.client.rpc.callback.GotAllSuggest;
 import eu.comexis.napoleon.client.rpc.callback.GotLease;
 import eu.comexis.napoleon.shared.command.lease.GetLeaseCommand;
+import eu.comexis.napoleon.shared.command.suggest.GetAllSuggestCommand;
 import eu.comexis.napoleon.shared.model.Lease;
 import eu.comexis.napoleon.shared.model.Payment;
 import eu.comexis.napoleon.shared.validation.PaymentValidator;
@@ -39,6 +41,8 @@ public abstract class PaymentUpdatePresenter<T extends Payment, V extends Paymen
     public void setLease(Lease l);
 
     public void updateData(T o);
+    
+    public void fillAccountList(List<String> ibans);
 
   }
 
@@ -186,6 +190,11 @@ public abstract class PaymentUpdatePresenter<T extends Payment, V extends Paymen
   }
 
   private void init() {
-    //
+	  new GetAllSuggestCommand("Iban").dispatch(new GotAllSuggest() {
+	      @Override
+	      public void got(List<String> suggests) {
+	        getView().fillAccountList(suggests);
+	      }
+	    });
   }
 }

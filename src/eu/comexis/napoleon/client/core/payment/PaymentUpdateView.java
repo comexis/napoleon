@@ -14,9 +14,11 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.gwtplatform.mvp.client.ViewImpl;
@@ -70,6 +72,8 @@ public class PaymentUpdateView<T extends Payment> extends ViewImpl implements
   Element previousBalance;
   @UiField
   Element rentWithoutFee;
+  @UiField
+  TextArea comments;
   
   @UiHandler("amount")
   public void onChangeAmount(ChangeEvent e) {
@@ -79,30 +83,33 @@ public class PaymentUpdateView<T extends Payment> extends ViewImpl implements
   }
   @UiHandler("inCashYes")
   public void onInCashYes(ClickEvent e) {
-    if (inCashYes.getValue().equals(true)){
-      disableBank();
-    }else{
-      enableBank();
-    }
+	  changeDespositType();
   }
   @UiHandler("inCashNo")
   public void onInCashNo(ClickEvent e) {
-    if (inCashNo.getValue().equals(true)){
-      enableBank();
-    }else{
-      disableBank();
-    }
+	  changeDespositType();
   }
-  private void enableBank(){
-    this.number.setEnabled(true);
-    this.communication.setEnabled(true);
-  }
-  private void disableBank(){
-    this.number.setValue("");
-    this.communication.setValue("");
-    this.number.setEnabled(false);
-    this.communication.setEnabled(false);
-  }
+  
+  private void changeDespositType() {
+	  if (inCashYes.getValue().equals(true)) {
+		  enableDepositBank(false);		  
+	  } else {
+		  enableDepositBank(true);	
+	  }
+  }  
+  
+  
+  private void enableDepositBank(boolean enabled) {
+	  if(!enabled){
+		  this.account.setValue("");
+		  this.number.setValue("");
+		  this.communication.setValue("");
+	  }
+	  this.account.getTextBox().setEnabled(enabled);
+	  this.number.setEnabled(enabled);
+	  this.communication.setEnabled(enabled);
+	  
+  }      
 
   
   @UiHandler("btnCancel")
@@ -160,8 +167,6 @@ public class PaymentUpdateView<T extends Payment> extends ViewImpl implements
   @Override
   public void setData(T payment) {
     DateTimeFormat dateFormat = DateTimeFormat.getFormat("dd/MM/yyyy");
-    this.fromDate.setEnabled(true);
-    this.toDate.setEnabled(true);
     this.fromDate.setFormat(new DateBox.DefaultFormat(dateFormat));
     this.toDate.setFormat(new DateBox.DefaultFormat(dateFormat));
     this.date.setFormat(new DateBox.DefaultFormat(dateFormat));
@@ -177,6 +182,7 @@ public class PaymentUpdateView<T extends Payment> extends ViewImpl implements
     this.fee.setInnerText("");
     this.previousBalance.setInnerText("");
     this.rentWithoutFee.setInnerText("");
+    this.comments.setText("");
     $("#moreDetailTenant").show();
     $("#moreDetailOwner").show();
     if (payment != null) {
@@ -184,9 +190,12 @@ public class PaymentUpdateView<T extends Payment> extends ViewImpl implements
       this.fromDate.setValue(payment.getPeriodStartDate());
       this.toDate.setValue(payment.getPeriodEndDate());
       this.amount.setValue(UiHelper.FloatToString(payment.getAmount()));
+      this.comments.setText(payment.getComments());
       if (payment.getClass().equals(PaymentTenant.class)){
         this.account.setValue(((PaymentTenant)payment).getAccount()!=null ? ((PaymentTenant)payment).getAccount():"");
         this.inCashYes.setValue(((PaymentTenant)payment).getPaymentInCash()!=null ? ((PaymentTenant)payment).getPaymentInCash(): false);
+        this.inCashNo.setValue(!this.inCashYes.getValue());
+        this.enableDepositBank(!this.inCashYes.getValue());
         this.number.setValue(((PaymentTenant)payment).getNumber()!=null ? ((PaymentTenant)payment).getNumber():"");
         this.communication.setValue(((PaymentTenant)payment).getCommunication()!=null ? ((PaymentTenant)payment).getCommunication():"");
         $("#moreDetailOwner").hide();
@@ -206,8 +215,6 @@ public class PaymentUpdateView<T extends Payment> extends ViewImpl implements
         $("#moreDetailTenant").hide();
       }
     }
-    this.fromDate.setEnabled(false);
-    this.toDate.setEnabled(true);
   }
 
   @Override
@@ -222,6 +229,7 @@ public class PaymentUpdateView<T extends Payment> extends ViewImpl implements
     payment.setPaymentDate(date.getValue());
     payment.setPeriodEndDate(this.toDate.getValue());
     payment.setPeriodStartDate(this.fromDate.getValue());
+    payment.setComments(comments.getText());
     try{
       ((PaymentTenant)payment).setPaymentInCash(inCashYes.getValue());
       ((PaymentTenant)payment).setNumber(number.getValue());
@@ -240,5 +248,16 @@ public class PaymentUpdateView<T extends Payment> extends ViewImpl implements
   private void init() {
     //
   }
+  
+  @Override
+  public void fillAccountList(List<String> ibans) {
+	MultiWordSuggestOracle oracle = (MultiWordSuggestOracle) account.getSuggestOracle();
+		oracle.clear();
+		if (ibans != null) {
+		for (String sIban : ibans) {
+				oracle.add(sIban);
+		}
+	}
+  }	
 
 }

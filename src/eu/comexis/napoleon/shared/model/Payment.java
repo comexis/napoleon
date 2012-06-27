@@ -36,6 +36,7 @@ public class Payment implements IsSerializable, Identifiable  {
   private Float fee;
   private Float rent;
   private FeeUnit feeUnit;
+  private String comments;
 
   public Float getRentWithoutFee() {
     return rentWithoutFee;
@@ -144,5 +145,10 @@ public class Payment implements IsSerializable, Identifiable  {
   public void setPeriodStartDate(Date periodStartDate) {
     this.periodStartDate = periodStartDate;
   }
-
+  public String getComments() {
+	    return comments;
+  }  
+  public void setComments(String comments) {
+	  this.comments = comments;
+  }
 }

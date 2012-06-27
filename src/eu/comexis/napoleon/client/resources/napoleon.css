@@ -53,11 +53,14 @@ select{
 }
 
 .detailCellInputText,.detailCellInputList {
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
+	background-image: url(resources/blue_bg.png);
+    background-repeat: repeat-x;
+    background-position: top;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
 	border: 1px solid black;
-	color: black;
+	color: black;	
 }
 
 .detailCellInputText {
@@ -141,6 +144,7 @@ select{
 
 .clickable{
 	cursor: pointer;
+	color: blue;
 }
 
 .clickable:HOVER {

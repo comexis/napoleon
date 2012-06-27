@@ -70,6 +70,8 @@ public abstract class PartyDetailsView<T extends Party> extends ViewImpl impleme
   @UiField
   Element nationalRegister;
   @UiField
+  Element vatNumber;
+  @UiField
   Element phoneNumber;
   @UiField
   Element placeOfBirth;
@@ -140,6 +142,7 @@ public abstract class PartyDetailsView<T extends Party> extends ViewImpl impleme
     nationality.setInnerText(party.getNationality());
     job.setInnerText(party.getJobTitle());
     nationalRegister.setInnerText(party.getNationalRegisterNumber());
+    vatNumber.setInnerText(party.getVatNumber());
     birthDay.setInnerText(UiHelper.displayDate(party.getDateOfBirth()));
     addresse.setInnerText(party.getStreet());
     number.setInnerText(party.getNumber());

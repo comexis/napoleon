@@ -19,12 +19,19 @@
 			<span class="{res.css.detailCellInputLabel} {res.css.autoLabel}">Prénom :</span>
 			<g:TextBox ui:field="firstName" styleName="{res.css.detailCellInputText}" name="firstName"/>
 		</div>
+		<div class="{res.css.detailRow}">
+			<span class="{res.css.detailCellInputLabel}">&nbsp;</span>
+			<span class="{res.css.detailCellInputLabel}">&nbsp;</span>
+			<span class="{res.css.detailCellInputLabel}">&nbsp;</span>
+			<span class="{res.css.detailCellInputLabel}">TVA :</span>
+			<g:TextBox ui:field="vatNumber" styleName="{res.css.detailCellInputText}" focus="true" name="vatNumber"/>			
+		</div>
 
 		<g:HTMLPanel ui:field="additionnalData"/>
 		
 		<div class="{res.css.detailRow}">
 			<span class="{res.css.detailCellInputLabel}" >IBAN :</span>
-			<g:TextBox ui:field="iban" styleName="{res.css.detailCellInputText}" name="iban"/>
+			<g:SuggestBox ui:field="iban" styleName="{res.css.detailCellInputText}" />
 			<span class="{res.css.detailCellInputLabel} {res.css.autoLabel}">BIC :</span>
 			<g:TextBox ui:field="bic" styleName="{res.css.detailCellInputText}" name="bic"/>
 		</div>

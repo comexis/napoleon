@@ -24,12 +24,18 @@ public class OwnerValidator extends PartyValidator<Owner>{
   private void validateFee(Owner owner, List<ValidationMessage> messages) {
     
     BigDecimal fee = owner.getFee();
+    FeeUnit feeUnit = owner.getUnit();
     
     if (fee == null){
-      return;
+    	if (FeeUnit.RENT_PERCENTAGE == feeUnit){
+    		messages.add(new ValidationMessage(VALIDATION_MESSAGES.feePercentageInvalid(), "fee"));
+    	}else{
+    		messages.add(new ValidationMessage(VALIDATION_MESSAGES.feeAmountInvalid(), "fee"));
+    	}
+    	return;
     }
     
-    FeeUnit feeUnit = owner.getUnit();
+    
     
     /*if (isLessThan(fee, 5)){
       messages.add(new ValidationMessage(VALIDATION_MESSAGES.fieldMustBeGreaterOrEqualsThan("honoraires", "5"), "fee"));

@@ -10,6 +10,7 @@ import eu.comexis.napoleon.server.utils.ServerUtils;
 import eu.comexis.napoleon.shared.model.City;
 import eu.comexis.napoleon.shared.model.Company;
 import eu.comexis.napoleon.shared.model.Country;
+import eu.comexis.napoleon.shared.model.Iban;
 import eu.comexis.napoleon.shared.model.JobTitle;
 import eu.comexis.napoleon.shared.model.Nationality;
 import eu.comexis.napoleon.shared.model.Owner;
@@ -83,7 +84,8 @@ public class OwnerDao extends NapoleonDao<Owner> {
       country = countryData.create(companyKey);
       country.setName(owner.getCountry());
       countryData.update(country);
-    }
+    }    
+    
     City city =
         countryData.getCityByFullName(country.getId(), owner.getCity(), owner.getPostalCode());
     if (city == null) {
@@ -95,6 +97,13 @@ public class OwnerDao extends NapoleonDao<Owner> {
       nat.setName(owner.getNationality());
       nat.setCompany(companyKey);
       natDao.update(nat);
+    }
+    if (owner.getIban() != null && !owner.getIban().isEmpty()) {
+        IbanDao ibanDao = new IbanDao();
+        Iban iban = new Iban();
+        iban.setName(owner.getIban());
+        iban.setCompany(companyKey);
+        ibanDao.update(iban);
     }
     if (owner.getJobTitle() != null && !owner.getJobTitle().isEmpty()) {
       JobTitleDao jobDao = new JobTitleDao();

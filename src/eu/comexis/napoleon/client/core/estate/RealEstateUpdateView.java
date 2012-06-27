@@ -148,10 +148,10 @@ public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePr
   @Override
   public void fillOwnerList(List<SimpleOwner> owners) {
     ownerName.clear();
+    ownerName.addItem("(...)", "(...)");
     for (SimpleOwner o : owners) {
       ownerName.addItem(o.getName(), o.getId());
-    }
-    ownerName.addItem("(...)", "(...)");
+    }    
   }
 
   @Override

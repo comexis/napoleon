@@ -62,10 +62,8 @@
 				<span ui:field="depositDate" class="{res.css.detailCellValue}" />
 			</div>
 			<div class="{res.css.detailRow}">
-				<span class="{res.css.detailCellLabel}">Cash :</span>
-				<span ui:field="cash" class="{res.css.detailCellValue}" />
-				<span class="{res.css.detailCellLabel}">Banque :</span>
-				<span ui:field="bank" class="{res.css.detailCellValue}" />
+				<span class="{res.css.detailCellLabel}">Depot :</span>
+				<span ui:field="depositType" class="{res.css.detailCellValue}" />				
 				<span class="{res.css.detailCellLabel}">IBAN :</span>
 				<span ui:field="iban" class="{res.css.detailCellValue}" />
 				<span class="{res.css.detailCellLabel}">BIC :</span>

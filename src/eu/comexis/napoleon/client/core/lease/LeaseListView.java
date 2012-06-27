@@ -144,6 +144,6 @@ public class LeaseListView extends AbstractListView<SimpleLease> implements
   }
   @Override
   protected String getButtonBackLabel() {
-    return "Retour vers le dashboard";
+    return "Retour vers le bien immobilier";
   }
 }

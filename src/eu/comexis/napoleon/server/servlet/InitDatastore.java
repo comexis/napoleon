@@ -38,27 +38,28 @@ public class InitDatastore extends HttpServlet {
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException,
       IOException {
 
-    //deleteAll();
+    deleteAll();
 
-    //String companyId = createCompany();
+    String companyId = createCompany();
 
-    //createApplicationUsers(companyId);
+    createApplicationUsers(companyId);
     
-    //createApplicationUsersLive(companyId);
+    createApplicationUsersLive(companyId);
 
-    //createOwners(companyId);
+    createOwners(companyId);
 
-    //createTenantDao(companyId);
+    createTenantDao(companyId);
 
-    //create300RealEstate(companyId);
+    create300RealEstate(companyId);
     
-    //createRealEstate(companyId);
+    createRealEstate(companyId);
     
-    //createLease(companyId);
+    createLease(companyId);
 
-    //printResults(companyId, resp);
+    printResults(companyId, resp);
     
     createOtherUsers();
+    
 
   }
   
@@ -72,13 +73,13 @@ public class InitDatastore extends HttpServlet {
     // create user xavier.platiaux@gmail.com
     
     ApplicationUser u = userData.create(companyId);
-    u.setFirstName("Aiglon");
-    u.setLastName("sprl44");
-    u.setEmail("aiglonsprl44@gmail.com");
+    u.setFirstName("Frédéric");
+    u.setLastName("Collin");
+    u.setEmail("frederic.collin@gmail.com");
     userData.update(u);
     
     
-    u = userData.create(companyId);
+   /* u = userData.create(companyId);
     u.setFirstName("Nathalie");
     u.setLastName("Pagnoulle");
     u.setEmail("nathaliepagnoulle@gmail.com");
@@ -88,7 +89,7 @@ public class InitDatastore extends HttpServlet {
     u.setFirstName("Aiglon");
     u.setLastName("Brockmans");
     u.setEmail("aiglon.brockmans@gmail.com");
-    userData.update(u);
+    userData.update(u);*/
   }
 
   private void createApplicationUsersLive(String companyId) {
@@ -148,6 +149,13 @@ public class InitDatastore extends HttpServlet {
     u.setFirstName("Benoît");
     u.setLastName("Tytgat");
     u.setEmail("scatyb@gmail.com");
+    userData.update(u); 
+    
+ // create user napoleon.user1@gmail.com
+    u = userData.create(companyId);
+    u.setFirstName("Frederic");
+    u.setLastName("Collin");
+    u.setEmail("frederic.collin@gmail.com");
     userData.update(u); 
 
   }

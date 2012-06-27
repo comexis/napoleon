@@ -69,8 +69,12 @@ public abstract class AbstractShortListPresenter<T extends Identifiable, V exten
   @Override
   protected void onBind() {
     super.onBind();
+    
+    AbstractShortListView view = (AbstractShortListView)getView();
+    view.setPresenter(this);
+    view.bind();
 
-    getView().setPresenter(this);
+    
   }
 
   @Override
