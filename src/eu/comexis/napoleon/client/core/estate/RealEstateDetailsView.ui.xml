@@ -16,7 +16,11 @@
 				<span class="{res.css.detailCellLabel}">Référence :</span>
 				<span ui:field="reference" class="{res.css.detailCellValue}" />
 				<span class="{res.css.detailCellLabel}">Copropriété :</span>
-				<span ui:field="condo" class="{res.css.detailCellValue}" />
+				<span ui:field="condo" class="{res.css.detailCellValue}" />&nbsp;&nbsp;
+				<g:Button ui:field="emailTenants">Contacter les locataires</g:Button>
+				<a id="sendEmailTenants" class="{res.css.detailCellValue}">Envoyer un email aux locataires</a>
+				<span id="noTenantsEmails" class="{res.css.detailCellValue}">Aucun emails disponibles</span>
+				
 			</div>
 
 			<div class="{res.css.detailRow}">

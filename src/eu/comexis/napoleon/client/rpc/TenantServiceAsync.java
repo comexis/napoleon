@@ -3,6 +3,8 @@ package eu.comexis.napoleon.client.rpc;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+import eu.comexis.napoleon.shared.command.lease.GetTenantEmailsByCondoCommand;
+import eu.comexis.napoleon.shared.command.lease.GetTenantEmailsByCondoResponse;
 import eu.comexis.napoleon.shared.command.tenant.GetAllTenantCommand;
 import eu.comexis.napoleon.shared.command.tenant.GetAllTenantResponse;
 import eu.comexis.napoleon.shared.command.tenant.GetTenantCommand;
@@ -19,5 +21,8 @@ public interface TenantServiceAsync {
   void execute(GetTenantCommand command, AsyncCallback<GetTenantResponse> callback);
 
   void execute(UpdateTenantCommand command, AsyncCallback<UpdateTenantResponse> callback);
+
+	void execute(GetTenantEmailsByCondoCommand getTenantEmailsByCondoCommand,
+		AsyncCallback<GetTenantEmailsByCondoResponse> callback);
 
 }

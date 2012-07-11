@@ -1,7 +1,6 @@
 package eu.comexis.napoleon.client.core.estate;
 
 import static eu.comexis.napoleon.client.Napoleon.ginjector;
-import static eu.comexis.napoleon.client.core.party.PartyUpdatePresenter.UUID_PARAMETER;
 
 import java.util.logging.Logger;
 
@@ -30,192 +29,235 @@ import eu.comexis.napoleon.client.events.AddedFileEvent;
 import eu.comexis.napoleon.client.events.AddedFileEvent.AddedFileHandler;
 import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.resources.Literals;
+import eu.comexis.napoleon.client.rpc.callback.AbstractCallback;
 import eu.comexis.napoleon.client.rpc.callback.GotRealEstate;
 import eu.comexis.napoleon.client.widget.DocumentPanelPresenter;
 import eu.comexis.napoleon.client.widget.DocumentPanelView;
 import eu.comexis.napoleon.shared.command.estate.GetRealEstateCommand;
 import eu.comexis.napoleon.shared.command.estate.UpdateRealEstateCommand;
 import eu.comexis.napoleon.shared.command.estate.UpdateRealEstateResponse;
+import eu.comexis.napoleon.shared.command.lease.GetTenantEmailsByCondoCommand;
+import eu.comexis.napoleon.shared.command.lease.GetTenantEmailsByCondoResponse;
 import eu.comexis.napoleon.shared.model.FileDescriptor;
 import eu.comexis.napoleon.shared.model.HasFiles;
 import eu.comexis.napoleon.shared.model.RealEstate;
 
-public class RealEstateDetailsPresenter extends
-    AbstractPresenter<RealEstateDetailsPresenter.MyView, RealEstateDetailsPresenter.MyProxy> implements
-    RealEstateDetailUiHandlers, AddedFileHandler {
+public class RealEstateDetailsPresenter
+		extends
+		AbstractPresenter<RealEstateDetailsPresenter.MyView, RealEstateDetailsPresenter.MyProxy>
+		implements RealEstateDetailUiHandlers, AddedFileHandler {
 
-  @ProxyCodeSplit
-  @NameToken(NameTokens.realEstate)
-  public interface MyProxy extends ProxyPlace<RealEstateDetailsPresenter> {
-  }
-  public interface MyView extends View, HasPresenter<RealEstateDetailUiHandlers> {
-    public void addDocumentWidget(Widget w);
-    public void setRealEstate(RealEstate e);
-    public void bind();
-    public void unbind();
-  }
-  
-  public static void show(String realEstateId) {
-    PlaceRequest myRequest = new PlaceRequest(NameTokens.realEstate);
-    // add the id of the owner to load
-    myRequest = myRequest.with(UUID_PARAMETER, realEstateId);
-    
-    Napoleon.ginjector.getPlaceManager().revealPlace(myRequest);
-    
-  }
+	@ProxyCodeSplit
+	@NameToken(NameTokens.realEstate)
+	public interface MyProxy extends ProxyPlace<RealEstateDetailsPresenter> {
+	}
 
-  public static final String UUID_PARAMETER = "uuid";
+	public interface MyView extends View,
+			HasPresenter<RealEstateDetailUiHandlers> {
+		public void addDocumentWidget(Widget w);
 
-  private static final Logger LOG = Logger.getLogger(RealEstateDetailsPresenter.class.getName());
+		public void setRealEstate(RealEstate e);
 
-  private PlaceManager placeManager;
-  private String id;
-  private DocumentPanelPresenter filesPresenter;
-  private RealEstate realEstate;
+		public void bind();
 
-  @Inject
-  public RealEstateDetailsPresenter(final EventBus eventBus, final MyView view,
-      final MyProxy proxy, final PlaceManager placeManager) {
-    super(eventBus, view, proxy);
-    this.placeManager = placeManager;
-  }
-  @Override
-  public void onAddedFile(AddedFileEvent event) {
-   HasFiles entity = event.getEntity();
-   if (realEstate.getId() != null && realEstate.getId().equals(entity.getId())){
-       saveFile(event.getFile());
-   }
-    
-  }
-  @Override
-  public void onButtonRentClick() {
-    PlaceRequest myRequest = new PlaceRequest(NameTokens.leaselist);
-    myRequest = myRequest.with(UUID_PARAMETER, RealEstateDetailsPresenter.this.realEstate.getId());
-    placeManager.revealPlace(myRequest);
-  }
-  
-  @Override
-  public void onButtonExpenseClick() {
-    PlaceRequest myRequest = new PlaceRequest(NameTokens.expenselist);
-    myRequest = myRequest.with(UUID_PARAMETER, RealEstateDetailsPresenter.this.realEstate.getId());
-    placeManager.revealPlace(myRequest);
-  }
-  
-  @Override
-  public void onButtonBackToListClick() {
-    PlaceRequest myRequest = new PlaceRequest(NameTokens.realEstatelist);
-    placeManager.revealPlace(myRequest);
-  }
+		public void unbind();
+		
+		public void setEmailsTenants(String emails);
+	}
 
-  @Override
-  public void onButtonUpdateClick() {
-    PlaceRequest myRequest = new PlaceRequest(NameTokens.updateRealEstate);
-    // add the id of the realEstate to load
-    myRequest = myRequest.with(UUID_PARAMETER, RealEstateDetailsPresenter.this.realEstate.getId());
-    placeManager.revealPlace(myRequest);
-  }
+	public static void show(String realEstateId) {
+		PlaceRequest myRequest = new PlaceRequest(NameTokens.realEstate);
+		// add the id of the owner to load
+		myRequest = myRequest.with(UUID_PARAMETER, realEstateId);
 
-  /**
-   * Retrieve the id of the realEstate to show it
-   */
-  @Override
-  public void prepareFromRequest(PlaceRequest placeRequest) {
-    super.prepareFromRequest(placeRequest);
+		Napoleon.ginjector.getPlaceManager().revealPlace(myRequest);
 
-    // In the next call, "view" is the default value,
-    // returned if "action" is not found on the URL.
-    id = placeRequest.getParameter(UUID_PARAMETER, null);
+	}
 
-    if (id == null || id.length() == 0) {
-      if (LogConfiguration.loggingIsEnabled()) {
-        LOG.severe("invalid id is null or empty");
-      }
-      placeManager.revealErrorPlace(placeRequest.getNameToken());
-    }
-  }
+	public static final String UUID_PARAMETER = "uuid";
 
-  @Override
-  protected void onBind() {
-    super.onBind();
-    
-    getEventBus().addHandler(AddedFileEvent.getType(), this);
-    
-    getView().setPresenter(this);
-    
-    
-    //TODO replace that
-    //filesPresenter = ginjector.getDocumentPanelPresenter().get();
-    DocumentPanelView.Binder binder = GWT.create(DocumentPanelView.Binder.class);
-    DocumentPanelView view = new DocumentPanelView(binder);
-    filesPresenter = new DocumentPanelPresenter(ginjector.getEventBus(), view);
-    filesPresenter.bind();
-    
-    getView().addDocumentWidget(filesPresenter.getWidget());
-    
-    getView().bind();
-  }
-  
-  @Override
-  protected void onUnbind() {
-    super.onUnbind();
-    getView().unbind();
-  }
+	private static final Logger LOG = Logger
+			.getLogger(RealEstateDetailsPresenter.class.getName());
 
-  @Override
-  protected void onReset() {
-    super.onReset();
+	private PlaceManager placeManager;
+	private String id;
+	private DocumentPanelPresenter filesPresenter;
+	private RealEstate realEstate;
 
-    new GetRealEstateCommand(id).dispatch(new GotRealEstate() {
+	@Inject
+	public RealEstateDetailsPresenter(final EventBus eventBus,
+			final MyView view, final MyProxy proxy,
+			final PlaceManager placeManager) {
+		super(eventBus, view, proxy);
+		this.placeManager = placeManager;
+	}
 
-      @Override
-      public void got(RealEstate realEstate) {
-        setRealEstate(realEstate);
-      }
-    });
+	@Override
+	public void onAddedFile(AddedFileEvent event) {
+		HasFiles entity = event.getEntity();
+		if (realEstate.getId() != null
+				&& realEstate.getId().equals(entity.getId())) {
+			saveFile(event.getFile());
+		}
 
-  }
- 
-  @Override
-  protected void revealInParent() {
-    RevealContentEvent.fire(this, MainLayoutPresenter.MAIN_CONTENT, this);
-  }
-  protected void saveFile(FileDescriptor file) {
-    new UpdateRealEstateCommand(getData()).dispatch(new AsyncCallback<UpdateRealEstateResponse>() {
-      
-      @Override
-      public void onSuccess(UpdateRealEstateResponse result) {}
-      
-      @Override
-      public void onFailure(Throwable caught) {
-        //TODO improve that
-        Window.alert("Impossible de lier le fichier à la location. Veuillez reessayer.");
-        
-      }
-    });
-  }
-  protected RealEstate getData() {
-    return realEstate;
-  }
-  protected void setRealEstate(RealEstate realEstate) {
-    this.realEstate = realEstate;
-    filesPresenter.setDocumentHolder(realEstate);
-    getView().setRealEstate(realEstate);
-    
-    doReveal();
-  }
-  @Override
-  protected Menus getMenu() {
-    return Menus.REAL_ESTATE;
-  }
+	}
 
-  @Override
-  protected String getTitle() {
-    return Literals.INSTANCE.realEstateDetailsTitle();
-  }
-  
-  @Override
-  public void showOwner() {
-    OwnerDetailsPresenter.show(realEstate.getOwner().getId());
-  }
+	@Override
+	public void onButtonRentClick() {
+		PlaceRequest myRequest = new PlaceRequest(NameTokens.leaselist);
+		myRequest = myRequest.with(UUID_PARAMETER,
+				RealEstateDetailsPresenter.this.realEstate.getId());
+		placeManager.revealPlace(myRequest);
+	}
+
+	@Override
+	public void onButtonExpenseClick() {
+		PlaceRequest myRequest = new PlaceRequest(NameTokens.expenselist);
+		myRequest = myRequest.with(UUID_PARAMETER,
+				RealEstateDetailsPresenter.this.realEstate.getId());
+		placeManager.revealPlace(myRequest);
+	}
+
+	@Override
+	public void onButtonBackToListClick() {
+		PlaceRequest myRequest = new PlaceRequest(NameTokens.realEstatelist);
+		placeManager.revealPlace(myRequest);
+	}
+
+	@Override
+	public void onButtonUpdateClick() {
+		PlaceRequest myRequest = new PlaceRequest(NameTokens.updateRealEstate);
+		// add the id of the realEstate to load
+		myRequest = myRequest.with(UUID_PARAMETER,
+				RealEstateDetailsPresenter.this.realEstate.getId());
+		placeManager.revealPlace(myRequest);
+	}
+
+	/**
+	 * Retrieve the id of the realEstate to show it
+	 */
+	@Override
+	public void prepareFromRequest(PlaceRequest placeRequest) {
+		super.prepareFromRequest(placeRequest);
+
+		// In the next call, "view" is the default value,
+		// returned if "action" is not found on the URL.
+		id = placeRequest.getParameter(UUID_PARAMETER, null);
+
+		if (id == null || id.length() == 0) {
+			if (LogConfiguration.loggingIsEnabled()) {
+				LOG.severe("invalid id is null or empty");
+			}
+			placeManager.revealErrorPlace(placeRequest.getNameToken());
+		}
+	}
+	
+	@Override
+	public void emailTenants() {
+		if (realEstate != null && realEstate.getCondominium() != null && realEstate.getCondominium().length() > 0){
+			new GetTenantEmailsByCondoCommand(realEstate.getCondominium()).dispatch(new AbstractCallback<GetTenantEmailsByCondoResponse>() {
+					public void onSuccess(GetTenantEmailsByCondoResponse result) {
+						StringBuilder builder = new StringBuilder();
+						for (String email: result.getEmailsList()){
+							builder.append(email).append(",");
+						}
+						
+						getView().setEmailsTenants(builder.toString());
+					}
+			});
+		}
+		
+	}
+
+	@Override
+	protected void onBind() {
+		super.onBind();
+
+		getEventBus().addHandler(AddedFileEvent.getType(), this);
+
+		getView().setPresenter(this);
+
+		// TODO replace that
+		// filesPresenter = ginjector.getDocumentPanelPresenter().get();
+		DocumentPanelView.Binder binder = GWT
+				.create(DocumentPanelView.Binder.class);
+		DocumentPanelView view = new DocumentPanelView(binder);
+		filesPresenter = new DocumentPanelPresenter(ginjector.getEventBus(),
+				view);
+		filesPresenter.bind();
+
+		getView().addDocumentWidget(filesPresenter.getWidget());
+
+		getView().bind();
+	}
+
+	@Override
+	protected void onUnbind() {
+		super.onUnbind();
+		getView().unbind();
+	}
+
+	@Override
+	protected void onReset() {
+		super.onReset();
+
+		new GetRealEstateCommand(id).dispatch(new GotRealEstate() {
+
+			@Override
+			public void got(RealEstate realEstate) {
+				setRealEstate(realEstate);
+			}
+		});
+
+	}
+
+	@Override
+	protected void revealInParent() {
+		RevealContentEvent.fire(this, MainLayoutPresenter.MAIN_CONTENT, this);
+	}
+
+	protected void saveFile(FileDescriptor file) {
+		new UpdateRealEstateCommand(getData())
+				.dispatch(new AsyncCallback<UpdateRealEstateResponse>() {
+
+					@Override
+					public void onSuccess(UpdateRealEstateResponse result) {
+					}
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO improve that
+						Window.alert("Impossible de lier le fichier à la location. Veuillez reessayer.");
+
+					}
+				});
+	}
+
+	protected RealEstate getData() {
+		return realEstate;
+	}
+
+	protected void setRealEstate(RealEstate realEstate) {
+		this.realEstate = realEstate;
+		filesPresenter.setDocumentHolder(realEstate);
+		getView().setRealEstate(realEstate);
+
+		doReveal();
+	}
+
+	@Override
+	protected Menus getMenu() {
+		return Menus.REAL_ESTATE;
+	}
+
+	@Override
+	protected String getTitle() {
+		return Literals.INSTANCE.realEstateDetailsTitle();
+	}
+
+	@Override
+	public void showOwner() {
+		OwnerDetailsPresenter.show(realEstate.getOwner().getId());
+	}
 
 }
