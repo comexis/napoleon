@@ -77,7 +77,6 @@ public class SecurityFilter implements Filter {
       return false;
     }
 
-    System.err.println("user is logged in");
     return true;
 
   }
