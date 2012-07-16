@@ -1,4 +1,4 @@
-package eu.comexis.napoleon.client.utils;
+package eu.comexis.napoleon.shared.utils;
 
 import java.util.Comparator;
 

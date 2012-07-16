@@ -10,9 +10,9 @@ import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 import eu.comexis.napoleon.client.core.AbstractShortListView;
-import eu.comexis.napoleon.client.utils.SimpleTextComparator;
 import eu.comexis.napoleon.client.utils.UiHelper;
 import eu.comexis.napoleon.shared.model.simple.PaymentListItem;
+import eu.comexis.napoleon.shared.utils.SimpleTextComparator;
 
 public class PaymentBoardListView extends AbstractShortListView<PaymentListItem> implements
   PaymentBoardListPresenter.MyView {
