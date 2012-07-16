@@ -1,6 +1,7 @@
 package eu.comexis.napoleon.server.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -21,6 +22,7 @@ import eu.comexis.napoleon.shared.command.tenant.UpdateTenantCommand;
 import eu.comexis.napoleon.shared.command.tenant.UpdateTenantResponse;
 import eu.comexis.napoleon.shared.model.Tenant;
 import eu.comexis.napoleon.shared.model.simple.SimpleTenant;
+import eu.comexis.napoleon.shared.utils.SimpleTextComparator;
 
 /**
  * Implementation of the service on server side.
@@ -40,6 +42,15 @@ public class TenantServiceImpl extends RemoteServiceServlet implements TenantSer
     TenantDao tenantData = new TenantDao();
     ArrayList<SimpleTenant> tenants = tenantData.getListSimpleTenants(companyId);
 
+    //sort owners by name
+    Collections.sort(tenants, new SimpleTextComparator<SimpleTenant>() {
+    	@Override
+    	public int compare(SimpleTenant t1, SimpleTenant t2) {
+    		return compare(t1.getName(), t2.getName());
+    	}
+	});
+
+    
     GetAllTenantResponse response = new GetAllTenantResponse();
     response.setTenants(tenants);
 

@@ -1,6 +1,7 @@
 package eu.comexis.napoleon.server.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -18,6 +19,7 @@ import eu.comexis.napoleon.shared.command.estate.UpdateRealEstateCommand;
 import eu.comexis.napoleon.shared.command.estate.UpdateRealEstateResponse;
 import eu.comexis.napoleon.shared.model.RealEstate;
 import eu.comexis.napoleon.shared.model.simple.SimpleRealEstate;
+import eu.comexis.napoleon.shared.utils.SimpleTextComparator;
 
 /**
  * Implementation of the service on server side.
@@ -36,6 +38,14 @@ public class RealEstateServiceImpl extends RemoteServiceServlet implements
 		RealEstateDao realEstateData = new RealEstateDao();
 		ArrayList<SimpleRealEstate> realEstates = realEstateData
 				.getListSimpleRealEstates(companyId);
+
+	    //sort realEstates by reference
+	    Collections.sort(realEstates, new SimpleTextComparator<SimpleRealEstate>() {
+	    	@Override
+	    	public int compare(SimpleRealEstate re1, SimpleRealEstate re2) {
+	    		return compare(re1.getReference(), re2.getReference());
+	    	}
+		});
 
 		GetAllRealEstateResponse response = new GetAllRealEstateResponse();
 		response.setRealEstates(realEstates);

@@ -8,8 +8,8 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.inject.Inject;
 
 import eu.comexis.napoleon.client.core.AbstractListView;
-import eu.comexis.napoleon.client.utils.SimpleTextComparator;
 import eu.comexis.napoleon.shared.model.simple.SimpleTenant;
+import eu.comexis.napoleon.shared.utils.SimpleTextComparator;
 
 public class TenantListView extends AbstractListView<SimpleTenant> implements
     TenantListPresenter.MyView {
@@ -133,6 +133,9 @@ public class TenantListView extends AbstractListView<SimpleTenant> implements
       }
     });
     table.addColumn(mobileColumn, "Mobile");
+    
+    //initially sorted by name
+    table.getColumnSortList().push(nameColumn);
 
   }
 
