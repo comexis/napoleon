@@ -23,13 +23,10 @@ Company client = UserManager.INSTANCE.getConnectedCompany();
 
 <html>
 	<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta name="gwt:property" content="locale=fr">
 
 	<title><%client.getName();%></title>
-	<meta name="viewport" content="width=device-width">
-	<link type="text/css" rel="stylesheet" href="bootstrap.css">
 	
 	<script type="text/javascript" language="javascript" src="napoleon/napoleon.nocache.js"></script>
 	
@@ -65,21 +62,8 @@ Company client = UserManager.INSTANCE.getConnectedCompany();
 </head>
 
 <body>
-	<div id="root">
-		<div class="container">
-			<div class="row">
-				<div class="span4 offset4">
-					<h3>Démarrage de l'application. Veuillez patienter...</h3>
 
-					<div class="progress" style="margin-top:45px">
-						<div id="progressBar" class="bar" style="width: 10%;"></div>
-					</div>
-				</div>
-			</div>
-
-		</div>
-	</div>
-
+	<div id="loading"><div>Lancement de l'application...</div></div>
 	<iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1'
 		style="position: absolute; width: 0; height: 0; border: 0"></iframe>
 

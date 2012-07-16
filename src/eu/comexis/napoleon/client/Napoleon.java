@@ -16,31 +16,31 @@ public class Napoleon implements EntryPoint {
 
   @Override
   public void onModuleLoad() {
-	setProgressBar(40);
+	//setProgressBar(40);
     
 	// This is required for Gwt-Platform proxy's generator
     DelayedBindRegistry.bind(ginjector);
-    setProgressBar(50);
+    //setProgressBar(50);
     
     // inject css
     Resources.INSTANCE.css().ensureInjected();
-    setProgressBar(60);
+    //setProgressBar(60);
     
     //init message 
     MessagePanel.INSTANCE.bind(ginjector.getEventBus());
-    setProgressBar(80);
+    //setProgressBar(80);
     
     ginjector.getPlaceManager().revealCurrentPlace();
     
-    setProgressBar(100);
-    $("#root").remove();
+    //setProgressBar(100);
+    $("#loading").remove();
   }
   
   
-  private void setProgressBar(int progress) {
-	  	GWT.log("set progress bqr to "+progress);
-		$("#progressBar").css("width", progress+"%");
+//  private void setProgressBar(int progress) {
+//	  	GWT.log("set progress bqr to "+progress);
+//		$("#progressBar").css("width", progress+"%");
 		
-	}
+//	}
 
 }
