@@ -50,6 +50,24 @@ public class LeaseListView extends AbstractListView<SimpleLease> implements
     });
 
     table.addColumn(nameColumn, "Référence");
+    
+   // Status.
+    Column<SimpleLease, String> entityStatusColumn = new Column<SimpleLease, String>(new TextCell()) {
+      @Override
+      public String getValue(SimpleLease object) {
+        return (object.getEntityStatus() != null ? UiHelper.translateEnum(
+                "EntityStatus_", object.getEntityStatus()) : "");
+      }
+    };
+
+    entityStatusColumn.setSortable(true);
+    sortHandler.setComparator(entityStatusColumn, new SimpleTextComparator<SimpleLease>() {
+      public int compare(SimpleLease o1, SimpleLease o2) {        	 
+        return o1.getEntityStatus().compareTo(o2.getEntityStatus());
+      }
+    });
+
+    table.addColumn(entityStatusColumn, "Statut");
 
     // Academic Year.
     Column<SimpleLease, String> academicYearColumn = new Column<SimpleLease, String>(new TextCell()) {

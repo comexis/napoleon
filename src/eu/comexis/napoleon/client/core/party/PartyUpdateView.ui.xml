@@ -12,6 +12,11 @@
 	<g:HTMLPanel styleName="{res.css.detailTable}">
 
 		<div class="{res.css.detailRow}">
+			<span class="{res.css.detailCellInputLabel}">Statut :</span>
+			<g:ListBox ui:field="entityStatus" styleName="{res.css.detailCellInputList}"  name="entityStatus"/>
+		</div>
+		
+		<div class="{res.css.detailRow}">
 			<span class="{res.css.detailCellInputLabel}">Civilité :</span>
 			<g:ListBox ui:field="title" styleName="{res.css.detailCellInputList}" focus="true" name="title"/>
 			<span class="{res.css.detailCellInputLabel} {res.css.autoLabel}">Nom :</span>

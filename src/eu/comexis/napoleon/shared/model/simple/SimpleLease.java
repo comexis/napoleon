@@ -4,9 +4,11 @@ import java.util.Date;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
+import eu.comexis.napoleon.shared.model.EnablableEntity;
+import eu.comexis.napoleon.shared.model.EntityStatus;
 import eu.comexis.napoleon.shared.model.Identifiable;
 
-public class SimpleLease implements IsSerializable, Identifiable{
+public class SimpleLease implements EnablableEntity, IsSerializable, Identifiable{
   private String id;
   private String realEstateRef;
 
@@ -18,7 +20,8 @@ public class SimpleLease implements IsSerializable, Identifiable{
   private Date startDate;
   private Date endDate;
   private String ownerId;
-  private String ownerName;
+  private String ownerName; 
+  private EntityStatus entityStatus;
 
   public SimpleLease() {
 
@@ -103,5 +106,13 @@ public class SimpleLease implements IsSerializable, Identifiable{
   public void setTenantName(String tenantName) {
     this.tenantName = tenantName;
   }
+
+  public EntityStatus getEntityStatus() {
+	return entityStatus;
+  }
+
+  public void setEntityStatus(EntityStatus entityStatus) {
+	this.entityStatus = entityStatus;
+  }  
 
 }

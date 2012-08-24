@@ -51,7 +51,7 @@ public abstract class PartyUpdatePresenter<T extends Party, V extends PartyUpdat
     public void fillNationalityList(List<String> nationalities);
     
     public void fillPostalCodeList(List<String> postCdes);
-
+    
     public String getSelectedCountry();
 
     public void reset();

@@ -11,6 +11,7 @@ import eu.comexis.napoleon.client.utils.UiHelper;
 import eu.comexis.napoleon.shared.model.Expense;
 import eu.comexis.napoleon.shared.utils.SimpleTextComparator;
 
+
 public class ExpenseListView extends AbstractShortListView<Expense> implements
   ExpenseListPresenter.MyView {
 
@@ -50,6 +51,7 @@ public class ExpenseListView extends AbstractShortListView<Expense> implements
     });
 
     table.addColumn(nameColumn, "Référence");
+     
     
     // Amount.
     Column<Expense, String> amountColumn = new Column<Expense, String>(new TextCell()) {

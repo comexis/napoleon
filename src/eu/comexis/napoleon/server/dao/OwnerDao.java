@@ -38,6 +38,7 @@ public class OwnerDao extends NapoleonDao<Owner> {
     so.setAddress(ServerUtils.buildPartyAddress(o));
     so.setMobileNumber(o.getMobilePhoneNumber());
     so.setPhoneNumber(o.getPhoneNumber());
+    so.setEntityStatus(o.getEntityStatus());
     return so;
   }
   public ArrayList<SimpleOwner> getListSimpleOwners(String companyId) {

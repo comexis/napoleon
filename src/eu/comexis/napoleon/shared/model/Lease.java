@@ -24,7 +24,7 @@ import eu.comexis.napoleon.shared.model.simple.SimpleTenant;
  * @author xavier Location
  */
 @Unindexed
-public class Lease implements IsSerializable , Identifiable,HasFiles{
+public class Lease implements EnablableEntity, IsSerializable , Identifiable,HasFiles{
 
   @Id
   private String id;
@@ -79,6 +79,9 @@ public class Lease implements IsSerializable , Identifiable,HasFiles{
   private SimpleTenant tenant;
   @Embedded
   private ArrayList<FileDescriptor> files;
+  
+  private EntityStatus entityStatus;
+  
   /**
 	 * 
 	 */
@@ -374,4 +377,11 @@ public class Lease implements IsSerializable , Identifiable,HasFiles{
 	this.bicOwner = bicOwner;
   }
   
+  public EntityStatus getEntityStatus() {
+	return entityStatus;
+  }
+
+  public void setEntityStatus(EntityStatus entityStatus) {
+	this.entityStatus = entityStatus;
+  }  
 }

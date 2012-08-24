@@ -23,6 +23,7 @@ import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
 import eu.comexis.napoleon.client.utils.UiHelper;
+import eu.comexis.napoleon.shared.model.EntityStatus;
 import eu.comexis.napoleon.shared.model.Lease;
 import eu.comexis.napoleon.shared.model.TypeOfRent;
 import eu.comexis.napoleon.shared.model.simple.SimpleTenant;
@@ -452,7 +453,9 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
     tenantName.clear();
     tenantName.addItem("-", "-");
     for (SimpleTenant t : tenants) {
-      tenantName.addItem(t.getName(), t.getId());
+      if(EntityStatus.ACTIVE.equals(t.getEntityStatus())){  //Only ACTIVE tenants must be displayed in the Dropdown
+    	  tenantName.addItem(t.getName(), t.getId());
+      }
     }    
 
   }

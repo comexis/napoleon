@@ -25,6 +25,7 @@ import com.gwtplatform.mvp.client.ViewImpl;
 
 import eu.comexis.napoleon.client.utils.UiHelper;
 import eu.comexis.napoleon.shared.model.Country;
+import eu.comexis.napoleon.shared.model.EntityStatus;
 import eu.comexis.napoleon.shared.model.MaritalStatus;
 import eu.comexis.napoleon.shared.model.MatrimonialRegime;
 import eu.comexis.napoleon.shared.model.Party;
@@ -90,6 +91,8 @@ public abstract class PartyUpdateView<T extends Party> extends ViewImpl implemen
   SuggestBox postalCode;
   @UiField
   HTMLPanel additionnalData;
+  @UiField(provided = true)
+  ListBox entityStatus;
   
   protected PartyUpdateUiHandlers presenter;
 
@@ -195,6 +198,7 @@ public abstract class PartyUpdateView<T extends Party> extends ViewImpl implemen
 
   private void init() {
     title = UiHelper.createListBoxForEnum(Title.class, "Title_", false);
+    entityStatus = UiHelper.createListBoxForEnum(EntityStatus.class, "EntityStatus_", false);
     maritalStatus = UiHelper.createListBoxForEnum(MaritalStatus.class, "MaritalStatus_", false);
     matrimonialRegime =
         UiHelper.createListBoxForEnum(MatrimonialRegime.class, "MatrimonialRegime_", false);
@@ -294,6 +298,7 @@ public abstract class PartyUpdateView<T extends Party> extends ViewImpl implemen
     nationalRegister.setText("");
     vatNumber.setText("");
     box.setText("");
+    UiHelper.selectTextItemBoxByValue(entityStatus, null, EntityStatus.ACTIVE);
     UiHelper.selectTextItemBoxByValue(maritalStatus, null, MaritalStatus.NONE);
     UiHelper.selectTextItemBoxByValue(matrimonialRegime, null, MatrimonialRegime.NONE);
     UiHelper.selectTextItemBoxByValue(title, Title.NONE);
@@ -329,7 +334,7 @@ public abstract class PartyUpdateView<T extends Party> extends ViewImpl implemen
     job.setText(party.getJobTitle());
     nationalRegister.setText(party.getNationalRegisterNumber());
     vatNumber.setText(party.getVatNumber());
-
+    UiHelper.selectTextItemBoxByValue(entityStatus, party.getEntityStatus(), EntityStatus.ACTIVE);
     UiHelper.selectTextItemBoxByValue(maritalStatus, party.getMaritalStatus(), MaritalStatus.SINGLE);
     UiHelper.selectTextItemBoxByValue(matrimonialRegime, party.getMatrimonialRegime(), MatrimonialRegime.NONE);
 
@@ -363,11 +368,13 @@ public abstract class PartyUpdateView<T extends Party> extends ViewImpl implemen
     party.setNationality(nationality.getValue());
     party.setNationalRegisterNumber(nationalRegister.getValue());
     party.setVatNumber(vatNumber.getValue());
+    party.setEntityStatus(EntityStatus.fromStringToEnum(entityStatus.getValue(entityStatus
+            .getSelectedIndex())));
     party.setMaritalStatus(MaritalStatus.fromStringToEnum(maritalStatus.getValue(maritalStatus
         .getSelectedIndex())));
     party.setMatrimonialRegime(MatrimonialRegime.fromStringToEnum(matrimonialRegime
         .getValue(matrimonialRegime.getSelectedIndex())));
-
+    
   }
   
   @Override

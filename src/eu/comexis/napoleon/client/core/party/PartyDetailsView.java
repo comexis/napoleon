@@ -15,6 +15,7 @@ import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
 import eu.comexis.napoleon.client.utils.UiHelper;
+import eu.comexis.napoleon.shared.model.EntityStatus;
 import eu.comexis.napoleon.shared.model.Party;
 
 public abstract class PartyDetailsView<T extends Party> extends ViewImpl implements
@@ -57,6 +58,8 @@ public abstract class PartyDetailsView<T extends Party> extends ViewImpl impleme
   Element iban;
   @UiField
   Element job;
+  @UiField
+  Element entityStatus;
   @UiField
   Element maritalStatus;
   @UiField
@@ -149,6 +152,8 @@ public abstract class PartyDetailsView<T extends Party> extends ViewImpl impleme
     postalCode.setInnerText(party.getPostalCode());
     city.setInnerText(party.getCity());
     country.setInnerText(party.getCountry());
+    entityStatus.setInnerText(party.getEntityStatus() != null ? UiHelper.translateEnum(
+            "EntityStatus_", party.getEntityStatus()) : "");
     maritalStatus.setInnerText(party.getMaritalStatus() != null ? UiHelper.translateEnum(
         "MaritalStatus_", party.getMaritalStatus()) : "");
     matrimonialRegime.setInnerText(party.getMatrimonialRegime() != null ? UiHelper.translateEnum(

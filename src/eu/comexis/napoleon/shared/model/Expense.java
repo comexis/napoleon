@@ -15,7 +15,7 @@ import com.googlecode.objectify.annotation.Parent;
 import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 import eu.comexis.napoleon.shared.model.simple.SimpleRealEstate;
 
-public class Expense implements IsSerializable, Identifiable, HasFiles {
+public class Expense implements EnablableEntity, IsSerializable, Identifiable, HasFiles {
 
   @Id
   private String id;
@@ -43,6 +43,9 @@ public class Expense implements IsSerializable, Identifiable, HasFiles {
 
   @Embedded
   private ArrayList<FileDescriptor> files;
+  
+  private EntityStatus entityStatus;
+  
   public Expense() {
     files = new ArrayList<FileDescriptor>();
   }
@@ -192,5 +195,13 @@ public class Expense implements IsSerializable, Identifiable, HasFiles {
   public void setTypeOfWork(String typeOfWork) {
     this.typeOfWork = typeOfWork;
   }
+
+  public EntityStatus getEntityStatus() {
+	return entityStatus;
+  }
+
+  public void setEntityStatus(EntityStatus entityStatus) {
+	this.entityStatus = entityStatus;
+  }  
 
 }

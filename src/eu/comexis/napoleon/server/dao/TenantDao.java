@@ -62,6 +62,7 @@ public class TenantDao extends NapoleonDao<Tenant> {
 		return tenants;
 	}
 
+
 	@Override
 	public Tenant update(Tenant tenant) {
 		if (tenant.getCompany() != null) {
@@ -72,6 +73,7 @@ public class TenantDao extends NapoleonDao<Tenant> {
 			return null;
 		}
 	}
+
 
 	public Tenant update(Tenant tenant, String companyId) {
 		Key<Company> companyKey = new Key<Company>(Company.class, companyId);

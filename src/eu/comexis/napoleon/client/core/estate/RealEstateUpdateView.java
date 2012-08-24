@@ -23,6 +23,7 @@ import eu.comexis.napoleon.client.utils.UiHelper;
 import eu.comexis.napoleon.shared.model.Association;
 import eu.comexis.napoleon.shared.model.Condo;
 import eu.comexis.napoleon.shared.model.Country;
+import eu.comexis.napoleon.shared.model.EntityStatus;
 import eu.comexis.napoleon.shared.model.RealEstate;
 import eu.comexis.napoleon.shared.model.RealEstateState;
 import eu.comexis.napoleon.shared.model.TypeOfRealEstate;
@@ -150,7 +151,9 @@ public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePr
     ownerName.clear();
     ownerName.addItem("(...)", "(...)");
     for (SimpleOwner o : owners) {
-      ownerName.addItem(o.getName(), o.getId());
+    	if(EntityStatus.ACTIVE.equals(o.getEntityStatus())){
+    		ownerName.addItem(o.getName(), o.getId());
+    	}
     }    
   }
 

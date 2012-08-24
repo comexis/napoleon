@@ -1,0 +1,6 @@
+- check logging -> commons-logging server jul client ?
+- contry cities : load it from the index.jsp
+- use Suggest box for country and cities
+- ctrl F + ctrl O + sorting !!!!
+- @uiHandlers and button
+- convention nametoken : camelcase

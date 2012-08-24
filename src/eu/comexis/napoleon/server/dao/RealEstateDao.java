@@ -21,7 +21,7 @@ import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 import eu.comexis.napoleon.shared.model.simple.SimpleRealEstate;
 
 public class RealEstateDao extends NapoleonDao<RealEstate> {
-	
+
 	public RealEstateDao() {
 		super();
 	}
@@ -67,6 +67,7 @@ public class RealEstateDao extends NapoleonDao<RealEstate> {
 		se.setOwnerId(o.getId());
 		se.setMobile(o.getMobileNumber());
 		se.setPhoneNumber(o.getPhoneNumber());
+		se.setEntityStatus(o.getEntityStatus());
 		return se;
 	}
 
@@ -241,6 +242,7 @@ public class RealEstateDao extends NapoleonDao<RealEstate> {
 		o.setAddress(own.getFullAddressLine());
 		o.setPostalCode(own.getPostalCode());
 		o.setCity(own.getCity());
+		o.setEntityStatus(own.getEntityStatus());
 		return o;
 	}
 
@@ -260,6 +262,7 @@ public class RealEstateDao extends NapoleonDao<RealEstate> {
 				se.setCity(e.getCity());
 				se.setAddress(e.getStreet());
 				se.setOwnerId(ownerId);
+				se.setEntityStatus(e.getEntityStatus());
 				realEstates.add(se);
 			}
 			return realEstates;
@@ -274,8 +277,7 @@ public class RealEstateDao extends NapoleonDao<RealEstate> {
 		// load the owner (not supposed to be null)
 		SimpleOwner o = getOwner(e);
 		e.setOwner(o);
-		
 		return e;
 	}
-	
+
 }

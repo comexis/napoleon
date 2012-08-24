@@ -83,6 +83,7 @@ public class LeaseDao extends DAOBase {
       se.setId(realEstate.getId());
       se.setOwner(o.getLastName());
       se.setOwnerId(o.getId());
+      se.setEntityStatus(o.getEntityStatus());
       l.setRealEstate(se);
       if (l.getFee() == null && FeeUnit.LUMP_SUM.equals(o.getUnit())) {
         l.setFee(o.getFee().floatValue());
@@ -101,6 +102,7 @@ public class LeaseDao extends DAOBase {
         st.setPostalCode(t.getPostalCode());
         st.setPhoneNumber(t.getPhoneNumber());
         st.setMobileNumber(t.getMobilePhoneNumber());
+        st.setEntityStatus(t.getEntityStatus());
         l.setTenant(st);
       }
     }
@@ -152,6 +154,7 @@ public class LeaseDao extends DAOBase {
       sl.setTenantName(t.getLastName());
       sl.setStartDate(l.getStartDate());
       sl.setEndDate(l.getEndDate());
+      sl.setEntityStatus(l.getEntityStatus());
       leaseList.add(sl);
     }
     return leaseList;

@@ -7,6 +7,7 @@ import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 import eu.comexis.napoleon.client.core.AbstractListView;
+import eu.comexis.napoleon.client.utils.UiHelper;
 import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
 import eu.comexis.napoleon.shared.utils.SimpleTextComparator;
 
@@ -52,6 +53,24 @@ public class OwnerListView extends AbstractListView<SimpleOwner> implements
     
     
 
+   // Status.
+    Column<SimpleOwner, String> entityStatusColumn = new Column<SimpleOwner, String>(new TextCell()) {
+      @Override
+      public String getValue(SimpleOwner object) {
+        return (object.getEntityStatus() != null ? UiHelper.translateEnum(
+                "EntityStatus_", object.getEntityStatus()) : "");
+      }
+    };
+
+    entityStatusColumn.setSortable(true);
+    sortHandler.setComparator(entityStatusColumn, new SimpleTextComparator<SimpleOwner>() {
+      public int compare(SimpleOwner o1, SimpleOwner o2) {        	 
+        return o1.getEntityStatus().compareTo(o2.getEntityStatus());
+      }
+    });
+
+    table.addColumn(entityStatusColumn, "Statut");
+    
     // address.
     Column<SimpleOwner, String> addressColumn = new Column<SimpleOwner, String>(new TextCell()) {
       @Override

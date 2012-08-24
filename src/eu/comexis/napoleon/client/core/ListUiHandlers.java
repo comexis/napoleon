@@ -21,6 +21,8 @@ public interface ListUiHandlers<T> {
   public void onButtonBackToDashBoardClick();
 
   public void onButtonNewClick();
+  
+  public void onShowOnlyActiveClicked(boolean clicked, String filterString);
 
   /**
    * Method call when the user select
@@ -29,5 +31,5 @@ public interface ListUiHandlers<T> {
    */
   public void onSelect(T selectedRealEstate);
 
-  public void filter(String filterString);
+  public void filter(String filterString, boolean showOnlyActive);
 }

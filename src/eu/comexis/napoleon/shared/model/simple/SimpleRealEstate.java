@@ -2,9 +2,11 @@ package eu.comexis.napoleon.shared.model.simple;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
+import eu.comexis.napoleon.shared.model.EnablableEntity;
+import eu.comexis.napoleon.shared.model.EntityStatus;
 import eu.comexis.napoleon.shared.model.Identifiable;
 
-public class SimpleRealEstate implements IsSerializable, Identifiable {
+public class SimpleRealEstate implements EnablableEntity, IsSerializable, Identifiable {
   
   private String address;
   private String city;
@@ -16,7 +18,8 @@ public class SimpleRealEstate implements IsSerializable, Identifiable {
   private String phoneNumber;
   private String postalCode;
   private String reference;
-
+  private EntityStatus entityStatus;
+  
   public String getAddress() {
     return address;
   }
@@ -96,4 +99,11 @@ public class SimpleRealEstate implements IsSerializable, Identifiable {
   public void setReference(String reference) {
     this.reference = reference;
   }
+  public EntityStatus getEntityStatus() {
+	return entityStatus;
+  }
+
+  public void setEntityStatus(EntityStatus entityStatus) {
+	this.entityStatus = entityStatus;
+  } 
 }

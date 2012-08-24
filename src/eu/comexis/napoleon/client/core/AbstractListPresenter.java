@@ -15,6 +15,8 @@ import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
 import eu.comexis.napoleon.client.place.NameTokens;
+import eu.comexis.napoleon.shared.model.EnablableEntity;
+import eu.comexis.napoleon.shared.model.EntityStatus;
 import eu.comexis.napoleon.shared.model.Identifiable;
 
 public abstract class AbstractListPresenter<T extends Identifiable, V extends AbstractListPresenter.MyView<T>, P extends Proxy<?>>
@@ -44,19 +46,19 @@ public abstract class AbstractListPresenter<T extends Identifiable, V extends Ab
   }
 
   @Override
-  public void filter(String newFilterValue) {
+  public void filter(String newFilterValue, boolean showOnlyActive) {
     
     //reset
     if (newFilterValue == null || newFilterValue.length() == 0){
       getView().setData(datas);
       filteredDatas = datas;
       filterValue = null;
-      return;
+      //return;
     }
     
     //filter don't change since the last call
     if (newFilterValue.equals(filterValue)){
-      return;
+      //return;
     }
     
     if (filterValue == null || !newFilterValue.startsWith(filterValue)){
@@ -69,7 +71,10 @@ public abstract class AbstractListPresenter<T extends Identifiable, V extends Ab
     
     for (T data : filteredDatas){
       if (!filter.filter(data, newFilterValue)){
-        newDatas.add(data);
+    	  if(!(showOnlyActive && data instanceof EnablableEntity && !EntityStatus.ACTIVE.equals((((EnablableEntity)data)).getEntityStatus()))){
+    		  newDatas.add(data);
+    	  }
+        
       }
     }
     
@@ -90,6 +95,11 @@ public abstract class AbstractListPresenter<T extends Identifiable, V extends Ab
     PlaceRequest myRequest = new PlaceRequest(getUpdateNameTokens());
     myRequest = myRequest.with(UUID_PARAMETER, "new");
     getPlaceManager().revealPlace(myRequest);
+  }
+  
+  @Override
+  public void onShowOnlyActiveClicked(boolean checked, String filterString) {
+    this.filter(filterString, checked); 
   }
 
   @Override

@@ -16,6 +16,7 @@ import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.resources.Literals;
 import eu.comexis.napoleon.client.rpc.callback.GotAllTenant;
 import eu.comexis.napoleon.shared.command.tenant.GetAllTenantCommand;
+import eu.comexis.napoleon.shared.model.EntityStatus;
 import eu.comexis.napoleon.shared.model.simple.SimpleTenant;
 
 public class TenantListPresenter extends
@@ -26,7 +27,7 @@ public class TenantListPresenter extends
     @Override
     public boolean filter(SimpleTenant tenant, String filter) {
       return !tenant.getName().toLowerCase().startsWith(filter.toLowerCase());
-    }
+    }    
     
   }
 

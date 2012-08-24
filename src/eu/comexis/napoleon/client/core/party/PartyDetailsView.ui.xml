@@ -13,6 +13,11 @@
 			<g:header>Général</g:header>
 			<g:ScrollPanel>
 				<g:HTMLPanel styleName="{res.css.detailTable}">
+				
+					<div class="{res.css.detailRow}">
+						<span class="{res.css.detailCellLabel}">Statut :</span>
+						<span ui:field="entityStatus" class="{res.css.detailCellValue}" />
+					</div>
 
 					<div class="{res.css.detailRow}">
 						<span class="{res.css.detailCellLabel}">Nom :</span>

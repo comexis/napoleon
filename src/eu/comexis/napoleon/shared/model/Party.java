@@ -20,7 +20,7 @@ import com.googlecode.objectify.annotation.Unindexed;
  * 
  */
 @Unindexed
-public abstract class Party implements IsSerializable, Identifiable, HasFiles {
+public abstract class Party implements EnablableEntity, IsSerializable, Identifiable, HasFiles {
 
   private String bankAccountNumber;
   private String bic;
@@ -52,7 +52,8 @@ public abstract class Party implements IsSerializable, Identifiable, HasFiles {
   private String street;
   private String number;
   private String box;
-  private Title title;
+  private Title title;  
+  private EntityStatus entityStatus;
 
   @Indexed
   private Boolean flagActivated;
@@ -325,8 +326,19 @@ public abstract class Party implements IsSerializable, Identifiable, HasFiles {
 
   public void setTitle(Title value) {
     title = value;
+  }  
+
+  public EntityStatus getEntityStatus() {
+	return entityStatus;
   }
+
+  public void setEntityStatus(EntityStatus entityStatus) {
+	this.entityStatus = entityStatus;
+  }
+
   public String getFullAddressLine(){
     return this.street + ", " + this.number + (this.box!=null && !this.box.isEmpty()? " bte " + this.box:"");
   }
+
+
 }

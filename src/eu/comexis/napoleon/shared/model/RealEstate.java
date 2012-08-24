@@ -19,7 +19,9 @@ import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
  * @author xavier Bien immobilier
  */
 @Unindexed
-public class RealEstate implements IsSerializable, Identifiable, HasFiles {
+
+public class RealEstate implements EnablableEntity, IsSerializable , Identifiable, HasFiles{
+
 
 	@Id
 	private String id;
@@ -70,8 +72,13 @@ public class RealEstate implements IsSerializable, Identifiable, HasFiles {
 	// n° de téléphone mobile (GSM) du syndic
 	private String assocMobilePhoneNumber;
 
+  
+  private EntityStatus entityStatus;
+  
+  
 	@Indexed
 	private Key<Owner> ownerKey;
+
 
 	@NotSaved
 	private SimpleOwner owner;
@@ -113,6 +120,17 @@ public class RealEstate implements IsSerializable, Identifiable, HasFiles {
 	public String getCity() {
 		return city;
 	}
+
+
+  
+  public EntityStatus getEntityStatus() {
+	return entityStatus;
+  }
+
+  public void setEntityStatus(EntityStatus entityStatus) {
+	this.entityStatus = entityStatus;
+  }  
+
 
 	public Key<Company> getCompany() {
 		return company;

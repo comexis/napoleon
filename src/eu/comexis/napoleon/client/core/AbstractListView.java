@@ -17,6 +17,7 @@ import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSe
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
@@ -36,6 +37,8 @@ public abstract class AbstractListView<T> extends ViewImpl implements
 
   @UiField
   InputElement filter;
+  @UiField
+  CheckBox showOnlyActive;
   @UiField(provided = true)
   SimplePager pager;
   @UiField
@@ -79,6 +82,11 @@ public abstract class AbstractListView<T> extends ViewImpl implements
   public void onNewClicked(ClickEvent e) {
     presenter.onButtonNewClick();
   }
+  
+  @UiHandler("showOnlyActive")
+  public void onShowOnlyActiveClicked(ClickEvent e) {
+    presenter.onShowOnlyActiveClicked(showOnlyActive.getValue(), filter.getValue());
+  }
 
   @Override
   public void setData(List<T> datas) {
@@ -107,18 +115,19 @@ public abstract class AbstractListView<T> extends ViewImpl implements
       @Override
       public void f() {
         String filterString = $(filter).val();
-        presenter.filter(filterString);
+        boolean checked = showOnlyActive.getValue();
+        presenter.filter(filterString, checked);
       }
-    });
+    });    
 
     btnNew.setText(getButtonNewLabel());
     btnToDashBoard.setText(getButtonBackLabel());
-
+ 
   }
 
   @UiHandler("reset")
   public void onResetFilter(ClickEvent e) {
-    presenter.filter(null);
+    presenter.filter(null, false);
     $(filter).val("");
   }
 
