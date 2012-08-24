@@ -1,35 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <datastore-indexes autoGenerate="false">
-	 <!-- Used 1 time in query history -->
-    <datastore-index kind="Payment" ancestor="true" source="auto">
-        <property name="^i" direction="asc"/>
-        <property name="periodEndDate" direction="desc"/>
-    </datastore-index>
+	<!-- Used 1 time in query history -->
+	<datastore-index kind="Payment" ancestor="true" source="auto">
+		<property name="^i" direction="asc" />
+		<property name="periodEndDate" direction="desc" />
+	</datastore-index>
 
-    <!-- Used 2 times in query history -->
-    <datastore-index kind="Payment" ancestor="true" source="auto">
-        <property name="^i" direction="asc"/>
-        <property name="periodEndDate" direction="asc"/>
-    </datastore-index>
-    
-    <datastore-index kind="Payment" ancestor="true" source="auto">
-        <property name="^i" direction="asc"/>
-        <property name="periodStartDate" direction="asc"/>
-    </datastore-index>
-    
-    <datastore-index kind="Lease" ancestor="true" source="manual">
-        <property name="endDate" direction="asc"/>
-    </datastore-index>
-    
-    	<datastore-index kind="RealEstate " ancestor="true"
+	<!-- Used 2 times in query history -->
+	<datastore-index kind="Payment" ancestor="true" source="auto">
+		<property name="^i" direction="asc" />
+		<property name="periodEndDate" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="Payment" ancestor="true" source="auto">
+		<property name="^i" direction="asc" />
+		<property name="periodStartDate" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="Lease" ancestor="true" source="manual">
+		<property name="endDate" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="RealEstate " ancestor="true"
 		source="auto">
 		<property name="condominium" direction="asc" />
 	</datastore-index>
-    
-    <datastore-index kind="Lease" ancestor="true" source="manual">
-        <property name="tenantKey" direction="asc"/>
-        <property name="endDate" direction="asc"/>
-    </datastore-index>
-    
->>>>>>> af1bf661cc2b0114aa0d4f2acfbb5778b81c4b46
+
+	<datastore-index kind="Lease" ancestor="true" source="manual">
+		<property name="tenantKey" direction="asc" />
+		<property name="endDate" direction="asc" />
+	</datastore-index>
 </datastore-indexes>
