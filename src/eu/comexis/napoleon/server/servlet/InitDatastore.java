@@ -2,6 +2,7 @@ package eu.comexis.napoleon.server.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -13,10 +14,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+
 import eu.comexis.napoleon.server.dao.ApplicationUserDao;
 import eu.comexis.napoleon.server.dao.CompanyDao;
 import eu.comexis.napoleon.server.dao.LeaseDao;
-import eu.comexis.napoleon.server.dao.NapoleonDao;
 import eu.comexis.napoleon.server.dao.OwnerDao;
 import eu.comexis.napoleon.server.dao.RealEstateDao;
 import eu.comexis.napoleon.server.dao.TenantDao;
@@ -38,30 +44,61 @@ public class InitDatastore extends HttpServlet {
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException,
       IOException {
 
-    deleteAll();
+    //deleteAll();
 
-    String companyId = createCompany();
+    //String companyId = createCompany();
 
-    createApplicationUsers(companyId);
+    //createApplicationUsers(companyId);
     
-    createApplicationUsersLive(companyId);
+    //createApplicationUsersLive(companyId);
 
-    createOwners(companyId);
+    //createOwners(companyId);
 
-    createTenantDao(companyId);
+    //createTenantDao(companyId);
 
-    create300RealEstate(companyId);
+    //create300RealEstate(companyId);
     
-    createRealEstate(companyId);
-    
-    createLease(companyId);
+    //createRealEstate(companyId);
+    //createLease(companyId);
 
-    printResults(companyId, resp);
+    //printResults(companyId, resp);
     
-    createOtherUsers();
+    //createOtherUsers();
     
+	  resp.getWriter().write("Process start");
+	  updateCondominium();
+	  resp.getWriter().write("Process finish");
 
   }
+  
+  private void updateCondominium(){
+
+	  	Query q = new Query("RealEstate");
+	  	
+	 // Get the Datastore Service
+	  	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+	    
+	    PreparedQuery pq = datastore.prepare(q);
+	    
+	    List<Entity> entities = new ArrayList<Entity>();
+	    
+	    for (Entity e : pq.asIterable()) {
+	    	String condominium = (String)e.getProperty("condominium");
+	    	if (condominium != null && condominium.length() != 0){
+	    		System.out.println("writing condominium "+ condominium);
+	    		e.setProperty("condominium", condominium);
+	    		entities.add(e);
+	    	}else{
+	    		System.out.println("condominium null");
+	    	}
+	    }
+	    
+	    System.out.println("# of entities saved : "+entities.size());
+	    datastore.put(entities);
+
+  }
+  
   
   private void createOtherUsers() {
     ApplicationUserDao userData = new ApplicationUserDao();
@@ -73,9 +110,9 @@ public class InitDatastore extends HttpServlet {
     // create user xavier.platiaux@gmail.com
     
     ApplicationUser u = userData.create(companyId);
-    u.setFirstName("Frédéric");
-    u.setLastName("Collin");
-    u.setEmail("frederic.collin@gmail.com");
+    u.setFirstName("Julien");
+    u.setLastName("Dramaix");
+    u.setEmail("julien.dramaix@gmail.com");
     userData.update(u);
     
     
