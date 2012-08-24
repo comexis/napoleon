@@ -8,6 +8,7 @@ import eu.comexis.napoleon.client.rpc.SuggestService;
 import eu.comexis.napoleon.server.dao.AcademicYearDao;
 import eu.comexis.napoleon.server.dao.JobTitleDao;
 import eu.comexis.napoleon.server.dao.NationalityDao;
+import eu.comexis.napoleon.server.dao.IbanDao;
 import eu.comexis.napoleon.server.dao.TypeOfWorkDao;
 import eu.comexis.napoleon.server.manager.UserManager;
 import eu.comexis.napoleon.shared.command.suggest.GetAllSuggestCommand;
@@ -30,6 +31,9 @@ public class SuggestServiceImpl extends RemoteServiceServlet implements SuggestS
     }else if (command.getName().equals("Nationality")){
       NationalityDao natDao = new NationalityDao();
       lst = natDao.getNames(companyId);
+    }else if (command.getName().equals("Iban")){
+        IbanDao ibanDao = new IbanDao();
+        lst = ibanDao.getNames(companyId);
     }else if (command.getName().equals("AcademicYear")){
       AcademicYearDao ayDao = new AcademicYearDao();
       lst = ayDao.getNames(companyId);

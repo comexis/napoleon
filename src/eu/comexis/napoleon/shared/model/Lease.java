@@ -24,7 +24,7 @@ import eu.comexis.napoleon.shared.model.simple.SimpleTenant;
  * @author xavier Location
  */
 @Unindexed
-public class Lease implements IsSerializable , Identifiable,HasFiles{
+public class Lease implements EnablableEntity, IsSerializable , Identifiable,HasFiles{
 
   @Id
   private String id;
@@ -54,8 +54,11 @@ public class Lease implements IsSerializable , Identifiable,HasFiles{
   private Date depositDate;
 
   private Boolean depositInCash;
+  private Boolean depositAgency;
   private String iban;
   private String bic;
+  private String ibanOwner;
+  private String bicOwner;
   private Boolean hasFurnituresRental;
   private Boolean hasFurnituresWithContract;
   private Float furnituresAnnualAmount;
@@ -76,6 +79,9 @@ public class Lease implements IsSerializable , Identifiable,HasFiles{
   private SimpleTenant tenant;
   @Embedded
   private ArrayList<FileDescriptor> files;
+  
+  private EntityStatus entityStatus;
+  
   /**
 	 * 
 	 */
@@ -94,7 +100,7 @@ public class Lease implements IsSerializable , Identifiable,HasFiles{
   }
   public String getBookkeepingReference() {
     return bookkeepingReference;
-  }
+  }   
   public String getCooccupant() {
     return cooccupant;
   }
@@ -231,8 +237,7 @@ public class Lease implements IsSerializable , Identifiable,HasFiles{
 
   public void setBookkeepingReference(String bookkeepingReference) {
     this.bookkeepingReference = bookkeepingReference;
-  }
-
+  }  
   public void setCooccupant(String cooccupant) {
     this.cooccupant = cooccupant;
   }
@@ -353,4 +358,32 @@ public class Lease implements IsSerializable , Identifiable,HasFiles{
   public void setUnit(FeeUnit unit) {
     this.unit = unit;
   }
+  public Boolean getDepositAgency() {
+	return depositAgency;
+  }
+  public void setDepositAgency(Boolean depositAgency) {
+	this.depositAgency = depositAgency;
+  }
+  public String getIbanOwner() {
+	return ibanOwner;
+  }
+  public void setIbanOwner(String ibanOwner) {
+	this.ibanOwner = ibanOwner;
+  }
+  public String getBicOwner() {
+	return bicOwner;
+  }
+  public void setBicOwner(String bicOwner) {
+	this.bicOwner = bicOwner;
+  }
+  
+  public EntityStatus getEntityStatus() {
+	return entityStatus;
+  }
+
+  public void setEntityStatus(EntityStatus entityStatus) {
+	this.entityStatus = entityStatus;
+  }  
+
+  
 }

@@ -2,10 +2,12 @@ package eu.comexis.napoleon.shared.model.simple;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
+import eu.comexis.napoleon.shared.model.EnablableEntity;
+import eu.comexis.napoleon.shared.model.EntityStatus;
 import eu.comexis.napoleon.shared.model.Identifiable;
 
 
-public class SimpleOwner implements IsSerializable, Identifiable{
+public class SimpleOwner  implements EnablableEntity, IsSerializable, Identifiable{
 
   private String id;
   private String clientId;
@@ -16,7 +18,8 @@ public class SimpleOwner implements IsSerializable, Identifiable{
   private String phoneNumber;
   private String mobile;
   private String Email;
-
+  private EntityStatus entityStatus;
+  
   public SimpleOwner() {
   }
 
@@ -91,5 +94,13 @@ public class SimpleOwner implements IsSerializable, Identifiable{
   public void setPostalCode(String postalCode) {
     this.postalCode = postalCode;
   }
+  
+  public EntityStatus getEntityStatus() {
+	return entityStatus;
+  }
+
+  public void setEntityStatus(EntityStatus entityStatus) {
+	this.entityStatus = entityStatus;
+  }  
 
 }

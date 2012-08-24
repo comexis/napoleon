@@ -58,6 +58,8 @@ public class LeaseUpdatePresenter extends
     public void fillTenantList(List<SimpleTenant> tenants);
 
     public void fillAcademicYearList(List<String> years);
+    
+    public void fillIbanList(List<String> ibans);
   }
 
   public static final String UUID_PARAMETER = "uuid";
@@ -89,6 +91,7 @@ public class LeaseUpdatePresenter extends
 
   private void goToList() {
     PlaceRequest myRequest = new PlaceRequest(NameTokens.leaselist);
+    myRequest = myRequest.with(UUID_PARAMETER, lease.getRealEstate().getId());
     placeManager.revealPlace(myRequest);
 
   }
@@ -112,7 +115,8 @@ public class LeaseUpdatePresenter extends
     }
     getView().setFee(fee);
   }
-
+  
+ 
   @Override
   public void onButtonSaveClick() {
     getView().updateLease(lease);
@@ -213,6 +217,13 @@ public class LeaseUpdatePresenter extends
         getView().fillAcademicYearList(suggests);
       }
     });
+    
+    new GetAllSuggestCommand("Iban").dispatch(new GotAllSuggest() {
+        @Override
+        public void got(List<String> suggests) {
+          getView().fillIbanList(suggests);
+        }
+      });
   }
 
   @Override

@@ -20,6 +20,7 @@ import eu.comexis.napoleon.server.utils.NapoleonDaoException;
 import eu.comexis.napoleon.shared.model.AcademicYear;
 import eu.comexis.napoleon.shared.model.Company;
 import eu.comexis.napoleon.shared.model.FeeUnit;
+import eu.comexis.napoleon.shared.model.Iban;
 import eu.comexis.napoleon.shared.model.Lease;
 import eu.comexis.napoleon.shared.model.Owner;
 import eu.comexis.napoleon.shared.model.RealEstate;
@@ -82,6 +83,7 @@ public class LeaseDao extends DAOBase {
       se.setId(realEstate.getId());
       se.setOwner(o.getLastName());
       se.setOwnerId(o.getId());
+      se.setEntityStatus(o.getEntityStatus());
       l.setRealEstate(se);
       if (l.getFee() == null && FeeUnit.LUMP_SUM.equals(o.getUnit())) {
         l.setFee(o.getFee().floatValue());
@@ -100,6 +102,7 @@ public class LeaseDao extends DAOBase {
         st.setPostalCode(t.getPostalCode());
         st.setPhoneNumber(t.getPhoneNumber());
         st.setMobileNumber(t.getMobilePhoneNumber());
+        st.setEntityStatus(t.getEntityStatus());
         l.setTenant(st);
       }
     }
@@ -151,6 +154,7 @@ public class LeaseDao extends DAOBase {
       sl.setTenantName(t.getLastName());
       sl.setStartDate(l.getStartDate());
       sl.setEndDate(l.getEndDate());
+      sl.setEntityStatus(l.getEntityStatus());
       leaseList.add(sl);
     }
     return leaseList;
@@ -280,6 +284,13 @@ public class LeaseDao extends DAOBase {
       year.setCompany(companyKey);
       year.setName(lease.getAcademicYear());
       ayDao.update(year);
+    }
+    if (lease.getIban() != null && !lease.getIban().isEmpty()) {
+        IbanDao ibanDao = new IbanDao();
+        Iban iban = new Iban();
+        iban.setName(lease.getIban());
+        iban.setCompany(companyKey);
+        ibanDao.update(iban);
     }
     try {
       lease.setStartDate(setTime(lease.getStartDate()));

@@ -24,7 +24,7 @@ Company client = UserManager.INSTANCE.getConnectedCompany();
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-		
+		<meta name="gwt:property" content="locale=fr">
 
 	<title><%client.getName();%></title>
 	

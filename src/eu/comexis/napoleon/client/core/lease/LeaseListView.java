@@ -10,6 +10,7 @@ import eu.comexis.napoleon.client.core.AbstractListView;
 import eu.comexis.napoleon.client.utils.SimpleTextComparator;
 import eu.comexis.napoleon.client.utils.UiHelper;
 import eu.comexis.napoleon.shared.model.simple.SimpleLease;
+import eu.comexis.napoleon.shared.model.simple.SimpleTenant;
 
 public class LeaseListView extends AbstractListView<SimpleLease> implements
   LeaseListPresenter.MyView {
@@ -50,6 +51,24 @@ public class LeaseListView extends AbstractListView<SimpleLease> implements
     });
 
     table.addColumn(nameColumn, "Référence");
+    
+   // Status.
+    Column<SimpleLease, String> entityStatusColumn = new Column<SimpleLease, String>(new TextCell()) {
+      @Override
+      public String getValue(SimpleLease object) {
+        return (object.getEntityStatus() != null ? UiHelper.translateEnum(
+                "EntityStatus_", object.getEntityStatus()) : "");
+      }
+    };
+
+    entityStatusColumn.setSortable(true);
+    sortHandler.setComparator(entityStatusColumn, new SimpleTextComparator<SimpleLease>() {
+      public int compare(SimpleLease o1, SimpleLease o2) {        	 
+        return o1.getEntityStatus().compareTo(o2.getEntityStatus());
+      }
+    });
+
+    table.addColumn(entityStatusColumn, "Statut");
 
     // Academic Year.
     Column<SimpleLease, String> academicYearColumn = new Column<SimpleLease, String>(new TextCell()) {
@@ -144,6 +163,6 @@ public class LeaseListView extends AbstractListView<SimpleLease> implements
   }
   @Override
   protected String getButtonBackLabel() {
-    return "Retour vers le dashboard";
+    return "Retour vers le bien immobilier";
   }
 }

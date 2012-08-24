@@ -8,6 +8,8 @@ import com.google.gwt.view.client.SingleSelectionModel;
 
 import eu.comexis.napoleon.client.core.AbstractListView;
 import eu.comexis.napoleon.client.utils.SimpleTextComparator;
+import eu.comexis.napoleon.client.utils.UiHelper;
+import eu.comexis.napoleon.shared.model.Expense;
 import eu.comexis.napoleon.shared.model.simple.SimpleRealEstate;
 
 public class RealEstateListView extends AbstractListView<SimpleRealEstate> implements
@@ -51,6 +53,24 @@ public class RealEstateListView extends AbstractListView<SimpleRealEstate> imple
     });
 
     table.addColumn(referenceColumn, "Référence");
+    
+ // Status.
+    Column<SimpleRealEstate, String> entityStatusColumn = new Column<SimpleRealEstate, String>(new TextCell()) {
+      @Override
+      public String getValue(SimpleRealEstate object) {
+        return (object.getEntityStatus() != null ? UiHelper.translateEnum(
+                "EntityStatus_", object.getEntityStatus()) : "");
+      }
+    };
+
+    entityStatusColumn.setSortable(true);
+    sortHandler.setComparator(entityStatusColumn, new SimpleTextComparator<SimpleRealEstate>() {
+      public int compare(SimpleRealEstate o1, SimpleRealEstate o2) {        	 
+        return o1.getEntityStatus().compareTo(o2.getEntityStatus());
+      }
+    });
+
+    table.addColumn(entityStatusColumn, "Statut");
     
     // Proprio
     Column<SimpleRealEstate, String> ownerColumn =

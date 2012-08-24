@@ -47,9 +47,7 @@ public class LeaseDetailsView extends ViewImpl implements LeaseDetailsPresenter.
   @UiField
   Element depositDate;
   @UiField
-  Element cash;
-  @UiField
-  Element bank;
+  Element depositType;
   @UiField
   Element iban;
   @UiField
@@ -171,7 +169,8 @@ public class LeaseDetailsView extends ViewImpl implements LeaseDetailsPresenter.
     this.fee.setInnerText(UiHelper.FloatToString(l.getFee()));
     float rent = l.getRent() != null ? l.getRent() : 0;
     float fee = l.getFee() != null ? l.getFee() : 0;
-    this.feeOwner.setInnerText(UiHelper.FloatToString(rent - fee));
+    float charges = l.getServiceCharges() != null ? l.getServiceCharges() : 0;
+    this.feeOwner.setInnerText(UiHelper.FloatToString(rent + charges - fee));
     this.charges.setInnerText(UiHelper.FloatToString(l.getServiceCharges()));
     this.deposit.setInnerText(UiHelper.FloatToString(l.getSecurityDeposit()));
     this.rent.setInnerText(UiHelper.FloatToString(l.getRent()));
@@ -183,14 +182,24 @@ public class LeaseDetailsView extends ViewImpl implements LeaseDetailsPresenter.
     this.hasFurnituresWithContract.setInnerText((l.getHasFurnituresWithContract() != null && l
         .getHasFurnituresWithContract().equals(true)) ? "Oui" : "Non");
     this.hasFurnituresRental.setInnerText((l.getHasFurnituresRental() != null && l
-        .getHasFurnituresRental().equals(true)) ? "Oui" : "Non");
-    this.cash.setInnerText((l.getDepositInCash() != null && l.getDepositInCash().equals(true))
-        ? "Oui" : "Non");
-    this.bank.setInnerText((l.getDepositInCash() != null && l.getDepositInCash().equals(false))
-        ? "Oui" : "Non");
+        .getHasFurnituresRental().equals(true)) ? "Oui" : "Non");    
     this.bookkeepingRef.setInnerText(l.getBookkeepingReference());
-    this.iban.setInnerText(l.getIban());
-    this.bic.setInnerText(l.getBic());
+    if(l.getDepositInCash() != null && l.getDepositInCash().equals(true)){
+     this.depositType.setInnerText("Cash");
+     this.iban.setInnerText("");
+	 this.bic.setInnerText("");
+    } else {
+    	if(l.getDepositAgency()!= null && l.getDepositAgency().equals(true)) {
+    		this.depositType.setInnerText("Compte agence");
+    		this.iban.setInnerText(l.getIban());
+    	    this.bic.setInnerText(l.getBic());
+    	} else {
+    		this.depositType.setInnerText("Compte bloqué");
+    		this.iban.setInnerText(l.getIbanOwner());
+    	    this.bic.setInnerText(l.getBicOwner());
+    	}    	
+    }
+    
     this.furnituresAmount.setInnerText(UiHelper.FloatToString(l.getFurnituresAnnualAmount()));
     this.furnituresDate.setInnerText(UiHelper.displayDate(l.getFurnituresDate()));
   }

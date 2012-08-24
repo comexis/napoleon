@@ -71,6 +71,7 @@ public class RealEstateDao extends NapoleonDao<RealEstate> {
     se.setOwnerId(o.getId());
     se.setMobile(o.getMobileNumber());
     se.setPhoneNumber(o.getPhoneNumber());
+    se.setEntityStatus(o.getEntityStatus());
     return se;
   }
   @Override
@@ -225,6 +226,7 @@ public class RealEstateDao extends NapoleonDao<RealEstate> {
     o.setAddress(own.getFullAddressLine());
     o.setPostalCode(own.getPostalCode());
     o.setCity(own.getCity());
+    o.setEntityStatus(own.getEntityStatus());
     return o;
   }
   public ArrayList<SimpleRealEstate> getListSimpleRealEstatesForOwner(String companyId,String ownerId) {
@@ -241,6 +243,7 @@ public class RealEstateDao extends NapoleonDao<RealEstate> {
         se.setCity(e.getCity());
         se.setAddress(e.getStreet());
         se.setOwnerId(ownerId);
+        se.setEntityStatus(e.getEntityStatus());
         realEstates.add(se);
       }
       return realEstates;

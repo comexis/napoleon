@@ -57,21 +57,25 @@
 			</div>
 		<div id="moreDetailTenant" class="{res.css.detailRow} {res.css.separationRow}">
 			<div class="{res.css.detailRow} {res.css.separationRow}">
-				<span class="{res.css.detailCellInputLabel} {res.css.autoLabel}" >Compte agence:</span>
-				<g:SuggestBox ui:field="account" styleName="{res.css.detailCellInputText}"/>
-			</div>
-			<div class="{res.css.detailRow} {res.css.separationRow}">
 				<g:RadioButton ui:field="inCashYes" styleName="{res.css.detailCellInputLabel}"
 						name="inCash" text="Cash"/>
+			</div>
+			<div class="{res.css.detailRow} {res.css.separationRow}">
 				<g:RadioButton ui:field="inCashNo" styleName="{res.css.detailCellInputLabel}"
 						name="inCash" text="Virement"/>
+				<span class="{res.css.detailCellInputLabel} {res.css.autoLabel}" >Compte agence:</span>
+				<g:SuggestBox ui:field="account" styleName="{res.css.detailCellInputText}"/>				
 				<span class="{res.css.detailCellInputLabel} {res.css.autoLabel}" >N° :</span>
 				<g:TextBox ui:field="number" styleName="{res.css.detailCellInputText}"/>
 				<span class="{res.css.detailCellInputLabel} {res.css.autoLabel}" >Communication :</span>
-				<g:TextBox ui:field="communication" styleName="{res.css.detailCellInputText}"/>
+				<g:TextBox ui:field="communication" styleName="{res.css.detailCellInputText}" />
 			</div>
 		</div>
 		
+		<div class="{res.css.detailRow} {res.css.separationRow}">
+				<span class="{res.css.detailCellInputLabel}" >Commentaires:</span>
+				<g:TextArea ui:field="comments" styleName="{res.css.detailCellInputList}" visibleLines="10" width="500px" name="comments" />				
+		</div>
 		
 		<div class="{res.css.separationRow}" style="clear: both;">
 

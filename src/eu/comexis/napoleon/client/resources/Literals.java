@@ -19,6 +19,17 @@ public interface Literals extends ConstantsWithLookup {
   @DefaultStringValue("Il n'y a pas encore de paiement locataire à verser au propriétaire")
   public String noPaymentToPayToOwner();
 
+  // EntityStatus enum
+  @DefaultStringValue("Actif")
+  public String EntityStatus_ACTIVE();
+  
+  @DefaultStringValue("Désactivé")
+  public String EntityStatus_NONACTIVE(); 
+  
+  @DefaultStringValue("Supprimé")
+  public String EntityStatus_DELETED(); 
+  
+  
   // MaritalStatus enum
   @DefaultStringValue("Célibataire")
   public String MaritalStatus_SINGLE();

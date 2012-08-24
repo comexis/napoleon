@@ -71,6 +71,23 @@ public class PaymentBoardListView extends AbstractShortListView<PaymentListItem>
 
     table.addColumn(toDateColumn, "Au");
     
+ // Date.
+    Column<PaymentListItem, String> dateColumn = new Column<PaymentListItem, String>(new TextCell()) {
+      @Override
+      public String getValue(PaymentListItem object) {
+        return UiHelper.displayDate(object.getPaymentTenantDate());
+      }
+    };
+
+    /*dateColumn.setSortable(true);
+    sortHandler.setComparator(dateColumn, new SimpleTextComparator<PaymentListItem>() {
+      public int compare(PaymentListItem o1, PaymentListItem o2) {
+        return compare(UiHelper.formatDateForCompare(o1.getPaymentTenantDate()), UiHelper.formatDateForCompare(o2.getPaymentTenantDate()));
+      }
+    });*/
+
+    table.addColumn(dateColumn, "Date paiement");
+    
     // Loyer.
     Column<PaymentListItem, String> amountColumn = new Column<PaymentListItem, String>(new TextCell()) {
       @Override
@@ -88,22 +105,23 @@ public class PaymentBoardListView extends AbstractShortListView<PaymentListItem>
 
     table.addColumn(amountColumn, "Loyer");
     
-    // Date.
-    Column<PaymentListItem, String> dateColumn = new Column<PaymentListItem, String>(new TextCell()) {
+    // Charges.
+    Column<PaymentListItem, String> chargesColumn = new Column<PaymentListItem, String>(new TextCell()) {
       @Override
       public String getValue(PaymentListItem object) {
-        return UiHelper.displayDate(object.getPaymentTenantDate());
+        return UiHelper.FloatToString(object.getCharges());
       }
     };
 
-    /*dateColumn.setSortable(true);
-    sortHandler.setComparator(dateColumn, new SimpleTextComparator<PaymentListItem>() {
+    /*amountColumn.setSortable(true);
+    sortHandler.setComparator(amountColumn, new SimpleTextComparator<PaymentListItem>() {
       public int compare(PaymentListItem o1, PaymentListItem o2) {
-        return compare(UiHelper.formatDateForCompare(o1.getPaymentTenantDate()), UiHelper.formatDateForCompare(o2.getPaymentTenantDate()));
+        return compare(UiHelper.FloatToString(o1.getCharges()),UiHelper.FloatToString(o2.getChagres()));
       }
     });*/
 
-    table.addColumn(dateColumn, "Date paiement");
+    table.addColumn(chargesColumn, "Charges");
+        
     
     // Honoraire.
     Column<PaymentListItem, String> feeColumn = new Column<PaymentListItem, String>(new TextCell()) {
@@ -121,24 +139,7 @@ public class PaymentBoardListView extends AbstractShortListView<PaymentListItem>
     });*/
     
     table.addColumn(feeColumn, "Honoraires");
-    
-    // solde.
-    Column<PaymentListItem, String> balanceColumn = new Column<PaymentListItem, String>(new TextCell()) {
-      @Override
-      public String getValue(PaymentListItem object) {
-        return UiHelper.FloatToString(object.getBalance());
-      }
-    };
-
-    /*balanceColumn.setSortable(true);
-    sortHandler.setComparator(balanceColumn, new SimpleTextComparator<PaymentListItem>() {
-      public int compare(PaymentListItem o1, PaymentListItem o2) {
-        return compare(UiHelper.FloatToString(o1.getBalance()),UiHelper.FloatToString(o2.getBalance()));
-      }
-    });*/
-    
-    table.addColumn(balanceColumn, "Solde");
-    
+            
     // expense.
     Column<PaymentListItem, String> expenseColumn = new Column<PaymentListItem, String>(new TextCell()) {
       @Override
@@ -189,6 +190,23 @@ public class PaymentBoardListView extends AbstractShortListView<PaymentListItem>
     });*/
     
     table.addColumn(givenToOnwerColumn, "Versé au propriétaire");
+    
+ // solde.
+    Column<PaymentListItem, String> balanceColumn = new Column<PaymentListItem, String>(new TextCell()) {
+      @Override
+      public String getValue(PaymentListItem object) {
+        return UiHelper.FloatToString(object.getBalance());
+      }
+    };
+
+    /*balanceColumn.setSortable(true);
+    sortHandler.setComparator(balanceColumn, new SimpleTextComparator<PaymentListItem>() {
+      public int compare(PaymentListItem o1, PaymentListItem o2) {
+        return compare(UiHelper.FloatToString(o1.getBalance()),UiHelper.FloatToString(o2.getBalance()));
+      }
+    });*/
+    
+    table.addColumn(balanceColumn, "Solde");
     
  // Date.
     Column<PaymentListItem, String> dateVersColumn = new Column<PaymentListItem, String>(new TextCell()) {

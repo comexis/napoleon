@@ -46,10 +46,12 @@ public abstract class PartyUpdatePresenter<T extends Party, V extends PartyUpdat
 
     public void fillJobList(List<String> jobs);
     
+    public void fillIbanList(List<String> ibans);
+    
     public void fillNationalityList(List<String> nationalities);
     
     public void fillPostalCodeList(List<String> postCdes);
-
+    
     public String getSelectedCountry();
 
     public void reset();
@@ -261,6 +263,12 @@ public abstract class PartyUpdatePresenter<T extends Party, V extends PartyUpdat
       @Override
       public void got(List<String> suggests) {
         getView().fillNationalityList(suggests);
+      }
+    });
+    new GetAllSuggestCommand("Iban").dispatch(new GotAllSuggest() {
+      @Override
+      public void got(List<String> suggests) {
+        getView().fillIbanList(suggests);
       }
     });
   }

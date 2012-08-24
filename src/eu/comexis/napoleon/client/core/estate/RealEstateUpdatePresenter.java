@@ -128,10 +128,7 @@ public class RealEstateUpdatePresenter extends
 
   @Override
   public void onButtonCancelClick() {
-    PlaceRequest myRequest = new PlaceRequest(NameTokens.realEstate);
-    // add the id of the realEstate to load
-    GWT.log("cancel click on " + realEstate.getId());
-    myRequest = myRequest.with(UUID_PARAMETER, realEstate.getId());
+    PlaceRequest myRequest = new PlaceRequest(NameTokens.realEstatelist);
     placeManager.revealPlace(myRequest);
   }
 
@@ -268,7 +265,7 @@ public class RealEstateUpdatePresenter extends
   protected void onBind() {
     super.onBind();
     getView().setRealEstateUpdateUiHandler(this);
-    
+    init();
   }
 
   @Override
@@ -297,7 +294,7 @@ public class RealEstateUpdatePresenter extends
       setRealEstate(realEstate);
     }
     
-    init();
+    //init();
   }
 
   @Override

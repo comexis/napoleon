@@ -9,6 +9,7 @@ import com.google.inject.Inject;
 
 import eu.comexis.napoleon.client.core.AbstractListView;
 import eu.comexis.napoleon.client.utils.SimpleTextComparator;
+import eu.comexis.napoleon.client.utils.UiHelper;
 import eu.comexis.napoleon.shared.model.simple.SimpleTenant;
 
 public class TenantListView extends AbstractListView<SimpleTenant> implements
@@ -50,6 +51,24 @@ public class TenantListView extends AbstractListView<SimpleTenant> implements
     });
 
     table.addColumn(nameColumn, "Nom");
+    
+ // Status.
+    Column<SimpleTenant, String> entityStatusColumn = new Column<SimpleTenant, String>(new TextCell()) {
+      @Override
+      public String getValue(SimpleTenant object) {
+        return (object.getEntityStatus() != null ? UiHelper.translateEnum(
+                "EntityStatus_", object.getEntityStatus()) : "");
+      }
+    };
+
+    entityStatusColumn.setSortable(true);
+    sortHandler.setComparator(entityStatusColumn, new SimpleTextComparator<SimpleTenant>() {
+      public int compare(SimpleTenant o1, SimpleTenant o2) {        	 
+        return o1.getEntityStatus().compareTo(o2.getEntityStatus());
+      }
+    });
+
+    table.addColumn(entityStatusColumn, "Statut");
 
     // address.
     Column<SimpleTenant, String> addressColumn = new Column<SimpleTenant, String>(new TextCell()) {
@@ -134,6 +153,9 @@ public class TenantListView extends AbstractListView<SimpleTenant> implements
     });
     table.addColumn(mobileColumn, "Mobile");
 
+    table.getColumnSortList().push(entityStatusColumn);
+    
+    
   }
 
   @Override

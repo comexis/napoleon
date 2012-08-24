@@ -23,6 +23,7 @@ import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
 import eu.comexis.napoleon.client.utils.UiHelper;
+import eu.comexis.napoleon.shared.model.EntityStatus;
 import eu.comexis.napoleon.shared.model.Lease;
 import eu.comexis.napoleon.shared.model.TypeOfRent;
 import eu.comexis.napoleon.shared.model.simple.SimpleTenant;
@@ -57,7 +58,13 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
   @UiField
   RadioButton depositInCashNo;
   @UiField
-  TextBox iban;
+  RadioButton depositAgency;
+  @UiField
+  TextBox ibanOwner;
+  @UiField
+  TextBox bicOwner;
+  @UiField
+  SuggestBox iban;
   @UiField
   TextBox bic;
   @UiField
@@ -96,6 +103,7 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
 
   protected void initNames() {
     academicYear.getTextBox().setName("academicYear");
+    iban.getTextBox().setName("iban");
   }
 
   @Override
@@ -125,6 +133,17 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
       }
     }
   }
+  
+  @Override
+  public void fillIbanList(List<String> ibans) {
+	MultiWordSuggestOracle oracle = (MultiWordSuggestOracle) iban.getSuggestOracle();
+		oracle.clear();
+		if (ibans != null) {
+		for (String sIban : ibans) {
+				oracle.add(sIban);
+		}
+	}
+  }	
 
   public SimpleTenant getTenant() {
     SimpleTenant t = null;
@@ -141,13 +160,16 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
     presenter.onRentChanged(UiHelper.stringToFloat(rent.getValue()));
     rent.setValue(UiHelper.FloatToString(UiHelper.stringToFloat(rent.getValue())));
     feeOwner.setValue(UiHelper.FloatToString(UiHelper.stringToFloat(rent.getValue())
-        - UiHelper.stringToFloat(fee.getValue())));
+    					+ UiHelper.stringToFloat(charges.getValue())
+    					- UiHelper.stringToFloat(fee.getValue())));
   }
 
   @UiHandler("fee")
   public void onChangeFee(ChangeEvent e) {
+	presenter.onRentChanged(UiHelper.stringToFloat(rent.getValue()));
     feeOwner.setValue(UiHelper.FloatToString(UiHelper.stringToFloat(rent.getValue())
-        - UiHelper.stringToFloat(fee.getValue())));
+    		+ UiHelper.stringToFloat(charges.getValue())
+    		- UiHelper.stringToFloat(fee.getValue())));
   }
 
   @UiHandler("deposit")
@@ -158,6 +180,10 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
   @UiHandler("charges")
   public void onChangeCharges(ChangeEvent e) {
     this.charges.setValue(UiHelper.FloatToString(UiHelper.stringToFloat(charges.getValue())));
+    presenter.onRentChanged(UiHelper.stringToFloat(rent.getValue()));
+    feeOwner.setValue(UiHelper.FloatToString(UiHelper.stringToFloat(rent.getValue())
+    					+ UiHelper.stringToFloat(charges.getValue())
+    					- UiHelper.stringToFloat(fee.getValue())));
   }
 
   @UiHandler("furnituresAmount")
@@ -168,23 +194,22 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
 
   @UiHandler("depositInCashYes")
   public void onChangeDepositInCashYes(ClickEvent e) {
-    if (depositInCashYes.getValue().equals(true)) {
-      disableDepositBank();
-    } else {
-      enableDepositBank();
-    }
+	  changeDespositType();  
   }
 
   @UiHandler("depositInCashNo")
   public void onChangeDepositInCashNo(ClickEvent e) {
-    if (depositInCashNo.getValue().equals(true)) {
-      enableDepositBank();
-    } else {
-      disableDepositBank();
-    }
+	  changeDespositType();  
+  }
+  
+  @UiHandler("depositAgency")
+  public void onChangeDepositAgency(ClickEvent e) {
+	changeDespositType();    
   }
 
-  @UiHandler("hasFurnituresRental")
+  
+
+@UiHandler("hasFurnituresRental")
   public void onChangehasFurnituresRental(ClickEvent e) {
     if (hasFurnituresRental.getValue().equals(true)) {
       enableFurniture();
@@ -205,19 +230,43 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
   private void enableFurniture() {
     hasFurnituresWithContract.setEnabled(true);
     disableFurnitureContract();
+  }  
+  
+  private void enableDepositBank(boolean enabled) {
+	  if(!enabled){
+		  this.ibanOwner.setValue("");
+		  this.bicOwner.setValue("");
+	  }
+	  this.bicOwner.setEnabled(enabled);	  
+	  this.ibanOwner.setEnabled(enabled);    
+  }
+  
+  private void enableDepositAgencyBank(boolean enabled) {
+	  if(!enabled){
+		  this.iban.setValue("");
+		  this.bic.setValue("");
+	  }
+	  this.bic.setEnabled(enabled);	  
+	  this.iban.getTextBox().setEnabled(enabled);
   }
 
-  private void enableDepositBank() {
-    this.iban.setEnabled(true);
-    this.bic.setEnabled(true);
-  }
-
-  private void disableDepositBank() {
-    this.iban.setValue("");
-    this.bic.setValue("");
-    this.iban.setEnabled(false);
-    this.bic.setEnabled(false);
-  }
+  
+  
+  private void changeDespositType() {
+	  if (depositInCashYes.getValue().equals(true)) {
+		  enableDepositBank(false);
+		  enableDepositAgencyBank(false);
+	  } else {
+		  if (depositAgency.getValue().equals(true)) {
+			  enableDepositBank(false);
+			  enableDepositAgencyBank(true);
+		  } else {
+			  enableDepositBank(true);
+			  enableDepositAgencyBank(false);
+		  }
+	  }
+  }  	
+    
 
   private void disableFurniture() {
     hasFurnituresWithContract.setEnabled(false);
@@ -279,13 +328,15 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
     this.depositDate.setValue(null);
     this.reference.setInnerHTML("");
     UiHelper.selectTextItemBoxByValue(this.tenantName, "-");
-    UiHelper.selectTextItemBoxByValue(this.type, "-");
+    UiHelper.selectTextItemBoxByValue(this.type, "NONE");
     this.furnituresPaymentOK.setValue(false);
     this.hasFurnituresWithContract.setValue(false);
     this.hasFurnituresRental.setValue(false);
-    this.depositInCashYes.setValue(true);
+    this.depositInCashYes.setValue(false);
     this.depositInCashNo.setValue(false);
-    disableDepositBank();
+    this.depositAgency.setValue(true);
+    enableDepositBank(false);
+    enableDepositAgencyBank(true);
     disableFurniture();
 
     if (l != null) {
@@ -299,19 +350,42 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
       this.charges.setValue(UiHelper.FloatToString(l.getServiceCharges()));
       this.deposit.setValue(UiHelper.FloatToString(l.getSecurityDeposit()));
       this.depositDate.setValue(l.getDepositDate());
-      this.depositInCashYes.setValue(l.getDepositInCash());
+      if(l.getDepositInCash() != null){
+    	  this.depositAgency.setValue(false);
+    	  if(l.getDepositInCash()){
+    		  this.depositInCashYes.setValue(true);
+    		  enableDepositBank(false);
+    		  enableDepositAgencyBank(false);
+    	  } else {
+    		  if(l.getDepositAgency() != null && l.getDepositAgency()){
+    			  this.depositAgency.setValue(true);
+    			  this.depositInCashNo.setValue(false);
+    			  enableDepositBank(false);
+    			  enableDepositAgencyBank(true);
+    		  } else {
+    			  this.depositInCashNo.setValue(true);
+    			  enableDepositBank(true);
+    			  enableDepositAgencyBank(false);
+    		  }    		  
+    	  } 
+      } else {
+    	  this.depositAgency.setValue(true);  
+      }      
       this.iban.setValue(l.getIban());
       this.bic.setValue(l.getBic());
+      this.ibanOwner.setValue(l.getIbanOwner());
+      this.bicOwner.setValue(l.getBicOwner());
       this.eleDate.setValue(l.getEleDate());
       this.elsDate.setValue(l.getElsDate());
       this.rent.setValue(UiHelper.FloatToString(l.getRent()));
       this.fee.setValue(UiHelper.FloatToString(l.getFee()));
-      if (l.getRent() != null && l.getFee() != null) {
-        this.feeOwner.setValue(UiHelper.FloatToString(l.getRent() - l.getFee()));
-      }
+      float rent = l.getRent() != null ? l.getRent() : 0;
+      float fee = l.getFee() != null ? l.getFee() : 0;
+      float charges = l.getServiceCharges() != null ? l.getServiceCharges() : 0;
+      this.feeOwner.setValue(UiHelper.FloatToString(rent + charges - fee));      
       this.bookkeepingRef.setValue(l.getBookkeepingReference());
       UiHelper
-          .selectTextItemBoxByValue(this.type, (l.getType() != null ? l.getType().name() : "-"));
+          .selectTextItemBoxByValue(this.type, (l.getType() != null ? l.getType().name() : "NONE"));
       this.hasFurnituresRental.setValue(l.getHasFurnituresRental() != null ? l
           .getHasFurnituresRental() : false);
       if (this.hasFurnituresRental.getValue()) {
@@ -343,9 +417,12 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
     l.setServiceCharges(UiHelper.stringToFloat(charges.getValue()));
     l.setSecurityDeposit(UiHelper.stringToFloat(deposit.getValue()));
     l.setDepositInCash(depositInCashYes.getValue());
+    l.setDepositAgency(depositAgency.getValue());
     l.setDepositDate(depositDate.getValue());
     l.setIban(iban.getValue());
     l.setBic(bic.getValue());
+    l.setIbanOwner(ibanOwner.getValue());
+    l.setBicOwner(bicOwner.getValue());
     l.setEleDate(eleDate.getValue());
     l.setElsDate(elsDate.getValue());
     l.setRent(UiHelper.stringToFloat(rent.getValue()));
@@ -374,10 +451,12 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
   @Override
   public void fillTenantList(List<SimpleTenant> tenants) {
     tenantName.clear();
-    for (SimpleTenant t : tenants) {
-      tenantName.addItem(t.getName(), t.getId());
-    }
     tenantName.addItem("-", "-");
+    for (SimpleTenant t : tenants) {
+      if(EntityStatus.ACTIVE.equals(t.getEntityStatus())){  //Only ACTIVE tenants must be displayed in the Dropdown
+    	  tenantName.addItem(t.getName(), t.getId());
+      }
+    }    
 
   }
 }

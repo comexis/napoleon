@@ -38,6 +38,9 @@
 				<span class='{style.filterLabel}'>Filtrer la liste :</span>
 				<input ui:field="filter" size="60" class='{style.filterInput}'></input>
 				<g:Button ui:field="reset">Réinitialiser</g:Button>
+				<span class='{style.filterLabel}'>&nbsp;</span>
+				<g:CheckBox ui:field="showOnlyActive" styleName="" 
+						name="showOnlyActive" text="Montrer uniquement les elements actifs"/>	
 			</div>
 			<table style="width:100%">
 				<tr>

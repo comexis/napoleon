@@ -19,7 +19,7 @@ import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
  * @author xavier Bien immobilier
  */
 @Unindexed
-public class RealEstate implements IsSerializable , Identifiable, HasFiles{
+public class RealEstate implements EnablableEntity, IsSerializable , Identifiable, HasFiles{
 
   @Id
   private String id;
@@ -75,6 +75,8 @@ public class RealEstate implements IsSerializable , Identifiable, HasFiles{
   private SimpleOwner owner;
 
   private String postalCode;
+  
+  private EntityStatus entityStatus;
   
   @Embedded
   private ArrayList<FileDescriptor> files;
@@ -281,7 +283,18 @@ public class RealEstate implements IsSerializable , Identifiable, HasFiles{
   public void setType(TypeOfRealEstate type) {
     this.type = type;
   }
+  
+  public EntityStatus getEntityStatus() {
+	return entityStatus;
+  }
+
+  public void setEntityStatus(EntityStatus entityStatus) {
+	this.entityStatus = entityStatus;
+  }  
+
+  
   public String getFullAddressLine(){
     return this.street + ", " + this.number + (this.box!=null && !this.box.isEmpty()? " bte " + this.box:"");
   }
+  
 }

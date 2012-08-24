@@ -13,10 +13,20 @@
 			<g:header>Général</g:header>
 			<g:ScrollPanel>
 				<g:HTMLPanel styleName="{res.css.detailTable}">
+				
+					<div class="{res.css.detailRow}">
+						<span class="{res.css.detailCellLabel}">Statut :</span>
+						<span ui:field="entityStatus" class="{res.css.detailCellValue}" />
+					</div>
 
 					<div class="{res.css.detailRow}">
 						<span class="{res.css.detailCellLabel}">Nom :</span>
 						<span ui:field="name" class="{res.css.detailCellValue}" />
+					</div>
+					
+					<div class="{res.css.detailRow}">
+						<span class="{res.css.detailCellLabel}">TVA :</span>
+						<span ui:field="vatNumber" class="{res.css.detailCellValue}" />
 					</div>
 
 					<div ui:field="additionnalData"></div>

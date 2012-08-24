@@ -15,6 +15,7 @@ public class PaymentListItem implements IsSerializable, Identifiable {
   private Date toDate;
   private Float rent;
   private Float fee;
+  private Float charges;
   private Float expenses;
   private Float toBePaidToOwner;
   private Float balance;
@@ -35,6 +36,9 @@ public class PaymentListItem implements IsSerializable, Identifiable {
 
   public Float getFee() {
     return fee;
+  }
+  public Float getCharges() {
+	    return charges;
   }
 
   public Date getFromDate() {
@@ -83,6 +87,10 @@ public class PaymentListItem implements IsSerializable, Identifiable {
 
   public void setFee(Float fee) {
     this.fee = fee;
+  }
+  
+  public void setCharges(Float charges) {
+	    this.charges = charges;
   }
 
   public void setFromDate(Date fromDate) {

@@ -94,6 +94,7 @@ public class ExpenseUpdatePresenter extends
 
   private void goToList() {
     PlaceRequest myRequest = new PlaceRequest(NameTokens.expenselist);
+    myRequest = myRequest.with(UUID_PARAMETER, realEstateId);
     placeManager.revealPlace(myRequest);
 
   }

@@ -20,7 +20,7 @@ import com.googlecode.objectify.annotation.Unindexed;
  * 
  */
 @Unindexed
-public abstract class Party implements IsSerializable, Identifiable, HasFiles {
+public abstract class Party implements EnablableEntity, IsSerializable, Identifiable, HasFiles {
 
   private String bankAccountNumber;
   private String bic;
@@ -44,6 +44,7 @@ public abstract class Party implements IsSerializable, Identifiable, HasFiles {
   private String mobilePhoneNumber;
   private String nationality;
   private String nationalRegisterNumber;
+  private String vatNumber;
   private String phoneNumber;
   private String placeOfBirth;
   private String postalCode;
@@ -51,7 +52,8 @@ public abstract class Party implements IsSerializable, Identifiable, HasFiles {
   private String street;
   private String number;
   private String box;
-  private Title title;
+  private Title title;  
+  private EntityStatus entityStatus;
 
   @Indexed
   private Boolean flagActivated;
@@ -163,6 +165,10 @@ public abstract class Party implements IsSerializable, Identifiable, HasFiles {
 
   public String getNationalRegisterNumber() {
     return nationalRegisterNumber;
+  }
+  
+  public String getVatNumber() {
+	    return vatNumber;
   }
 
   public String getNumber() {
@@ -289,6 +295,10 @@ public abstract class Party implements IsSerializable, Identifiable, HasFiles {
   public void setNationalRegisterNumber(String value) {
     nationalRegisterNumber = value;
   }
+  
+  public void setVatNumber(String value) {
+	    vatNumber = value;
+  }
 
   public void setNumber(String number) {
     this.number = number;
@@ -316,8 +326,19 @@ public abstract class Party implements IsSerializable, Identifiable, HasFiles {
 
   public void setTitle(Title value) {
     title = value;
+  }  
+
+  public EntityStatus getEntityStatus() {
+	return entityStatus;
   }
+
+  public void setEntityStatus(EntityStatus entityStatus) {
+	this.entityStatus = entityStatus;
+  }
+
   public String getFullAddressLine(){
     return this.street + ", " + this.number + (this.box!=null && !this.box.isEmpty()? " bte " + this.box:"");
   }
+
+
 }
