@@ -52,7 +52,7 @@ public class LeaseListView extends AbstractListView<SimpleLease> implements
     table.addColumn(nameColumn, "Référence");
     
    // Status.
-    Column<SimpleLease, String> entityStatusColumn = new Column<SimpleLease, String>(new TextCell()) {
+ /*   Column<SimpleLease, String> entityStatusColumn = new Column<SimpleLease, String>(new TextCell()) {
       @Override
       public String getValue(SimpleLease object) {
         return (object.getEntityStatus() != null ? UiHelper.translateEnum(
@@ -67,7 +67,7 @@ public class LeaseListView extends AbstractListView<SimpleLease> implements
       }
     });
 
-    table.addColumn(entityStatusColumn, "Statut");
+   table.addColumn(entityStatusColumn, "Statut"); */
 
     // Academic Year.
     Column<SimpleLease, String> academicYearColumn = new Column<SimpleLease, String>(new TextCell()) {
@@ -82,7 +82,7 @@ public class LeaseListView extends AbstractListView<SimpleLease> implements
       public int compare(SimpleLease o1, SimpleLease o2) {
         return compare(o1.getAcademicYear(), o2.getAcademicYear());
       }
-    });
+    }); 
 
     table.addColumn(academicYearColumn, "Année académique");
     

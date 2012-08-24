@@ -7,7 +7,6 @@ import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 import eu.comexis.napoleon.client.core.AbstractListView;
-import eu.comexis.napoleon.client.utils.UiHelper;
 import eu.comexis.napoleon.shared.model.simple.SimpleRealEstate;
 import eu.comexis.napoleon.shared.utils.SimpleTextComparator;
 
@@ -54,7 +53,7 @@ public class RealEstateListView extends AbstractListView<SimpleRealEstate> imple
     table.addColumn(referenceColumn, "Référence");
     
  // Status.
-    Column<SimpleRealEstate, String> entityStatusColumn = new Column<SimpleRealEstate, String>(new TextCell()) {
+  /*  Column<SimpleRealEstate, String> entityStatusColumn = new Column<SimpleRealEstate, String>(new TextCell()) {
       @Override
       public String getValue(SimpleRealEstate object) {
         return (object.getEntityStatus() != null ? UiHelper.translateEnum(
@@ -69,7 +68,7 @@ public class RealEstateListView extends AbstractListView<SimpleRealEstate> imple
       }
     });
 
-    table.addColumn(entityStatusColumn, "Statut");
+    table.addColumn(entityStatusColumn, "Statut"); */
     
     // Proprio
     Column<SimpleRealEstate, String> ownerColumn =

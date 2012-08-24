@@ -46,17 +46,17 @@ public class InitDatastore extends HttpServlet {
 
     //deleteAll();
 
-    //String companyId = createCompany();
+    String companyId = createCompany();
 
-    //createApplicationUsers(companyId);
+    createApplicationUsers(companyId);
     
     //createApplicationUsersLive(companyId);
 
-    //createOwners(companyId);
+    createOwners(companyId);
 
-    //createTenantDao(companyId);
+    createTenantDao(companyId);
 
-    //create300RealEstate(companyId);
+    create300RealEstate(companyId);
     
     //createRealEstate(companyId);
     //createLease(companyId);
@@ -65,9 +65,9 @@ public class InitDatastore extends HttpServlet {
     
     //createOtherUsers();
     
-	  resp.getWriter().write("Process start");
-	  updateCondominium();
-	  resp.getWriter().write("Process finish");
+	  //resp.getWriter().write("Process start");
+	  //updateCondominium();
+	  //resp.getWriter().write("Process finish");
 
   }
   

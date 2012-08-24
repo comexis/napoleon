@@ -78,4 +78,9 @@ public class OwnerListPresenter extends
   protected String getTitle() {
     return Literals.INSTANCE.ownerListTitle();
   }
+  
+  @Override
+  protected boolean manageActive() {
+    return true;
+  }
 }

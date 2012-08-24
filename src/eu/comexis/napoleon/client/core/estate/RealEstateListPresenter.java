@@ -88,4 +88,8 @@ public class RealEstateListPresenter
     return Literals.INSTANCE.realEstateListTitle();
   }
 
+  @Override
+  protected boolean manageActive() {
+    return false;
+  }
 }

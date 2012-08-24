@@ -32,6 +32,8 @@ public abstract class AbstractListPresenter<T extends Identifiable, V extends Ab
     public void resetFocus();
     
     public void setData(List<T> data);
+    
+    public void hideActiveFilter();
   }
 
   private List<T> datas;
@@ -53,12 +55,12 @@ public abstract class AbstractListPresenter<T extends Identifiable, V extends Ab
       getView().setData(datas);
       filteredDatas = datas;
       filterValue = null;
-      //return;
+      return;
     }
-    
+  
     //filter don't change since the last call
     if (newFilterValue.equals(filterValue)){
-      //return;
+      return;
     }
     
     if (filterValue == null || !newFilterValue.startsWith(filterValue)){
@@ -70,11 +72,8 @@ public abstract class AbstractListPresenter<T extends Identifiable, V extends Ab
     List<T> newDatas = new ArrayList<T>();
     
     for (T data : filteredDatas){
-      if (!filter.filter(data, newFilterValue)){
-    	  if(!(showOnlyActive && data instanceof EnablableEntity && !EntityStatus.ACTIVE.equals((((EnablableEntity)data)).getEntityStatus()))){
+      if (!filter.filter(data, newFilterValue) && testActif(showOnlyActive, data)){
     		  newDatas.add(data);
-    	  }
-        
       }
     }
     
@@ -82,7 +81,45 @@ public abstract class AbstractListPresenter<T extends Identifiable, V extends Ab
     filteredDatas = newDatas;
     
   }
+  
+  public void filterActive(boolean showOnlyActive){
+    
+    List<T> dataList = filteredDatas == null ? this.datas : filteredDatas;
+    
+    if (dataList == null){
+      return;
+    }
+    
+    if (!showOnlyActive){
+      //reset the list
+      getView().setData(dataList);
+      return;
+    }
+    
+    //filter
+    List<T> newDatas = new ArrayList<T>();
+    
+    for (T data : dataList){
+      if (testActif(showOnlyActive, data)){
+          newDatas.add(data);
+      }
+    }
+    
+    getView().setData(newDatas);
+    
+  }
 
+
+  private boolean testActif(boolean showOnlyActive, T data) {   
+    //don't test on the active status if we don't manage it in the list
+    if (!manageActive() || !(data instanceof EnablableEntity)){
+      return true;
+    }
+    
+    EnablableEntity entity = (EnablableEntity) data;
+  
+    return showOnlyActive ? EntityStatus.isActif(entity.getEntityStatus()) : true;
+  }
 
   @Override
   public void onButtonBackToDashBoardClick() {
@@ -99,7 +136,9 @@ public abstract class AbstractListPresenter<T extends Identifiable, V extends Ab
   
   @Override
   public void onShowOnlyActiveClicked(boolean checked, String filterString) {
-    this.filter(filterString, checked); 
+    if (manageActive()){
+      this.filterActive(checked); 
+    }
   }
 
   @Override
@@ -119,6 +158,8 @@ public abstract class AbstractListPresenter<T extends Identifiable, V extends Ab
   protected abstract String getDetailsNameTokens();
   
   protected abstract String getUpdateNameTokens();
+  
+  protected abstract boolean manageActive();
 
   @Override
   protected void onBind() {
@@ -134,6 +175,10 @@ public abstract class AbstractListPresenter<T extends Identifiable, V extends Ab
     
     getView().resetFocus();
     getView().dataIsLoading();
+    
+    if (!manageActive()){
+      getView().hideActiveFilter();
+    }
     
     //getEventBus().fireEvent(new DisplayMessageEvent(Literals.INSTANCE.dataLoading()));
 
@@ -153,9 +198,10 @@ public abstract class AbstractListPresenter<T extends Identifiable, V extends Ab
 
   protected void setDatas(List<T> datas) {
     this.datas = datas;
-    getView().setData(datas);
-
     
+    //show only active TODO: we should only retrieve active entity from the server...
+    filterActive(true);
+   
     doReveal();
   }
 }

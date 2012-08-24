@@ -453,7 +453,7 @@ public class LeaseUpdateView extends ViewImpl implements LeaseUpdatePresenter.My
     tenantName.clear();
     tenantName.addItem("-", "-");
     for (SimpleTenant t : tenants) {
-      if(EntityStatus.ACTIVE.equals(t.getEntityStatus())){  //Only ACTIVE tenants must be displayed in the Dropdown
+      if(EntityStatus.isActif(t.getEntityStatus())){  //Only ACTIVE tenants must be displayed in the Dropdown
     	  tenantName.addItem(t.getName(), t.getId());
       }
     }    

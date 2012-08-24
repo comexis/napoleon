@@ -1,14 +1,15 @@
 package eu.comexis.napoleon.client.core.tenant;
 
 
-import java.util.List;
-
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
+
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
+
+import java.util.List;
 
 import eu.comexis.napoleon.client.core.AbstractListPresenter;
 import eu.comexis.napoleon.client.core.MainLayoutPresenter.Menus;
@@ -16,7 +17,6 @@ import eu.comexis.napoleon.client.place.NameTokens;
 import eu.comexis.napoleon.client.resources.Literals;
 import eu.comexis.napoleon.client.rpc.callback.GotAllTenant;
 import eu.comexis.napoleon.shared.command.tenant.GetAllTenantCommand;
-import eu.comexis.napoleon.shared.model.EntityStatus;
 import eu.comexis.napoleon.shared.model.simple.SimpleTenant;
 
 public class TenantListPresenter extends
@@ -82,4 +82,8 @@ public class TenantListPresenter extends
     return Literals.INSTANCE.tenantListTitle();
   }
 
+  @Override
+  protected boolean manageActive() {
+    return true;
+  }
 }

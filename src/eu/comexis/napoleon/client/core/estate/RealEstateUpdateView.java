@@ -151,7 +151,7 @@ public class RealEstateUpdateView extends ViewImpl implements RealEstateUpdatePr
     ownerName.clear();
     ownerName.addItem("(...)", "(...)");
     for (SimpleOwner o : owners) {
-    	if(EntityStatus.ACTIVE.equals(o.getEntityStatus())){
+    	if(EntityStatus.isActif(o.getEntityStatus())){
     		ownerName.addItem(o.getName(), o.getId());
     	}
     }    

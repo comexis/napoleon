@@ -2,11 +2,10 @@ package eu.comexis.napoleon.client.core;
 
 import static com.google.gwt.query.client.GQuery.$;
 
-import java.util.List;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.InputElement;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -24,7 +23,10 @@ import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.inject.Inject;
+
 import com.gwtplatform.mvp.client.ViewImpl;
+
+import java.util.List;
 
 public abstract class AbstractListView<T> extends ViewImpl implements
     AbstractListPresenter.MyView<T> {
@@ -84,8 +86,8 @@ public abstract class AbstractListView<T> extends ViewImpl implements
   }
   
   @UiHandler("showOnlyActive")
-  public void onShowOnlyActiveClicked(ClickEvent e) {
-    presenter.onShowOnlyActiveClicked(showOnlyActive.getValue(), filter.getValue());
+  public void onShowOnlyActiveClicked(ValueChangeEvent<Boolean> e) {
+    presenter.onShowOnlyActiveClicked(e.getValue(), filter.getValue());
   }
 
   @Override
@@ -127,8 +129,9 @@ public abstract class AbstractListView<T> extends ViewImpl implements
 
   @UiHandler("reset")
   public void onResetFilter(ClickEvent e) {
-    presenter.filter(null, false);
+    presenter.filter(null, true);
     $(filter).val("");
+    showOnlyActive.setValue(true);
   }
 
   @SuppressWarnings("unchecked")
@@ -188,5 +191,11 @@ public abstract class AbstractListView<T> extends ViewImpl implements
 
     dataIsLoading();
 
+  }
+  
+  @Override
+  public void hideActiveFilter() {
+    $(showOnlyActive).hide();
+    
   }
 }

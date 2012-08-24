@@ -40,7 +40,7 @@
 				<g:Button ui:field="reset">Réinitialiser</g:Button>
 				<span class='{style.filterLabel}'>&nbsp;</span>
 				<g:CheckBox ui:field="showOnlyActive" styleName="" 
-						name="showOnlyActive" text="Montrer uniquement les elements actifs"/>	
+						name="showOnlyActive" text="Montrer uniquement les elements actifs" value="true"/>	
 			</div>
 			<table style="width:100%">
 				<tr>

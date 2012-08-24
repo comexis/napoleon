@@ -125,6 +125,10 @@ public class LeaseListPresenter extends
   protected String getTitle() {
     return Literals.INSTANCE.leaseListTitle();
   }
-  
+
+  @Override
+  protected boolean manageActive() {
+    return false;
+  }
   
 }
