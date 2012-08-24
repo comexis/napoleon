@@ -7,10 +7,9 @@ import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 import eu.comexis.napoleon.client.core.AbstractListView;
-import eu.comexis.napoleon.client.utils.SimpleTextComparator;
 import eu.comexis.napoleon.client.utils.UiHelper;
 import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
-import eu.comexis.napoleon.shared.model.simple.SimpleTenant;
+import eu.comexis.napoleon.shared.utils.SimpleTextComparator;
 
 public class OwnerListView extends AbstractListView<SimpleOwner> implements
     OwnerListPresenter.MyView {
@@ -51,6 +50,8 @@ public class OwnerListView extends AbstractListView<SimpleOwner> implements
     });
 
     table.addColumn(nameColumn, "Nom");
+    
+    
 
    // Status.
     Column<SimpleOwner, String> entityStatusColumn = new Column<SimpleOwner, String>(new TextCell()) {
@@ -152,6 +153,9 @@ public class OwnerListView extends AbstractListView<SimpleOwner> implements
       }
     });
     table.addColumn(mobileColumn, "Mobile");
+    
+    //initially sorted by name
+    table.getColumnSortList().push(nameColumn);
 
   }
   

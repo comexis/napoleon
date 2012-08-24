@@ -12,4 +12,6 @@ public interface RealEstateDetailUiHandlers {
   
   public void showOwner();
 
+  public void emailTenants();
+
 }

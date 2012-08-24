@@ -190,8 +190,6 @@ public abstract class PartyUpdateView<T extends Party> extends ViewImpl implemen
 		}
 	}
   }	
-  
-  
 
   @Override
   public String getSelectedCountry() {

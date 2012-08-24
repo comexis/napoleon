@@ -384,6 +384,4 @@ public class Lease implements EnablableEntity, IsSerializable , Identifiable,Has
   public void setEntityStatus(EntityStatus entityStatus) {
 	this.entityStatus = entityStatus;
   }  
-
-  
 }

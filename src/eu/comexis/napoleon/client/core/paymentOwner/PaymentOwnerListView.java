@@ -7,9 +7,9 @@ import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 import eu.comexis.napoleon.client.core.AbstractShortListView;
-import eu.comexis.napoleon.client.utils.SimpleTextComparator;
 import eu.comexis.napoleon.client.utils.UiHelper;
 import eu.comexis.napoleon.shared.model.PaymentOwner;
+import eu.comexis.napoleon.shared.utils.SimpleTextComparator;
 
 public class PaymentOwnerListView extends AbstractShortListView<PaymentOwner> implements
   PaymentOwnerListPresenter.MyView {

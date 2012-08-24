@@ -7,10 +7,9 @@ import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 import eu.comexis.napoleon.client.core.AbstractListView;
-import eu.comexis.napoleon.client.utils.SimpleTextComparator;
 import eu.comexis.napoleon.client.utils.UiHelper;
-import eu.comexis.napoleon.shared.model.Expense;
 import eu.comexis.napoleon.shared.model.simple.SimpleRealEstate;
+import eu.comexis.napoleon.shared.utils.SimpleTextComparator;
 
 public class RealEstateListView extends AbstractListView<SimpleRealEstate> implements
     RealEstateListPresenter.MyView {
@@ -175,6 +174,8 @@ public class RealEstateListView extends AbstractListView<SimpleRealEstate> imple
       }
     });
     table.addColumn(mobileColumn, "Mobile");
+    
+    table.getColumnSortList().push(referenceColumn);
 
   }
   

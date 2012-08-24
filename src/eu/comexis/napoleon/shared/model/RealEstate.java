@@ -19,270 +19,109 @@ import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
  * @author xavier Bien immobilier
  */
 @Unindexed
+
 public class RealEstate implements EnablableEntity, IsSerializable , Identifiable, HasFiles{
 
-  @Id
-  private String id;
 
-  @Parent
-  private Key<Company> company;
+	@Id
+	private String id;
 
-  private String box;
+	@Parent
+	private Key<Company> company;
 
-  private String number;
-  @Indexed
-  private Boolean flagActivated;
+	private String box;
 
-  private String city;
+	private String number;
+	@Indexed
+	private Boolean flagActivated;
 
-  private String country;
+	private String city;
 
-  private String street;
+	private String country;
 
-  private Date ownershipDate;
+	private String street;
 
-  private String dimension;
+	private Date ownershipDate;
 
-  private String reference;
+	private String dimension;
 
-  private String square;
+	private String reference;
 
-  private RealEstateState state;
+	private String square;
 
-  private TypeOfRealEstate type;
+	private RealEstateState state;
 
-  // nom de la compropriété
-  private String condominium;
+	private TypeOfRealEstate type;
 
-  // syndic de copropriété
-  private String homeownerAssociation;
+	// nom de la compropriété
+	@Indexed
+	private String condominium;
 
-  // adresse du syndic
-  private String assocAdresss;
+	// syndic de copropriété
+	private String homeownerAssociation;
 
-  // adresse e-mail du syndic
-  private String assocEmail;
+	// adresse du syndic
+	private String assocAdresss;
 
-  // n° de téléphone du syndic
-  private String assocPhoneNumber;
-  
-  // n° de téléphone mobile (GSM) du syndic
-  private String assocMobilePhoneNumber;
-  @Indexed
-  private Key<Owner> ownerKey;
+	// adresse e-mail du syndic
+	private String assocEmail;
 
-  @NotSaved
-  private SimpleOwner owner;
+	// n° de téléphone du syndic
+	private String assocPhoneNumber;
 
-  private String postalCode;
+	// n° de téléphone mobile (GSM) du syndic
+	private String assocMobilePhoneNumber;
+
   
   private EntityStatus entityStatus;
   
-  @Embedded
-  private ArrayList<FileDescriptor> files;
-  public RealEstate() {
-    files = new ArrayList<FileDescriptor>();
-  }
-  @Override
-  public void addFile(FileDescriptor file) {
-    files.add(file);
-  }
-  public String getAssocAdresss() {
-    return assocAdresss;
-  }
-  public String getAssocEmail() {
-    return assocEmail;
-  }
+  
+	@Indexed
+	private Key<Owner> ownerKey;
 
-  public String getAssocMobilePhoneNumber() {
-    return assocMobilePhoneNumber;
-  }
 
-  public String getAssocPhoneNumber() {
-    return assocPhoneNumber;
-  }
+	@NotSaved
+	private SimpleOwner owner;
 
-  public String getBox() {
-    return box;
-  }
+	private String postalCode;
 
-  public String getCity() {
-    return city;
-  }
+	@Embedded
+	private ArrayList<FileDescriptor> files;
 
-  public Key<Company> getCompany() {
-    return company;
-  }
+	public RealEstate() {
+		files = new ArrayList<FileDescriptor>();
+	}
 
-  public String getCondominium() {
-    return condominium;
-  }
+	@Override
+	public void addFile(FileDescriptor file) {
+		files.add(file);
+	}
 
-  public String getCountry() {
-    return country;
-  }
+	public String getAssocAdresss() {
+		return assocAdresss;
+	}
 
-  public String getDimension() {
-    return dimension;
-  }
+	public String getAssocEmail() {
+		return assocEmail;
+	}
 
-  @Override
-  public ArrayList<FileDescriptor> getFiles() {
-    return files;
-  }
+	public String getAssocMobilePhoneNumber() {
+		return assocMobilePhoneNumber;
+	}
 
-  public Boolean getFlagActivated() {
-    return flagActivated;
-  }
+	public String getAssocPhoneNumber() {
+		return assocPhoneNumber;
+	}
 
-  public String getHomeownerAssociation() {
-    return homeownerAssociation;
-  }
+	public String getBox() {
+		return box;
+	}
 
-  public String getId() {
-    return id;
-  }
+	public String getCity() {
+		return city;
+	}
 
-  public String getNumber() {
-    return number;
-  }
 
-  public SimpleOwner getOwner() {
-    return owner;
-  }
-
-  public Key<Owner> getOwnerKey() {
-    return ownerKey;
-  }
-
-  public Date getOwnershipDate() {
-    return ownershipDate;
-  }
-
-  public String getPostalCode() {
-    return postalCode;
-  }
-
-  public String getReference() {
-    return reference;
-  }
-
-  public String getSquare() {
-    return square;
-  }
-
-  public RealEstateState getState() {
-    return state;
-  }
-
-  public String getStreet() {
-    return street;
-  }
-
-  public TypeOfRealEstate getType() {
-    return type;
-  }
-
-  @Override
-  public void removeFile(FileDescriptor file) {
-    files.remove(file);
-  }
-
-  public void setAssocAdresss(String assocAdresss) {
-    this.assocAdresss = assocAdresss;
-  }
-
-  public void setAssocEmail(String assocEmail) {
-    this.assocEmail = assocEmail;
-  }
-
-  public void setAssocMobilePhoneNumber(String assocMobilePhoneNumber) {
-    this.assocMobilePhoneNumber = assocMobilePhoneNumber;
-  }
-
-  public void setAssocPhoneNumber(String assocPhoneNumber) {
-    this.assocPhoneNumber = assocPhoneNumber;
-  }
-
-  public void setBox(String box) {
-    this.box = box;
-  }
-
-  public void setCity(String city) {
-    this.city = city;
-  }
-
-  public void setCompany(Key<Company> company) {
-    this.company = company;
-  }
-
-  public void setCondominium(String condominium) {
-    this.condominium = condominium;
-  }
-
-  public void setCountry(String country) {
-    this.country = country;
-  }
-
-  public void setDimension(String dimension) {
-    this.dimension = dimension;
-  }
-
-  public void setFiles(ArrayList<FileDescriptor> files) {
-    this.files = files;
-  }
-
-  public void setFlagActivated(Boolean flagActivated) {
-    this.flagActivated = flagActivated;
-  }
-
-  public void setHomeownerAssociation(String homeownerAssociation) {
-    this.homeownerAssociation = homeownerAssociation;
-  }
-
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  public void setNumber(String number) {
-    this.number = number;
-  }
-
-  public void setOwner(SimpleOwner owner) {
-    this.owner = owner;
-  }
-
-  public void setOwnerKey(Key<Owner> ownerKey) {
-    this.ownerKey = ownerKey;
-  }
-
-  public void setOwnershipDate(Date ownershipDate) {
-    this.ownershipDate = ownershipDate;
-  }
-
-  public void setPostalCode(String string) {
-    this.postalCode = string;
-  }
-
-  public void setReference(String reference) {
-    this.reference = reference;
-  }
-
-  public void setSquare(String square) {
-    this.square = square;
-  }
-
-  public void setState(RealEstateState state) {
-    this.state = state;
-  }
-
-  public void setStreet(String street) {
-    this.street = street;
-  }
-
-  public void setType(TypeOfRealEstate type) {
-    this.type = type;
-  }
   
   public EntityStatus getEntityStatus() {
 	return entityStatus;
@@ -292,9 +131,186 @@ public class RealEstate implements EnablableEntity, IsSerializable , Identifiabl
 	this.entityStatus = entityStatus;
   }  
 
-  
-  public String getFullAddressLine(){
-    return this.street + ", " + this.number + (this.box!=null && !this.box.isEmpty()? " bte " + this.box:"");
-  }
-  
+
+	public Key<Company> getCompany() {
+		return company;
+	}
+
+	public String getCondominium() {
+		return condominium;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public String getDimension() {
+		return dimension;
+	}
+
+	@Override
+	public ArrayList<FileDescriptor> getFiles() {
+		return files;
+	}
+
+	public Boolean getFlagActivated() {
+		return flagActivated;
+	}
+
+	public String getHomeownerAssociation() {
+		return homeownerAssociation;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public String getNumber() {
+		return number;
+	}
+
+	public SimpleOwner getOwner() {
+		return owner;
+	}
+
+	public Key<Owner> getOwnerKey() {
+		return ownerKey;
+	}
+
+	public Date getOwnershipDate() {
+		return ownershipDate;
+	}
+
+	public String getPostalCode() {
+		return postalCode;
+	}
+
+	public String getReference() {
+		return reference;
+	}
+
+	public String getSquare() {
+		return square;
+	}
+
+	public RealEstateState getState() {
+		return state;
+	}
+
+	public String getStreet() {
+		return street;
+	}
+
+	public TypeOfRealEstate getType() {
+		return type;
+	}
+
+	@Override
+	public void removeFile(FileDescriptor file) {
+		files.remove(file);
+	}
+
+	public void setAssocAdresss(String assocAdresss) {
+		this.assocAdresss = assocAdresss;
+	}
+
+	public void setAssocEmail(String assocEmail) {
+		this.assocEmail = assocEmail;
+	}
+
+	public void setAssocMobilePhoneNumber(String assocMobilePhoneNumber) {
+		this.assocMobilePhoneNumber = assocMobilePhoneNumber;
+	}
+
+	public void setAssocPhoneNumber(String assocPhoneNumber) {
+		this.assocPhoneNumber = assocPhoneNumber;
+	}
+
+	public void setBox(String box) {
+		this.box = box;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public void setCompany(Key<Company> company) {
+		this.company = company;
+	}
+
+	public void setCondominium(String condominium) {
+		this.condominium = condominium;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public void setDimension(String dimension) {
+		this.dimension = dimension;
+	}
+
+	public void setFiles(ArrayList<FileDescriptor> files) {
+		this.files = files;
+	}
+
+	public void setFlagActivated(Boolean flagActivated) {
+		this.flagActivated = flagActivated;
+	}
+
+	public void setHomeownerAssociation(String homeownerAssociation) {
+		this.homeownerAssociation = homeownerAssociation;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public void setNumber(String number) {
+		this.number = number;
+	}
+
+	public void setOwner(SimpleOwner owner) {
+		this.owner = owner;
+	}
+
+	public void setOwnerKey(Key<Owner> ownerKey) {
+		this.ownerKey = ownerKey;
+	}
+
+	public void setOwnershipDate(Date ownershipDate) {
+		this.ownershipDate = ownershipDate;
+	}
+
+	public void setPostalCode(String string) {
+		this.postalCode = string;
+	}
+
+	public void setReference(String reference) {
+		this.reference = reference;
+	}
+
+	public void setSquare(String square) {
+		this.square = square;
+	}
+
+	public void setState(RealEstateState state) {
+		this.state = state;
+	}
+
+	public void setStreet(String street) {
+		this.street = street;
+	}
+
+	public void setType(TypeOfRealEstate type) {
+		this.type = type;
+	}
+
+	public String getFullAddressLine() {
+		return this.street
+				+ ", "
+				+ this.number
+				+ (this.box != null && !this.box.isEmpty() ? " bte " + this.box
+						: "");
+	}
 }

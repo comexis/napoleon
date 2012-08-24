@@ -7,10 +7,9 @@ import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 import eu.comexis.napoleon.client.core.AbstractListView;
-import eu.comexis.napoleon.client.utils.SimpleTextComparator;
 import eu.comexis.napoleon.client.utils.UiHelper;
 import eu.comexis.napoleon.shared.model.simple.SimpleLease;
-import eu.comexis.napoleon.shared.model.simple.SimpleTenant;
+import eu.comexis.napoleon.shared.utils.SimpleTextComparator;
 
 public class LeaseListView extends AbstractListView<SimpleLease> implements
   LeaseListPresenter.MyView {

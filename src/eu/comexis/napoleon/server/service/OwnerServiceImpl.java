@@ -1,6 +1,7 @@
 package eu.comexis.napoleon.server.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -18,6 +19,7 @@ import eu.comexis.napoleon.shared.command.owner.UpdateOwnerCommand;
 import eu.comexis.napoleon.shared.command.owner.UpdateOwnerResponse;
 import eu.comexis.napoleon.shared.model.Owner;
 import eu.comexis.napoleon.shared.model.simple.SimpleOwner;
+import eu.comexis.napoleon.shared.utils.SimpleTextComparator;
 
 /**
  * Implementation of the service on server side.
@@ -36,6 +38,14 @@ public class OwnerServiceImpl extends RemoteServiceServlet implements OwnerServi
     String companyId = UserManager.INSTANCE.getCompanyId();
     OwnerDao ownerData = new OwnerDao();
     ArrayList<SimpleOwner> owners = ownerData.getListSimpleOwners(companyId);
+    
+    //sort owners by name
+    Collections.sort(owners, new SimpleTextComparator<SimpleOwner>() {
+    	@Override
+    	public int compare(SimpleOwner o1, SimpleOwner o2) {
+    		return compare(o1.getName(), o2.getName());
+    	}
+	});
 
     GetAllOwnerResponse response = new GetAllOwnerResponse();
     response.setOwners(owners);

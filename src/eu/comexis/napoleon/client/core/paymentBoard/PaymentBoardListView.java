@@ -1,18 +1,15 @@
 package eu.comexis.napoleon.client.core.paymentBoard;
 
-import static com.google.gwt.query.client.GQuery.$;
-
 import com.google.gwt.cell.client.TextCell;
-import com.google.gwt.query.client.Function;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 import eu.comexis.napoleon.client.core.AbstractShortListView;
-import eu.comexis.napoleon.client.utils.SimpleTextComparator;
 import eu.comexis.napoleon.client.utils.UiHelper;
 import eu.comexis.napoleon.shared.model.simple.PaymentListItem;
+import eu.comexis.napoleon.shared.utils.SimpleTextComparator;
 
 public class PaymentBoardListView extends AbstractShortListView<PaymentListItem> implements
   PaymentBoardListPresenter.MyView {
@@ -121,6 +118,8 @@ public class PaymentBoardListView extends AbstractShortListView<PaymentListItem>
     });*/
 
     table.addColumn(chargesColumn, "Charges");
+    
+
         
     
     // Honoraire.
