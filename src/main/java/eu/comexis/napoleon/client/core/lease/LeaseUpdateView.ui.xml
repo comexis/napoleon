@@ -1,0 +1,132 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	xmlns:dp="urn:import:com.google.gwt.user.datepicker.client"
+	xmlns:chzn="urn:import:com.watopi.chosen.client.gwt"
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+	<ui:with field='res' type='eu.comexis.napoleon.client.resources.Resources' />
+
+	<g:ScrollPanel>
+		<g:HTMLPanel styleName="{res.css.detailTable}">
+
+			<div class="{res.css.detailRow}">
+				<span class="{res.css.detailCellInputLabel}">Référence :</span>
+				<span ui:field="reference" class="{res.css.detailCellValue}" />
+				<span class="{res.css.detailCellInputLabel} {res.css.autoLabel}">Année académique :</span>
+				<g:SuggestBox ui:field="academicYear" styleName="{res.css.detailCellInputText}" />
+			</div>
+
+			<div class="{res.css.detailRow} {res.css.separationRow}">
+				<span class="{res.css.detailCellInputLabel}">Locataire :</span>
+				<chzn:ChosenListBox ui:field="tenantName"
+					name="tenantName" />
+				<span class="{res.css.detailCellInputLabel} {res.css.autoLabel}">Cooccupant(s) :</span>
+				<g:TextArea ui:field="coocuppant" styleName="{res.css.detailCellInputList}"
+					name="coocuppant"/>	
+			</div>
+			
+			<div class="{res.css.detailRow} {res.css.separationRow}">
+				<span class="{res.css.detailCellInputLabel}" >Date d'entrée :</span>
+				<dp:DateBox ui:field="startDate" styleName="{res.css.detailCellInputText}"/>
+				<span class="{res.css.detailCellInputLabel} {res.css.autoLabel}" >Date de sortie :</span>
+				<dp:DateBox ui:field="endDate" styleName="{res.css.detailCellInputText}"/>
+				<span class="{res.css.detailCellInputLabel} {res.css.autoLabel}" >Type de location :</span>
+				<g:ListBox ui:field="type" styleName="{res.css.detailCellInputList}"
+					name="type" />
+			</div>
+			
+			<div class="{res.css.detailRow} {res.css.separationRow}">
+				<span class="{res.css.detailCellInputLabel}" >ELE :</span>
+				<dp:DateBox ui:field="eleDate" styleName="{res.css.detailCellInputText}"/>
+				<span class="{res.css.detailCellInputLabel} {res.css.autoLabel}" >ELS :</span>
+				<dp:DateBox ui:field="elsDate" styleName="{res.css.detailCellInputText}"/>
+			</div>
+			
+			<div class="{res.css.detailRow}">
+				<span class="{res.css.detailCellInputLabel}" >Loyer :</span>
+				<g:TextBox ui:field="rent" styleName="{res.css.detailCellInputText}"
+					name="rent" />
+				<span class="{res.css.detailCellInputLabel}" ><span style="font-weight:normal">€&nbsp;&nbsp;</span>Charges :</span>
+				<g:TextBox ui:field="charges" styleName="{res.css.detailCellInputText}"
+					name="charges" />
+				<span class="{res.css.detailCellInputLabel} {res.css.autoLabel} " style="font-weight:normal">€</span>
+			</div>
+			<div class="{res.css.detailRow} {res.css.separationRow}">
+				<span class="{res.css.detailCellInputLabel}" >Garantie locative :</span>
+				<g:TextBox ui:field="deposit" styleName="{res.css.detailCellInputText}"
+					name="deposit" />
+				<span class="{res.css.detailCellInputLabel}" ><span style="font-weight:normal">€&nbsp;&nbsp;</span>Date :</span>
+				<dp:DateBox ui:field="depositDate" styleName="{res.css.detailCellInputText}"/>
+			</div>
+			<div class="{res.css.detailRow}">
+				<g:RadioButton ui:field="depositInCashYes" styleName="{res.css.detailCellInputLabel}"
+					name="depositInCash" text="Cash"/>
+			</div>
+			<div class="{res.css.detailRow}">
+				<g:RadioButton ui:field="depositInCashNo" styleName="{res.css.detailCellInputLabel}"
+					name="depositInCash" text="Compte bloqué"/>
+				<span class="{res.css.detailCellInputLabel}" >IBAN :</span>
+				<g:TextBox ui:field="ibanOwner" styleName="{res.css.detailCellInputText}" name="ibanOwner"/>
+				<span class="{res.css.detailCellInputLabel}" >BIC :</span>
+				<g:TextBox ui:field="bicOwner" styleName="{res.css.detailCellInputText}" name="bicOwner" />
+			</div>
+			<div class="{res.css.detailRow}">
+				<g:RadioButton ui:field="depositAgency" styleName="{res.css.detailCellInputLabel}"
+					name="depositInCash" text="Compte Agence"/>
+				<span class="{res.css.detailCellInputLabel}" >IBAN :</span>
+				<g:SuggestBox ui:field="iban" styleName="{res.css.detailCellInputText}"/>
+				<span class="{res.css.detailCellInputLabel}" >BIC :</span>
+				<g:TextBox ui:field="bic" styleName="{res.css.detailCellInputText}" name="bic" />
+			</div>
+			
+			<div class="{res.css.detailRow} {res.css.separationRow}">
+				<span class="{res.css.detailCellInputLabel}">Propriétaire :</span>
+				<g:TextBox ui:field="feeOwner" styleName="{res.css.detailCellInputText}"
+					name="feeOwner" />
+				<span class="{res.css.detailCellInputLabel}"><span style="font-weight:normal">€&nbsp;&nbsp;</span>Honoraire :</span>
+				<g:TextBox ui:field="fee" styleName="{res.css.detailCellInputText}"
+					name="fee" />
+				<span class="{res.css.detailCellInputLabel} {res.css.autoLabel} " style="font-weight:normal">€</span>
+			</div>
+			
+			<div class="{res.css.detailRow}">
+				<span class="{res.css.detailCellInputLabel} {res.css.autoLabel}">Référence comptable 460 :</span>
+				<g:TextBox ui:field="bookkeepingRef" styleName="{res.css.detailCellInputText}"
+					name="bookkeepingRef" />
+			</div>
+
+			<div class="{res.css.detailRow} {res.css.separationRow}">
+
+				<g:CheckBox ui:field="hasFurnituresRental" styleName="{res.css.detailCellInputLabel} {res.css.autoLabel}"
+					name="hasFurnituresRental" text="Mobilier"/>
+				<g:CheckBox ui:field="hasFurnituresWithContract" styleName="{res.css.detailCellInputLabel}"
+					name="hasFurnituresWithContract" text="Avec contrat"/>
+			</div>
+			<div class="{res.css.detailRow}">
+				<span class="{res.css.detailCellInputLabel}">Somme annuelle :</span>
+				<g:TextBox ui:field="furnituresAmount" styleName="{res.css.detailCellInputText}"
+					name="furnituresAmount" />
+				<span class="{res.css.detailCellInputLabel} {res.css.autoLabel} " ><span style="font-weight:normal">€&nbsp;&nbsp;</span>Date convenue:</span>
+				<dp:DateBox ui:field="furnituresDate" styleName="{res.css.detailCellInputText}"/>
+				<g:CheckBox ui:field="furnituresPaymentOK" styleName="{res.css.detailCellInputLabel} {res.css.autoLabel} "
+					name="furnituresPaymentOK" text="Paiement OK"/>
+			</div>
+			
+			<div class="{res.css.detailRow}">
+				
+			</div>
+
+			<div class="{res.css.separationRow}" style="clear: both;">
+
+			</div>
+
+			<div>
+				<g:Button ui:field="btnSave">Sauver</g:Button>
+				<g:Button ui:field="btnCancel">Annuler</g:Button>
+			</div>
+		</g:HTMLPanel>
+	</g:ScrollPanel>
+</ui:UiBinder>

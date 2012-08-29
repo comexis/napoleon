@@ -8,6 +8,6 @@
 /gwt-unitCache
 /target
 .classpath
-
+.project
 .gwt/*
 .settings/*

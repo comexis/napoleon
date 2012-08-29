@@ -1,89 +1,383 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <!-- POM file generated with GWT webAppCreator -->
   <modelVersion>4.0.0</modelVersion>
-  <groupId>Napoleon</groupId>
-  <artifactId>Napoleon</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <groupId>eu.comexis</groupId>
+  <artifactId>napoleon</artifactId>
+  <packaging>war</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>napoleon</name>
+
+  <properties>
+ 	 <!-- Sets the project's default encoding.
+     http://docs.codehaus.org/display/MAVENUSER/POM+Element+for+Source+File+Encoding -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <gwt.version>2.4.0</gwt.version>
+    <!-- Default style during dev -->
+    <gwt.style>PRETTY</gwt.style>
+    <gae.version>1.6.6</gae.version>
+    <!-- gae.home>${user.home}/.m2/repository/com/google/appengine/appengine-java-sdk/${gae.version}/appengine-java-sdk-${gae.version}</gae.home-->
+    <gae.application.version>dev</gae.application.version>
+    <gwt.my.module>eu.comexis.napoleon.Napoleon</gwt.my.module>
+    <gwtp.version>0.6</gwtp.version>
+  </properties>
   
   <repositories>
     <repository>
       <id>objectify-appengine</id>
       <url>http://objectify-appengine.googlecode.com/svn/maven</url>
     </repository>
-    <repository>
+     <repository>
       <id>sonatype-snapshots</id>
       <url>http://oss.sonatype.org/content/repositories/snapshots</url>
       <snapshots><enabled>true</enabled></snapshots>
       <releases><enabled>false</enabled></releases>
     </repository>
+    <repository>
+		<id>plugins</id>
+		<url>http://gwtquery-plugins.googlecode.com/svn/mavenrepo</url>
+	</repository>
   </repositories>
   
-  
   <dependencies>
-    <dependency>
-      <groupId>com.google.gwt</groupId>
-      <artifactId>gwt</artifactId>
-      <version>2.4.0</version>
-      <type>pom</type>
-    </dependency>
-    <dependency>
-      <groupId>com.gwtplatform</groupId>
-      <artifactId>gwtp-mvp-client</artifactId>
-      <version>0.6</version>
-    </dependency>
-    <dependency>
-    	<groupId>com.gwtplatform</groupId>
-    	<artifactId>gwtp-dispatch-client</artifactId>
-    	<version>0.6</version>
-    </dependency>
-    <dependency>
+     <!-- GwtQuery -->
+     <dependency>
      	<groupId>com.googlecode.gwtquery</groupId>
      	<artifactId>gwtquery</artifactId>
-     	<version>1.1.1-SNAPSHOT</version>
-   	</dependency>
+     	<version>1.2.0</version>
+     <scope>provided</scope>
+   </dependency>
+   <dependency>
+        	<groupId>com.watopi</groupId>
+            <artifactId>gwtchosen</artifactId>
+            <version>1.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+    <!-- GWT-Platform MVP component -->
+   <dependency>
+     <groupId>com.gwtplatform</groupId>
+     <artifactId>gwtp-mvp-client</artifactId>
+     <version>${gwtp.version}</version>
+     <scope>provided</scope>
+   </dependency>
+   
+    <!-- General dependencies for standard applications -->
     <dependency>
-    	<groupId>com.google.gwt.inject</groupId>
-    	<artifactId>gin</artifactId>
-    	<version>1.5.0</version>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.8.1</version>
+      <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>2.5</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- Make use of JSP tags. Remove, if you don't use JSPs -->
+    <dependency>
+      <artifactId>standard</artifactId>
+      <groupId>taglibs</groupId>
+      <version>1.1.2</version>
+      <type>jar</type>
+      <scope>runtime</scope>
+    </dependency>
+    <!-- Google app engine -->
+    <dependency>
+      <groupId>com.google.appengine</groupId>
+      <artifactId>appengine-api-1.0-sdk</artifactId>
+      <version>${gae.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.appengine</groupId>
+      <artifactId>appengine-testing</artifactId>
+      <version>${gae.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.appengine</groupId>
+      <artifactId>appengine-api-stubs</artifactId>
+      <version>${gae.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.appengine</groupId>
+      <artifactId>appengine-api-labs</artifactId>
+      <version>${gae.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.persistence</groupId>
+      <artifactId>persistence-api</artifactId>
+      <version>1.0</version>
+    </dependency>
+    
+    <!-- GWT -->
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-user</artifactId>
+      <version>${gwt.version}</version>
+    </dependency>
+    
+    <!-- dependency>
+       <groupId>com.google.gwt</groupId>
+       <artifactId>gwt-codeserver</artifactId>	
+       <version>${gwt.version}</version>	
+   </dependency-->
+    <!-- Objectify -->
     <dependency>
       <groupId>com.googlecode.objectify</groupId>
       <artifactId>objectify</artifactId>
       <version>3.0.1</version>
     </dependency>
-     <dependency>
-     	<groupId>com.google.appengine</groupId>
-     	<artifactId>appengine-api-labs</artifactId>
-     	<version>1.5.4</version>
-     </dependency>
-     <dependency>
-     	<groupId>com.google.appengine</groupId>
-     	<artifactId>appengine-api-stubs</artifactId>
-     	<version>1.5.4</version>
-     </dependency>
-     <dependency>
-     	<groupId>com.google.appengine</groupId>
-     	<artifactId>appengine-testing</artifactId>
-     	<version>1.5.4</version>
-     </dependency>
-     <dependency>
-     	<groupId>junit</groupId>
-     	<artifactId>junit</artifactId>
-     	<version>4.10</version>
-     </dependency>
-     <dependency>
-     	<groupId>commons-logging</groupId>
-     	<artifactId>commons-logging</artifactId>
-     	<version>1.1.1</version>
-     </dependency>
-     <dependency>
-    <groupId>com.google.guava</groupId>
-    <artifactId>guava</artifactId>
-    <version>10.0.1</version>
-</dependency>
-<dependency>
-    <groupId>com.google.guava</groupId>
-    <artifactId>guava-gwt</artifactId>
-    <version>10.0.1</version>
-</dependency>
+	<dependency>
+		<groupId>com.google.gwt.inject</groupId>
+		<artifactId>gin</artifactId>
+		<version>1.5.0</version>
+		 <scope>provided</scope>
+	</dependency>
+	<dependency>
+		<groupId>com.google.guava</groupId>
+		<artifactId>guava</artifactId>
+		<version>13.0</version>
+	</dependency>
+	<dependency>
+		<groupId>commons-beanutils</groupId>
+		<artifactId>commons-beanutils</artifactId>
+		<version>1.8.3</version>
+	</dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.1</version>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>2.2</version>
+        <configuration>
+           <webResources>
+               <resource>
+                   <directory>src/main/webapp</directory>
+                   <filtering>true</filtering>
+                   <includes>
+                       <include>**/appengine-web.xml</include>
+                   </includes>
+               </resource>
+           </webResources>
+       </configuration>
+      </plugin>
+      <!-- Copy static web files before executing gwt:run -->
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.4.2</version>
+        <executions>
+          <execution>
+            <phase>compile</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/${project.build.finalName}</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>src/main/webapp</directory>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.2-beta-5</version>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>2.5</version>
+      </plugin>
+      
+      <!-- AppEngine -->
+      <plugin>
+        <groupId>net.kindleit</groupId>
+        <artifactId>maven-gae-plugin</artifactId>
+        <version>0.9.3</version>
+         <dependencies>
+                  <dependency>
+                    <groupId>net.kindleit</groupId>
+                    <artifactId>gae-runtime</artifactId>
+                    <version>${gae.version}</version>
+                    <type>pom</type>
+                  </dependency>
+                </dependencies>
+        <executions>
+          <execution>
+            <id />
+            <phase>validate</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      
+      <!--
+      Upload application to the appspot automatically, during
+      release:perform.
+      -->
+      <plugin>
+          <artifactId>maven-release-plugin</artifactId>
+          <configuration>
+              <goals>gae:deploy</goals>
+          </configuration>
+      </plugin>
+      
+      <!-- GWT -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>gwt-maven-plugin</artifactId>
+        <version>2.4.0</version>
+        <dependencies>
+          <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-user</artifactId>
+            <version>${gwt.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-dev</artifactId>
+            <version>${gwt.version}</version>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <logLevel>INFO</logLevel>
+          <style>${gwt.style}</style>
+          <runTarget>/index.html</runTarget>
+          <appEngineVersion>${gae.version}</appEngineVersion>
+          <!-- appEngineHome>${gae.home}</appEngineHome -->
+          <server>com.google.appengine.tools.development.gwt.AppEngineLauncher</server>
+          <copyWebapp>true</copyWebapp>
+          <module>${gwt.my.module}</module>
+          <runTarget>eu.comexis.napoleon.Napoleon/index.jsp</runTarget>
+        </configuration>
+        <executions>
+          <execution>
+            <id>gwtcompile</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>compile</goal>
+              <goal>generateAsync</goal>
+              <goal>test</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+
+    <pluginManagement>
+      <plugins>
+        <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.datanucleus</groupId>
+                    <artifactId>maven-datanucleus-plugin</artifactId>
+                    <versionRange>[1.1.4,)</versionRange>
+                    <goals>
+                      <goal>enhance</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore></ignore>
+                  </action>
+                </pluginExecution>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>net.kindleit</groupId>
+                    <artifactId>maven-gae-plugin</artifactId>
+                    <versionRange>[0.7.3,)</versionRange>
+                    <goals>
+                      <goal>unpack</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <execute />
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+    <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory>
+  </build>
+
+  <profiles>
+
+	<profile>
+		<id>dev-build</id>
+		<properties>
+			<gwt.my.module>eu.comexis.napoleon.Napoleon</gwt.my.module>
+			<gwt.style>PRETTY</gwt.style>
+		</properties>
+	</profile>
+    <!-- We can configure our integration server to activate this profile and perform 
+      gae:deploy, thus uploading latest snapshot to the http://1.latest.<applicationName>.appspot.com 
+      automatically -->
+    <profile>
+      <id>integration-build</id>
+      <properties>
+        <gae.application.version>stage</gae.application.version>
+        <!-- Produce pretty JS during GWT compilation for test environment -->
+        <gwt.style>PRETTY</gwt.style>
+      </properties>
+    </profile>
+
+    <!-- This profile will activate automatically during release and upload application 
+      to the http://2.latest.<applicationName>.appspot.com (We might want to set the 2nd 
+      version as our applications Default version to be accessible at http://<applicationName>.appspot.com) -->
+    <profile>
+      <id>release-build</id>
+      <activation>
+        <property>
+          <name>performRelease</name>
+          <value>true</value>
+        </property>
+      </activation>
+
+      <properties>
+        <!-- During release, set application version in appengine-web.xml to 2 -->
+        <gae.application.version>release</gae.application.version>
+        <!-- Produce compressed JS during GWT compilation for production environment -->
+        <gwt.style>OBFUSCATED</gwt.style>
+      </properties>
+    </profile>
+  </profiles>
 </project>

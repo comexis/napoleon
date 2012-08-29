@@ -1,1 +1,0 @@
-SELECT SUM( sr.value )  FROM  `jos_facileforms_subrecords` sr, jos_facileforms_records r WHERE r.form =26 AND sr.record = r.id AND sr.element =441 AND r.submitted >  '2011-12-01 00:00:00'
